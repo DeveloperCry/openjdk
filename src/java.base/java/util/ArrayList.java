@@ -848,6 +848,7 @@ public class ArrayList<E> extends AbstractList<E>
         final Object[] es = elementData;
         int r;
         // Optimize for initial run of survivors
+        // 这里是做了一个优化，从第一个出现在c集中的字符开始遍历
         for (r = from;; r++) {
             if (r == end)
                 return false;
