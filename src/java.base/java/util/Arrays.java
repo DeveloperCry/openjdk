@@ -78,6 +78,8 @@ public class Arrays {
      * algorithm will not further partition the sorting task. Using
      * smaller sizes typically results in memory contention across
      * tasks that makes parallel speedups unlikely.
+     *
+     * 并行排序所需的最小的数组长度
      */
     private static final int MIN_ARRAY_SORT_GRAN = 1 << 13;
 
@@ -85,7 +87,7 @@ public class Arrays {
     private Arrays() {}
 
     /**
-     * A comparator that implements the natural ordering of a group of
+     * A comparator that implements the natural ordering（自然排序） of a group of
      * mutually comparable elements. May be used when a supplied
      * comparator is null. To simplify code-sharing within underlying
      * implementations, the compare method only declares type Object
@@ -98,6 +100,7 @@ public class Arrays {
      * empirical case for separating them for parallel sorting, so all
      * public Object parallelSort methods use the same comparator
      * based implementation.
+     * 意思就是如果觉得这个比较器效果不好，那就不用这个
      */
     static final class NaturalOrder implements Comparator<Object> {
         @SuppressWarnings("unchecked")
@@ -135,7 +138,7 @@ public class Arrays {
     /**
      * Sorts the specified array into ascending numerical order.
      *
-     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * <p>Implementation note: The sorting algorithm(算法) is a Dual-Pivot（二分快速排序算法） Quicksort
      * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
      * offers O(n log(n)) performance on many data sets that cause other
      * quicksorts to degrade to quadratic performance, and is typically
@@ -467,7 +470,7 @@ public class Arrays {
         if (n <= MIN_ARRAY_SORT_GRAN ||
             (p = ForkJoinPool.getCommonPoolParallelism()) == 1)
             DualPivotQuicksort.sort(a, 0, n - 1);
-        else
+        else//如果大于最小的并行排序数量，那就并行排序
             new ArraysParallelSortHelpers.FJByte.Sorter
                 (null, a, new byte[n], 0, n, 0,
                  ((g = n / (p << 2)) <= MIN_ARRAY_SORT_GRAN) ?
