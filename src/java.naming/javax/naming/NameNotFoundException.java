@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,7 +52,7 @@ public class NameNotFoundException extends NamingException {
 
     /**
       * Constructs a new instance of NameNotFoundException.
-      * all name resolution fields and explanation initialized to null.
+      * All name resolution fields and explanation are initialized to null.
       */
     public NameNotFoundException() {
         super();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -155,6 +151,7 @@ public class CurrencyNames_ko extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -190,6 +187,7 @@ public class CurrencyNames_ko extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -205,6 +203,7 @@ public class CurrencyNames_ko extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
@@ -306,7 +305,7 @@ public class CurrencyNames_ko extends OpenListResourceBundle {
             { "fjd", "\ud53c\uc9c0 \ub2ec\ub7ec" },
             { "fkp", "\ud3ec\ud074\ub79c\ub4dc\uc81c\ub3c4 \ud30c\uc6b4\ub4dc" },
             { "frf", "\ud504\ub791\uc2a4 \ud504\ub791" },
-            { "gbp", "\ud30c\uc6b4\ub4dc" },
+            { "gbp", "\uc601\uad6d \ud30c\uc6b4\ub4dc" },
             { "gek", "\uadf8\ub8e8\uc9c0\uc57c \uc9c0\ud3d0 \ub77c\ub9ac\ud2b8" },
             { "gel", "\uc870\uc9c0\uc544 \ub77c\ub9ac" },
             { "ghc", "\uac00\ub098 \uc2dc\ub514 (1979\u20132007)" },
@@ -463,7 +462,8 @@ public class CurrencyNames_ko extends OpenListResourceBundle {
             { "uyu", "\uc6b0\ub8e8\uacfc\uc774 \ud398\uc18c \uc6b0\ub8e8\uacfc\uc694" },
             { "uzs", "\uc6b0\uc988\ubca0\ud0a4\uc2a4\ud0c4 \uc228" },
             { "veb", "\ubca0\ub124\uc8fc\uc5d8\ub77c \ubcfc\ub9ac\ubc14\ub974 (1871\u20132008)" },
-            { "vef", "\ubca0\ub124\uc218\uc5d8\ub77c \ubcfc\ub9ac\ubc14\ub974" },
+            { "vef", "\ubca0\ub124\uc218\uc5d8\ub77c \ubcfc\ub9ac\ubc14\ub974 (2008\u20132018)" },
+            { "ves", "\ubca0\ub124\uc218\uc5d8\ub77c \ubcfc\ub9ac\ubc14\ub974" },
             { "vnd", "\ubca0\ud2b8\ub0a8 \ub3d9" },
             { "vnn", "\ubca0\ud2b8\ub0a8 \ub3d9 (1978\u20131985)" },
             { "vuv", "\ubc14\ub204\uc544\ud22c \ubc14\ud22c" },

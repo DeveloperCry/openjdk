@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -89,7 +89,7 @@ public class MXBeanProxy {
         }
     }
 
-    private static abstract class Handler {
+    private abstract static class Handler {
         Handler(String name, ConvertingMethod cm) {
             this.name = name;
             this.convertingMethod = cm;

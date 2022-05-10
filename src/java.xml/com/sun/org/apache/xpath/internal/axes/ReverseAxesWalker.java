@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -244,5 +244,6 @@ public class ReverseAxesWalker extends AxesWalker
   }
 
   /** The DTM inner traversal class, that corresponds to the super axis. */
+  @SuppressWarnings("serial") // Type of field is not Serializable
   protected DTMAxisIterator m_iterator;
 }

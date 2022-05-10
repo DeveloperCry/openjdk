@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -100,7 +96,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "151", "Isto\u010dna Evropa" },
             { "154", "Severna Evropa" },
             { "155", "Zapadna Evropa" },
-            { "202", "Afrika ju\u017eno od Sahare" },
+            { "202", "Podsaharska Afrika" },
             { "419", "Latinska Amerika" },
             { "AC", "Ostrvo Asension" },
             { "AD", "Andora" },
@@ -175,7 +171,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "ER", "Eritreja" },
             { "ES", "\u0160panija" },
             { "ET", "Etiopija" },
-            { "EU", "Evropska Unija" },
+            { "EU", "Evropska unija" },
             { "EZ", "Evrozona" },
             { "FI", "Finska" },
             { "FJ", "Fid\u017ei" },
@@ -252,7 +248,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "MF", "Sveti Martin (Francuska)" },
             { "MG", "Madagaskar" },
             { "MH", "Mar\u0161alska Ostrva" },
-            { "MK", "Makedonija" },
+            { "MK", "Severna Makedonija" },
             { "ML", "Mali" },
             { "MM", "Mijanmar (Burma)" },
             { "MN", "Mongolija" },
@@ -356,6 +352,8 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "VU", "Vanuatu" },
             { "WF", "Valis i Futuna" },
             { "WS", "Samoa" },
+            { "XA", "Pseudoakcenti" },
+            { "XB", "Pseudobidi" },
             { "XK", "Kosovo" },
             { "YE", "Jemen" },
             { "YT", "Majot" },
@@ -585,6 +583,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "cad", "kado" },
             { "car", "karipski" },
             { "cch", "atsam" },
+            { "ccp", "\u010dakma" },
             { "ceb", "sebuanski" },
             { "cgg", "\u010diga" },
             { "chb", "\u010dip\u010da" },
@@ -610,7 +609,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "din", "dinka" },
             { "dje", "zarma" },
             { "doi", "dogri" },
-            { "dsb", "donji lu\u017ei\u010dkosrpski" },
+            { "dsb", "donjolu\u017ei\u010dkosrpski" },
             { "dua", "duala" },
             { "dum", "srednjeholandski" },
             { "dyo", "d\u017eola fonji" },
@@ -654,7 +653,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "hil", "hiligajnonski" },
             { "hit", "hetitski" },
             { "hmn", "hmon\u0161ki" },
-            { "hsb", "gornji lu\u017ei\u010dkosrpski" },
+            { "hsb", "gornjolu\u017ei\u010dkosrpski" },
             { "hup", "hupa" },
             { "iba", "ibanski" },
             { "ibb", "ibibio" },
@@ -865,7 +864,7 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "Blis", "blisimboli\u010dno pismo" },
             { "Bopo", "bopomofo pismo" },
             { "Brah", "bramansko pismo" },
-            { "Brai", "Brajevo pismo" },
+            { "Brai", "brajevo pismo" },
             { "Bugi", "buginsko pismo" },
             { "Buhd", "buhidsko pismo" },
             { "Cakm", "\u010dakmansko pismo" },
@@ -988,10 +987,12 @@ public class LocaleNames_sr_Latn extends OpenListResourceBundle {
             { "Zxxx", "nepisani jezik" },
             { "Zyyy", "zajedni\u010dko pismo" },
             { "Zzzz", "nepoznato pismo" },
-            { "root", "rut" },
+            { "de_AT", "austrijski nema\u010dki" },
             { "de_CH", "\u0161vajcarski visoki nema\u010dki" },
             { "en_GB", "engleski (Velika Britanija)" },
             { "en_US", "engleski (Sjedinjene Ameri\u010dke Dr\u017eave)" },
+            { "es_ES", "\u0161panski (Evropa)" },
+            { "fa_AF", "dari" },
             { "nl_BE", "flamanski" },
             { "pt_PT", "portugalski (Portugal)" },
             { "ro_MD", "moldavski" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -81,7 +81,7 @@ final class JVMUpcalls {
      *            Id of the class
      * @param forceInstrumentation
      *            add instrumentation regardless if event is enabled or not.
-     * @param superClazz
+     * @param superClass
      *            the super class of the class being processed
      * @param oldBytes
      *            byte code
@@ -126,13 +126,21 @@ final class JVMUpcalls {
     }
 
     /**
+     * Called by the JVM to ensure metadata for internal events/types become public.
+     *
+     * Must be called after metadata repository has been initialized (JFR created).
+     *
+     */
+    static void unhideInternalTypes() {
+        MetadataRepository.unhideInternalTypes();
+    }
+
+    /**
      * Called by the JVM to create the recorder thread.
      *
-     * @param systemThreadGroup
-     *            the system thread group
+     * @param systemThreadGroup  the system thread group
      *
-     * @param contextClassLoader
-     *            the context class loader.
+     * @param contextClassLoader the context class loader.
      *
      * @return a new thread
      */

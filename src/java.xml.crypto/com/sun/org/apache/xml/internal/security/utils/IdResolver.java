@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
  * @deprecated
  */
 @Deprecated
-public class IdResolver {
+public final class IdResolver {
 
     private IdResolver() {
         // we don't allow instantiation

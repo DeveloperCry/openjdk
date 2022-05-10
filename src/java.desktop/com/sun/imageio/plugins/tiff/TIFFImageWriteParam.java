@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,12 +56,11 @@ import javax.imageio.ImageWriteParam;
  * <tr>
  * <td>JPEG</td>
  * <td>"New" JPEG-in-TIFF compression</td>
- * <td><a href="ftp://ftp.sgi.com/graphics/tiff/TTN2.draft.txt">TIFF
- * Technical Note #2</a></td>
- * </tr>
+ * <td>TIFF Technical Note #2</td></tr>
  * <tr>
  * <td>ZLib</td>
  * <td>"Deflate/Inflate" compression (see note following this table)</td>
+ * <td>Adobe Photoshop&#174; TIFF Technical Notes</td>
  * </tr>
  * <tr>
  * <td>PackBits</td>

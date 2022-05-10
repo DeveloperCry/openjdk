@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -61,6 +61,7 @@ public class SecureLookupSupplier {
      * and a check for {@code RuntimePermission("dynalink.getLookup")} fails.
      */
     public final Lookup getLookup() {
+        @SuppressWarnings("removal")
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null && lookup != MethodHandles.publicLookup()) {
             sm.checkPermission(GET_LOOKUP_PERMISSION);

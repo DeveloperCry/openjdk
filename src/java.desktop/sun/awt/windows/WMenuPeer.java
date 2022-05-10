@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,12 +30,8 @@ import java.awt.peer.*;
 class WMenuPeer extends WMenuItemPeer implements MenuPeer {
 
     // MenuPeer implementation
-
-    @Override
-    public native void addSeparator();
     @Override
     public void addItem(MenuItem item) {
-        WMenuItemPeer itemPeer = (WMenuItemPeer) WToolkit.targetToPeer(item);
     }
     @Override
     public native void delItem(int index);

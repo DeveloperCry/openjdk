@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,7 +65,7 @@ class OopMapForCacheEntry extends GenerateOopMap {
     }
   }
 
-  public void fillInitVars(List/*<Integer>*/ initVars) {
+  public void fillInitVars(List<Integer> initVars) {
     // Do nothing
   }
 

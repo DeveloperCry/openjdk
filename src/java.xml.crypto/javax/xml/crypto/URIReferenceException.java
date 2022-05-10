@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -57,6 +57,11 @@ public class URIReferenceException extends Exception {
      */
     private Throwable cause;
 
+    /**
+     * The {@code URIReference} that was being dereferenced
+     * when the exception was thrown, or {@code null} if not specified.
+     */
+    @SuppressWarnings("serial") // Type of field is not Serializable
     private URIReference uriReference;
 
     /**

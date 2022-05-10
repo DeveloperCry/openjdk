@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,7 @@ import java.nio.*;
 public class PerfByteArrayCounter extends AbstractCounter
        implements ByteArrayCounter {
 
+    @SuppressWarnings("serial") // Value indirectly copied as a byte[] in writeReplace
     ByteBuffer bb;
 
     PerfByteArrayCounter(String name, Units u, Variability v,

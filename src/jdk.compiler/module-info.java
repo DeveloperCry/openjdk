@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,10 @@
  * {@linkplain javax.tools.ToolProvider#getSystemJavaCompiler system Java compiler}
  * and its command line equivalent, <em>{@index javac javac tool}</em>.
  *
+ * <p>The {@code com.sun.source.*} packages provide the {@index "Compiler Tree API"}:
+ * an API for accessing the abstract trees (ASTs) representing Java source code
+ * and documentation comments, used by <em>javac</em>, <em>javadoc</em> and related tools.
+ *
  * <h2 style="font-family:'DejaVu Sans Mono', monospace; font-style:italic">javac</h2>
  *
  * <p>
@@ -55,10 +59,7 @@
  * {@code jdk.zipfs} module, must be available if the compiler is to be able
  * to read JAR files.
  *
- * <dl style="font-family:'DejaVu Sans', Arial, Helvetica, sans serif">
- * <dt class="simpleTagLabel">Tool Guides:
- * <dd>{@extLink javac_tool_reference javac}
- * </dl>
+ * @toolGuide javac
  *
  * @provides java.util.spi.ToolProvider
  * @provides com.sun.tools.javac.platform.PlatformProvider
@@ -116,11 +117,11 @@ module jdk.compiler {
         jdk.javadoc,
         jdk.jshell;
     exports jdk.internal.shellsupport.doc to
-        jdk.jshell,
-        jdk.scripting.nashorn.shell;
+        jdk.jshell;
 
     uses javax.annotation.processing.Processor;
     uses com.sun.source.util.Plugin;
+    uses com.sun.tools.doclint.DocLint;
     uses com.sun.tools.javac.platform.PlatformProvider;
 
     provides java.util.spi.ToolProvider with

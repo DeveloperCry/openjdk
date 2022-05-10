@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -225,6 +225,7 @@ public abstract class SunDropTargetContextPeer implements DropTargetContextPeer,
         InvalidDnDOperationException
     {
 
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         try {
             if (!dropInProcess && sm != null) {

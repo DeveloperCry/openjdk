@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package javax.sound.midi;
 
+import java.io.Serial;
+
 /**
  * A {@code MidiUnavailableException} is thrown when a requested MIDI component
  * cannot be opened or created because it is unavailable. This often occurs when
@@ -42,6 +44,7 @@ public class MidiUnavailableException extends Exception {
     /**
      * Use serialVersionUID from JDK 1.3 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = 6093809578628944323L;
 
     /**

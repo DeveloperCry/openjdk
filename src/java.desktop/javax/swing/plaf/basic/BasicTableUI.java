@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -95,6 +95,11 @@ public class BasicTableUI extends TableUI
      * Local cache of Table's client property "Table.isFileList"
      */
     private boolean isFileList = false;
+
+    /**
+     * Constructs a {@code BasicTableUI}.
+     */
+    public BasicTableUI() {}
 
 //
 //  Helper class for keyboard actions
@@ -760,6 +765,11 @@ public class BasicTableUI extends TableUI
         // its functionality has been moved into Handler. If you need to add
         // new functionality add it to the Handler, but make sure this
         // class calls into the Handler.
+        /**
+         * Constructs a {@code KeyHandler}.
+         */
+        public KeyHandler() {}
+
         public void keyPressed(KeyEvent e) {
             getHandler().keyPressed(e);
         }
@@ -786,6 +796,11 @@ public class BasicTableUI extends TableUI
         // its functionality has been moved into Handler. If you need to add
         // new functionality add it to the Handler, but make sure this
         // class calls into the Handler.
+        /**
+         * Constructs a {@code FocusHandler}.
+         */
+        public FocusHandler() {}
+
         public void focusGained(FocusEvent e) {
             getHandler().focusGained(e);
         }
@@ -808,6 +823,11 @@ public class BasicTableUI extends TableUI
         // its functionality has been moved into Handler. If you need to add
         // new functionality add it to the Handler, but make sure this
         // class calls into the Handler.
+        /**
+         * Constructs a {@code MouseInputHandler}.
+         */
+        public MouseInputHandler() {}
+
         public void mouseClicked(MouseEvent e) {
             getHandler().mouseClicked(e);
         }
@@ -913,24 +933,21 @@ public class BasicTableUI extends TableUI
             // the table, seems to have no effect.
 
             Component editorComp = table.getEditorComponent();
-            if (table.isEditing() && editorComp != null) {
-                if (editorComp instanceof JComponent) {
-                    JComponent component = (JComponent)editorComp;
-                    map = component.getInputMap(JComponent.WHEN_FOCUSED);
-                    Object binding = (map != null) ? map.get(keyStroke) : null;
-                    if (binding == null) {
-                        map = component.getInputMap(JComponent.
-                                         WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-                        binding = (map != null) ? map.get(keyStroke) : null;
-                    }
-                    if (binding != null) {
-                        ActionMap am = component.getActionMap();
-                        Action action = (am != null) ? am.get(binding) : null;
-                        if (action != null && SwingUtilities.
+            if (table.isEditing() && editorComp instanceof JComponent component) {
+                map = component.getInputMap(JComponent.WHEN_FOCUSED);
+                Object binding = (map != null) ? map.get(keyStroke) : null;
+                if (binding == null) {
+                    map = component.getInputMap(JComponent.
+                            WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+                    binding = (map != null) ? map.get(keyStroke) : null;
+                }
+                if (binding != null) {
+                    ActionMap am = component.getActionMap();
+                    Action action = (am != null) ? am.get(binding) : null;
+                    if (action != null && SwingUtilities.
                             notifyAction(action, keyStroke, e, component,
-                                         e.getModifiers())) {
-                            e.consume();
-                        }
+                                    e.getModifiers())) {
+                        e.consume();
                     }
                 }
             }
@@ -1465,8 +1482,8 @@ public class BasicTableUI extends TableUI
         Container parent = SwingUtilities.getUnwrappedParent(table);  // should be viewport
         if (parent != null) {
             parent = parent.getParent();  // should be the scrollpane
-            if (parent != null && parent instanceof JScrollPane) {
-                LookAndFeel.installBorder((JScrollPane)parent, "Table.scrollPaneBorder");
+            if (parent instanceof JScrollPane scrollPane) {
+                LookAndFeel.installBorder(scrollPane, "Table.scrollPaneBorder");
             }
         }
 
@@ -1872,7 +1889,12 @@ public class BasicTableUI extends TableUI
             // and if there is any selected rows
             if (rMax != (table.getRowCount() - 1) &&
                     (table.getSelectedRow() == -1)) {
-                rMax = rMax - 1;
+                // Do not decrement rMax if rMax becomes
+                // less than or equal to rMin
+                // else cells will not be painted
+                if (rMax - rMin > 1) {
+                    rMax = rMax - 1;
+                }
             }
         }
 

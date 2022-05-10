@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,7 +45,7 @@ package java.awt.event;
  *
  * @see WindowEvent
  * @see WindowListener
- * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
+ * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
  *
  * @author Carl Quinn
  * @author Amy Fowler
@@ -55,6 +55,11 @@ package java.awt.event;
 public abstract class WindowAdapter
     implements WindowListener, WindowStateListener, WindowFocusListener
 {
+    /**
+     * Constructs a {@code WindowAdapter}.
+     */
+    protected WindowAdapter() {}
+
     /**
      * Invoked when a window has been opened.
      */

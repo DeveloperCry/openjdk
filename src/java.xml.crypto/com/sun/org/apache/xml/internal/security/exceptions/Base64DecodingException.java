@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -53,7 +53,7 @@ public class Base64DecodingException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public Base64DecodingException(String msgID, Object exArgs[]) {
+    public Base64DecodingException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -79,7 +79,7 @@ public class Base64DecodingException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public Base64DecodingException(Exception originalException, String msgID, Object exArgs[]) {
+    public Base64DecodingException(Exception originalException, String msgID, Object[] exArgs) {
         super(originalException, msgID, exArgs);
     }
 

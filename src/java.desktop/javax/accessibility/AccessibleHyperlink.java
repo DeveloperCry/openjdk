@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,11 @@ package javax.accessibility;
  * @see AccessibleContext#getAccessibleText
  */
 public abstract class AccessibleHyperlink implements AccessibleAction {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected AccessibleHyperlink() {}
 
     /**
      * Since the document a link is associated with may have changed, this

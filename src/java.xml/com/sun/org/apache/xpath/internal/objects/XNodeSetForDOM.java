@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -36,6 +36,7 @@ import org.w3c.dom.traversal.NodeIterator;
 public class XNodeSetForDOM extends XNodeSet
 {
     static final long serialVersionUID = -8396190713754624640L;
+  @SuppressWarnings("serial") // Type of field is not Serializable
   Object m_origObj;
 
   public XNodeSetForDOM(Node node, DTMManager dtmMgr)

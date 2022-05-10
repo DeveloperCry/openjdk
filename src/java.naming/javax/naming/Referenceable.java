@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,7 +51,7 @@ public interface Referenceable {
       * Retrieves the Reference of this object.
       *
       * @return The non-null Reference of this object.
-      * @exception NamingException If a naming exception was encountered
+      * @throws NamingException If a naming exception was encountered
       *         while retrieving the reference.
       */
     Reference getReference() throws NamingException;

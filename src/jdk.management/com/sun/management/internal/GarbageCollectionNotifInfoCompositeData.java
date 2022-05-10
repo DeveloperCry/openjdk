@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,6 +47,7 @@ import sun.management.Util;
  * construction of a CompositeData use in the local case.
  */
 public class GarbageCollectionNotifInfoCompositeData extends LazyCompositeData {
+    @SuppressWarnings("serial") // Type of field is not Serializable
     private final GarbageCollectionNotificationInfo gcNotifInfo;
 
     public GarbageCollectionNotifInfoCompositeData(GarbageCollectionNotificationInfo info) {
@@ -64,6 +65,7 @@ public class GarbageCollectionNotifInfoCompositeData extends LazyCompositeData {
     }
 
     private CompositeType getCompositeTypeByBuilder() {
+        @SuppressWarnings("removal")
         final GcInfoBuilder builder = AccessController.doPrivileged (new PrivilegedAction<GcInfoBuilder>() {
                 public GcInfoBuilder run() {
                     try {

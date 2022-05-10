@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -83,7 +83,7 @@ public class XMBeanAttributes extends XTable {
     final Logger LOGGER =
             System.getLogger(XMBeanAttributes.class.getPackage().getName());
 
-    private final static String[] columnNames =
+    private static final String[] columnNames =
     {Messages.NAME,
      Messages.VALUE};
 
@@ -865,7 +865,7 @@ public class XMBeanAttributes extends XTable {
         }
     }
 
-    class MaximizedCellRenderer extends  DefaultTableCellRenderer {
+    static class MaximizedCellRenderer extends DefaultTableCellRenderer {
         Component comp;
         MaximizedCellRenderer(Component comp) {
             this.comp = comp;
@@ -888,7 +888,7 @@ public class XMBeanAttributes extends XTable {
         }
     }
 
-    class ZoomedCell {
+    static class ZoomedCell {
         TableCellRenderer minRenderer;
         MaximizedCellRenderer maxRenderer;
         int minHeight;

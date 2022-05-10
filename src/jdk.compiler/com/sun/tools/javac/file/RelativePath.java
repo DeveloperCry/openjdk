@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,9 +73,7 @@ public abstract class RelativePath implements Comparable<RelativePath> {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof RelativePath))
-            return false;
-         return path.equals(((RelativePath) other).path);
+        return (other instanceof RelativePath relativePath) && path.equals(relativePath.path);
     }
 
     @Override

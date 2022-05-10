@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -221,7 +217,7 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "bam", "Bosnia-Hersegovina mark (kann vekslast)" },
             { "bbd", "Barbados dollari" },
             { "bdt", "Bangladesj taka" },
-            { "bgn", "Bulgaria lev" },
+            { "bgn", "Bulgarskur Lev" },
             { "bhd", "Barein dinar" },
             { "bif", "Burundi frankur" },
             { "bmd", "Bermuda dollari" },
@@ -231,10 +227,10 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "bsd", "Bahamaoyggjar dollari" },
             { "btn", "Butan ngultrum" },
             { "bwp", "Botsvana pula" },
-            { "byn", "Hv\u00edtarussland ruble" },
+            { "byn", "Hv\u00edtarussiskur Ruble" },
             { "byr", "Hv\u00edtarussland ruble (2000\u20132016)" },
             { "bzd", "Belis dollari" },
-            { "cad", "Kanada dollari" },
+            { "cad", "Kanadiskur dollari" },
             { "cdf", "Kongo frankur" },
             { "chf", "sveisiskur frankur" },
             { "clp", "Kili peso" },
@@ -245,7 +241,7 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "cuc", "Kuba peso (sum kann vekslast)" },
             { "cup", "Kuba peso" },
             { "cve", "Gr\u00f8nh\u00f8vdaoyggjar escudo" },
-            { "czk", "Kekkia koruna" },
+            { "czk", "Kekkiskt Koruna" },
             { "djf", "Djibuti frankur" },
             { "dkk", "donsk kr\u00f3na" },
             { "dop", "Dominika peso" },
@@ -268,7 +264,7 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "hnl", "Honduras lempira" },
             { "hrk", "Kroatia kuna" },
             { "htg", "Haiti gourde" },
-            { "huf", "Ungarn forint" },
+            { "huf", "Ungarskur Forintur" },
             { "idr", "Indonesia rupiah" },
             { "ils", "\u00cdsrael new shekel" },
             { "inr", "indiskir rupis" },
@@ -293,7 +289,7 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "lrd", "Liberia dollari" },
             { "lyd", "Libya dinar" },
             { "mad", "Marokko dirham" },
-            { "mdl", "Moldova leu" },
+            { "mdl", "Moldovanskur Leu" },
             { "mga", "Madagaskar ariary" },
             { "mkd", "Maked\u00f3nia denar" },
             { "mmk", "Myanmar (Burma) kyat" },
@@ -319,7 +315,7 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "pgk", "Papua N\u00fdguinea kina" },
             { "php", "Filipsoyggjar peso" },
             { "pkr", "Pakistan rupi" },
-            { "pln", "P\u00f3lland zloty" },
+            { "pln", "P\u00f3lskur Zloty" },
             { "pyg", "Paraguai guarani" },
             { "qar", "Katar rial" },
             { "ron", "Rumenia leu" },
@@ -355,7 +351,8 @@ public class CurrencyNames_fo extends OpenListResourceBundle {
             { "usd", "US dollari" },
             { "uyu", "Uruguai peso" },
             { "uzs", "Usbekistan som" },
-            { "vef", "Venesuela bol\u00edvar" },
+            { "vef", "Venesuela bol\u00edvar (2008\u20132018)" },
+            { "ves", "Venesuela bol\u00edvar" },
             { "vnd", "Vjetnam dong" },
             { "vuv", "Vanuatu vatu" },
             { "wst", "Samoa tala" },

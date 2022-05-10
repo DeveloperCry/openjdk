@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -115,6 +111,7 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "ETB", "ETB" },
             { "FJD", "FJD" },
             { "FKP", "FKP" },
+            { "GBP", "UK\u00a3" },
             { "GEL", "GEL" },
             { "GHS", "GHS" },
             { "GIP", "GIP" },
@@ -144,8 +141,6 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "LBP", "\u0644.\u0644.\u200f" },
             { "LKR", "LKR" },
             { "LRD", "LRD" },
-            { "LTL", "LTL" },
-            { "LVL", "LVL" },
             { "LYD", "\u062f.\u0644.\u200f" },
             { "MAD", "\u062f.\u0645.\u200f" },
             { "MDL", "MDL" },
@@ -154,7 +149,7 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "MMK", "MMK" },
             { "MNT", "MNT" },
             { "MOP", "MOP" },
-            { "MRO", "\u0623.\u0645.\u200f" },
+            { "MRU", "\u0623.\u0645." },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -191,6 +186,7 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "\u0644.\u0633.\u200f" },
             { "SZL", "SZL" },
             { "THB", "\u0e3f" },
@@ -206,6 +202,7 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "XXX", "***" },
@@ -270,7 +267,7 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "csk", "\u0643\u0631\u0648\u0646\u0629 \u062a\u0634\u064a\u0643\u0648\u0633\u0644\u0648\u0641\u0627\u0643\u064a\u0627" },
             { "cuc", "\u0628\u064a\u0632\u0648 \u0643\u0648\u0628\u064a \u0642\u0627\u0628\u0644 \u0644\u0644\u062a\u062d\u0648\u064a\u0644" },
             { "cup", "\u0628\u064a\u0632\u0648 \u0643\u0648\u0628\u064a" },
-            { "cve", "\u0627\u0633\u0643\u0648\u062f\u0648 \u0627\u0644\u0631\u0623\u0633 \u0627\u0644\u062e\u0636\u0631\u0627\u0621" },
+            { "cve", "\u0627\u0633\u0643\u0648\u062f\u0648 \u0627\u0644\u0631\u0623\u0633 \u0627\u0644\u0623\u062e\u0636\u0631" },
             { "cyp", "\u062c\u0646\u064a\u0647 \u0642\u0628\u0631\u0635\u064a" },
             { "czk", "\u0643\u0631\u0648\u0646\u0629 \u062a\u0634\u064a\u0643\u064a\u0629" },
             { "ddm", "\u0623\u0648\u0633\u062a\u0645\u0627\u0631\u0643 \u0623\u0644\u0645\u0627\u0646\u064a \u0634\u0631\u0642\u064a" },
@@ -436,7 +433,8 @@ public class CurrencyNames_ar extends OpenListResourceBundle {
             { "uyu", "\u0628\u064a\u0632\u0648 \u0627\u0648\u0631\u0648\u063a\u0648\u0627\u064a" },
             { "uzs", "\u0633\u0648\u0645 \u0623\u0648\u0632\u0628\u0643\u0633\u062a\u0627\u0646\u064a" },
             { "veb", "\u0628\u0648\u0644\u064a\u0641\u0627\u0631 \u0641\u0646\u0632\u0648\u064a\u0644\u064a - 1871-2008" },
-            { "vef", "\u0628\u0648\u0644\u064a\u0641\u0627\u0631 \u0641\u0646\u0632\u0648\u064a\u0644\u064a" },
+            { "vef", "\u0628\u0648\u0644\u064a\u0641\u0627\u0631 \u0641\u0646\u0632\u0648\u064a\u0644\u064a - 2008\u20132018" },
+            { "ves", "\u0628\u0648\u0644\u064a\u0641\u0627\u0631 \u0641\u0646\u0632\u0648\u064a\u0644\u064a" },
             { "vnd", "\u062f\u0648\u0646\u062c \u0641\u064a\u062a\u0646\u0627\u0645\u064a" },
             { "vuv", "\u0641\u0627\u062a\u0648 \u0641\u0627\u0646\u0648\u0627\u062a\u0648" },
             { "wst", "\u062a\u0627\u0644\u0627 \u0633\u0627\u0645\u0648\u0627" },

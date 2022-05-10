@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,7 @@ import sun.jvm.hotspot.debugger.cdbg.*;
 import sun.jvm.hotspot.utilities.AddressOps;
 
 public class BasicLineNumberMapping {
-  private List infoList;
+  private List<BasicLineNumberInfo> infoList;
 
   public BasicLineNumberMapping() {
   }
@@ -41,7 +41,7 @@ public class BasicLineNumberMapping {
       recomputeEndPCs() will recompute them if needed. */
   public void addLineNumberInfo(BasicLineNumberInfo info) {
     if (infoList == null) {
-      infoList = new ArrayList();
+      infoList = new ArrayList<>();
     }
     infoList.add(info);
   }
@@ -50,10 +50,8 @@ public class BasicLineNumberMapping {
       counter. This must be done before any queries are made. */
   public void sort() {
     if (infoList == null) return;
-    Collections.sort(infoList, new Comparator() {
-        public int compare(Object o1, Object o2) {
-          BasicLineNumberInfo l1 = (BasicLineNumberInfo) o1;
-          BasicLineNumberInfo l2 = (BasicLineNumberInfo) o2;
+    infoList.sort(new Comparator<>() {
+        public int compare(BasicLineNumberInfo l1, BasicLineNumberInfo l2) {
           Address a1 = l1.getStartPC();
           Address a2 = l2.getStartPC();
           if (AddressOps.lt(a1, a2)) { return -1; }

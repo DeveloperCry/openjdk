@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,7 +25,6 @@ package com.sun.org.apache.bcel.internal.generic;
  * DUP2 - Duplicate two top operand stack words
  * <PRE>Stack: ..., word2, word1 -&gt; ..., word2, word1, word2, word1</PRE>
  *
- * @version $Id: DUP2.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class DUP2 extends StackInstruction implements PushInstruction {
 

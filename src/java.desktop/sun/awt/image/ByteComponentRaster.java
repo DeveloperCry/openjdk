@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,7 @@
  */
 
 package sun.awt.image;
+
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.awt.image.RasterFormatException;
@@ -261,7 +262,7 @@ public class ByteComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte outData[];
+        byte[] outData;
         if (obj == null) {
             outData = new byte[numDataElements];
         } else {
@@ -309,7 +310,7 @@ public class ByteComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte outData[];
+        byte[] outData;
         if (obj == null) {
             outData = new byte[w*h*numDataElements];
         } else {
@@ -463,7 +464,7 @@ public class ByteComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte inData[] = (byte[])obj;
+        byte[] inData = (byte[])obj;
         int off = (y-minY)*scanlineStride +
                   (x-minX)*pixelStride;
 
@@ -583,7 +584,7 @@ public class ByteComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte inData[] = (byte[])obj;
+        byte[] inData = (byte[])obj;
         int yoff = (y-minY)*scanlineStride +
                    (x-minX)*pixelStride;
         int xoff;
@@ -945,11 +946,11 @@ public class ByteComponentRaster extends SunWritableRaster {
     }
 
     public String toString() {
-        return new String ("ByteComponentRaster: width = "+width+" height = "
-                           + height
-                           +" #numDataElements "+numDataElements
-                           //  +" xOff = "+xOffset+" yOff = "+yOffset
-                           +" dataOff[0] = "+dataOffsets[0]);
+        return "ByteComponentRaster: width = " + width
+                + " height = " + height
+                + " #numDataElements " + numDataElements
+                //  +" xOff = "+xOffset+" yOff = "+yOffset
+                + " dataOff[0] = " + dataOffsets[0];
     }
 
 //    /**

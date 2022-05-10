@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,8 @@ import sun.jvm.hotspot.debugger.*;
 import sun.jvm.hotspot.gc.shared.*;
 import sun.jvm.hotspot.runtime.*;
 import sun.jvm.hotspot.types.*;
+import sun.jvm.hotspot.utilities.Observable;
+import sun.jvm.hotspot.utilities.Observer;
 
 /** DefNewGeneration is a young generation containing eden, from- and
     to-space. */
@@ -92,6 +94,11 @@ public class DefNewGeneration extends Generation {
     if (!usedOnly) {
       blk.doSpace(to());
     }
+  }
+
+  public void liveRegionsIterate(LiveRegionsClosure closure) {
+    closure.doLiveRegions(eden());
+    closure.doLiveRegions(from());
   }
 
   public void printOn(PrintStream tty) {

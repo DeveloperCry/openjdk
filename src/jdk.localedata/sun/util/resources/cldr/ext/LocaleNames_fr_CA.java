@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,9 +67,9 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final String metaValue_gu = "gujarati";
-        final String metaValue_or = "odia";
         final Object[][] data = new Object[][] {
-            { "ksh", "k\u00f6lsch" },
+            { "sbp", "sangu" },
+            { "Olck", "ol chiki" },
             { "pdt", "bas allemand mennonite" },
             { "nyn", "nkole" },
             { "HM", "\u00eeles Heard et McDonald" },
@@ -82,7 +78,8 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
             { "type.ca.islamic-umalqura", "calendrier musulman (calcul\u00e9, Umm al-Qura)" },
             { "den", "slave" },
             { "mwv", "mentawai" },
-            { "Zsye", "zsye" },
+            { "mgh", "makhuwa-meetto" },
+            { "Zsye", "\u00e9moji" },
             { "mgo", "meta\u2019" },
             { "frc", "cajun" },
             { "IC", "\u00eeles Canaries" },
@@ -92,50 +89,56 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
             { "AC", "\u00eele de l\u2019Ascension" },
             { "rar", "rarotonga" },
             { "IM", "\u00eele de Man" },
+            { "frp", "franco-proven\u00e7al" },
             { "type.co.eor", "ordre multilingue europ\u00e9en" },
             { "IO", "territoire britannique de l\u2019oc\u00e9an Indien" },
+            { "bbj", "ghomala" },
             { "Deva", "devanagari" },
+            { "stq", "frison de Saterland" },
             { "Hrkt", "syllabaires japonais" },
             { "njo", "ao naga" },
             { "RE", "la R\u00e9union" },
             { "sdh", "kurde m\u00e9ridional" },
             { "AX", "\u00eeles d\u2019\u00c5land" },
             { "pfl", "palatin" },
-            { "az", "azerba\u00efdjanais" },
             { "sly", "selayar" },
-            { "sma", "same du Sud" },
-            { "BN", "Brunei" },
             { "dgr", "tlicho" },
-            { "smj", "same de Lule" },
-            { "se", "same du Nord" },
+            { "sus", "sosso" },
             { "BV", "\u00eele Bouvet" },
-            { "sg", "sango" },
             { "ken", "kenyang" },
+            { "smn", "sami d\u2019Inari" },
             { "sei", "seri" },
             { "BY", "B\u00e9larus" },
-            { "sms", "same skolt" },
-            { "type.nu.taml", "chiffres tamouls traditionnels" },
-            { "kj", "kuanyama" },
+            { "KG", "Kirghizistan" },
+            { "kg", "kongo" },
+            { "ListKeyTypePattern", "{0} : {1}" },
             { "CC", "\u00eeles Cocos (Keeling)" },
             { "kl", "kalaallisut" },
             { "SX", "Saint-Martin (Pays-Bas)" },
             { "type.co.reformed", "Ordre de tri r\u00e9form\u00e9" },
             { "CK", "\u00eeles Cook" },
-            { "Orya", metaValue_or },
+            { "ks", "kashmiri" },
+            { "asa", "asou" },
             { "cr", "cri" },
+            { "145", "Asie occidentale" },
             { "CX", "\u00eele Christmas" },
-            { "TK", "Tokelau" },
             { "TL", "Timor-Leste" },
             { "type.co.searchjl", "Rechercher par consonne initiale en hangeul" },
-            { "nds", "bas allemand" },
+            { "ebu", "embou" },
             { "goh", "vieux haut-allemand" },
+            { "LR", "Lib\u00e9ria" },
             { "esu", "yupik central" },
-            { "rup", "aroumain" },
+            { "lu", "luba-katanga" },
+            { "nmg", "kwasio" },
             { "sga", "vieil irlandais" },
+            { "030", "Asie orientale" },
             { "151", "Europe orientale" },
+            { "154", "Europe septentrionale" },
             { "sw_CD", "swahili congolais" },
             { "type.nu.mong", "Chiffres mongols" },
-            { "bez", "bena" },
+            { "155", "Europe occidentale" },
+            { "039", "Europe m\u00e9ridionale" },
+            { "type.d0.hwidth", "demi-chasse" },
             { "UM", "\u00eeles mineures \u00e9loign\u00e9es des \u00c9tats-Unis" },
             { "liv", "live" },
             { "MF", "Saint-Martin (France)" },
@@ -143,6 +146,7 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
             { "MM", "Myanmar" },
             { "MP", "Mariannes du Nord" },
             { "chg", "tchagatay" },
+            { "mr", "marathe" },
             { "pau", "palauan" },
             { "tzm", "tamazight" },
             { "type.m0.ungegn", "GENUNG" },
@@ -150,8 +154,6 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
             { "VA", "Cit\u00e9 du Vatican" },
             { "nds_NL", "bas saxon" },
             { "pro", "ancien occitan" },
-            { "VC", "Saint-Vincent-et-les Grenadines" },
-            { "ilo", "ilocano" },
             { "Hanb", "hanb" },
             { "VG", "\u00eeles Vierges britanniques" },
             { "VI", "\u00eeles Vierges am\u00e9ricaines" },
@@ -160,25 +162,27 @@ public class LocaleNames_fr_CA extends OpenListResourceBundle {
             { "tru", "turoyo" },
             { "ady", "adygu\u00e9" },
             { "NF", "\u00eele Norfolk" },
-            { "vo", "volap\u00fck" },
+            { "VN", "Vietnam" },
+            { "NG", "Nig\u00e9ria" },
             { "nwc", "newari classique" },
+            { "Hans", "id\u00e9ogrammes han simplifi\u00e9s" },
+            { "Hant", "id\u00e9ogrammes han traditionnels" },
+            { "quc", "k\u2019iche\u2019" },
             { "FK", "\u00eeles Malouines" },
-            { "FM", "Micron\u00e9sie" },
             { "FO", "\u00eeles F\u00e9ro\u00e9" },
             { "type.m0.bgn", "BGN (commission de toponymie des \u00c9tats-Unis)" },
             { "ang", "vieil anglais" },
-            { "or", metaValue_or },
-            { "sat", "santali" },
             { "type.ca.ethiopic-amete-alem", "Calendrier \u00e9thiopien de l\u2019An de gr\u00e2ce" },
-            { "kbd", "kabarde" },
             { "gu", metaValue_gu },
             { "pdc", "allemand de Pennsylvanie" },
             { "Gujr", metaValue_gu },
             { "byn", "bilen" },
             { "ckb", "kurde central" },
+            { "ksb", "chambala" },
             { "ewo", "ewondo" },
             { "PN", "\u00eeles Pitcairn" },
             { "byv", "medumba" },
+            { "type.d0.fwidth", "pleine chasse" },
         };
         return data;
     }

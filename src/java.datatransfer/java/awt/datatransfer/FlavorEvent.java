@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,7 @@
 
 package java.awt.datatransfer;
 
+import java.io.Serial;
 import java.util.EventObject;
 
 /**
@@ -37,6 +38,10 @@ import java.util.EventObject;
  */
 public class FlavorEvent extends EventObject {
 
+    /**
+     * Use serialVersionUID from JDK 1.5 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = -5842664112252414548L;
 
     /**

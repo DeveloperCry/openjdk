@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,12 +66,28 @@ import sun.util.resources.TimeZoneNamesBundle;
 public class TimeZoneNames_fur extends TimeZoneNamesBundle {
     @Override
     protected final Object[][] getContents() {
+        final String[] GMT = new String[] {
+               "",
+               "GMT",
+               "",
+               "",
+               "",
+               "",
+            };
         final String[] Moscow = new String[] {
                "Ore standard di Mosche",
                "",
                "Ore estive di Mosche",
                "",
                "Ore di Mosche",
+               "",
+            };
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
                "",
             };
         final String[] Europe_Central = new String[] {
@@ -86,14 +98,6 @@ public class TimeZoneNames_fur extends TimeZoneNamesBundle {
                "Ore de Europe centr\u00e2l",
                "CET",
             };
-        final String[] Europe_Western = new String[] {
-               "Ore standard de Europe ocident\u00e2l",
-               "WET",
-               "Ore estive de Europe ocident\u00e2l",
-               "WEST",
-               "Ore de Europe ocident\u00e2l",
-               "WET",
-            };
         final String[] Europe_Eastern = new String[] {
                "Ore standard de Europe orient\u00e2l",
                "EET",
@@ -102,211 +106,122 @@ public class TimeZoneNames_fur extends TimeZoneNamesBundle {
                "Ore de Europe orient\u00e2l",
                "EET",
             };
-        final String[] GMT = new String[] {
-               "",
-               "GMT",
-               "",
-               "",
-               "",
-               "",
+        final String[] Europe_Western = new String[] {
+               "Ore standard de Europe ocident\u00e2l",
+               "WET",
+               "Ore estive de Europe ocident\u00e2l",
+               "WEST",
+               "Ore de Europe ocident\u00e2l",
+               "WET",
             };
         final Object[][] data = new Object[][] {
             { "Europe/Paris", Europe_Central },
             { "GMT", GMT },
-            { "Africa/Casablanca", Europe_Western },
             { "Europe/Bucharest", Europe_Eastern },
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ljubljana", Europe_Central },
-            { "timezone.excity.Europe/San_Marino", "San Marin" },
-            { "timezone.excity.Europe/Ljubljana", "Lubiane" },
-            { "Europe/Berlin", Europe_Central },
-            { "Africa/El_Aaiun", Europe_Western },
-            { "Africa/Ouagadougou", GMT },
-            { "Africa/Cairo", Europe_Eastern },
-            { "Europe/Moscow", Moscow },
-            { "timezone.excity.Europe/Luxembourg", "Lussemburc" },
-            { "Europe/Chisinau", Europe_Eastern },
-            { "Europe/London", GMT },
-            { "Africa/Dakar", GMT },
-            { "Europe/Stockholm", Europe_Central },
-            { "Europe/Budapest", Europe_Central },
-            { "Europe/San_Marino", Europe_Central },
-            { "Europe/Zagreb", Europe_Central },
-            { "Europe/Helsinki", Europe_Eastern },
-            { "Asia/Beirut", Europe_Eastern },
-            { "Europe/Brussels", Europe_Central },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.Europe/Lisbon", "Lisbone" },
-            { "Europe/Warsaw", Europe_Central },
-            { "Europe/Tallinn", Europe_Eastern },
-            { "Europe/Jersey", GMT },
-            { "Asia/Damascus", Europe_Eastern },
-            { "Europe/Luxembourg", Europe_Central },
-            { "Europe/Belgrade", Europe_Central },
-            { "timezone.excity.Europe/Vienna", "Viene" },
-            { "Africa/Bissau", GMT },
-            { "Atlantic/Reykjavik", GMT },
-            { "Europe/Zaporozhye", Europe_Eastern },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Atlantic/St_Helena", GMT },
-            { "Africa/Ceuta", Europe_Central },
-            { "Europe/Guernsey", GMT },
-            { "Africa/Timbuktu", GMT },
-            { "Atlantic/Madeira", Europe_Western },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Uzhgorod", Europe_Eastern },
-            { "Europe/Simferopol", Moscow },
-            { "Europe/Sofia", Europe_Eastern },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Nouakchott", GMT },
-            { "Europe/Isle_of_Man", GMT },
-            { "Europe/Prague", Europe_Central },
-            { "Antarctica/Troll", GMT },
-            { "Africa/Tunis", Europe_Central },
-            { "timezone.excity.Atlantic/Azores", "Azoris" },
-            { "Europe/Andorra", Europe_Central },
-            { "Africa/Tripoli", Europe_Eastern },
-            { "Africa/Banjul", GMT },
-            { "timezone.excity.America/Sao_Paulo", "San Pauli dal Bras\u00eel" },
-            { "Asia/Nicosia", Europe_Eastern },
-            { "Europe/Kaliningrad", Europe_Eastern },
-            { "timezone.excity.America/New_York", "Gnove York" },
-            { "Europe/Lisbon", Europe_Western },
-            { "timezone.excity.Atlantic/Canary", "Canariis" },
-            { "Europe/Oslo", Europe_Central },
-            { "Asia/Gaza", Europe_Eastern },
-            { "timezone.excity.Etc/Unknown", "Cit\u00e2t no cognossude" },
-            { "Atlantic/Faeroe", Europe_Western },
+            { "UTC", EMPTY_ZONE },
+            { "ART", Europe_Eastern },
+            { "ECT", Europe_Central },
             { "Etc/GMT", GMT },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Atlantic/Canary", Europe_Western },
-            { "Europe/Bratislava", Europe_Central },
-            { "Africa/Lome", GMT },
-            { "Africa/Freetown", GMT },
-            { "Europe/Copenhagen", Europe_Central },
-            { "Europe/Malta", Europe_Central },
-            { "timezone.excity.Europe/Malta", "Malte" },
-            { "Europe/Vienna", Europe_Central },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Busingen", Europe_Central },
-            { "Europe/Podgorica", Europe_Central },
-            { "Europe/Skopje", Europe_Central },
-            { "timezone.excity.Europe/Moscow", "Mosche" },
-            { "Europe/Sarajevo", Europe_Central },
-            { "Europe/Tirane", Europe_Central },
-            { "Arctic/Longyearbyen", Europe_Central },
-            { "Europe/Minsk", Moscow },
-            { "Europe/Riga", Europe_Eastern },
-            { "Europe/Kiev", Europe_Eastern },
-            { "Asia/Hebron", Europe_Eastern },
-            { "Europe/Rome", Europe_Central },
-            { "Europe/Belfast", GMT },
-            { "Africa/Abidjan", GMT },
-            { "Africa/Monrovia", GMT },
-            { "Atlantic/Jan_Mayen", Europe_Central },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Algiers", Europe_Central },
-            { "Europe/Mariehamn", Europe_Eastern },
-            { "Europe/Zurich", Europe_Central },
-            { "Europe/Vilnius", Europe_Eastern },
-            { "timezone.excity.Europe/Prague", "Praghe" },
-            { "Africa/Bamako", GMT },
-            { "Europe/Amsterdam", Europe_Central },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Vatican", Europe_Central },
-            { "Africa/Accra", GMT },
-            { "Europe/Gibraltar", Europe_Central },
-            { "Africa/Conakry", GMT },
+            { "Asia/Gaza", Europe_Eastern },
             { "Asia/Amman", Europe_Eastern },
-            { "Europe/Madrid", Europe_Central },
-            { "Europe/Dublin", GMT },
+            { "Africa/Lome", GMT },
+            { "Asia/Beirut", Europe_Eastern },
+            { "Asia/Hebron", Europe_Eastern },
+            { "Europe/Kiev", Europe_Eastern },
+            { "Europe/Oslo", Europe_Central },
+            { "Europe/Riga", Europe_Eastern },
+            { "Europe/Rome", Europe_Central },
+            { "Africa/Accra", GMT },
+            { "Africa/Cairo", Europe_Eastern },
+            { "Africa/Ceuta", Europe_Central },
+            { "Africa/Dakar", GMT },
+            { "Africa/Tunis", Europe_Central },
+            { "Asia/Nicosia", Europe_Eastern },
+            { "Europe/Malta", Europe_Central },
+            { "Europe/Minsk", Moscow },
+            { "Europe/Sofia", Europe_Eastern },
             { "Europe/Vaduz", Europe_Central },
-            { "Europe/Volgograd", Moscow },
+            { "Africa/Bamako", GMT },
+            { "Africa/Banjul", GMT },
+            { "Africa/Bissau", GMT },
+            { "Asia/Damascus", Europe_Eastern },
             { "Europe/Athens", Europe_Eastern },
-            { "timezone.excity.Europe/Belgrade", "Belgr\u00e2t" },
-            { "America/Danmarkshavn", GMT },
+            { "Europe/Berlin", Europe_Central },
+            { "Europe/Dublin", GMT },
+            { "Europe/Jersey", GMT },
+            { "Europe/Lisbon", Europe_Western },
+            { "Europe/London", GMT },
+            { "Europe/Madrid", Europe_Central },
             { "Europe/Monaco", Europe_Central },
+            { "Europe/Moscow", Moscow },
+            { "Europe/Prague", Europe_Central },
+            { "Europe/Skopje", Europe_Central },
+            { "Europe/Tirane", Europe_Central },
+            { "Europe/Vienna", Europe_Central },
+            { "Europe/Warsaw", Europe_Central },
+            { "Europe/Zagreb", Europe_Central },
+            { "Europe/Zurich", Europe_Central },
+            { "Africa/Abidjan", GMT },
+            { "Africa/Algiers", Europe_Central },
+            { "Africa/Conakry", GMT },
+            { "Africa/Tripoli", Europe_Eastern },
+            { "Europe/Andorra", Europe_Central },
+            { "Europe/Belfast", GMT },
+            { "Europe/Tallinn", Europe_Eastern },
+            { "Europe/Vatican", Europe_Central },
+            { "Europe/Vilnius", Europe_Eastern },
+            { "Africa/Freetown", GMT },
+            { "Africa/Monrovia", GMT },
+            { "Africa/Sao_Tome", GMT },
+            { "Africa/Timbuktu", GMT },
+            { "Atlantic/Canary", Europe_Western },
+            { "Atlantic/Faeroe", Europe_Western },
+            { "Europe/Belgrade", Europe_Central },
+            { "Europe/Brussels", Europe_Central },
+            { "Europe/Budapest", Europe_Central },
+            { "Europe/Busingen", Europe_Central },
+            { "Europe/Chisinau", Europe_Eastern },
+            { "Europe/Guernsey", GMT },
+            { "Europe/Helsinki", Europe_Eastern },
+            { "Europe/Sarajevo", Europe_Central },
+            { "Europe/Uzhgorod", Europe_Eastern },
+            { "Antarctica/Troll", GMT },
+            { "Atlantic/Madeira", Europe_Western },
+            { "Europe/Amsterdam", Europe_Central },
+            { "Europe/Gibraltar", Europe_Central },
+            { "Europe/Ljubljana", Europe_Central },
+            { "Europe/Mariehamn", Europe_Eastern },
+            { "Europe/Podgorica", Europe_Central },
+            { "Europe/Stockholm", Europe_Central },
+            { "Africa/Nouakchott", GMT },
+            { "Europe/Bratislava", Europe_Central },
+            { "Europe/Copenhagen", Europe_Central },
+            { "Europe/Luxembourg", Europe_Central },
+            { "Europe/San_Marino", Europe_Central },
+            { "Europe/Simferopol", Moscow },
+            { "Europe/Zaporozhye", Europe_Eastern },
+            { "Africa/Ouagadougou", GMT },
+            { "Atlantic/Jan_Mayen", Europe_Central },
+            { "Atlantic/Reykjavik", GMT },
+            { "Atlantic/St_Helena", GMT },
+            { "Europe/Isle_of_Man", GMT },
+            { "Europe/Kaliningrad", Europe_Eastern },
+            { "Arctic/Longyearbyen", Europe_Central },
+            { "America/Danmarkshavn", GMT },
+            { "timezone.excity.Etc/Unknown", "Cit\u00e2t no cognossude" },
+            { "timezone.excity.Europe/Malta", "Malte" },
+            { "timezone.excity.Europe/Lisbon", "Lisbone" },
+            { "timezone.excity.Europe/Moscow", "Mosche" },
+            { "timezone.excity.Europe/Prague", "Praghe" },
+            { "timezone.excity.Europe/Vienna", "Viene" },
+            { "timezone.excity.Atlantic/Azores", "Azoris" },
+            { "timezone.excity.Atlantic/Canary", "Canariis" },
+            { "timezone.excity.Europe/Belgrade", "Belgr\u00e2t" },
+            { "timezone.excity.America/New_York", "Gnove York" },
+            { "timezone.excity.Europe/Ljubljana", "Lubiane" },
+            { "timezone.excity.America/Sao_Paulo", "San Pauli dal Bras\u00eel" },
+            { "timezone.excity.Europe/Luxembourg", "Lussemburc" },
+            { "timezone.excity.Europe/San_Marino", "San Marin" },
         };
         return data;
     }

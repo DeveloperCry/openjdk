@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,4 +40,9 @@ class PlainProxyConnection extends PlainHttpConnection {
 
     @Override
     public boolean isProxied() { return true; }
+
+    @Override
+    InetSocketAddress proxy() {
+        return address;
+    }
 }

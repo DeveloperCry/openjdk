@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,9 +22,11 @@
  *
  *
  */
+
 package java.awt;
 
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 
 /**
  * <b>NOTE:</b> The {@code Event} class is obsolete and is
@@ -455,6 +457,7 @@ public class Event implements java.io.Serializable {
      * @serial
      * @see java.awt.AWTEvent#getSource()
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     public Object target;
 
     /**
@@ -537,6 +540,7 @@ public class Event implements java.io.Serializable {
      *
      * @serial
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     public Object arg;
 
     /**
@@ -550,7 +554,7 @@ public class Event implements java.io.Serializable {
     public Event evt;
 
     /* table for mapping old Event action keys to KeyEvent virtual keys. */
-    private static final int actionKeyCodes[][] = {
+    private static final int[][] actionKeyCodes = {
     /*    virtual key              action key   */
         { KeyEvent.VK_HOME,        Event.HOME         },
         { KeyEvent.VK_END,         Event.END          },
@@ -590,9 +594,10 @@ public class Event implements java.io.Serializable {
      */
     private boolean consumed = false;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = 5488922509400504703L;
 
     static {

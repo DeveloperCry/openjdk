@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -77,6 +73,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "mwl", "mirandisht" },
             { "Zsym", "me simbole" },
             { "Zsye", "emoji" },
+            { "ccp", "\u00e7akmaisht" },
             { "tem", "timneisht" },
             { "teo", "tesoisht" },
             { "rap", "rapanuisht" },
@@ -88,7 +85,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "nl_BE", "flamandisht" },
             { "AF", "Afganistan" },
             { "AG", "Antigua e Barbuda" },
-            { "type.ca.ethiopic", "kalendar etiopik" },
+            { "type.ca.ethiopic", "kalendar etiopian" },
             { "AI", "Anguil\u00eb" },
             { "AL", "Shqip\u00ebri" },
             { "AM", "Armeni" },
@@ -113,14 +110,14 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "BH", "Bahrejn" },
             { "BI", "Burundi" },
             { "BJ", "Benin" },
-            { "BL", "Sh\u00ebn-Bartolome" },
-            { "BM", "Bermud\u00eb" },
+            { "BL", "Sen-Bartelemi" },
+            { "BM", "Bermude" },
             { "myv", "erzjaisht" },
             { "BN", "Brunei" },
             { "BO", "Bolivi" },
             { "BQ", "Karaibet holandeze" },
             { "BR", "Brazil" },
-            { "BS", "Bahamas" },
+            { "BS", "Bahama" },
             { "xog", "sogisht" },
             { "BT", "Butan" },
             { "BV", "Ishulli Bove" },
@@ -146,7 +143,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "CR", "Kosta-Rik\u00eb" },
             { "CU", "Kub\u00eb" },
             { "CV", "Kepi i Gjelb\u00ebr" },
-            { "CW", "Kura\u00e7ao" },
+            { "CW", "Kurasao" },
             { "CX", "Ishulli i Krishtlindjes" },
             { "CY", "Qipro" },
             { "CZ", "\u00c7eki" },
@@ -183,9 +180,9 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "ER", "Eritre" },
             { "ES", "Spanj\u00eb" },
             { "ET", "Etiopi" },
-            { "EU", "Bashkimi Europian" },
+            { "EU", "Bashkimi Evropian" },
             { "type.ca.gregorian", "kalendar gregorian" },
-            { "EZ", "Eurozon\u00eb" },
+            { "EZ", "Zona euro" },
             { "chy", "\u00e7ejenisht" },
             { "type.nu.gujr", "shifra guxharati" },
             { "ady", "adigisht" },
@@ -196,21 +193,20 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "FO", "Ishujt Faroe" },
             { "Taml", "tamil" },
             { "FR", "Franc\u00eb" },
-            { "root", "rutisht" },
             { "type.ca.indian", "Kalendari Komb\u00ebtar Indian" },
             { "GA", "Gabon" },
             { "GB", "Mbret\u00ebria e Bashkuar" },
             { "pcm", "pixhinishte nigeriane" },
-            { "GD", "Grenad\u00eb" },
+            { "GD", "Granad\u00eb" },
             { "GE", "Gjeorgji" },
             { "GF", "Guajana Franceze" },
             { "GG", "Gernsej" },
             { "GH", "Gan\u00eb" },
             { "GI", "Gjibraltar" },
-            { "GL", "Grenland\u00eb" },
-            { "GM", "Gambia" },
+            { "GL", "Gr\u00ebnland\u00eb" },
+            { "GM", "Gambi" },
             { "GN", "Guine" },
-            { "GP", "Guadalupe" },
+            { "GP", "Guadelup\u00eb" },
             { "GQ", "Guineja Ekuatoriale" },
             { "GR", "Greqi" },
             { "GS", "Xhorxha Jugore dhe Ishujt Sendui\u00e7\u00eb t\u00eb Jugut" },
@@ -261,15 +257,15 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "type.ca.buddhist", "kalendar budist" },
             { "KE", "Kenia" },
             { "419", "Amerika Latine" },
-            { "KG", "Kirgistan" },
+            { "KG", "Kirgizi" },
             { "KH", "Kamboxhia" },
             { "KI", "Kiribati" },
             { "KM", "Komore" },
             { "KN", "Sh\u00ebn-Kits dhe Nevis" },
             { "Knda", "kanad" },
             { "fr_CA", "fr\u00ebngjishte kanadeze" },
-            { "KP", "Koreja e Veriut" },
-            { "KR", "Koreja e Jugut" },
+            { "KP", "Kore e Veriut" },
+            { "KR", "Kore e Jugut" },
             { "fr_CH", "fr\u00ebngjishte zvicerane" },
             { "KW", "Kuvajt" },
             { "tpi", "pisinishte toku" },
@@ -298,14 +294,14 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "MC", "Monako" },
             { "MD", "Moldavi" },
             { "ME", "Mal i Zi" },
-            { "MF", "Sh\u00ebn-Martin" },
+            { "MF", "Sen-Marten" },
             { "MG", "Madagaskar" },
             { "MH", "Ishujt Marshall" },
             { "ale", "aleutisht" },
             { "Thai", "tajlandez" },
-            { "MK", "Maqedoni" },
+            { "MK", "Maqedonia e Veriut" },
             { "ML", "Mali" },
-            { "MM", "Mianmar (Burma)" },
+            { "MM", "Mianmar (Burm\u00eb)" },
             { "MN", "Mongoli" },
             { "new", "neuarisht" },
             { "MO", "RPA i Makaos" },
@@ -326,7 +322,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "202", "Afrika Subsahariane" },
             { "type.ca.hebrew", "kalendar hebraik" },
             { "type.co.dictionary", "Radhitje fjalori" },
-            { "NC", "Kaledonia e Re" },
+            { "NC", "Kaledoni e Re" },
             { "NE", "Niger" },
             { "NF", "Ishulli Norfolk" },
             { "NG", "Nigeri" },
@@ -379,7 +375,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "RS", "Serbi" },
             { "RU", "Rusi" },
             { "RW", "Ruand\u00eb" },
-            { "SA", "Arabia Saudite" },
+            { "SA", "Arabi Saudite" },
             { "SB", "Ishujt Solomon" },
             { "twq", "tasavakisht" },
             { "011", "Afrika Per\u00ebndimore" },
@@ -390,7 +386,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "014", "Afrika Lindore" },
             { "015", "Afrika Veriore" },
             { "SG", "Singapor" },
-            { "SH", "Sh\u00ebn-Helen\u00eb" },
+            { "SH", "Sh\u00ebn-Elen\u00eb" },
             { "type.lb.strict", "stil i gjer\u00ebsis\u00eb s\u00eb rreshtave - i ngushtuar" },
             { "017", "Afrika e Mesme" },
             { "SI", "Slloveni" },
@@ -398,7 +394,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "SJ", "Svalbard e Jan-Majen" },
             { "019", "Amerik\u00eb" },
             { "SK", "Sllovaki" },
-            { "SL", "Siera-Leone" },
+            { "SL", "Sierra-Leone" },
             { "SM", "San-Marino" },
             { "SN", "Senegal" },
             { "SO", "Somali" },
@@ -411,7 +407,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "SV", "Salvador" },
             { "SX", "Sint-Marten" },
             { "SY", "Siri" },
-            { "SZ", "Svaziland\u00eb" },
+            { "SZ", "Esvatini" },
             { "TA", "Tristan-da-Kuna" },
             { "asa", "asuisht" },
             { "type.ms.ussystem", "sistem amerikan i nj\u00ebsive mat\u00ebse" },
@@ -447,11 +443,11 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "035", "Azia Juglindore" },
             { "UG", "Ugand\u00eb" },
             { "type.co.pinyin", "Radhitje pinini" },
-            { "039", "Europa Jugore" },
+            { "039", "Evropa Jugore" },
             { "Sinh", "sinhal" },
             { "UM", "Ishujt Periferik\u00eb t\u00eb SHBA-s\u00eb" },
-            { "UN", "Kombet e Bashkuara" },
-            { "US", "Shtetet e Bashkuara t\u00eb Amerik\u00ebs" },
+            { "UN", "Organizata e Kombeve t\u00eb Bashkuara" },
+            { "US", "SHBA" },
             { "haw", "havaisht" },
             { "type.co.gb2312han", "Radhitje e kinezishtes s\u00eb thjesht\u00ebsuar - GB2312" },
             { "UY", "Uruguai" },
@@ -477,7 +473,9 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "wae", "ualserisht" },
             { "WS", "Samoa" },
             { "wal", "ulajtaisht" },
+            { "XA", "Pseudo-thekse" },
             { "war", "uarajisht" },
+            { "XB", "Pseudo-bidi" },
             { "awa", "auadhisht" },
             { "061", "Polinezia" },
             { "XK", "Kosov\u00eb" },
@@ -493,7 +491,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "Deva", "devanagar" },
             { "type.nu.geor", "numra gjeorgjian\u00eb" },
             { "Hira", "hiragan" },
-            { "ZM", "Zambia" },
+            { "ZM", "Zambi" },
             { "ZW", "Zimbabve" },
             { "ZZ", "I panjohur" },
             { "type.ms.metric", "sistem metrik" },
@@ -572,7 +570,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "cu", "sllavishte kishtare" },
             { "cv", "\u00e7uvashisht" },
             { "cy", "uellsisht" },
-            { "type.nu.ethi", "numra etiop\u00eb" },
+            { "type.nu.ethi", "numra etiopian\u00eb" },
             { "da", "danisht" },
             { "pt_PT", "portugalishte evropiane" },
             { "de", "gjermanisht" },
@@ -810,11 +808,11 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "tt", "tatarisht" },
             { "tw", "tuisht" },
             { "ty", "tahitisht" },
-            { "150", "Europ\u00eb" },
-            { "151", "Europa Lindore" },
-            { "154", "Europa Veriore" },
+            { "150", "Evrop\u00eb" },
+            { "151", "Evropa Lindore" },
+            { "154", "Evropa Veriore" },
             { "dzg", "dazagauisht" },
-            { "155", "Europa Per\u00ebndimore" },
+            { "155", "Evropa Per\u00ebndimore" },
             { "ug", "ujgurisht" },
             { "Kore", "korean" },
             { "Zyyy", "i zakonsh\u00ebm" },
@@ -826,7 +824,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "kha", "kasisht" },
             { "nds_NL", "gjermanishte saksone e vendeve t\u00eb ul\u00ebta" },
             { "ve", "vendaisht" },
-            { "type.ca.roc", "kalendar minguoje (kinez)" },
+            { "type.ca.roc", "kalendar minguo" },
             { "vi", "vietnamisht" },
             { "khq", "kojra\u00e7inisht" },
             { "key.hc", "Cikli orar (12 - 24)" },
@@ -867,8 +865,10 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "gez", "gizisht" },
             { "type.co.reformed", "Radhitje e reformuar" },
             { "ebu", "embuisht" },
+            { "zh_Hans", "kinezishte e thjeshtuar" },
             { "koi", "komi-parmjakisht" },
             { "kok", "konkanisht" },
+            { "zh_Hant", "kinezishte tradicionale" },
             { "kpe", "kpeleisht" },
             { "type.nu.khmr", "shifra kmere" },
             { "ilo", "ilokoisht" },
@@ -881,6 +881,7 @@ public class LocaleNames_sq extends OpenListResourceBundle {
             { "type.nu.tamldec", "shifra tamile" },
             { "krc", "kara\u00e7aj-balkarisht" },
             { "inh", "ingushisht" },
+            { "fa_AF", "darisht" },
             { "krl", "karelianisht" },
             { "efi", "efikisht" },
             { "key.nu", "Numrat/shifrat" },

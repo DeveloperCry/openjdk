@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -202,6 +198,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -219,6 +216,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -231,6 +229,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "aed", "EAE-dirham" },
             { "afa", "afg\u00e1n afghani (1927\u20132002)" },
             { "afn", "afg\u00e1n afghani" },
+            { "alk", "alb\u00e1n lek (1946\u20131965)" },
             { "all", "alb\u00e1n lek" },
             { "amd", "\u00f6rm\u00e9ny dram" },
             { "ang", "holland antill\u00e1ki forint" },
@@ -248,13 +247,16 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "azn", "azerbajdzs\u00e1ni manat" },
             { "bad", "Bosznia-hercegovinai d\u00edn\u00e1r (1992\u20131994)" },
             { "bam", "bosznia-hercegovinai konvertibilis m\u00e1rka" },
+            { "ban", "bosznia-hercegovinai \u00faj d\u00edn\u00e1r (1994\u20131997)" },
             { "bbd", "barbadosi doll\u00e1r" },
             { "bdt", "bangladesi taka" },
             { "bec", "Belga frank (konvertibilis)" },
             { "bef", "Belga frank" },
             { "bel", "Belga frank (p\u00e9nz\u00fcgyi)" },
             { "bgl", "Bolg\u00e1r kem\u00e9ny leva" },
+            { "bgm", "bolg\u00e1r szocialista leva" },
             { "bgn", "bolg\u00e1r \u00faj leva" },
+            { "bgo", "bolg\u00e1r leva (1879\u20131952)" },
             { "bhd", "bahreini din\u00e1r" },
             { "bif", "burundi frank" },
             { "bmd", "bermudai doll\u00e1r" },
@@ -273,7 +275,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "buk", "Burmai kyat" },
             { "bwp", "botswanai pula" },
             { "byb", "Feh\u00e9rorosz \u00faj rubel (1994\u20131999)" },
-            { "byn", "feh\u00e9rorosz rubel" },
+            { "byn", "belarusz rubel" },
             { "byr", "feh\u00e9rorosz rubel (2000\u20132016)" },
             { "bzd", "belize-i doll\u00e1r" },
             { "cad", "kanadai doll\u00e1r" },
@@ -292,7 +294,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "csk", "Csehszlov\u00e1k kem\u00e9ny korona" },
             { "cuc", "kubai konvertibilis peso" },
             { "cup", "kubai peso" },
-            { "cve", "Cape Verde-i escudo" },
+            { "cve", "Z\u00f6ld-foki escudo" },
             { "cyp", "Ciprusi font" },
             { "czk", "cseh korona" },
             { "ddm", "Kelet-N\u00e9met m\u00e1rka" },
@@ -315,7 +317,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "fjd", "fidzsi doll\u00e1r" },
             { "fkp", "falkland-szigeteki font" },
             { "frf", "Francia frank" },
-            { "gbp", "brit font" },
+            { "gbp", "angol font" },
             { "gek", "Gr\u00faz kupon larit" },
             { "gel", "gr\u00faz lari" },
             { "ghc", "Gh\u00e1nai cedi (1979\u20132007)" },
@@ -372,10 +374,12 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "lyd", "l\u00edbiai d\u00edn\u00e1r" },
             { "mad", "marokk\u00f3i dirham" },
             { "maf", "Marokk\u00f3i frank" },
+            { "mdc", "mold\u00e1v kupon" },
             { "mdl", "moldov\u00e1n lei" },
             { "mga", "madagaszk\u00e1ri ariary" },
             { "mgf", "Madagaszk\u00e1ri frank" },
             { "mkd", "macedon d\u00edn\u00e1r" },
+            { "mkn", "maced\u00f3n d\u00e9n\u00e1r (1992\u20131993)" },
             { "mlf", "Mali frank" },
             { "mmk", "mianmari kyat" },
             { "mnt", "mong\u00f3liai tugrik" },
@@ -443,7 +447,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "sur", "Szovjet rubel" },
             { "svc", "Salvadori col\u00f3n" },
             { "syp", "sz\u00edriai font" },
-            { "szl", "szv\u00e1zif\u00f6ldi lilangeni" },
+            { "szl", "szv\u00e1zi lilangeni" },
             { "thb", "thai baht" },
             { "tjr", "T\u00e1dzsikiszt\u00e1ni rubel" },
             { "tjs", "t\u00e1dzsikiszt\u00e1ni somoni" },
@@ -469,8 +473,10 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "uyu", "uruguay-i peso" },
             { "uzs", "\u00fczbegiszt\u00e1ni szum" },
             { "veb", "Venezuelai bolivar (1871\u20132008)" },
-            { "vef", "venezuelai bolivar" },
-            { "vnd", "vietnami dong" },
+            { "vef", "venezuelai bolivar (2008\u20132018)" },
+            { "ves", "venezuelai bolivar" },
+            { "vnd", "vietn\u00e1mi dong" },
+            { "vnn", "vietn\u00e1mi dong (1978\u20131985)" },
             { "vuv", "vanuatui vatu" },
             { "wst", "nyugat-szamoai tala" },
             { "xaf", "CFA frank BEAC" },
@@ -497,6 +503,7 @@ public class CurrencyNames_hu extends OpenListResourceBundle {
             { "yud", "Jugoszl\u00e1v kem\u00e9ny d\u00edn\u00e1r" },
             { "yum", "Jugoszl\u00e1v \u00faj d\u00edn\u00e1r" },
             { "yun", "Jugoszl\u00e1v konvertibilis d\u00edn\u00e1r" },
+            { "yur", "jugoszl\u00e1v reform\u00e1lt din\u00e1r (1992\u20131993)" },
             { "zal", "D\u00e9l-afrikai rand (p\u00e9nz\u00fcgyi)" },
             { "zar", "d\u00e9l-afrikai rand" },
             { "zmk", "Zambiai kwacha (1968\u20132012)" },

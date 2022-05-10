@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -100,4 +100,8 @@ final class KeyCache {
         map.put(key, p11Key);
     }
 
+    synchronized void clear() {
+        strongCache.clear();
+        cacheReference = null;
+    }
 }

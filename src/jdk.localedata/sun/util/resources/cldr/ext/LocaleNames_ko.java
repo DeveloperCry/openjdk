@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,7 +67,6 @@ public class LocaleNames_ko extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final String metaValue_GH = "\uac00\ub098";
-        final String metaValue_ko = "\ud55c\uad6d\uc5b4";
         final String metaValue_key_nu = "\uc22b\uc790";
         final Object[][] data = new Object[][] {
             { "ksh", "\ucf5c\ub85c\uadf8\ub2c8\uc548\uc5b4" },
@@ -83,6 +78,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "type.nu.lanatham", "\ud0c0\uc774 \ud0d0\ud0d0 \uc22b\uc790" },
             { "Tagb", "\ud0c0\uadf8\ubc18\uc640 \ubb38\uc790" },
             { "Zsye", "\uc774\ubaa8\ud2f0\ucf58" },
+            { "ccp", "\ucc28\ud06c\ub9c8\uc5b4" },
             { "egy", "\uace0\ub300 \uc774\uc9d1\ud2b8\uc5b4" },
             { "raj", "\ub77c\uc790\uc2a4\ud0c4\uc5b4" },
             { "Phag", "\ud30c\uc2a4\ud30c \ubb38\uc790" },
@@ -160,7 +156,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "CM", "\uce74\uba54\ub8ec" },
             { "CN", "\uc911\uad6d" },
             { "CO", "\ucf5c\ub86c\ube44\uc544" },
-            { "CP", "\ud074\ub9bd\ud37c\ud2bc \uc12c" },
+            { "CP", "\ud074\ub9ac\ud37c\ud134\uc12c" },
             { "CR", "\ucf54\uc2a4\ud0c0\ub9ac\uce74" },
             { "CU", "\ucfe0\ubc14" },
             { "CV", "\uce74\ubcf4\ubca0\ub974\ub370" },
@@ -237,7 +233,6 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "Kpel", "\ud06c\ud3a0\ub808 \ubb38\uc790" },
             { "tkl", "\ud1a0\ucf08\ub77c\uc6b0\uc81c\ub3c4\uc5b4" },
             { "grb", "\uac8c\ub974\ubcf4\uc5b4" },
-            { "root", "\uc5b4\uadfc" },
             { "type.ca.indian", "\uc778\ub3c4\ub825" },
             { "grc", "\uace0\ub300 \uadf8\ub9ac\uc2a4\uc5b4" },
             { "GA", "\uac00\ubd09" },
@@ -296,7 +291,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "Tang", "\ud0d5\uad6c\ud2b8 \ubb38\uc790" },
             { "IL", "\uc774\uc2a4\ub77c\uc5d8" },
             { "Nbat", "\ub098\ubc14\ud14c\uc544 \ubb38\uc790" },
-            { "IM", "\ub9e8 \uc12c" },
+            { "IM", "\ub9e8\uc12c" },
             { "IN", "\uc778\ub3c4" },
             { "type.co.eor", "\uc720\ub7fd \uc815\ub82c \uaddc\uce59" },
             { "IO", "\uc601\uad6d\ub839 \uc778\ub3c4\uc591 \uc2dd\ubbfc\uc9c0" },
@@ -382,7 +377,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "ale", "\uc54c\ub958\ud2b8\uc5b4" },
             { "Thai", "\ud0c0\uc774 \ubb38\uc790" },
             { "type.nu.vaii", "\ubc14\uc774 \uc22b\uc790" },
-            { "MK", "\ub9c8\ucf00\ub3c4\ub2c8\uc544" },
+            { "MK", "\ubd81\ub9c8\ucf00\ub3c4\ub2c8\uc544" },
             { "ML", "\ub9d0\ub9ac" },
             { "MM", "\ubbf8\uc580\ub9c8" },
             { "MN", "\ubabd\uace8" },
@@ -445,7 +440,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "PL", "\ud3f4\ub780\ub4dc" },
             { "ewo", "\uc774\uc6d0\ub3c4\uc5b4" },
             { "PM", "\uc0dd\ud53c\uc5d0\ub974 \ubbf8\ud074\ub871" },
-            { "PN", "\ud54f\ucf00\uc5b8 \uc12c" },
+            { "PN", "\ud54f\ucf00\uc5b8 \uc81c\ub3c4" },
             { "PR", "\ud478\uc5d0\ub974\ud1a0\ub9ac\ucf54" },
             { "PS", "\ud314\ub808\uc2a4\ud0c0\uc778 \uc9c0\uad6c" },
             { "Bali", "\ubc1c\ub9ac \ubb38\uc790" },
@@ -466,8 +461,8 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "001", "\uc138\uacc4" },
             { "002", "\uc544\ud504\ub9ac\uce74" },
             { "003", "\ubd81\uc544\uba54\ub9ac\uce74" },
-            { "RE", "\ub9ac\uc720\ub2c8\uc628" },
-            { "005", "\ub0a8\uc544\uba54\ub9ac\uce74(\ub0a8\ubbf8)" },
+            { "RE", "\ub808\uc704\ub2c8\uc639" },
+            { "005", "\ub0a8\uc544\uba54\ub9ac\uce74" },
             { "lfn", "\ub9c1\uad6c\uc544 \ud504\ub791\uce74 \ub178\ubc14" },
             { "jbo", "\ub85c\ubc18\uc5b4" },
             { "pnt", "\ud3f0\ud2f1\uc5b4" },
@@ -510,7 +505,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "SM", "\uc0b0\ub9c8\ub9ac\ub178" },
             { "SN", "\uc138\ub124\uac08" },
             { "SO", "\uc18c\ub9d0\ub9ac\uc544" },
-            { "arn", "\ub9c8\ud478\ub454\uad70\uc5b4" },
+            { "arn", "\ub9c8\ud478\ub465\uad70\uc5b4" },
             { "arp", "\uc544\ub77c\ud30c\ud638\uc5b4" },
             { "type.nu.taml", "\uace0\ub300 \ud0c0\ubc00 \uc22b\uc790" },
             { "SR", "\uc218\ub9ac\ub0a8" },
@@ -518,11 +513,11 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "ST", "\uc0c1\ud22c\uba54 \ud504\ub9b0\uc2dc\ud398" },
             { "arq", "\uc54c\uc81c\ub9ac \uc544\ub78d\uc5b4" },
             { "SV", "\uc5d8\uc0b4\ubc14\ub3c4\ub974" },
-            { "ars", "\ub098\uc988\ub514 \uc544\ub78d\uc5b4" },
+            { "ars", "\uc544\ub78d\uc5b4(\ub098\uc988\ub514)" },
             { "SX", "\uc2e0\ud2b8\ub9c8\ub974\ud134" },
             { "SY", "\uc2dc\ub9ac\uc544" },
             { "yao", "\uc57c\uc624\uc871\uc5b4" },
-            { "SZ", "\uc2a4\uc640\uc9c8\ub780\ub4dc" },
+            { "SZ", "\uc5d0\uc2a4\uc640\ud2f0\ub2c8" },
             { "arw", "\uc544\ub77c\uc640\ud06c\uc5b4" },
             { "arz", "\uc774\uc9d1\ud2b8 \uc544\ub78d\uc5b4" },
             { "ary", "\ubaa8\ub85c\ucf54 \uc544\ub78d\uc5b4" },
@@ -534,6 +529,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "TC", "\ud130\ud06c\uc2a4 \ucf00\uc774\ucee4\uc2a4 \uc81c\ub3c4" },
             { "yav", "\uc591\ubcf8\uc5b4" },
             { "TD", "\ucc28\ub4dc" },
+            { "Qaag", "\uc800\uc9c0 \ubb38\uc790" },
             { "TF", "\ud504\ub791\uc2a4 \ub0a8\ubd80 \uc9c0\ubc29" },
             { "TG", "\ud1a0\uace0" },
             { "TH", "\ud0dc\uad6d" },
@@ -571,7 +567,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "039", "\ub0a8\uc720\ub7fd" },
             { "Sinh", "\uc2e0\ud560\ub77c \ubb38\uc790" },
             { "UM", "\ubbf8\uad6d\ub839 \ud574\uc678 \uc81c\ub3c4" },
-            { "UN", "\uc720\uc5d4" },
+            { "UN", "\uad6d\uc81c\uc5f0\ud569" },
             { "US", "\ubbf8\uad6d" },
             { "haw", "\ud558\uc640\uc774\uc5b4" },
             { "type.co.gb2312han", "\uc911\uad6d\uc5b4 \uac04\uccb4 \uc815\ub82c \uc21c\uc11c (GB2312)" },
@@ -608,7 +604,9 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "type.nu.mtei", "\uba54\uc774\ud14c\uc774 \ub9c8\uc609 \uc22b\uc790" },
             { "wal", "\uc6d4\ub77c\uc774\ud0c0\uc5b4" },
             { "was", "\uc640\uc1fc\uc5b4" },
+            { "XA", "\uc720\uc0ac \uc5b5\uc591" },
             { "war", "\uc640\ub77c\uc774\uc5b4" },
+            { "XB", "\uc720\uc0ac \uc591\ubc29\ud5a5" },
             { "awa", "\uc544\uc640\ud788\uc5b4" },
             { "061", "\ud3f4\ub9ac\ub124\uc2dc\uc544" },
             { "XK", "\ucf54\uc18c\ubcf4" },
@@ -702,11 +700,13 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "bas", "\ubc14\uc0ac\uc5b4" },
             { "bax", "\ubc14\ubb38\uc5b4" },
             { "jrb", "\uc720\ub300-\uc544\ub77c\ube44\uc544\uc5b4" },
+            { "es_ES", "\uc2a4\ud398\uc778\uc5b4(\uc720\ub7fd)" },
             { "nzi", "\ub290\uc9c0\ub9c8\uc5b4" },
             { "sco", "\uc2a4\ucf54\ud2c0\ub79c\ub4dc\uc5b4" },
             { "scn", "\uc2dc\uce60\ub9ac\uc544\uc5b4" },
             { "aa", "\uc544\ud30c\ub974\uc5b4" },
             { "ab", "\uc555\uce74\uc988\uc5b4" },
+            { "Aran", "\ub098\uc2a4\ud0c8\ub9ac\ud06c\uccb4" },
             { "ae", "\uc544\ubca0\uc2a4\ud0c0\uc5b4" },
             { "af", "\uc544\ud504\ub9ac\uce78\uc2a4\uc5b4" },
             { "ak", "\uc544\uce78\uc5b4" },
@@ -759,6 +759,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "type.nu.ethi", "\uc5d0\ud2f0\uc624\ud53c\uc544 \uc22b\uc790" },
             { "Yiii", "\uc774 \ubb38\uc790" },
             { "da", "\ub374\ub9c8\ud06c\uc5b4" },
+            { "pt_PT", "\ud3ec\ub974\ud22c\uac08\uc5b4(\uc720\ub7fd)" },
             { "de", "\ub3c5\uc77c\uc5b4" },
             { "type.cf.standard", "\ud45c\uc900 \ud1b5\ud654 \ud615\uc2dd" },
             { "bej", "\ubca0\uc790\uc5b4" },
@@ -885,7 +886,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "kl", "\uadf8\ub9b0\ub780\ub4dc\uc5b4" },
             { "km", "\ud06c\uba54\ub974\uc5b4" },
             { "kn", "\uce78\ub098\ub2e4\uc5b4" },
-            { "ko", metaValue_ko },
+            { "ko", "\ud55c\uad6d\uc5b4" },
             { "kr", "\uce78\ub204\ub9ac\uc5b4" },
             { "ks", "\uce74\uc288\ubbf8\ub974\uc5b4" },
             { "Cirt", "\ud0a4\ub974\uc4f0" },
@@ -1010,7 +1011,6 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "kea", "\ud06c\ub9ac\uc62c\uc5b4" },
             { "mic", "\ubbf8\ud06c\ub9e5\uc5b4" },
             { "suk", "\uc218\ucfe0\ub9c8\uc5b4" },
-            { "en_AU", "\uc601\uc5b4(\ud638\uc8fc)" },
             { "Dupl", "\ub4c0\ud50c\ub85c\uc774\uc548 \ubb38\uc790" },
             { "sa", "\uc0b0\uc2a4\ud06c\ub9ac\ud2b8\uc5b4" },
             { "sc", "\uc0ac\ub974\ub514\ub2c8\uc544\uc5b4" },
@@ -1020,7 +1020,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "min", "\ubbf8\ub0ad\uce74\ubc14\uc6b0\uc5b4" },
             { "sg", "\uc0b0\uace0\uc5b4" },
             { "sh", "\uc138\ub974\ube44\uc544-\ud06c\ub85c\uc544\ud2f0\uc544\uc5b4" },
-            { "si", "\uc2a4\ub9ac\ub791\uce74\uc5b4" },
+            { "si", "\uc2f1\ud560\ub77c\uc5b4" },
             { "sux", "\uc218\uba54\ub974\uc5b4" },
             { "sk", "\uc2ac\ub85c\ubc14\ud0a4\uc544\uc5b4" },
             { "sl", "\uc2ac\ub85c\ubca0\ub2c8\uc544\uc5b4" },
@@ -1073,8 +1073,8 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "dzg", "\ub2e4\uc7a5\uac00\uc5b4" },
             { "155", "\uc11c\uc720\ub7fd" },
             { "ug", "\uc704\uad6c\ub974\uc5b4" },
-            { "Kore", metaValue_ko },
             { "Ital", "\uace0\ub300 \uc774\ud0c8\ub9ac\uc544 \ubb38\uc790" },
+            { "Kore", "\ud55c\uad6d \ubb38\uc790" },
             { "Zyyy", "\uc77c\ubc18 \ubb38\uc790" },
             { "uk", "\uc6b0\ud06c\ub77c\uc774\ub098\uc5b4" },
             { "type.ca.coptic", "\ucf65\ud2b8\ub825" },
@@ -1199,6 +1199,7 @@ public class LocaleNames_ko extends OpenListResourceBundle {
             { "type.nu.tamldec", "\ud0c0\ubc00 \uc22b\uc790" },
             { "krc", "\uce74\ub77c\ucc60\uc774-\ubc1c\uce74\ub974\uc5b4" },
             { "inh", "\uc778\uadc0\uc2dc\uc5b4" },
+            { "fa_AF", "\ub2e4\ub9ac\uc5b4" },
             { "krl", "\uce74\ub810\ub9ac\uc57c\uc5b4" },
             { "efi", "\uc774\ud53d\uc5b4" },
             { "key.nu", metaValue_key_nu },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,7 +64,7 @@ public class OutlineTextRenderer implements TextPipe {
     public static final int THRESHHOLD = 100;
 
     public void drawChars(SunGraphics2D g2d,
-                          char data[], int offset, int length,
+                          char[] data, int offset, int length,
                           int x, int y) {
 
         String s = new String(data, offset, length);

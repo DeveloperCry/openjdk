@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,15 +34,20 @@ import jdk.javadoc.internal.doclets.toolkit.util.Utils;
  *  If you write code that depends on this, you do so at your own risk.
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
- *
- * @author Bhavesh Patel
  */
 public enum HtmlAttr {
     ALT,
+    ARIA_CONTROLS("aria-controls"),
+    ARIA_EXPANDED("aria-expanded"),
+    ARIA_LABEL("aria-label"),
+    ARIA_LABELLEDBY("aria-labelledby"),
+    ARIA_ORIENTATION("aria-orientation"),
+    ARIA_SELECTED("aria-selected"),
     CLASS,
     CLEAR,
     COLS,
     CONTENT,
+    DATA_COPIED("data-copied"), // custom HTML5 data attribute
     DISABLED,
     FOR,
     HREF,
@@ -51,7 +56,9 @@ public enum HtmlAttr {
     LANG,
     NAME,
     ONCLICK,
+    ONKEYDOWN,
     ONLOAD,
+    PLACEHOLDER,
     REL,
     ROLE,
     ROWS,
@@ -59,6 +66,7 @@ public enum HtmlAttr {
     SCROLLING,
     SRC,
     SUMMARY,
+    TABINDEX,
     TARGET,
     TITLE,
     TYPE,

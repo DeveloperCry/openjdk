@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -79,7 +79,7 @@ public final class DebugSettings {
     static final String PROP_FILE = "properties";
 
     /* default property settings */
-    private static final String DEFAULT_PROPS[] = {
+    private static final String[] DEFAULT_PROPS = {
         "awtdebug.assert=true",
         "awtdebug.trace=false",
         "awtdebug.on=true",
@@ -108,6 +108,7 @@ public final class DebugSettings {
      * Load debug properties from file, then override
      * with any command line specified properties
      */
+    @SuppressWarnings("removal")
     private synchronized void loadProperties() {
         // setup initial properties
         java.security.AccessController.doPrivileged(
@@ -133,7 +134,7 @@ public final class DebugSettings {
             String value = props.getProperty(key, "");
             pout.println(key + " = " + value);
         }
-        return new String(bout.toByteArray());
+        return bout.toString();
     }
 
     /*
@@ -162,7 +163,7 @@ public final class DebugSettings {
 
         // check if the user specified a particular settings file
         propPath = System.getProperty(PREFIX + "." + PROP_FILE, "");
-        if (propPath.equals("")) {
+        if (propPath.isEmpty()) {
         // otherwise get it from the user's home directory
             propPath = System.getProperty("user.home", "") +
                         File.separator +

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 import javax.lang.model.element.Modifier;
 
+@SuppressWarnings("serial") // Types of instance fields are not Serializable
 public class PubMethod implements Serializable {
 
     private static final long serialVersionUID = -7813050194553446243L;

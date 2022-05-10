@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,14 +48,15 @@ public class IBM290 extends Charset implements HistoricallyNamedCharset
     }
 
     public CharsetDecoder newDecoder() {
-        return new SingleByte.Decoder(this, b2c, false);
+        return new SingleByte.Decoder(this, Holder.b2c, false, false);
     }
 
     public CharsetEncoder newEncoder() {
-        return new SingleByte.Encoder(this, c2b, c2bIndex, false);
+        return new SingleByte.Encoder(this, Holder.c2b, Holder.c2bIndex, false);
     }
 
-    private final static String b2cTable = 
+    private static class Holder {
+        private static final String b2cTable = 
         "\u005D\uFF71\uFF72\uFF73\uFF74\uFF75\uFF76\uFF77" +      // 0x80 - 0x87
         "\uFF78\uFF79\uFF7A\u0071\uFF7B\uFF7C\uFF7D\uFF7E" +      // 0x88 - 0x8f
         "\uFF7F\uFF80\uFF81\uFF82\uFF83\uFF84\uFF85\uFF86" +      // 0x90 - 0x97
@@ -90,14 +91,14 @@ public class IBM290 extends Charset implements HistoricallyNamedCharset
         "\u0070\u0060\u003A\u0023\u0040\'\u003D\"" ;      // 0x78 - 0x7f
 
 
-    private final static char[] b2c = b2cTable.toCharArray();
-    private final static char[] c2b = new char[0x300];
-    private final static char[] c2bIndex = new char[0x100];
+        private static final char[] b2c = b2cTable.toCharArray();
+        private static final char[] c2b = new char[0x300];
+        private static final char[] c2bIndex = new char[0x100];
 
-    static {
-        char[] b2cMap = b2c;
-        char[] c2bNR = null;
-        // non-roundtrip c2b only entries
+        static {
+            char[] b2cMap = b2c;
+            char[] c2bNR = null;
+            // non-roundtrip c2b only entries
         c2bNR = new char[188];
         c2bNR[0] = 0x4b; c2bNR[1] = 0xff0e;
         c2bNR[2] = 0x4c; c2bNR[3] = 0xff1c;
@@ -194,6 +195,7 @@ public class IBM290 extends Charset implements HistoricallyNamedCharset
         c2bNR[184] = 0xf8; c2bNR[185] = 0xff18;
         c2bNR[186] = 0xf9; c2bNR[187] = 0xff19;
 
-        SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+            SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+        }
     }
 }

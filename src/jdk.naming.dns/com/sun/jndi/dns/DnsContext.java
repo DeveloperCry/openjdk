@@ -537,8 +537,8 @@ public class DnsContext extends ComponentDirContext {
         int prefixLast = prefixC.size() - 1;
 
         // Let toolkit do the work at namespace boundaries.
-        if (nameC.isEmpty() || nameC.get(0).equals("") ||
-                prefixC.isEmpty() || prefixC.get(prefixLast).equals("")) {
+        if (nameC.isEmpty() || nameC.get(0).isEmpty() ||
+                prefixC.isEmpty() || prefixC.get(prefixLast).isEmpty()) {
             return super.composeName(nameC, prefixC);
         }
 
@@ -687,7 +687,7 @@ public class DnsContext extends ComponentDirContext {
     private static CT fromAttrId(String attrId)
             throws InvalidAttributeIdentifierException {
 
-        if (attrId.equals("")) {
+        if (attrId.isEmpty()) {
             throw new InvalidAttributeIdentifierException(
                     "Attribute ID cannot be empty");
         }
@@ -989,7 +989,7 @@ abstract class BaseNameClassPairEnumeration<T> implements NamingEnumeration<T> {
         return hasMore();
     }
 
-    abstract public T next() throws NamingException;
+    public abstract T next() throws NamingException;
 
     public final T nextElement() {
         try {

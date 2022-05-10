@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -134,6 +134,11 @@ public final class StrikeCache {
     static native void getGlyphCacheDescription(long[] infoArray);
 
     static {
+        initStatic();
+    }
+
+    @SuppressWarnings("removal")
+    private static void initStatic() {
 
         long[] nativeInfo = new long[13];
         getGlyphCacheDescription(nativeInfo);

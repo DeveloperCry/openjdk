@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -57,7 +57,7 @@ public class SpeculativeTrapData<K, M> extends ProfileData {
     return methodData.getMethodAtAddress(addressAt(speculativeTrapMethod));
   }
 
-  static public int methodIndex() {
+  public static int methodIndex() {
     return speculativeTrapMethod;
   }
 

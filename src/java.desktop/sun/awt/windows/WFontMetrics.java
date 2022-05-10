@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,7 @@ final class WFontMetrics extends FontMetrics {
     /**
      * The widths of the first 256 characters.
      */
-    int widths[];
+    int[] widths;
 
     /**
      * The standard ascent of the font.  This is the logical height
@@ -181,13 +181,13 @@ final class WFontMetrics extends FontMetrics {
      * Return the width of the specified char[] in this Font.
      */
     @Override
-    public native int charsWidth(char data[], int off, int len);
+    public native int charsWidth(char[] data, int off, int len);
 
     /**
      * Return the width of the specified byte[] in this Font.
      */
     @Override
-    public native int bytesWidth(byte data[], int off, int len);
+    public native int bytesWidth(byte[] data, int off, int len);
 
     /**
      * Get the widths of the first 256 characters in the font.

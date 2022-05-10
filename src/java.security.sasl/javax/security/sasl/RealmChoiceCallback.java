@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,14 +28,14 @@ package javax.security.sasl;
 import javax.security.auth.callback.ChoiceCallback;
 
 /**
-  * This callback is used by {@code SaslClient} and {@code SaslServer}
-  * to obtain a realm given a list of realm choices.
-  *
-  * @since 1.5
-  *
-  * @author Rosanna Lee
-  * @author Rob Weltman
-  */
+ * This callback is used by {@code SaslClient} and {@code SaslServer}
+ * to obtain a realm given a list of realm choices.
+ *
+ * @since 1.5
+ *
+ * @author Rosanna Lee
+ * @author Rob Weltman
+ */
 public class RealmChoiceCallback extends ChoiceCallback {
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,6 +54,7 @@ public class Binding extends NameClassPair {
      * @see #getObject
      * @see #setObject
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Object boundObj;
 
     /**

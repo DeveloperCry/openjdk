@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,6 +49,7 @@ import javax.lang.model.element.Modifier;
 import com.sun.tools.javac.util.Assert;
 import com.sun.tools.javac.util.StringUtils;
 
+@SuppressWarnings("serial") // Types of instance fields are not Serializable
 public class PubApi implements Serializable {
 
     private static final long serialVersionUID = 5926627347801986850L;
@@ -59,6 +60,7 @@ public class PubApi implements Serializable {
     public final Map<String, PubType> types = new HashMap<>();
     public final Map<String, PubVar> variables = new HashMap<>();
     public final Map<String, PubMethod> methods = new HashMap<>();
+    public final Map<String, PubVar> recordComponents = new HashMap<>();
 
     public PubApi() {
     }
@@ -182,15 +184,15 @@ public class PubApi implements Serializable {
     // Used for line-by-line parsing
     private PubType lastInsertedType = null;
 
-    private final static String MODIFIERS = Stream.of(Modifier.values())
+    private static final String MODIFIERS = Stream.of(Modifier.values())
                                                   .map(Modifier::name)
                                                   .map(StringUtils::toLowerCase)
                                                   .collect(Collectors.joining("|", "(", ")"));
 
-    private final static Pattern MOD_PATTERN = Pattern.compile("(" + MODIFIERS + " )*");
-    private final static Pattern METHOD_PATTERN = Pattern.compile("(?<ret>.+?) (?<name>\\S+)\\((?<params>.*)\\)( throws (?<throws>.*))?");
-    private final static Pattern VAR_PATTERN = Pattern.compile("VAR (?<modifiers>("+MODIFIERS+" )*)(?<type>.+?) (?<id>\\S+)( = (?<val>.*))?");
-    private final static Pattern TYPE_PATTERN = Pattern.compile("TYPE (?<modifiers>("+MODIFIERS+" )*)(?<fullyQualified>\\S+)");
+    private static final Pattern MOD_PATTERN = Pattern.compile("(" + MODIFIERS + " )*");
+    private static final Pattern METHOD_PATTERN = Pattern.compile("(?<ret>.+?) (?<name>\\S+)\\((?<params>.*)\\)( throws (?<throws>.*))?");
+    private static final Pattern VAR_PATTERN = Pattern.compile("VAR (?<modifiers>("+MODIFIERS+" )*)(?<type>.+?) (?<id>\\S+)( = (?<val>.*))?");
+    private static final Pattern TYPE_PATTERN = Pattern.compile("TYPE (?<modifiers>("+MODIFIERS+" )*)(?<fullyQualified>\\S+)");
 
     public void appendItem(String l) {
         try {
@@ -271,11 +273,11 @@ public class PubApi implements Serializable {
     private static List<TypeDesc> parseTypeDescs(List<String> strs) {
         return strs.stream()
                    .map(TypeDesc::decodeString)
-                   .collect(Collectors.toList());
+                   .toList();
     }
 
     private static List<PubApiTypeParam> parseTypeParams(List<String> strs) {
-        return strs.stream().map(PubApi::parseTypeParam).collect(Collectors.toList());
+        return strs.stream().map(PubApi::parseTypeParam).toList();
     }
 
     // Parse a type parameter string. Example input:

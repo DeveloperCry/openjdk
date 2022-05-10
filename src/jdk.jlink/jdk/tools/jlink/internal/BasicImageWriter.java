@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,8 +35,6 @@ import jdk.internal.jimage.ImageStringsReader;
 
 public final class BasicImageWriter {
     public static final String MODULES_IMAGE_NAME = "modules";
-
-    private final static int RETRY_LIMIT = 1000;
 
     private ByteOrder byteOrder;
     private ImageStringsWriter strings;

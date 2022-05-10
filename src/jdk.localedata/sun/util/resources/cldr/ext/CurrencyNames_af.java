@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -95,6 +91,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "BYN", "BYN" },
             { "BYR", "BYR" },
             { "BZD", "BZD" },
+            { "CAD", "CAD" },
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
@@ -144,6 +141,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "LKR", "LKR" },
             { "LRD", "LRD" },
             { "LTL", "LTL" },
+            { "LVL", "LVL" },
             { "LYD", "LYD" },
             { "MAD", "MAD" },
             { "MDL", "MDL" },
@@ -153,6 +151,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -189,6 +188,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "\u0e3f" },
@@ -201,15 +201,17 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "TZS", "TZS" },
             { "UAH", "UAH" },
             { "UGX", "UGX" },
+            { "USD", "USD" },
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
             { "ZAR", "R" },
             { "ZMW", "ZMW" },
-            { "aed", "Verenigde Arabiese Emirate dirham" },
+            { "aed", "Verenigde Arabiese Emirate-dirham" },
             { "afn", "Afgaanse afgani" },
             { "all", "Albanese lek" },
             { "amd", "Armeense dram" },
@@ -231,32 +233,32 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "brl", "Brasilliaanse reaal" },
             { "bsd", "Bahamiaanse dollar" },
             { "btn", "Bhoetanese ngoeltroem" },
-            { "bwp", "Botswana pula" },
-            { "byn", "Belo-Russiese roebel" },
+            { "bwp", "Botswana-pula" },
+            { "byn", "Belarusiese roebel" },
             { "byr", "Belo-Russiese roebel (2000\u20132016)" },
             { "bzd", "Beliziese dollar" },
             { "cad", "Kanadese dollar" },
             { "cdf", "Kongolese frank" },
             { "chf", "Switserse frank" },
             { "clp", "Chileense peso" },
-            { "cnh", "Chinese joean" },
-            { "cny", "Sjinese joean renminbi" },
+            { "cnh", "Chinese joean (buiteland)" },
+            { "cny", "Chinese joean" },
             { "cop", "Colombiaanse peso" },
             { "crc", "Costa Ricaanse col\u00f3n" },
             { "cuc", "Kubaanse omskakelbare peso" },
             { "cup", "Kubaanse peso" },
             { "cve", "Kaap Verdiese escudo" },
             { "czk", "Tsjeggiese kroon" },
-            { "djf", "Djiboeti frank" },
+            { "djf", "Djiboeti-frank" },
             { "dkk", "Deense kroon" },
             { "dop", "Dominikaanse peso" },
             { "dzd", "Algeriese dinar" },
             { "egp", "Egiptiese pond" },
             { "ern", "Eritrese nakfa" },
             { "etb", "Etiopiese birr" },
-            { "eur", "Euro" },
+            { "eur", "euro" },
             { "fjd", "Fidjiaanse dollar" },
-            { "fkp", "Falkland-eilande pond" },
+            { "fkp", "Falkland-eilandse pond" },
             { "gbp", "Britse pond" },
             { "gel", "Georgiese lari" },
             { "ghc", "Ghanese cedi (1979\u20132007)" },
@@ -267,7 +269,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "gns", "Guinese syli" },
             { "gtq", "Guatemalaanse quetzal" },
             { "gyd", "Guyanese dollar" },
-            { "hkd", "Hong Kong dollar" },
+            { "hkd", "Hongkongse dollar" },
             { "hnl", "Hondurese lempira" },
             { "hrk", "Kroatiese kuna" },
             { "htg", "Ha\u00eftiaanse gourde" },
@@ -289,10 +291,10 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "kpw", "Noord-Koreaanse won" },
             { "krw", "Suid-Koreaanse won" },
             { "kwd", "Koeweitse dinar" },
-            { "kyd", "Cayman-eilande dollar" },
+            { "kyd", "Cayman-eilandse dollar" },
             { "kzt", "Kazakse tenge" },
             { "lak", "Laosiaanse kip" },
-            { "lbp", "Lebanese pond" },
+            { "lbp", "Libanese pond" },
             { "lkr", "Sri Lankaanse roepee" },
             { "lrd", "Liberiese dollar" },
             { "lsl", "Lesotho loti" },
@@ -308,7 +310,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "mop", "Macaose pataca" },
             { "mro", "Mauritaniese ouguiya (1973\u20132017)" },
             { "mru", "Mauritaniese ouguiya" },
-            { "mur", "Mauritiaanse rupee" },
+            { "mur", "Mauritiaanse roepee" },
             { "mvr", "Malediviese rufia" },
             { "mwk", "Malawiese kwacha" },
             { "mxn", "Meksikaanse peso" },
@@ -320,7 +322,7 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "nio", "Nicaraguaanse c\u00f3rdoba" },
             { "nok", "Noorse kroon" },
             { "npr", "Nepalese roepee" },
-            { "nzd", "Nieu-Seeland dollar" },
+            { "nzd", "Nieu-Seelandse dollar" },
             { "omr", "Omaanse rial" },
             { "pab", "Panamese balboa" },
             { "pen", "Peruaanse sol" },
@@ -331,49 +333,50 @@ public class CurrencyNames_af extends OpenListResourceBundle {
             { "pyg", "Paraguaanse guarani" },
             { "qar", "Katarrese rial" },
             { "ron", "Roemeense leu" },
-            { "rsd", "Serbiese dinar" },
+            { "rsd", "Serwiese dinar" },
             { "rub", "Russiese roebel" },
-            { "rwf", "Rwandiese frank" },
+            { "rwf", "Rwandese frank" },
             { "sar", "Saoedi-Arabiese riyal" },
-            { "sbd", "Salomonseilande dollar" },
-            { "scr", "Seychellese rupee" },
+            { "sbd", "Salomonseilandse dollar" },
+            { "scr", "Seychellese roepee" },
             { "sdg", "Soedannese pond" },
             { "sdp", "Soedannese pond (1957\u20131998)" },
             { "sek", "Sweedse kroon" },
-            { "sgd", "Singapoer dollar" },
-            { "shp", "Sint Helena pond" },
+            { "sgd", "Singapoer-dollar" },
+            { "shp", "Sint Helena-pond" },
             { "sll", "Sierra Leoniese leone" },
             { "sos", "Somaliese sjieling" },
             { "srd", "Surinaamse dollar" },
             { "ssp", "Suid-Soedanese pond" },
             { "std", "S\u00e3o Tom\u00e9 en Pr\u00edncipe dobra (1977\u20132017)" },
-            { "stn", "S\u00e3o Tom\u00e9 en Pr\u00edncipe dobra" },
+            { "stn", "S\u00e3o Tom\u00e9 en Pr\u00edncipe-dobra" },
             { "syp", "Siriese pond" },
             { "szl", "Swazilandse lilangeni" },
             { "thb", "Thaise baht" },
-            { "tjs", "Tadjikse roebel" },
+            { "tjs", "Tadjikse somoni" },
             { "tmt", "Turkmeense manat" },
             { "tnd", "Tunisiese dinar" },
             { "top", "Tongaanse pa\u2019anga" },
             { "trl", "Turkse lier (1922\u20132005)" },
-            { "try", "Turkse lier" },
-            { "ttd", "Trinidad en Tobago dollar" },
+            { "try", "Turkse lira" },
+            { "ttd", "Trinidad en Tobago-dollar" },
             { "twd", "Nuwe Taiwanese dollar" },
             { "tzs", "Tanzaniese sjieling" },
             { "uah", "Oekra\u00efnse hriwna" },
             { "ugx", "Ugandese sjieling" },
-            { "usd", "Amerikaanse dollar" },
+            { "usd", "VSA-dollar" },
             { "uyu", "Uruguaanse peso" },
             { "uzs", "Oezbekiese som" },
             { "vef", "Venezolaanse bolivar" },
+            { "ves", "Venezolaanse bol\u00edvar" },
             { "vnd", "Vi\u00ebtnamese dong" },
             { "vuv", "Vanuatuse vatu" },
             { "wst", "Samoaanse tala" },
-            { "xaf", "CFA frank BEAC" },
-            { "xcd", "Oos-Karibbiese dollar" },
-            { "xof", "CFA frank BCEAO" },
+            { "xaf", "Sentraal Afrikaanse CFA-frank" },
+            { "xcd", "Oos-Karibiese dollar" },
+            { "xof", "Wes-Afrikaanse CFA-frank" },
             { "xpf", "CFP-frank" },
-            { "xxx", "Onbekende geldeenheid" },
+            { "xxx", "onbekende geldeenheid" },
             { "yer", "Jemenitiese rial" },
             { "zar", "Suid-Afrikaanse rand" },
             { "zmk", "Zambiese kwacha (1968\u20132012)" },

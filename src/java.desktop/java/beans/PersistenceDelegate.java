@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -86,6 +86,11 @@ package java.beans;
  */
 
 public abstract class PersistenceDelegate {
+
+    /**
+     * Constructs a {@code PersistenceDelegate}.
+     */
+    protected PersistenceDelegate() {}
 
     /**
      * The {@code writeObject} is a single entry point to the persistence

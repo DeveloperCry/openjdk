@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,6 @@
 
 package sun.security.ec;
 
-import sun.security.action.GetPropertyAction;
 import sun.security.ec.point.*;
 import sun.security.util.math.*;
 import sun.security.util.math.intpoly.*;
@@ -68,19 +67,7 @@ public class ECOperations {
         P521OrderField.MODULUS, new P521OrderField()
     );
 
-    private static boolean useLegacyECC;
-
-    static {
-        String sUseLegacyECC = GetPropertyAction.privilegedGetProperty(
-                "jdk.security.useLegacyECC", "false");
-        useLegacyECC = "".equals(sUseLegacyECC) || Boolean.parseBoolean(sUseLegacyECC);
-    }
-
     public static Optional<ECOperations> forParameters(ECParameterSpec params) {
-
-        if (useLegacyECC) {
-            return Optional.empty();
-        }
 
         EllipticCurve curve = params.getCurve();
         if (!(curve.getField() instanceof ECFieldFp)) {

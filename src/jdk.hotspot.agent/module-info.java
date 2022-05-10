@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,10 +30,7 @@
  * attach to a running Java Virtual Machine (JVM) or launch a postmortem
  * debugger to analyze the content of a core-dump from a crashed JVM.
  *
- * <dl style="font-family:'DejaVu Sans', Arial, Helvetica, sans serif">
- * <dt class="simpleTagLabel">Tool Guides:</dt>
- * <dd> {@extLink jhsdb_tool_reference jhsdb}</dd>
- * </dl>
+ * @toolGuide jhsdb
  *
  * @moduleGraph
  * @since 9

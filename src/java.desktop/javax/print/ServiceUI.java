@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,6 +64,11 @@ import sun.print.SunAlternateMedia;
  * packages.
  */
 public class ServiceUI {
+
+    /**
+     * Constructs a {@code ServiceUI}.
+     */
+    public ServiceUI() {}
 
     /**
      * Presents a dialog to the user for selecting a print service (printer). It

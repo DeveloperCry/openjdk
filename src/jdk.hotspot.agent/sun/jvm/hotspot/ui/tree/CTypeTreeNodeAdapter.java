@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,11 +36,11 @@ import sun.jvm.hotspot.utilities.CStringUtilities;
 /** Encapsulates an arbitrary type value in a tree handled by SimpleTreeModel */
 
 public class CTypeTreeNodeAdapter extends FieldTreeNodeAdapter {
-  final private Address addr;
-  final private Type type;
+  private final Address addr;
+  private final Type type;
   private CTypeFieldIdentifier[] fields = null;
 
-  private void collectFields(Type type, ArrayList list, boolean statics, boolean recurse) {
+  private void collectFields(Type type, ArrayList<CTypeFieldIdentifier> list, boolean statics, boolean recurse) {
     Type supertype = type.getSuperclass();
     if (supertype != null && recurse) {
       collectFields(supertype, list, statics, recurse);
@@ -57,16 +57,16 @@ public class CTypeTreeNodeAdapter extends FieldTreeNodeAdapter {
 
   private CTypeFieldIdentifier[] getFields() {
     if (fields == null) {
-      ArrayList f = new ArrayList();
+      ArrayList<CTypeFieldIdentifier> f = new ArrayList<>();
       collectFields(type, f, false, true);
-      fields = (CTypeFieldIdentifier[]) f.toArray(new CTypeFieldIdentifier[0]);
+      fields = f.toArray(new CTypeFieldIdentifier[0]);
     }
     return fields;
   }
 
   static class CTypeFieldIdentifier extends FieldIdentifier {
-    final private Field field;
-    final private Type holder;
+    private final Field field;
+    private final Type holder;
 
     CTypeFieldIdentifier(Type t, Field f) {
       holder = t;
@@ -97,20 +97,20 @@ public class CTypeTreeNodeAdapter extends FieldTreeNodeAdapter {
     super(null, false);
     type = t;
     addr = null;
-    ArrayList statics = new ArrayList();
+    ArrayList<CTypeFieldIdentifier> statics = new ArrayList<>();
     collectFields(type, statics, true, false);
-    fields = (CTypeFieldIdentifier[])statics.toArray(new CTypeFieldIdentifier[0]);
+    fields = statics.toArray(new CTypeFieldIdentifier[0]);
   }
 
   public CTypeTreeNodeAdapter(Iterator types) {
     super(null, false);
     addr = null;
     type = null;
-    ArrayList statics = new ArrayList();
+    ArrayList<CTypeFieldIdentifier> statics = new ArrayList<>();
     while (types.hasNext()) {
       collectFields((Type)types.next(), statics, true, false);
     }
-    fields = (CTypeFieldIdentifier[])statics.toArray(new CTypeFieldIdentifier[0]);
+    fields = statics.toArray(new CTypeFieldIdentifier[0]);
   }
 
   public int getChildCount() {

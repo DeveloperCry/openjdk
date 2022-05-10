@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,7 +47,7 @@ import sun.reflect.misc.ReflectUtil;
  * Static or transient fields cannot be serialized; an attempt to serialize
  * them will result in a <code>SerialException</code> object being thrown.
  *
- * <h3> Thread safety </h3>
+ * <h2> Thread safety </h2>
  *
  * A SerialJavaObject is not safe for use by multiple concurrent threads.  If a
  * SerialJavaObject is to be used by more than one thread then access to the
@@ -61,6 +61,7 @@ public class SerialJavaObject implements Serializable, Cloneable {
     /**
      * Placeholder for object to be serialized.
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Object obj;
 
 
@@ -135,6 +136,7 @@ public class SerialJavaObject implements Serializable, Cloneable {
     public Field[] getFields() throws SerialException {
         if (fields != null) {
             Class<?> c = this.obj.getClass();
+            @SuppressWarnings("removal")
             SecurityManager sm = System.getSecurityManager();
             if (sm != null) {
                 /*
@@ -233,6 +235,11 @@ public class SerialJavaObject implements Serializable, Cloneable {
     /**
      * readObject is called to restore the state of the {@code SerialJavaObject}
      * from a stream.
+     * @param s the {@code ObjectInputStream} to read from.
+     *
+     * @throws  ClassNotFoundException if the class of a serialized object
+     *          could not be found.
+     * @throws  IOException if an I/O error occurs.
      */
     private void readObject(ObjectInputStream s)
             throws IOException, ClassNotFoundException {
@@ -258,6 +265,8 @@ public class SerialJavaObject implements Serializable, Cloneable {
     /**
      * writeObject is called to save the state of the {@code SerialJavaObject}
      * to a stream.
+     * @param s the {@code ObjectOutputStream} to write to.
+     * @throws  IOException if an I/O error occurs.
      */
     private void writeObject(ObjectOutputStream s)
             throws IOException {

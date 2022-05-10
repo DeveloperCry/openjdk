@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,47 +66,47 @@ import java.util.ListResourceBundle;
 public class FormatData_en_IN extends ListResourceBundle {
     @Override
     protected final Object[][] getContents() {
+        final String[] metaValue_TimePatterns = new String[] {
+               "h:mm:ss a zzzz",
+               "h:mm:ss a z",
+               "h:mm:ss a",
+               "h:mm a",
+            };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
                "EEEE, d MMMM, y G",
                "d MMMM, y G",
                "d MMM, y G",
-               "GGGGG y-MM-dd",
+               "d/M/y/ GGGGG",
             };
         final String[] metaValue_buddhist_DatePatterns = new String[] {
                "EEEE, d MMMM, y GGGG",
                "d MMMM, y GGGG",
                "d MMM, y GGGG",
-               "G y-MM-dd",
+               "d/M/y/ G",
+            };
+        final String[] metaValue_short_CompactNumberPatterns = new String[] {
+               "",
+               "",
+               "",
+               "{one:0T other:0T}",
+               "{one:00T other:00T}",
+               "{one:0L other:0L}",
+               "{one:00L other:00L}",
+               "{one:0Cr other:0Cr}",
+               "{one:00Cr other:00Cr}",
+               "{one:000Cr other:000Cr}",
+               "{one:0TCr other:0TCr}",
+               "{one:00TCr other:00TCr}",
+               "{one:0LCr other:0LCr}",
+               "{one:00LCr other:00LCr}",
+               "{one:000LCr}",
             };
         final Object[][] data = new Object[][] {
-            { "japanese.DatePatterns",
-                new String[] {
-                    "EEEE, d MMMM, y GGGG",
-                    "d MMMM, y GGGG",
-                    "d MMM, y GGGG",
-                    "M/d/y G",
-                }
-            },
-            { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
-            { "java.time.japanese.DatePatterns",
-                new String[] {
-                    "EEEE, d MMMM, y G",
-                    "d MMMM, y G",
-                    "d MMM, y G",
-                    "M/d/y GGGGG",
-                }
-            },
-            { "field.dayperiod", "AM/PM" },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##,##0.###",
-                    "\u00a4\u00a0#,##,##0.00",
-                    "#,##,##0%",
-                }
-            },
-            { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
+            { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns", metaValue_short_CompactNumberPatterns },
+            { "TimePatterns", metaValue_TimePatterns },
             { "DatePatterns",
                 new String[] {
                     "EEEE, d MMMM, y",
@@ -124,7 +120,7 @@ public class FormatData_en_IN extends ListResourceBundle {
                     "EEEE d MMMM y G",
                     "d MMMM, y G",
                     "dd-MMM-y G",
-                    "GGGGG y-MM-dd",
+                    "d/M/y/ GGGGG",
                 }
             },
             { "islamic.DatePatterns",
@@ -132,9 +128,51 @@ public class FormatData_en_IN extends ListResourceBundle {
                     "EEEE d MMMM y GGGG",
                     "d MMMM, y GGGG",
                     "dd-MMM-y GGGG",
-                    "G y-MM-dd",
+                    "d/M/y/ G",
                 }
             },
+            { "islamic.TimePatterns", metaValue_TimePatterns },
+            { "DateTimePatterns",
+                new String[] {
+                    "{1} 'at' {0}",
+                    "{1} 'at' {0}",
+                    "{1}, {0}",
+                    "{1}, {0}",
+                }
+            },
+            { "latn.NumberElements",
+                new String[] {
+                    ".",
+                    ",",
+                    ";",
+                    "%",
+                    "0",
+                    "#",
+                    "-",
+                    "E",
+                    "\u2030",
+                    "\u221e",
+                    "NaN",
+                    "",
+                    "",
+                }
+            },
+            { "japanese.DatePatterns", metaValue_buddhist_DatePatterns },
+            { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
+            { "buddhist.TimePatterns", metaValue_TimePatterns },
+            { "japanese.TimePatterns", metaValue_TimePatterns },
+            { "long.CompactNumberPatterns", metaValue_short_CompactNumberPatterns },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##,##0.###",
+                    "\u00a4#,##,##0.00",
+                    "#,##,##0%",
+                    "\u00a4#,##0.00;(\u00a4#,##0.00)",
+                }
+            },
+            { "roc.TimePatterns", metaValue_TimePatterns },
+            { "field.dayperiod", "AM/PM" },
+            { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
         };
         return data;
     }

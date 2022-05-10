@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,7 +40,7 @@ import static jdk.jfr.internal.MetadataDescriptor.ELEMENT_TYPE;
 import java.io.DataInput;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +49,8 @@ import jdk.jfr.AnnotationElement;
 import jdk.jfr.SettingDescriptor;
 import jdk.jfr.ValueDescriptor;
 import jdk.jfr.internal.MetadataDescriptor.Element;
+import jdk.jfr.internal.consumer.RecordingInput;
+import jdk.jfr.internal.consumer.StringParser;
 
 /**
  * Parses metadata.
@@ -61,12 +63,14 @@ final class MetadataReader {
     private final MetadataDescriptor descriptor;
     private final Map<Long, Type> types = new HashMap<>();
 
-    public MetadataReader(DataInput input) throws IOException {
+    public MetadataReader(RecordingInput input) throws IOException {
         this.input = input;
         int size = input.readInt();
+        input.require(size, "Metadata string pool size %d exceeds available data" );
         this.pool = new ArrayList<>(size);
+        StringParser p = new StringParser(null, false);
         for (int i = 0; i < size; i++) {
-            this.pool.add(input.readUTF());
+            this.pool.add((String) p.parse(input));
         }
         descriptor = new MetadataDescriptor();
         Element root = createElement();
@@ -81,7 +85,7 @@ final class MetadataReader {
         descriptor.root = root;
         if (Logger.shouldLog(LogTag.JFR_SYSTEM_PARSER, LogLevel.TRACE)) {
              List<Type> ts = new ArrayList<>(types.values());
-             Collections.sort(ts, (x,y) -> x.getName().compareTo(y.getName()));
+             ts.sort(Comparator.comparing(Type::getName));
              for (Type t : ts) {
                  t.log("Found", LogTag.JFR_SYSTEM_PARSER, LogLevel.TRACE);
              }
@@ -121,8 +125,8 @@ final class MetadataReader {
             type.setAnnotations(aes);
 
             int index = 0;
-            if (type instanceof PlatformEventType) {
-                List<SettingDescriptor> settings = ((PlatformEventType) type).getAllSettings();
+            if (type instanceof PlatformEventType pType) {
+                List<SettingDescriptor> settings = pType.getAllSettings();
                 for (Element settingElement : typeElement.elements(ELEMENT_SETTING)) {
                     ArrayList<AnnotationElement> annotations = new ArrayList<>();
                     for (Element annotationElement : settingElement.elements(ELEMENT_ANNOTATION)) {
@@ -218,8 +222,8 @@ final class MetadataReader {
 
     private void buildEvenTypes() {
         for (Type type : descriptor.types) {
-            if (type instanceof PlatformEventType) {
-                descriptor.eventTypes.add(PrivateAccess.getInstance().newEventType((PlatformEventType) type));
+            if (type instanceof PlatformEventType pType) {
+                descriptor.eventTypes.add(PrivateAccess.getInstance().newEventType(pType));
             }
         }
     }
@@ -258,7 +262,7 @@ final class MetadataReader {
             if (Type.SUPER_TYPE_EVENT.equals(superType)) {
                 t = new PlatformEventType(typeName, id, false, false);
             } else {
-                t = new Type(typeName, superType, id, false, simpleType);
+                t = new Type(typeName, superType, id, simpleType);
             }
             types.put(id, t);
             descriptor.types.add(t);

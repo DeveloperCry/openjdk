@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,7 @@ package sun.font;
 
 import sun.java2d.SunGraphicsEnvironment;
 
+@SuppressWarnings("removal")
 public class FontManagerNativeLibrary {
     static {
         java.security.AccessController.doPrivileged(

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -109,6 +109,7 @@ public class FileLoginModule implements LoginModule {
     private static final String PASSWORD_FILE_NAME = "jmxremote.password";
 
     // Location of the default password file
+    @SuppressWarnings("removal")
     private static final String DEFAULT_PASSWORD_FILE_NAME =
         AccessController.doPrivileged(new GetPropertyAction("java.home")) +
         File.separatorChar + "conf" +
@@ -238,6 +239,7 @@ public class FileLoginModule implements LoginModule {
             } else {
                 final FilePermission fp
                         = new FilePermission(passwordFileDisplayName, "read");
+                @SuppressWarnings("removal")
                 AccessControlException ace = new AccessControlException(
                         "access denied " + fp.toString());
                 ace.initCause(e);

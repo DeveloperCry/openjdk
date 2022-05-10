@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2018, Red Hat, Inc. and/or its affiliates.
- *
+ * Copyright (c) 2018, Red Hat, Inc.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
  *
  *
  *

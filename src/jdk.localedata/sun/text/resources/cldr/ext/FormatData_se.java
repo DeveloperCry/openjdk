@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -151,10 +147,30 @@ public class FormatData_se extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "i\u0111itbeaivet",
                "eahketbeaivet",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_narrow_AmPmMarkers = new String[] {
                "i.b.",
                "e.b.",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_Eras = new String[] {
                "o.Kr.",
@@ -209,6 +225,7 @@ public class FormatData_se extends ListResourceBundle {
                     "ma\u014b\u014bel Kristtusa",
                 }
             },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "field.weekday", "v\u00e1hkkubeaivi" },
@@ -234,7 +251,9 @@ public class FormatData_se extends ListResourceBundle {
                     "\u00b710^",
                     "\u2030",
                     "\u221e",
-                    "\u00a4\u00a4\u00a4",
+                    "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -247,6 +266,7 @@ public class FormatData_se extends ListResourceBundle {
             { "field.dayperiod", "beaivi r\u00e1idod\u00e1ssi" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "buddhist.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "timezone.hourFormat", "+HH:mm;\u2212HH:mm" },
             { "roc.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
             { "japanese.DayNames", metaValue_DayNames },
@@ -258,17 +278,29 @@ public class FormatData_se extends ListResourceBundle {
             { "field.week", "v\u00e1hkku" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "#,##0.00\u00a0\u00a4",
-                    "#,##0\u00a0%",
-                }
-            },
             { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "roc.DayNarrows", metaValue_DayNarrows },
             { "roc.AmPmMarkers", metaValue_AmPmMarkers },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0\u00a0dt two:0\u00a0dt other:0\u00a0dt}",
+                    "{one:00\u00a0dt two:00\u00a0dt other:00\u00a0dt}",
+                    "{one:000\u00a0dt two:000\u00a0dt other:000\u00a0dt}",
+                    "{one:0\u00a0mn two:0\u00a0mn other:0\u00a0mn}",
+                    "{one:00\u00a0mn two:00\u00a0mn other:00\u00a0mn}",
+                    "{one:000\u00a0mn two:000\u00a0mn other:000\u00a0mn}",
+                    "{one:0\u00a0md two:0\u00a0md other:0\u00a0md}",
+                    "{one:00\u00a0md two:00\u00a0md other:00\u00a0md}",
+                    "{one:000\u00a0md two:000\u00a0md other:000\u00a0md}",
+                    "{one:0\u00a0bn two:0\u00a0bn other:0\u00a0bn}",
+                    "{one:00\u00a0bn two:00\u00a0bn other:00\u00a0bn}",
+                    "{one:000\u00a0bn two:000\u00a0bn other:000\u00a0bn}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "DatePatterns",
                 new String[] {
@@ -282,6 +314,7 @@ public class FormatData_se extends ListResourceBundle {
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1;two:n = 2" },
             { "field.hour", "diibmu" },
             { "japanese.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
@@ -289,6 +322,33 @@ public class FormatData_se extends ListResourceBundle {
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "timezone.regionFormat", "{0} \u00e1igi" },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0\u00a0%",
+                    "#,##0.00\u00a0\u00a4",
+                }
+            },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0' 'duh\u00e1t two:0' 'duh\u00e1hat other:0' 'duh\u00e1hat}",
+                    "{one:00' 'duh\u00e1t two:00' 'duh\u00e1hat other:00' 'duh\u00e1hat}",
+                    "{one:000' 'duh\u00e1t two:000' 'duh\u00e1hat other:000' 'duh\u00e1hat}",
+                    "{one:0' 'miljona two:0' 'miljonat other:0' 'miljonat}",
+                    "{one:00' 'miljona two:00' 'miljonat other:00' 'miljonat}",
+                    "{one:000' 'miljona two:000' 'miljonat other:000' 'miljonat}",
+                    "{one:0' 'miljardi two:0' 'miljardit other:0' 'miljardit}",
+                    "{one:00' 'miljardi two:00' 'miljardit other:00' 'miljardit}",
+                    "{one:000' 'miljardi two:000' 'miljardit other:000' 'miljardit}",
+                    "{one:0' 'biljona two:0' 'biljonat other:0' 'biljonat}",
+                    "{one:00' 'biljona two:00' 'biljonat other:00' 'biljonat}",
+                    "{one:000' 'biljona two:000' 'biljonat other:000' 'biljonat}",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "roc.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },

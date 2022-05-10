@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -31,7 +31,6 @@ import com.sun.org.apache.bcel.internal.Const;
  * represents an annotation that is represented in the class file but is not
  * provided to the JVM.
  *
- * @version $Id: RuntimeInvisibleAnnotations
  * @since 6.0
  */
 public class RuntimeInvisibleAnnotations extends Annotations

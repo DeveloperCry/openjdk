@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -133,11 +129,29 @@ public class FormatData_mgo extends ListResourceBundle {
                "A6",
                "A7",
             };
+        final String[] metaValue_long_Eras = new String[] {
+               "BCE",
+               "CE",
+            };
         final String[] metaValue_TimePatterns = new String[] {
                "HH:mm:ss zzzz",
                "HH:mm:ss z",
                "HH:mm:ss",
                "HH:mm",
+            };
+        final String[] metaValue_buddhist_AmPmMarkers = new String[] {
+               "AM",
+               "PM",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
                "EEEE, G y MMMM dd",
@@ -151,26 +165,26 @@ public class FormatData_mgo extends ListResourceBundle {
                "GGGG y MMM d",
                "G y-MM-dd",
             };
-        final String[] metaValue_roc_AmPmMarkers = new String[] {
-               "AM",
-               "PM",
-            };
         final String metaValue_calendarname_gregorian = "ng\u00e0b m\u0259\u0300kala";
         final Object[][] data = new Object[][] {
             { "MonthNames", metaValue_MonthNames },
             { "field.year", "fitu\u02bc" },
             { "roc.DayAbbreviations", metaValue_DayNames },
             { "standalone.DayNarrows", metaValue_DayNarrows },
-            { "islamic.AmPmMarkers", metaValue_roc_AmPmMarkers },
+            { "japanese.AmPmMarkers", metaValue_buddhist_AmPmMarkers },
+            { "islamic.AmPmMarkers", metaValue_buddhist_AmPmMarkers },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "TimePatterns", metaValue_TimePatterns },
             { "islamic.DayNarrows", metaValue_DayNarrows },
             { "roc.MonthNarrows", metaValue_MonthNarrows },
             { "japanese.TimePatterns", metaValue_TimePatterns },
+            { "narrow.Eras", metaValue_long_Eras },
+            { "buddhist.narrow.AmPmMarkers", metaValue_buddhist_AmPmMarkers },
             { "japanese.MonthNames", metaValue_MonthNames },
             { "roc.DayNames", metaValue_DayNames },
             { "standalone.DayAbbreviations", metaValue_DayNames },
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "long.Eras", metaValue_long_Eras },
             { "islamic.DayNames", metaValue_DayNames },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
@@ -197,6 +211,8 @@ public class FormatData_mgo extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -204,6 +220,7 @@ public class FormatData_mgo extends ListResourceBundle {
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.DayNames", metaValue_DayNames },
             { "islamic.DayAbbreviations", metaValue_DayNames },
+            { "buddhist.AmPmMarkers", metaValue_buddhist_AmPmMarkers },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "japanese.DayNames", metaValue_DayNames },
@@ -215,17 +232,10 @@ public class FormatData_mgo extends ListResourceBundle {
             { "field.week", "nkap" },
             { "DayAbbreviations", metaValue_DayNames },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "\u00a4\u00a0#,##0.00",
-                    "#,##0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "roc.DayNarrows", metaValue_DayNarrows },
-            { "roc.AmPmMarkers", metaValue_roc_AmPmMarkers },
+            { "roc.AmPmMarkers", metaValue_buddhist_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
@@ -241,9 +251,18 @@ public class FormatData_mgo extends ListResourceBundle {
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1" },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "\u00a4\u00a0#,##0.00",
+                    "#,##0%",
+                    "",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "japanese.DayNarrows", metaValue_DayNarrows },
             { "roc.TimePatterns", metaValue_TimePatterns },

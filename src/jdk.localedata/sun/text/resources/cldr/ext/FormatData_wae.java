@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -168,13 +164,13 @@ public class FormatData_wae extends ListResourceBundle {
                "EEEE, d. MMMM y G",
                "d. MMMM y G",
                "d. MMM y G",
-               "GGGGG y-MM-dd",
+               "",
             };
         final String[] metaValue_buddhist_DatePatterns = new String[] {
                "EEEE, d. MMMM y GGGG",
                "d. MMMM y GGGG",
                "d. MMM y GGGG",
-               "G y-MM-dd",
+               "",
             };
         final String metaValue_calendarname_gregorian = "Gregoriani\u0161\u00e4 Kal\u00e4nder";
         final Object[][] data = new Object[][] {
@@ -198,6 +194,7 @@ public class FormatData_wae extends ListResourceBundle {
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.QuarterNames", metaValue_QuarterNames },
             { "long.Eras", metaValue_long_Eras },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
@@ -216,6 +213,8 @@ public class FormatData_wae extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -229,6 +228,7 @@ public class FormatData_wae extends ListResourceBundle {
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "japanese.QuarterNames", metaValue_QuarterNames },
             { "buddhist.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
             { "japanese.DayNames", metaValue_DayNames },
@@ -260,10 +260,19 @@ public class FormatData_wae extends ListResourceBundle {
             { "buddhist.DayAbbreviations", metaValue_DayAbbreviations },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1" },
             { "field.hour", "Schtund" },
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "timezone.regionFormat", "{0} zit" },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "\u00a4\u00a0#,##0.00",
+                    "#,##0%",
+                    "",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "japanese.DayNarrows", metaValue_DayNarrows },

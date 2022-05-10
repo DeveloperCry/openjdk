@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,7 @@
 package com.sun.tools.javac.util;
 
 /**
- * An exception used for propogating exceptions found in client code
+ * An exception used for propagating exceptions found in client code
  * invoked from javac.
  *
  *  <p><b>This is NOT part of any supported API.

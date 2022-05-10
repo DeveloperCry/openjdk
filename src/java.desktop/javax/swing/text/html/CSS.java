@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,21 +22,22 @@
  *
  *
  */
+
 package javax.swing.text.html;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.SizeRequirements;
@@ -762,13 +763,13 @@ public class CSS implements Serializable {
 
         if (size != null) {
             if (size.startsWith("+")) {
-                relSize = Integer.valueOf(size.substring(1)).intValue();
+                relSize = Integer.parseInt(size.substring(1));
                 setBaseFontSize(baseFontSize + relSize);
             } else if (size.startsWith("-")) {
-                relSize = -Integer.valueOf(size.substring(1)).intValue();
+                relSize = -Integer.parseInt(size.substring(1));
                 setBaseFontSize(baseFontSize + relSize);
             } else {
-                setBaseFontSize(Integer.valueOf(size).intValue());
+                setBaseFontSize(Integer.parseInt(size));
             }
         }
     }
@@ -889,8 +890,8 @@ public class CSS implements Serializable {
                               (CSS.Attribute.VERTICAL_ALIGN);
         if ((vAlignV != null)) {
             String vAlign = vAlignV.toString();
-            if ((vAlign.indexOf("sup") >= 0) ||
-                (vAlign.indexOf("sub") >= 0)) {
+            if ((vAlign.contains("sup")) ||
+                (vAlign.contains("sub"))) {
                 size -= 2;
             }
         }
@@ -906,7 +907,7 @@ public class CSS implements Serializable {
             style |= Font.BOLD;
         }
         Object fs = a.getAttribute(CSS.Attribute.FONT_STYLE);
-        if ((fs != null) && (fs.toString().indexOf("italic") >= 0)) {
+        if ((fs != null) && (fs.toString().contains("italic"))) {
             style |= Font.ITALIC;
         }
         if (family.equalsIgnoreCase("monospace")) {
@@ -960,13 +961,13 @@ public class CSS implements Serializable {
         ss = getStyleSheet(ss);
         if (size != null) {
             if (size.startsWith("+")) {
-                relSize = Integer.valueOf(size.substring(1)).intValue();
+                relSize = Integer.parseInt(size.substring(1));
                 return getPointSize(baseFontSize + relSize, ss);
             } else if (size.startsWith("-")) {
-                relSize = -Integer.valueOf(size.substring(1)).intValue();
+                relSize = -Integer.parseInt(size.substring(1));
                 return getPointSize(baseFontSize + relSize, ss);
             } else {
-                absSize = Integer.valueOf(size).intValue();
+                absSize = Integer.parseInt(size);
                 return getPointSize(absSize, ss);
             }
         }
@@ -1362,6 +1363,19 @@ public class CSS implements Serializable {
         } else {
             digits = value;
         }
+        // Some webpage passes 3 digit color code as in #fff which is
+        // decoded as #000FFF resulting in blue background.
+        // As per https://www.w3.org/TR/CSS1/#color-units,
+        // The three-digit RGB notation (#rgb) is converted into six-digit form
+        // (#rrggbb) by replicating digits, not by adding zeros.
+        // This makes sure that white (#ffffff) can be specified with the short notation
+        // (#fff) and removes any dependencies on the color depth of the display.
+        if (digits.length() == 3) {
+            final String r = digits.substring(0, 1);
+            final String g = digits.substring(1, 2);
+            final String b = digits.substring(2, 3);
+            digits = String.format("%s%s%s%s%s%s", r, r, g, g, b, b);
+        }
         String hstr = "0x" + digits;
         Color c;
         try {
@@ -1374,7 +1388,7 @@ public class CSS implements Serializable {
 
     /**
      * Convert a color string such as "RED" or "#NNNNNN" or "rgb(r, g, b)"
-     * to a Color.
+     * or "rgba(r, g, b, a)" to a Color.
      */
     static Color stringToColor(String str) {
       Color color;
@@ -1386,6 +1400,8 @@ public class CSS implements Serializable {
         color = Color.black;
       else if (str.startsWith("rgb(")) {
           color = parseRGB(str);
+      } else if (str.startsWith("rgba(")) {
+          color = parseRGBA(str);
       }
       else if (str.charAt(0) == '#')
         color = hexToColor(str);
@@ -1439,11 +1455,24 @@ public class CSS implements Serializable {
         int[] index = new int[1];
 
         index[0] = 4;
-        int red = getColorComponent(string, index);
-        int green = getColorComponent(string, index);
-        int blue = getColorComponent(string, index);
+        int red = (int)getColorComponent(string, index);
+        int green = (int)getColorComponent(string, index);
+        int blue = (int)getColorComponent(string, index);
 
         return new Color(red, green, blue);
+    }
+
+    private static Color parseRGBA(String string) {
+        // Find the next numeric char
+        int[] index = new int[1];
+
+        index[0] = 4;
+        float red = getColorComponent(string, index)/255f;
+        float green = getColorComponent(string, index)/255f;
+        float blue = getColorComponent(string, index)/255f;
+        float alpha = getColorComponent(string, index);
+
+        return new Color(red, green, blue, alpha);
     }
 
     /**
@@ -1452,7 +1481,7 @@ public class CSS implements Serializable {
      * a percentage (floating number ending with %), in which case it is
      * multiplied by 255.
      */
-    private static int getColorComponent(String string, int[] index) {
+    private static float getColorComponent(String string, int[] index) {
         int length = string.length();
         char aChar;
 
@@ -1488,7 +1517,7 @@ public class CSS implements Serializable {
                     index[0]++;
                     value = value * 255f / 100f;
                 }
-                return Math.min(255, Math.max(0, (int)value));
+                return Math.min(255f, Math.max(0, value));
             } catch (NumberFormatException nfe) {
                 // Treat as 0
             }
@@ -1517,7 +1546,7 @@ public class CSS implements Serializable {
     static String[] parseStrings(String value) {
         int         current, last;
         int         length = (value == null) ? 0 : value.length();
-        Vector<String> temp = new Vector<String>(4);
+        ArrayList<String> temp = new ArrayList<String>(4);
 
         current = 0;
         while (current < length) {
@@ -1540,12 +1569,11 @@ public class CSS implements Serializable {
                 current++;
             }
             if (last != current) {
-                temp.addElement(value.substring(last, current));
+                temp.add(value.substring(last, current));
             }
             current++;
         }
-        String[] retValue = new String[temp.size()];
-        temp.copyInto(retValue);
+        String[] retValue = temp.toArray(new String[0]);
         return retValue;
     }
 
@@ -1580,8 +1608,8 @@ public class CSS implements Serializable {
             if (key instanceof HTML.Tag) {
                 HTML.Tag tag = (HTML.Tag)key;
                 Object o = htmlAttrSet.getAttribute(tag);
-                if (o != null && o instanceof AttributeSet) {
-                    translateAttributes(tag, (AttributeSet)o, cssAttrSet);
+                if (o instanceof AttributeSet as) {
+                    translateAttributes(tag, as, cssAttrSet);
                 }
             } else if (key instanceof CSS.Attribute) {
                 cssAttrSet.addAttribute(key, htmlAttrSet.getAttribute(key));
@@ -1936,12 +1964,12 @@ public class CSS implements Serializable {
          */
         Object toStyleConstants(StyleConstants key, View v) {
             if (key == StyleConstants.Italic) {
-                if (svalue.indexOf("italic") >= 0) {
+                if (svalue.contains("italic")) {
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
             } else if (key == StyleConstants.Underline) {
-                if (svalue.indexOf("underline") >= 0) {
+                if (svalue.contains("underline")) {
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
@@ -1955,17 +1983,17 @@ public class CSS implements Serializable {
                 }
                 return StyleConstants.ALIGN_LEFT;
             } else if (key == StyleConstants.StrikeThrough) {
-                if (svalue.indexOf("line-through") >= 0) {
+                if (svalue.contains("line-through")) {
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
             } else if (key == StyleConstants.Superscript) {
-                if (svalue.indexOf("super") >= 0) {
+                if (svalue.contains("super")) {
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
             } else if (key == StyleConstants.Subscript) {
-                if (svalue.indexOf("sub") >= 0) {
+                if (svalue.contains("sub")) {
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
@@ -1975,23 +2003,23 @@ public class CSS implements Serializable {
 
         // Used by ViewAttributeSet
         boolean isItalic() {
-            return (svalue.indexOf("italic") != -1);
+            return (svalue.contains("italic"));
         }
 
         boolean isStrike() {
-            return (svalue.indexOf("line-through") != -1);
+            return (svalue.contains("line-through"));
         }
 
         boolean isUnderline() {
-            return (svalue.indexOf("underline") != -1);
+            return (svalue.contains("underline"));
         }
 
         boolean isSub() {
-            return (svalue.indexOf("sub") != -1);
+            return (svalue.contains("sub"));
         }
 
         boolean isSup() {
-            return (svalue.indexOf("sup") != -1);
+            return (svalue.contains("sup"));
         }
     }
 
@@ -2108,11 +2136,11 @@ public class CSS implements Serializable {
                  */
                 int baseFontSize = getBaseFontSize();
                 if (value.charAt(0) == '+') {
-                    int relSize = Integer.valueOf(value.substring(1)).intValue();
+                    int relSize = Integer.parseInt(value.substring(1));
                     fs.value = baseFontSize + relSize;
                     fs.index = true;
                 } else if (value.charAt(0) == '-') {
-                    int relSize = -Integer.valueOf(value.substring(1)).intValue();
+                    int relSize = -Integer.parseInt(value.substring(1));
                     fs.value = baseFontSize + relSize;
                     fs.index = true;
                 } else {
@@ -2425,6 +2453,7 @@ public class CSS implements Serializable {
             return null;
         }
 
+        @Serial
         private void writeObject(java.io.ObjectOutputStream s)
                      throws IOException {
             s.defaultWriteObject();
@@ -2436,6 +2465,7 @@ public class CSS implements Serializable {
             }
         }
 
+        @Serial
         private void readObject(ObjectInputStream s)
                 throws ClassNotFoundException, IOException {
             s.defaultReadObject();
@@ -2502,13 +2532,13 @@ public class CSS implements Serializable {
             LengthValue lv;
             try {
                 // Assume pixels
-                float absolute = Float.valueOf(value).floatValue();
+                float absolute = Float.parseFloat(value);
                 lv = new LengthValue();
                 lv.span = absolute;
             } catch (NumberFormatException nfe) {
                 // Not pixels, use LengthUnit
                 LengthUnit lu = new LengthUnit(value,
-                                               LengthUnit.UNINITALIZED_LENGTH,
+                                               LengthUnit.UNINITIALIZED_LENGTH,
                                                0);
 
                 // PENDING: currently, we only support absolute values and
@@ -2842,25 +2872,21 @@ public class CSS implements Serializable {
         static Hashtable<String, Float> lengthMapping = new Hashtable<String, Float>(6);
         static Hashtable<String, Float> w3cLengthMapping = new Hashtable<String, Float>(6);
         static {
-            lengthMapping.put("pt", Float.valueOf(1f));
-            // Not sure about 1.3, determined by experiementation.
-            lengthMapping.put("px", Float.valueOf(1.3f));
-            lengthMapping.put("mm", Float.valueOf(2.83464f));
-            lengthMapping.put("cm", Float.valueOf(28.3464f));
-            lengthMapping.put("pc", Float.valueOf(12f));
-            lengthMapping.put("in", Float.valueOf(72f));
-            int res = 72;
-            try {
-                res = Toolkit.getDefaultToolkit().getScreenResolution();
-            } catch (HeadlessException e) {
-            }
-            // mapping according to the CSS2 spec
-            w3cLengthMapping.put("pt", Float.valueOf(res/72f));
-            w3cLengthMapping.put("px", Float.valueOf(1f));
-            w3cLengthMapping.put("mm", Float.valueOf(res/25.4f));
-            w3cLengthMapping.put("cm", Float.valueOf(res/2.54f));
-            w3cLengthMapping.put("pc", Float.valueOf(res/6f));
-            w3cLengthMapping.put("in", Float.valueOf((float)res));
+            lengthMapping.put("pt", 1f);
+            // Not sure about 1.3, determined by experimentation.
+            lengthMapping.put("px", 1.3f);
+            lengthMapping.put("mm", 2.83464f);
+            lengthMapping.put("cm", 28.3464f);
+            lengthMapping.put("pc", 12f);
+            lengthMapping.put("in", 72f);
+            // Mapping according to the CSS2.2 spec
+            // https://www.w3.org/TR/CSS22/syndata.html#x39
+            w3cLengthMapping.put("pt", 96f / 72f);         // 1/72 of 1in
+            w3cLengthMapping.put("px", 1f);                // 1/96 of 1in
+            w3cLengthMapping.put("mm", 96f / 2.54f / 10f); // 1/10 of 1cm
+            w3cLengthMapping.put("cm", 96f / 2.54f);       // 96px/2.54
+            w3cLengthMapping.put("pc", 96f / 6f);          // 1/6 of 1in
+            w3cLengthMapping.put("in", 96f);               // 96px
         }
 
         LengthUnit(String value, short defaultType, float defaultValue) {
@@ -2872,21 +2898,22 @@ public class CSS implements Serializable {
             this.value = defaultValue;
 
             int length = value.length();
-            if (length > 0 && value.charAt(length - 1) == '%') {
+            if (length < 1) {
+                return;
+            }
+            if (value.charAt(length - 1) == '%') {
                 try {
-                    this.value = Float.valueOf(value.substring(0, length - 1)).
-                                               floatValue() / 100.0f;
+                    this.value = Float.parseFloat(value.substring(0, length - 1)) / 100.0f;
                     type = 1;
                 }
                 catch (NumberFormatException nfe) { }
             }
-            if (length >= 2) {
+            else if (length >= 2) {
                 units = value.substring(length - 2, length);
                 Float scale = lengthMapping.get(units);
                 if (scale != null) {
                     try {
-                        this.value = Float.valueOf(value.substring(0,
-                               length - 2)).floatValue();
+                        this.value = Float.parseFloat(value.substring(0, length - 2));
                         type = 0;
                     }
                     catch (NumberFormatException nfe) { }
@@ -2894,32 +2921,31 @@ public class CSS implements Serializable {
                 else if (units.equals("em") ||
                          units.equals("ex")) {
                     try {
-                        this.value = Float.valueOf(value.substring(0,
-                                      length - 2)).floatValue();
+                        this.value = Float.parseFloat(value.substring(0, length - 2));
                         type = 3;
                     }
                     catch (NumberFormatException nfe) { }
                 }
                 else if (value.equals("larger")) {
-                    this.value = 2f;
+                    this.value = 2.f;
                     type = 2;
                 }
                 else if (value.equals("smaller")) {
-                    this.value = -2;
+                    this.value = -2.f;
                     type = 2;
                 }
                 else {
                     // treat like points.
                     try {
-                        this.value = Float.valueOf(value).floatValue();
+                        this.value = Float.parseFloat(value);
                         type = 0;
                     } catch (NumberFormatException nfe) {}
                 }
             }
-            else if (length > 0) {
+            else {
                 // treat like points.
                 try {
-                    this.value = Float.valueOf(value).floatValue();
+                    this.value = Float.parseFloat(value);
                     type = 0;
                 } catch (NumberFormatException nfe) {}
             }
@@ -2965,7 +2991,7 @@ public class CSS implements Serializable {
         String units = null;
 
 
-        static final short UNINITALIZED_LENGTH = (short)10;
+        static final short UNINITIALIZED_LENGTH = (short)10;
     }
 
 
@@ -3373,9 +3399,9 @@ public class CSS implements Serializable {
         int n = iter.getCount();
         int adjustmentWeightsCount = LayoutIterator.WorstAdjustmentWeight + 1;
         //max gain we can get adjusting elements with adjustmentWeight <= i
-        long gain[] = new long[adjustmentWeightsCount];
+        long[] gain = new long[adjustmentWeightsCount];
         //max loss we can get adjusting elements with adjustmentWeight <= i
-        long loss[] = new long[adjustmentWeightsCount];
+        long[] loss = new long[adjustmentWeightsCount];
 
         for (int i = 0; i < adjustmentWeightsCount; i++) {
             gain[i] = loss[i] = 0;
@@ -3414,7 +3440,7 @@ public class CSS implements Serializable {
         // determine the adjustment to be made
         int allocated = targetSpan - totalSpacing;
         long desiredAdjustment = allocated - preferred;
-        long adjustmentsArray[] = (desiredAdjustment > 0) ? gain : loss;
+        long[] adjustmentsArray = (desiredAdjustment > 0) ? gain : loss;
         desiredAdjustment = Math.abs(desiredAdjustment);
         int adjustmentLevel = 0;
         for (;adjustmentLevel <= LayoutIterator.WorstAdjustmentWeight;
@@ -3535,6 +3561,7 @@ public class CSS implements Serializable {
     // Serialization support
     //
 
+    @Serial
     private void writeObject(java.io.ObjectOutputStream s)
         throws IOException
     {
@@ -3565,6 +3592,7 @@ public class CSS implements Serializable {
         }
     }
 
+    @Serial
     private void readObject(ObjectInputStream s)
       throws ClassNotFoundException, IOException
     {

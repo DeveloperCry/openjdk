@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -58,7 +58,7 @@ public class DebuggerConsolePanel extends JPanel {
 
     editor = new JTextArea();
     editor.setDocument(new EditableAtEndDocument());
-    editor.setFont(GraphicsUtilities.lookupFont("Courier"));
+    editor.setFont(GraphicsUtilities.getMonospacedFont());
     JScrollPane scroller = new JScrollPane();
     scroller.getViewport().add(editor);
     add(scroller, BorderLayout.CENTER);

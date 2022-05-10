@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -127,7 +127,7 @@ public class TabsDlg extends JDialog
         JPanel p4 = new JPanel();
         p4.add(new JButton("Four"));
         p4.setName("Four");
-        Vector panels = new Vector();
+        Vector<JPanel> panels = new Vector<>();
         panels.addElement(p1);
         panels.addElement(p2);
         panels.addElement(p3);

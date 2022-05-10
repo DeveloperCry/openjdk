@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,11 @@ import java.util.ListResourceBundle;
  */
 @Deprecated
 public class AccessibleResourceBundle extends ListResourceBundle {
+
+    /**
+     * Constructs an {@code AccessibleResourceBundle}.
+     */
+    public AccessibleResourceBundle() {}
 
     /**
      * Returns the mapping between the programmatic keys and the localized

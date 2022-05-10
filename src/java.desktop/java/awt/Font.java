@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,7 +34,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.peer.FontPeer;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilePermission;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serial;
 import java.lang.ref.SoftReference;
 import java.nio.file.Files;
 import java.security.AccessController;
@@ -47,24 +54,45 @@ import java.util.Locale;
 import java.util.Map;
 
 import sun.awt.ComponentFactory;
-import sun.font.StandardGlyphVector;
-
 import sun.font.AttributeMap;
 import sun.font.AttributeValues;
 import sun.font.CompositeFont;
+import sun.font.CoreMetrics;
 import sun.font.CreatedFontTracker;
 import sun.font.Font2D;
 import sun.font.Font2DHandle;
 import sun.font.FontAccess;
 import sun.font.FontDesignMetrics;
+import sun.font.FontLineMetrics;
 import sun.font.FontManager;
 import sun.font.FontManagerFactory;
 import sun.font.FontUtilities;
 import sun.font.GlyphLayout;
-import sun.font.FontLineMetrics;
-import sun.font.CoreMetrics;
+import sun.font.StandardGlyphVector;
 
-import static sun.font.EAttribute.*;
+import static sun.font.EAttribute.EBACKGROUND;
+import static sun.font.EAttribute.EBIDI_EMBEDDING;
+import static sun.font.EAttribute.ECHAR_REPLACEMENT;
+import static sun.font.EAttribute.EFAMILY;
+import static sun.font.EAttribute.EFONT;
+import static sun.font.EAttribute.EFOREGROUND;
+import static sun.font.EAttribute.EINPUT_METHOD_HIGHLIGHT;
+import static sun.font.EAttribute.EINPUT_METHOD_UNDERLINE;
+import static sun.font.EAttribute.EJUSTIFICATION;
+import static sun.font.EAttribute.EKERNING;
+import static sun.font.EAttribute.ELIGATURES;
+import static sun.font.EAttribute.ENUMERIC_SHAPING;
+import static sun.font.EAttribute.EPOSTURE;
+import static sun.font.EAttribute.ERUN_DIRECTION;
+import static sun.font.EAttribute.ESIZE;
+import static sun.font.EAttribute.ESTRIKETHROUGH;
+import static sun.font.EAttribute.ESUPERSCRIPT;
+import static sun.font.EAttribute.ESWAP_COLORS;
+import static sun.font.EAttribute.ETRACKING;
+import static sun.font.EAttribute.ETRANSFORM;
+import static sun.font.EAttribute.EUNDERLINE;
+import static sun.font.EAttribute.EWEIGHT;
+import static sun.font.EAttribute.EWIDTH;
 
 /**
  * The {@code Font} class represents fonts, which are used to
@@ -74,7 +102,7 @@ import static sun.font.EAttribute.*;
  * and to render sequences of glyphs on {@code Graphics} and
  * {@code Component} objects.
  *
- * <h3>Characters and Glyphs</h3>
+ * <h2>Characters and Glyphs</h2>
  *
  * A <em>character</em> is a symbol that represents an item such as a letter,
  * a digit, or punctuation in an abstract way. For example, {@code 'g'},
@@ -96,7 +124,7 @@ import static sun.font.EAttribute.*;
  * of characters as well as the tables needed to map sequences of characters to
  * corresponding sequences of glyphs.
  *
- * <h3>Physical and Logical Fonts</h3>
+ * <h2>Physical and Logical Fonts</h2>
  *
  * The Java Platform distinguishes between two kinds of fonts:
  * <em>physical</em> fonts and <em>logical</em> fonts.
@@ -135,7 +163,7 @@ import static sun.font.EAttribute.*;
  * in <a href="https://docs.oracle.com/javase/tutorial/index.html">The Java Tutorials</a>
  * document.
  *
- * <h3>Font Faces and Names</h3>
+ * <h2>Font Faces and Names</h2>
  *
  * A {@code Font}
  * can have many faces, such as heavy, medium, oblique, gothic and
@@ -169,7 +197,7 @@ import static sun.font.EAttribute.*;
  * with varying sizes, styles, transforms and font features via the
  * {@code deriveFont} methods in this class.
  *
- * <h3>Font and TextAttribute</h3>
+ * <h2>Font and TextAttribute</h2>
  *
  * <p>{@code Font} supports most
  * {@code TextAttribute}s.  This makes some operations, such as
@@ -442,9 +470,10 @@ public class Font implements java.io.Serializable
      */
     private static final AffineTransform identityTx = new AffineTransform();
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = -4206021311591459213L;
 
     /**
@@ -495,13 +524,7 @@ public class Font implements java.io.Serializable
 
     private Font2D getFont2D() {
         FontManager fm = FontManagerFactory.getInstance();
-        if (fm.usingPerAppContextComposites() &&
-            font2DHandle != null &&
-            font2DHandle.font2D instanceof CompositeFont &&
-            ((CompositeFont)(font2DHandle.font2D)).isStdComposite()) {
-            return fm.findFont2D(name, style,
-                                          FontManager.LOGICAL_FALLBACK);
-        } else if (font2DHandle == null) {
+        if (font2DHandle == null) {
             font2DHandle =
                 fm.findFont2D(name, style,
                               FontManager.LOGICAL_FALLBACK).handle;
@@ -873,6 +896,7 @@ public class Font implements java.io.Serializable
      * If a thread can create temp files anyway, no point in counting
      * font bytes.
      */
+    @SuppressWarnings("removal")
     private static boolean hasTempPermission() {
 
         if (System.getSecurityManager() == null) {
@@ -1071,6 +1095,7 @@ public class Font implements java.io.Serializable
         }
     }
 
+    @SuppressWarnings("removal")
     private static Font[] createFont0(int fontFormat, InputStream fontStream,
                                       boolean allFonts,
                                       CreatedFontTracker tracker)
@@ -1234,6 +1259,7 @@ public class Font implements java.io.Serializable
             fontFormat != Font.TYPE1_FONT) {
             throw new IllegalArgumentException ("font format not recognized");
         }
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             FilePermission filePermission =
@@ -1695,8 +1721,7 @@ public class Font implements java.io.Serializable
 
         if (sizeIndex > 0 && sizeIndex+1 < strlen) {
             try {
-                fontSize =
-                    Integer.valueOf(str.substring(sizeIndex+1)).intValue();
+                fontSize = Integer.parseInt(str.substring(sizeIndex+1));
                 if (fontSize <= 0) {
                     fontSize = 12;
                 }
@@ -1890,13 +1915,14 @@ public class Font implements java.io.Serializable
     /**
      * Writes default serializable fields to a stream.
      *
-     * @param s the {@code ObjectOutputStream} to write
+     * @param  s the {@code ObjectOutputStream} to write
+     * @throws IOException if an I/O error occurs
      * @see AWTEventMulticaster#save(ObjectOutputStream, String, EventListener)
      * @see #readObject(java.io.ObjectInputStream)
      */
+    @Serial
     private void writeObject(java.io.ObjectOutputStream s)
-      throws java.lang.ClassNotFoundException,
-             java.io.IOException
+      throws java.io.IOException
     {
         if (values != null) {
           synchronized(values) {
@@ -1914,10 +1940,14 @@ public class Font implements java.io.Serializable
      * Reads the {@code ObjectInputStream}.
      * Unrecognized keys or values will be ignored.
      *
-     * @param s the {@code ObjectInputStream} to read
+     * @param  s the {@code ObjectInputStream} to read
+     * @throws ClassNotFoundException if the class of a serialized object could
+     *         not be found
+     * @throws IOException if an I/O error occurs
      * @serial
      * @see #writeObject(java.io.ObjectOutputStream)
      */
+    @Serial
     private void readObject(java.io.ObjectInputStream s)
       throws java.lang.ClassNotFoundException,
              java.io.IOException
@@ -2016,7 +2046,7 @@ public class Font implements java.io.Serializable
     public Attribute[] getAvailableAttributes() {
         // FONT is not supported by Font
 
-        Attribute attributes[] = {
+        Attribute[] attributes = {
             TextAttribute.FAMILY,
             TextAttribute.WEIGHT,
             TextAttribute.WIDTH,
@@ -2155,9 +2185,10 @@ public class Font implements java.io.Serializable
      * Checks if this {@code Font} has a glyph for the specified
      * character.
      *
-     * <p> <b>Note:</b> This method cannot handle <a
-     * href="../../java/lang/Character.html#supplementary"> supplementary
-     * characters</a>. To support all Unicode characters, including
+     * <p> <b>Note:</b> This method cannot handle
+     * <a href="../../../java.base/java/lang/Character.html#supplementary">
+     * supplementary characters</a>.
+     * To support all Unicode characters, including
      * supplementary characters, use the {@link #canDisplay(int)}
      * method or {@code canDisplayUpTo} methods.
      *
@@ -2607,7 +2638,7 @@ public class Font implements java.io.Serializable
             simple = ! FontUtilities.isComplexText(chars, beginIndex, limit);
         }
 
-        if (simple) {
+        if (simple || ((limit - beginIndex) == 0)) {
             FontDesignMetrics metrics = FontDesignMetrics.getMetrics(this, frc);
             return metrics.getSimpleBounds(chars, beginIndex, limit-beginIndex);
         } else {

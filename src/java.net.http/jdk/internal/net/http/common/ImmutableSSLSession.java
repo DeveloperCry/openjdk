@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -89,12 +89,6 @@ public class ImmutableSSLSession implements SSLSession {
 
     public java.security.cert.Certificate [] getLocalCertificates() {
         return delegate.getLocalCertificates();
-    }
-
-    @Deprecated
-    public javax.security.cert.X509Certificate [] getPeerCertificateChain()
-            throws SSLPeerUnverifiedException {
-        return delegate.getPeerCertificateChain();
     }
 
     public Principal getPeerPrincipal()

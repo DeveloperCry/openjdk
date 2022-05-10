@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -45,7 +45,6 @@ import com.sun.org.apache.bcel.internal.classfile.Utility;
 /**
  * Convert found attributes into HTML file.
  *
- * @version $Id: AttributeHTML.java 1749603 2016-06-21 20:50:19Z ggregory $
  *
  */
 final class AttributeHTML {
@@ -73,18 +72,18 @@ final class AttributeHTML {
     }
 
 
-    final void close() {
+    void close() {
         file.println("</TABLE></BODY></HTML>");
         file.close();
     }
 
 
-    final void writeAttribute( final Attribute attribute, final String anchor ) {
+    void writeAttribute( final Attribute attribute, final String anchor ) {
         writeAttribute(attribute, anchor, 0);
     }
 
 
-    final void writeAttribute( final Attribute attribute, final String anchor, final int method_number ) {
+    void writeAttribute( final Attribute attribute, final String anchor, final int method_number ) {
         final byte tag = attribute.getTag();
         int index;
         if (tag == Const.ATTR_UNKNOWN) {

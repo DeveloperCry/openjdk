@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,7 +25,6 @@ package com.sun.org.apache.bcel.internal.classfile;
  * This interface denotes those constants that have a "natural" value,
  * such as ConstantLong, ConstantString, etc..
  *
- * @version $Id: ConstantObject.java 1747278 2016-06-07 17:28:43Z britter $
  * @see     Constant
  */
 public interface ConstantObject {

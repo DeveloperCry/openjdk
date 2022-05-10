@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,12 +44,9 @@
  * <em>jdeprscan</em> only exists as a command line tool, and does not provide
  * any direct API.
  *
- * <dl style="font-family:'DejaVu Sans', Arial, Helvetica, sans serif">
- * <dt class="simpleTagLabel">Tool Guides:
- * <dd>{@extLink javap_tool_reference javap},
- *     {@extLink jdeprscan_tool_reference jdeprscan},
- *     {@extLink jdeps_tool_reference jdeps}
- * </dl>
+ * @toolGuide javap
+ * @toolGuide jdeprscan
+ * @toolGuide jdeps
  *
  * @provides java.util.spi.ToolProvider
  *

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package com.sun.tools.javac.util;
 
+import com.sun.tools.javac.jvm.ClassFile;
+import com.sun.tools.javac.jvm.PoolConstant;
 import com.sun.tools.javac.util.DefinedBy.Api;
 
 /** An abstraction for internal compiler strings. They are stored in
@@ -36,7 +38,7 @@ import com.sun.tools.javac.util.DefinedBy.Api;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
-public abstract class Name implements javax.lang.model.element.Name {
+public abstract class Name implements javax.lang.model.element.Name, PoolConstant {
 
     public final Table table;
 
@@ -50,6 +52,11 @@ public abstract class Name implements javax.lang.model.element.Name {
     @DefinedBy(Api.LANGUAGE_MODEL)
     public boolean contentEquals(CharSequence cs) {
         return toString().equals(cs.toString());
+    }
+
+    @Override
+    public int poolTag() {
+        return ClassFile.CONSTANT_Utf8;
     }
 
     /**
@@ -188,9 +195,17 @@ public abstract class Name implements javax.lang.model.element.Name {
      */
     public abstract int getByteOffset();
 
+    public interface NameMapper<X> {
+        X map(byte[] bytes, int offset, int len);
+    }
+
+    public <X> X map(NameMapper<X> mapper) {
+        return mapper.map(getByteArray(), getByteOffset(), getByteLength());
+    }
+
     /** An abstraction for the hash table used to create unique Name instances.
      */
-    public static abstract class Table {
+    public abstract static class Table {
         /** Standard name table.
          */
         public final Names names;

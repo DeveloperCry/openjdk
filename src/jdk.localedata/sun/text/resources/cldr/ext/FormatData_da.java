@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -154,9 +150,33 @@ public class FormatData_da extends ListResourceBundle {
                "3. kvt.",
                "4. kvt.",
             };
+        final String[] metaValue_AmPmMarkers = new String[] {
+               "AM",
+               "PM",
+               "midnat",
+               "",
+               "om morgenen",
+               "om formiddagen",
+               "om eftermiddagen",
+               "",
+               "om aftenen",
+               "",
+               "om natten",
+               "",
+            };
         final String[] metaValue_narrow_AmPmMarkers = new String[] {
                "a",
                "p",
+               "midnat",
+               "",
+               "om morgenen",
+               "om formiddagen",
+               "om eftermiddagen",
+               "",
+               "om aftenen",
+               "",
+               "om natten",
+               "",
             };
         final String[] metaValue_long_Eras = new String[] {
                "f.Kr.",
@@ -174,7 +194,7 @@ public class FormatData_da extends ListResourceBundle {
                "3",
                "4",
             };
-        final String[] metaValue_buddhist_long_Eras = new String[] {
+        final String[] metaValue_java_time_buddhist_long_Eras = new String[] {
                "BC",
                "BE",
             };
@@ -190,15 +210,11 @@ public class FormatData_da extends ListResourceBundle {
                "d. MMM y GGGG",
                "d/M/y",
             };
-        final String[] metaValue_roc_AmPmMarkers = new String[] {
-               "AM",
-               "PM",
-            };
-        final String[] metaValue_roc_long_Eras = new String[] {
+        final String[] metaValue_java_time_roc_long_Eras = new String[] {
                "f\u00f8r R.O.C.",
                "Minguo",
             };
-        final String[] metaValue_islamic_long_Eras = new String[] {
+        final String[] metaValue_java_time_islamic_long_Eras = new String[] {
                "",
                "AH",
             };
@@ -207,7 +223,9 @@ public class FormatData_da extends ListResourceBundle {
             { "MonthNames", metaValue_MonthNames },
             { "field.year", "\u00e5r" },
             { "calendarname.islamic-umalqura", "islamisk kalender (Umm al-Qura)" },
-            { "buddhist.narrow.Eras", metaValue_buddhist_long_Eras },
+            { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
+            { "buddhist.narrow.Eras", metaValue_java_time_buddhist_long_Eras },
+            { "AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "standalone.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.QuarterNames", metaValue_QuarterNames },
@@ -215,13 +233,15 @@ public class FormatData_da extends ListResourceBundle {
             { "calendarname.islamic-civil", "verdslig islamisk kalender" },
             { "islamic.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "japanese.TimePatterns", metaValue_TimePatterns },
-            { "roc.long.Eras", metaValue_roc_long_Eras },
+            { "roc.long.Eras", metaValue_java_time_roc_long_Eras },
             { "narrow.Eras",
                 new String[] {
                     "fKr",
                     "eKr",
                 }
             },
+            { "abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
+            { "japanese.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "calendarname.japanese", "japansk kalender" },
             { "japanese.MonthNames", metaValue_MonthNames },
             { "standalone.DayAbbreviations",
@@ -236,7 +256,9 @@ public class FormatData_da extends ListResourceBundle {
                 }
             },
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "java.time.islamic.narrow.Eras", metaValue_java_time_islamic_long_Eras },
             { "long.Eras", metaValue_long_Eras },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.MonthNames", metaValue_MonthNames },
@@ -262,6 +284,8 @@ public class FormatData_da extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -269,6 +293,7 @@ public class FormatData_da extends ListResourceBundle {
             { "buddhist.DayNames", metaValue_DayNames },
             { "field.minute", "minut" },
             { "field.era", "\u00e6ra" },
+            { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
             { "field.dayperiod", "AM/PM" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.MonthNames",
@@ -288,27 +313,43 @@ public class FormatData_da extends ListResourceBundle {
                     "",
                 }
             },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "calendarname.roc", "kalender for Republikken Kina" },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_QuarterAbbreviations },
-            { "islamic.Eras", metaValue_islamic_long_Eras },
+            { "islamic.Eras", metaValue_java_time_islamic_long_Eras },
             { "field.month", "m\u00e5ned" },
-            { "roc.Eras", metaValue_roc_long_Eras },
+            { "roc.Eras", metaValue_java_time_roc_long_Eras },
             { "field.second", "sekund" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "#,##0.00\u00a0\u00a4",
-                    "#,##0\u00a0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "calendarname.islamic", "islamisk kalender" },
+            { "java.time.roc.long.Eras", metaValue_java_time_roc_long_Eras },
+            { "DayPeriodRules", "midnight:00:00;night1:00:00-05:00;morning2:10:00-12:00;afternoon1:12:00-18:00;morning1:05:00-10:00;evening1:18:00-24:00" },
+            { "java.time.roc.narrow.Eras", metaValue_java_time_roc_long_Eras },
             { "japanese.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0' 'tusind other:0' 'tusind}",
+                    "{one:00' 'tusind other:00' 'tusind}",
+                    "{one:000' 'tusind other:000' 'tusind}",
+                    "{one:0' 'million other:0' 'millioner}",
+                    "{one:00' 'millioner other:00' 'millioner}",
+                    "{one:000' 'millioner other:000' 'millioner}",
+                    "{one:0' 'milliard other:0' 'milliarder}",
+                    "{one:00' 'milliarder other:00' 'milliarder}",
+                    "{one:000' 'milliarder other:000' 'milliarder}",
+                    "{one:0' 'billion other:0' 'billioner}",
+                    "{one:00' 'billioner other:00' 'billioner}",
+                    "{one:000' 'billioner other:000' 'billioner}",
+                }
+            },
             { "roc.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "standalone.QuarterNames", metaValue_QuarterNames },
@@ -316,61 +357,98 @@ public class FormatData_da extends ListResourceBundle {
             { "islamic.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.DayAbbreviations", metaValue_DayAbbreviations },
             { "standalone.DayNarrows", metaValue_DayNarrows },
-            { "buddhist.long.Eras", metaValue_buddhist_long_Eras },
-            { "islamic.AmPmMarkers", metaValue_roc_AmPmMarkers },
+            { "java.time.buddhist.long.Eras", metaValue_java_time_buddhist_long_Eras },
+            { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
+            { "buddhist.long.Eras", metaValue_java_time_buddhist_long_Eras },
             { "TimePatterns", metaValue_TimePatterns },
             { "islamic.DayNarrows", metaValue_DayNarrows },
+            { "java.time.roc.Eras", metaValue_java_time_roc_long_Eras },
             { "field.zone", "tidszone" },
             { "japanese.QuarterAbbreviations", metaValue_QuarterAbbreviations },
-            { "roc.narrow.Eras", metaValue_roc_long_Eras },
+            { "roc.narrow.Eras", metaValue_java_time_roc_long_Eras },
             { "buddhist.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
+            { "buddhist.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "Eras", metaValue_long_Eras },
             { "roc.DayNames", metaValue_DayNames },
             { "islamic.QuarterNames", metaValue_QuarterNames },
+            { "islamic.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "field.weekday", "ugedag" },
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.DayAbbreviations", metaValue_DayAbbreviations },
-            { "islamic.long.Eras", metaValue_islamic_long_Eras },
+            { "islamic.long.Eras", metaValue_java_time_islamic_long_Eras },
+            { "java.time.islamic.Eras", metaValue_java_time_islamic_long_Eras },
             { "japanese.QuarterNames", metaValue_QuarterNames },
             { "buddhist.QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "java.time.buddhist.Eras", metaValue_java_time_buddhist_long_Eras },
             { "timezone.hourFormat", "+HH.mm;-HH.mm" },
             { "japanese.DayNames", metaValue_DayNames },
             { "japanese.DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNames", metaValue_DayNames },
             { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.MonthNames", metaValue_MonthNames },
-            { "buddhist.Eras", metaValue_buddhist_long_Eras },
+            { "buddhist.Eras", metaValue_java_time_buddhist_long_Eras },
             { "field.week", "uge" },
             { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "buddhist.QuarterNames", metaValue_QuarterNames },
             { "islamic.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "roc.DayNarrows", metaValue_DayNarrows },
-            { "roc.AmPmMarkers", metaValue_roc_AmPmMarkers },
+            { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0\u00a0t other:0\u00a0t}",
+                    "{one:00\u00a0t other:00\u00a0t}",
+                    "{one:000\u00a0t other:000\u00a0t}",
+                    "{one:0\u00a0mio'.' other:0\u00a0mio'.'}",
+                    "{one:00\u00a0mio'.' other:00\u00a0mio'.'}",
+                    "{one:000\u00a0mio'.' other:000\u00a0mio'.'}",
+                    "{one:0\u00a0mia'.' other:0\u00a0mia'.'}",
+                    "{one:00\u00a0mia'.' other:00\u00a0mia'.'}",
+                    "{one:000\u00a0mia'.' other:000\u00a0mia'.'}",
+                    "{one:0\u00a0bio'.' other:0\u00a0bio'.'}",
+                    "{one:00\u00a0bio'.' other:00\u00a0bio'.'}",
+                    "{one:000\u00a0bio'.' other:000\u00a0bio'.'}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
+            { "java.time.buddhist.narrow.Eras", metaValue_java_time_buddhist_long_Eras },
             { "DatePatterns",
                 new String[] {
                     "EEEE 'den' d. MMMM y",
                     "d. MMMM y",
                     "d. MMM y",
-                    "dd/MM/y",
+                    "dd.MM.y",
                 }
             },
             { "buddhist.DayAbbreviations", metaValue_DayAbbreviations },
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1 or t != 0 and i = 0,1" },
             { "field.hour", "time" },
-            { "islamic.narrow.Eras", metaValue_islamic_long_Eras },
+            { "islamic.narrow.Eras", metaValue_java_time_islamic_long_Eras },
             { "calendarname.buddhist", "buddhistisk kalender" },
             { "standalone.MonthNames", metaValue_MonthNames },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0\u00a0%",
+                    "#,##0.00\u00a0\u00a4",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
+            { "java.time.islamic.long.Eras", metaValue_java_time_islamic_long_Eras },
             { "japanese.DayNarrows", metaValue_DayNarrows },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "roc.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "calendarname.gregory", metaValue_calendarname_gregorian },
         };
         return data;

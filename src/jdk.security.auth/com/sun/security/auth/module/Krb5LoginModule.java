@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -84,7 +84,7 @@ import static sun.security.util.ResourcesMgr.getAuthResourceString;
  * by using the option {@code principal}. The principal name
  * can either be a simple user name, a service name such as
  * {@code host/mission.eng.sun.com}, or "*". The principal can also
- * be set using the system property {@code sun.security.krb5.principal}.
+ * be set using the system property {@systemProperty sun.security.krb5.principal}.
  * This property is checked during login. If this property is not set, then
  * the principal name from the configuration is used. In the
  * case where the principal property is not set and the principal
@@ -104,7 +104,7 @@ import static sun.security.util.ResourcesMgr.getAuthResourceString;
  * to false if you do not want this module to use the ticket cache.
  * (Default is False).
  * This module will search for the ticket
- * cache in the following locations: On Solaris and Linux
+ * cache in the following locations: On Linux
  * it will look for the ticket cache in /tmp/krb5cc_{@code uid}
  * where the uid is numeric user identifier. If the ticket cache is
  * not available in the above location, or if we are on a
@@ -420,6 +420,11 @@ public class Krb5LoginModule implements LoginModule {
     private static final String PWD = "javax.security.auth.login.password";
 
     /**
+     * Creates a {@code Krb5LoginModule}.
+     */
+    public Krb5LoginModule() {}
+
+    /**
      * Initialize this {@code LoginModule}.
      *
      * @param subject the {@code Subject} to be authenticated.
@@ -658,9 +663,11 @@ public class Krb5LoginModule implements LoginModule {
                 }
 
                 if (cred != null) {
-                   // get the principal name from the ticket cache
-                   if (principal == null) {
-                        principal = cred.getClient();
+                    // get the principal name from the ticket cache
+                    if (principal == null) {
+                        principal = cred.getProxy() != null
+                                ? cred.getProxy().getClient()
+                                : cred.getClient();
                    }
                 }
                 if (debug) {

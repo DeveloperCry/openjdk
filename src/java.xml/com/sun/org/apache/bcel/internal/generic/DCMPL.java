@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,7 +25,6 @@ package com.sun.org.apache.bcel.internal.generic;
  * DCMPL - Compare doubles: value1 &lt; value2
  * <PRE>Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt; ..., result</PRE>
  *
- * @version $Id: DCMPL.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class DCMPL extends Instruction implements TypedInstruction, StackProducer, StackConsumer {
 

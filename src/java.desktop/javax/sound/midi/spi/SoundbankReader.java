@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,6 +43,11 @@ import javax.sound.midi.Synthesizer;
  * @since 1.3
  */
 public abstract class SoundbankReader {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected SoundbankReader() {}
 
     /**
      * Obtains a soundbank object from the {@code URL} provided.

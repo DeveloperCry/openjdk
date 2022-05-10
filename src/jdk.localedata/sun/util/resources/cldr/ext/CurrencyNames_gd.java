@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -133,6 +129,7 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "CLE", "CLE" },
             { "CLF", "CLF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "CNX", "CNX" },
             { "COP", "COP" },
             { "COU", "COU" },
@@ -230,6 +227,7 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MTL", "MTL" },
             { "MTP", "MTP" },
             { "MUR", "MUR" },
@@ -286,6 +284,7 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "SRG", "SRG" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SUR", "SUR" },
             { "SVC", "SVC" },
             { "SYP", "SYP" },
@@ -315,6 +314,7 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "UZS", "UZS" },
             { "VEB", "VEB" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VNN", "VNN" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -415,6 +415,7 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "cle", "Escudo Sileach" },
             { "clf", "Aonad cunntasachd Sileach (UF)" },
             { "clp", "Peso Sileach" },
+            { "cnh", "Yuan S\u00ecneach (far-th\u00ecreach)" },
             { "cnx", "Dolar an t-sluagh-bhanca Sh\u00ecnich" },
             { "cny", "Yuan S\u00ecneach" },
             { "cop", "Peso Coloimbeach" },
@@ -607,9 +608,11 @@ public class CurrencyNames_gd extends OpenListResourceBundle {
             { "uyi", "Peso Uruguaidheach (aonadan inneacsaichte)" },
             { "uyp", "Peso Uruguaidheach (1975\u20131993)" },
             { "uyu", "Peso Uruguaidheach" },
+            { "uyw", "Aonad inneacs tuarastail ainmeach Uruguaidh" },
             { "uzs", "Som Usbagach" },
             { "veb", "Bol\u00edvar Bheinisealach (1871\u20132008)" },
-            { "vef", "Bol\u00edvar Bheinisealach" },
+            { "vef", "Bol\u00edvar Bheinisealach (2008\u20132018)" },
+            { "ves", "Bol\u00edvar Bheinisealach" },
             { "vnd", "Dong Bhiet-Namach" },
             { "vnn", "Dong Bhiet-Namach (1978\u20131985)" },
             { "vuv", "Vatu Vanuatuthach" },

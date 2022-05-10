@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -58,9 +58,7 @@ import javax.lang.model.util.Types;
 public interface DeclaredType extends ReferenceType {
 
     /**
-     * Returns the element corresponding to this type.
-     *
-     * @return the element corresponding to this type
+     * {@return the element corresponding to this type}
      */
     Element asElement();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,6 @@
 
 package jdk.javadoc.internal.doclets.toolkit;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.tools.FileObject;
 
@@ -53,6 +52,7 @@ public class OverviewElement implements DocletElement {
         return pkg;
     }
 
+    @Override
     public FileObject getFileObject() {
         return fo;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -136,6 +132,16 @@ public class FormatData_brx extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "\u092b\u0941\u0902",
                "\u092c\u0947\u0932\u093e\u0938\u0947",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_long_Eras = new String[] {
                "\u0908\u0938\u093e.\u092a\u0942\u0930\u094d\u0935",
@@ -171,9 +177,7 @@ public class FormatData_brx extends ListResourceBundle {
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "roc.QuarterNames", metaValue_QuarterNames },
             { "TimePatterns", metaValue_TimePatterns },
-            { "islamic.DayNarrows", metaValue_DayNarrows },
             { "field.zone", "\u0913\u0928\u0938\u094b\u0932" },
-            { "roc.MonthNarrows", metaValue_MonthNarrows },
             { "calendarname.islamic-civil", "\u0907\u0938\u094d\u0932\u093e\u092e\u0940 \u0928\u093e\u0917\u0930\u093f\u0915 \u092a\u0902\u091a\u093e\u0902\u0917" },
             { "japanese.TimePatterns", metaValue_TimePatterns },
             { "narrow.Eras", metaValue_long_Eras },
@@ -192,7 +196,6 @@ public class FormatData_brx extends ListResourceBundle {
             { "long.Eras", metaValue_long_Eras },
             { "islamic.DayNames", metaValue_DayNames },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
-            { "buddhist.MonthAbbreviations", metaValue_MonthNames },
             { "field.weekday", "\u0938\u092a\u094d\u0924\u093e\u0939 \u0915\u0947 \u0926\u093f\u0928" },
             { "buddhist.MonthNames", metaValue_MonthNames },
             { "narrow.AmPmMarkers", metaValue_AmPmMarkers },
@@ -209,6 +212,8 @@ public class FormatData_brx extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -234,15 +239,7 @@ public class FormatData_brx extends ListResourceBundle {
             { "field.week", "\u0938\u092c\u0925\u093e/\u0939\u092c\u0925\u093e" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##,##0.###",
-                    "\u00a4\u00a0#,##,##0.00",
-                    "#,##,##0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
-            { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "buddhist.QuarterNames", metaValue_QuarterNames },
             { "calendarname.islamic", "\u0907\u0938\u094d\u0932\u093e\u092e\u0940 \u092a\u0902\u091a\u093e\u0902\u0917" },
             { "roc.DayNarrows", metaValue_DayNarrows },
@@ -262,19 +259,24 @@ public class FormatData_brx extends ListResourceBundle {
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthNames },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1" },
             { "field.hour", "\u0930\u093f\u0902\u0917\u093e" },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "calendarname.buddhist", "\u092c\u094c\u0926\u094d\u0927 \u092a\u0902\u091a\u093e\u0902\u0917" },
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthNames },
-            { "buddhist.DayNarrows", metaValue_DayNarrows },
-            { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
-            { "japanese.DayNarrows", metaValue_DayNarrows },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##,##0.###",
+                    "\u00a4\u00a0#,##,##0.00",
+                    "#,##,##0%",
+                    "",
+                }
+            },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterNames },
             { "standalone.QuarterNames", metaValue_QuarterNames },
-            { "japanese.MonthNarrows", metaValue_MonthNarrows },
             { "roc.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "calendarname.gregory", metaValue_calendarname_gregorian },
         };

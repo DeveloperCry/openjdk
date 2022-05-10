@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -80,6 +76,7 @@ public class CurrencyNames_zh_Hant_HK extends OpenListResourceBundle {
             { "bad", "\u6ce2\u65af\u5c3c\u4e9e-\u8d6b\u585e\u54e5\u7dad\u7d0d\u7b2c\u7d0d\u723e" },
             { "bam", "\u6ce2\u65af\u5c3c\u4e9e-\u8d6b\u585e\u54e5\u7dad\u7d0d\u53ef\u8f49\u63db\u99ac\u514b" },
             { "bbd", "\u5df4\u5df4\u591a\u65af\u5143" },
+            { "bec", "\u6bd4\u5229\u6642\u6cd5\u90ce\uff08\u53ef\u514c\u63db\uff09" },
             { "bif", "\u5e03\u9686\u8fea\u6cd5\u90ce" },
             { "bmd", "\u767e\u6155\u9054\u5143" },
             { "bwp", "\u535a\u8328\u74e6\u7d0d\u666e\u62c9" },

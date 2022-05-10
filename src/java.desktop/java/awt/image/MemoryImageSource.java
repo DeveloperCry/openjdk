@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -223,7 +223,7 @@ public class MemoryImageSource implements ImageProducer {
      * @see java.awt.Component#createImage
      * @see ColorModel#getRGBdefault
      */
-    public MemoryImageSource(int w, int h, int pix[], int off, int scan) {
+    public MemoryImageSource(int w, int h, int[] pix, int off, int scan) {
         initialize(w, h, ColorModel.getRGBdefault(),
                    (Object) pix, off, scan, null);
     }
@@ -243,7 +243,7 @@ public class MemoryImageSource implements ImageProducer {
      * @see java.awt.Component#createImage
      * @see ColorModel#getRGBdefault
      */
-    public MemoryImageSource(int w, int h, int pix[], int off, int scan,
+    public MemoryImageSource(int w, int h, int[] pix, int off, int scan,
                              Hashtable<?,?> props)
     {
         initialize(w, h, ColorModel.getRGBdefault(),

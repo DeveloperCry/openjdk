@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,6 +55,11 @@ package javax.print;
  * </pre>
  */
 public abstract class ServiceUIFactory {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected ServiceUIFactory() {}
 
     /**
      * Denotes a UI implemented as a Swing component. The value of the string is

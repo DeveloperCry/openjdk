@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -26,7 +26,6 @@ package com.sun.org.apache.bcel.internal.classfile;
  * that the file is malformed or otherwise cannot be interpreted as a
  * class file.
  *
- * @version $Id: ClassFormatException.java 1748973 2016-06-18 12:14:42Z sebb $
  */
 public class ClassFormatException extends RuntimeException {
 

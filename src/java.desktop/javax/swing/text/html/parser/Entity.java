@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,7 +55,7 @@ class Entity implements DTDConstants {
     /**
      * The char array of data.
      */
-    public char data[];
+    public char[] data;
 
     /**
      * Creates an entity.
@@ -63,7 +63,7 @@ class Entity implements DTDConstants {
      * @param type the type of the entity
      * @param data the char array of data
      */
-    public Entity(String name, int type, char data[]) {
+    public Entity(String name, int type, char[] data) {
         this.name = name;
         this.type = type;
         this.data = data;
@@ -105,7 +105,7 @@ class Entity implements DTDConstants {
      * Returns the <code>data</code>.
      * @return the <code>data</code>
      */
-    public char getData()[] {
+    public char[] getData() {
         return data;
     }
 

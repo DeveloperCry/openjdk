@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,8 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import org.xml.sax.*;
 import org.w3c.dom.*;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * XML Support for java.util.prefs. Methods to import and export preference
@@ -274,7 +276,7 @@ class XmlSupport {
             //an OutputStream object embedded, creating a Writer object on top of that
             //OutputStream object however works.
             t.transform(new DOMSource(doc),
-                        new StreamResult(new BufferedWriter(new OutputStreamWriter(out, "UTF-8"))));
+                        new StreamResult(new BufferedWriter(new OutputStreamWriter(out, UTF_8))));
         } catch(TransformerException e) {
             throw new AssertionError(e);
         }

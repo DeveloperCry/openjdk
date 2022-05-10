@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,8 @@ import com.sun.rowset.internal.*;
 import com.sun.rowset.providers.*;
 import sun.reflect.misc.ReflectUtil;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 /**
  * The standard implementation of the <code>CachedRowSet</code> interface.
  *
@@ -58,6 +60,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
     /**
      * The <code>SyncProvider</code> used by the CachedRowSet
      */
+    @SuppressWarnings("serial")
     private SyncProvider provider;
 
     /**
@@ -66,6 +69,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
      * reader as part of its implementation.
      * @serial
      */
+    @SuppressWarnings("serial")
     private RowSetReader rowSetReader;
 
     /**
@@ -74,6 +78,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
      * this writer as part of its implementation.
      * @serial
      */
+    @SuppressWarnings("serial")
     private RowSetWriter rowSetWriter;
 
     /**
@@ -313,6 +318,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
     /**
      * The field object for a transactional RowSet writer
      */
+    @SuppressWarnings("serial")
     private TransactionalWriter tWriter = null;
 
     protected transient JdbcRowSetResourceBundle resBundle;
@@ -351,6 +357,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
      * <P>
      * @throws SQLException if an error occurs
      */
+    @SuppressWarnings("removal")
     public CachedRowSetImpl() throws SQLException {
 
         try {
@@ -593,7 +600,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
 
         super.setCommand(cmd);
 
-        if(!buildTableName(cmd).equals("")) {
+        if(!buildTableName(cmd).isEmpty()) {
             this.setTableName(buildTableName(cmd));
         }
     }
@@ -1599,7 +1606,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
      * @throws SQLException if the given index is out of bounds
      */
     private void checkIndex(int idx) throws SQLException {
-        if (idx < 1 || idx > RowSetMD.getColumnCount()) {
+        if (idx < 1 ||  RowSetMD == null || idx > RowSetMD.getColumnCount()) {
             throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.invalidcol").toString());
         }
     }
@@ -1636,14 +1643,15 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
     private int getColIdxByName(String name) throws SQLException {
         RowSetMD = (RowSetMetaDataImpl)this.getMetaData();
         int cols = RowSetMD.getColumnCount();
-
-        for (int i=1; i <= cols; ++i) {
-            String colName = RowSetMD.getColumnName(i);
-            if (colName != null)
-                if (name.equalsIgnoreCase(colName))
-                    return (i);
-                else
-                    continue;
+        if (RowSetMD != null) {
+            for (int i = 1; i <= cols; ++i) {
+                String colName = RowSetMD.getColumnName(i);
+                if (colName != null)
+                    if (name.equalsIgnoreCase(colName))
+                        return (i);
+                    else
+                        continue;
+            }
         }
         throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.invalcolnm").toString());
 
@@ -1801,7 +1809,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
             return (byte)0;
         }
         try {
-            return ((Byte.valueOf(value.toString())).byteValue());
+            return Byte.parseByte(value.toString());
         } catch (NumberFormatException ex) {
             throw new SQLException(MessageFormat.format(resBundle.handleGetObject("cachedrowsetimpl.bytefail").toString(),
                   new Object[] {value.toString().trim(), columnIndex}));
@@ -1845,7 +1853,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
         }
 
         try {
-            return ((Short.valueOf(value.toString().trim())).shortValue());
+            return Short.parseShort(value.toString().trim());
         } catch (NumberFormatException ex) {
             throw new SQLException(MessageFormat.format(resBundle.handleGetObject("cachedrowsetimpl.shortfail").toString(),
                   new Object[] {value.toString().trim(), columnIndex}));
@@ -1888,7 +1896,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
         }
 
         try {
-            return ((Integer.valueOf(value.toString().trim())).intValue());
+            return Integer.parseInt(value.toString().trim());
         } catch (NumberFormatException ex) {
             throw new SQLException(MessageFormat.format(resBundle.handleGetObject("cachedrowsetimpl.intfail").toString(),
                   new Object[] {value.toString().trim(), columnIndex}));
@@ -1931,7 +1939,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
             return (long)0;
         }
         try {
-            return ((Long.valueOf(value.toString().trim())).longValue());
+            return Long.parseLong(value.toString().trim());
         } catch (NumberFormatException ex) {
             throw new SQLException(MessageFormat.format(resBundle.handleGetObject("cachedrowsetimpl.longfail").toString(),
                   new Object[] {value.toString().trim(), columnIndex}));
@@ -2348,14 +2356,10 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
             return null;
         }
 
-        try {
-            if (isString(RowSetMD.getColumnType(columnIndex))) {
-                asciiStream = new ByteArrayInputStream(((String)value).getBytes("ASCII"));
-            } else {
-                throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.dtypemismt").toString());
-            }
-        } catch (java.io.UnsupportedEncodingException ex) {
-            throw new SQLException(ex.getMessage());
+        if (isString(RowSetMD.getColumnType(columnIndex))) {
+            asciiStream = new ByteArrayInputStream(((String)value).getBytes(US_ASCII));
+        } else {
+            throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.dtypemismt").toString());
         }
 
         return asciiStream;
@@ -7069,7 +7073,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
     public void setMatchColumn(String[] columnNames) throws SQLException {
 
         for(int j = 0; j < columnNames.length; j++) {
-           if( columnNames[j] == null || columnNames[j].equals("")) {
+           if( columnNames[j] == null || columnNames[j].isEmpty()) {
               throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.matchcols2").toString());
            }
         }
@@ -7124,7 +7128,7 @@ public class CachedRowSetImpl extends BaseRowSet implements RowSet, RowSetIntern
      */
     public void setMatchColumn(String columnName) throws SQLException {
         // validate, if col is ok to be set
-        if(columnName == null || (columnName= columnName.trim()).equals("") ) {
+        if(columnName == null || (columnName= columnName.trim()).isEmpty() ) {
             throw new SQLException(resBundle.handleGetObject("cachedrowsetimpl.matchcols2").toString());
         } else {
             // set strMatchColumn

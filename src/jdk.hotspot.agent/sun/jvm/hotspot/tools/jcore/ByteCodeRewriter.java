@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,9 +47,10 @@ public class ByteCodeRewriter
     public static final boolean DEBUG;
 
     static {
-        String debug =  (String) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
+        @SuppressWarnings("removal")
+        String debug = AccessController.doPrivileged(
+            new PrivilegedAction<>() {
+                public String run() {
                     return System.getProperty("sun.jvm.hotspot.tools.jcore.ByteCodeRewriter.DEBUG");
                 }
             }
@@ -117,7 +118,7 @@ public class ByteCodeRewriter
        }
     }
 
-    static private void writeShort(byte[] buf, int index, short value) {
+    private static void writeShort(byte[] buf, int index, short value) {
         buf[index] = (byte) ((value >> 8) & 0x00FF);
         buf[index + 1] = (byte) (value & 0x00FF);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -126,6 +126,11 @@ public class BasicOptionPaneUI extends OptionPaneUI {
             newline = "\n";
         }
     }
+
+    /**
+     * Constructs a {@code BasicOptionPaneUI}.
+     */
+    public BasicOptionPaneUI() {}
 
     static void loadActionMap(LazyActionMap map) {
         map.put(new Actions(Actions.CLOSE));
@@ -959,13 +964,10 @@ public class BasicOptionPaneUI extends OptionPaneUI {
      * the look and feel for based on the value in the inputComponent.
      */
     protected void resetInputValue() {
-        if(inputComponent != null && (inputComponent instanceof JTextField)) {
-            optionPane.setInputValue(((JTextField)inputComponent).getText());
-
-        } else if(inputComponent != null &&
-                  (inputComponent instanceof JComboBox)) {
-            optionPane.setInputValue(((JComboBox)inputComponent)
-                                     .getSelectedItem());
+        if (inputComponent instanceof JTextField textField) {
+            optionPane.setInputValue(textField.getText());
+        } else if (inputComponent instanceof JComboBox<?> comboBox) {
+            optionPane.setInputValue(comboBox.getSelectedItem());
         } else if(inputComponent != null) {
             optionPane.setInputValue(((JList)inputComponent)
                                      .getSelectedValue());
@@ -1257,6 +1259,11 @@ public class BasicOptionPaneUI extends OptionPaneUI {
      * Instantiate it only within subclasses of {@code BasicOptionPaneUI}.
      */
     public class PropertyChangeHandler implements PropertyChangeListener {
+        /**
+         * Constructs a {@code PropertyChangeHandler}.
+         */
+        public PropertyChangeHandler() {}
+
         /**
          * If the source of the PropertyChangeEvent <code>e</code> equals the
          * optionPane and is one of the ICON_PROPERTY, MESSAGE_PROPERTY,

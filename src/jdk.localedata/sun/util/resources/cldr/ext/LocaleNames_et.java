@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -99,11 +95,13 @@ public class LocaleNames_et extends OpenListResourceBundle {
         final String metaValue_ban = "bali";
         final String metaValue_bbc = "bataki";
         final String metaValue_bug = "bugi";
+        final String metaValue_ccp = "t\u0161aakma";
         final String metaValue_chr = "t\u0161erokii";
         final String metaValue_cop = "kopti";
         final String metaValue_gez = "etioopia";
         final String metaValue_got = "gooti";
         final String metaValue_kpe = "kpelle";
+        final String metaValue_mak = "makassari";
         final String metaValue_men = "mende";
         final String metaValue_new = "nevari";
         final String metaValue_nqo = "nkoo";
@@ -112,6 +110,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
         final String metaValue_phn = "foiniikia";
         final String metaValue_sat = "santali";
         final String metaValue_saz = "saura\u0161tra";
+        final String metaValue_sog = "sogdi";
         final String metaValue_syr = "s\u00fc\u00fcria";
         final String metaValue_uga = "ugariti";
         final String metaValue_vai = "vai";
@@ -130,6 +129,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "Zsye", "emoji" },
             { "%%NJIVA", "Gniva/Njiva murre" },
             { "xmf", "megreli" },
+            { "ccp", metaValue_ccp },
             { "egy", "egiptuse" },
             { "raj", "rad\u017eastani" },
             { "Phag", "phakpa" },
@@ -175,6 +175,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "kum", "kum\u00f5ki" },
             { "BE", "Belgia" },
             { "gmh", "kesk\u00fclemsaksa" },
+            { "Sogo", "vanasogdi" },
             { "BF", "Burkina Faso" },
             { "BG", "Bulgaaria" },
             { "BH", "Bahrein" },
@@ -199,6 +200,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.ca.persian", "P\u00e4rsia kalender" },
             { "type.nu.hebr", "heebrea numbrid" },
             { "CA", "Kanada" },
+            { "Kits", "kitani v\u00e4ike kiri" },
             { "CC", "Kookossaared" },
             { "mzn", "mazandaraani" },
             { "CD", "Kongo DV" },
@@ -224,6 +226,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "eka", "ekad\u017euki" },
             { "Ahom", "ahomi" },
             { "vls", "l\u00e4\u00e4neflaami" },
+            { "Sogd", metaValue_sog },
             { "DE", "Saksamaa" },
             { "goh", "vana\u00fclemsaksa" },
             { "ace", "at\u0161ehi" },
@@ -292,14 +295,13 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "pcd", "pikardi" },
             { "tkl", "tokelau" },
             { "grb", "grebo" },
-            { "root", "root" },
             { "type.ca.indian", "India rahvuslik kalender" },
             { "rgn", "romanja" },
             { "grc", "vanakreeka" },
             { "GA", "Gabon" },
             { "tkr", "tsahhi" },
             { "vot", "vadja" },
-            { "GB", "Suurbritannia" },
+            { "GB", "\u00dchendkuningriik" },
             { "pcm", "Nigeeria pid\u017einkeel" },
             { "GD", "Grenada" },
             { "GE", "Gruusia" },
@@ -451,7 +453,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "MH", "Marshalli Saared" },
             { "ale", "aleuudi" },
             { "type.nu.vaii", "vai numbrid" },
-            { "MK", "Makedoonia" },
+            { "MK", "P\u00f5hja-Makedoonia" },
             { "ML", "Mali" },
             { "MM", "Myanmar (Birma)" },
             { "new", metaValue_new },
@@ -462,6 +464,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "MQ", "Martinique" },
             { "MR", "Mauritaania" },
             { "MS", "Montserrat" },
+            { "Chrs", "horezmi" },
             { "MT", "Malta" },
             { "cps", "kapisnoni" },
             { "type.m0.ungegn", "transkriptsioon (UNGEGN)" },
@@ -497,7 +500,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "Phnx", metaValue_phn },
             { "NU", "Niue" },
             { "rof", "rombo" },
-            { "tsi", "t\u0161im\u0161i" },
+            { "tsi", "tsim\u0161i" },
             { "NZ", "Uus-Meremaa" },
             { "Merc", "meroe kursiivkiri" },
             { "rom", "mustlaskeel" },
@@ -546,6 +549,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.nu.takr", "taakri numbrid" },
             { "tvl", "tuvalu" },
             { "Tavt", "tai-vieti" },
+            { "Maka", metaValue_mak },
             { "001", "maailm" },
             { "002", "Aafrika" },
             { "njo", "ao" },
@@ -662,7 +666,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "Sinh", metaValue_si },
             { "UM", "\u00dchendriikide hajasaared" },
             { "liv", "liivi" },
-            { "UN", "\u00dchendatud Rahvaste Organisatsioon" },
+            { "UN", "\u00dchinenud Rahvaste Organisatsioon" },
             { "US", "Ameerika \u00dchendriigid" },
             { "haw", "havai" },
             { "%%1959ACAD", "akadeemiline" },
@@ -684,7 +688,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "VU", "Vanuatu" },
             { "nog", "nogai" },
             { "rwk", "rvaa" },
-            { "non", "vanap\u00f5hjala" },
+            { "non", "vanap\u00f5hja" },
             { "053", "Australaasia" },
             { "%%AREVMDA", "l\u00e4\u00e4nearmeenia" },
             { "054", "Melaneesia" },
@@ -697,13 +701,15 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.nu.finance", "finantsnumbrid" },
             { "%%HEPBURN", "Hepburni latinisatsioon" },
             { "type.co.compat", "varasem sortimisj\u00e4rjestus (\u00fchilduvuse jaoks)" },
-            { "wae", "walseri" },
+            { "wae", "valsi" },
             { "WS", "Samoa" },
             { "Bass", "bassa" },
             { "type.nu.mtei", "meitei numbrid" },
             { "wal", "volaita" },
             { "was", "va\u0161o" },
+            { "XA", "pseudo-aktsent" },
             { "war", "varai" },
+            { "XB", "pseudo-Bidi" },
             { "awa", "avadhi" },
             { "061", "Pol\u00fcneesia" },
             { "%%KSCOR", "normitud kirjaviis" },
@@ -736,7 +742,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "ZM", "Sambia" },
             { "%%PINYIN", "pinyin" },
             { "ZW", "Zimbabwe" },
-            { "ZZ", "Tundmatu piirkond" },
+            { "ZZ", "tundmatu piirkond" },
             { "Runr", "ruunikiri" },
             { "type.ms.metric", "meeterm\u00f5\u00f5dustik" },
             { "type.ca.iso8601", "ISO-8601 kalender" },
@@ -784,12 +790,13 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.nu.native", "kohalikud numbrid" },
             { "sba", "ngambai" },
             { "Guru", "gurmukhi" },
+            { "type.nu.diak", "divehi numbrid" },
             { "lua", "lulua" },
             { "type.nu.tirh", "tirhuta numbrid" },
             { "type.d0.fwidth", "t\u00e4islaius" },
             { "sbp", "sangu" },
             { "lui", "luisenjo" },
-            { "nyn", "nkole" },
+            { "nyn", "njankole" },
             { "nym", "njamvesi" },
             { "lun", "lunda" },
             { "nyo", "njoro" },
@@ -815,6 +822,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "scn", "sitsiilia" },
             { "aa", "afari" },
             { "ab", "abhaasi" },
+            { "Aran", "nastaliik" },
             { "bbc", metaValue_bbc },
             { "ae", metaValue_ae },
             { "af", "afrikaani" },
@@ -835,6 +843,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "sdh", "l\u00f5unakurdi" },
             { "ay", "aimara" },
             { "az", "aserbaid\u017eaani" },
+            { "Rohg", "rohingja" },
             { "Khoj", "hod\u017eki" },
             { "%%OSOJS", "Oseacco/Osojane murre" },
             { "ba", "ba\u0161kiiri" },
@@ -934,7 +943,9 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "sid", "sidamo" },
             { "fy", "l\u00e4\u00e4nefriisi" },
             { "ga", "iiri" },
+            { "Wcho", "vant\u0161o" },
             { "gd", "gaeli" },
+            { "Gong", "G\u016bnj\u0101la gondi" },
             { "gl", "galeegi" },
             { "Gonm", "Masarami gondi" },
             { "gn", "guaranii" },
@@ -965,7 +976,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.nu.tibt", "tiibeti numbrid" },
             { "ie", "interlingue" },
             { "ig", "ibo" },
-            { "ii", "Sichuani jii" },
+            { "ii", "nuosu" },
             { "frm", "keskprantsuse" },
             { "ik", "injupiaki" },
             { "fro", "vanaprantsuse" },
@@ -996,8 +1007,8 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "mai", "maithili" },
             { "smn", "Inari saami" },
             { "ka", metaValue_ka },
+            { "mak", metaValue_mak },
             { "bla", "mustjalaindiaani" },
-            { "mak", "makassari" },
             { "wuu", "uu" },
             { "sms", "koltasaami" },
             { "man", "malinke" },
@@ -1036,9 +1047,9 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "type.ms.uksystem", "inglise m\u00f5\u00f5dustik" },
             { "type.nu.lana", "tai tham hora numbrid" },
             { "lt", "leedu" },
-            { "lu", "luba" },
+            { "lu", "Katanga luba" },
+            { "sog", metaValue_sog },
             { "lv", "l\u00e4ti" },
-            { "sog", "sogdi" },
             { "mg", "malagassi" },
             { "mh", "mar\u0161alli" },
             { "type.co.ducet", "Unicode\u2019i sortimise vaikej\u00e4rjestus" },
@@ -1175,6 +1186,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "%%NEDIS", "Natisone murre" },
             { "sv", "rootsi" },
             { "sw", "suahiili" },
+            { "type.nu.wcho", "vant\u0161o numbrid" },
             { "type.nu.hantfin", "traditsioonilise hiina keele finantsnumbrid" },
             { "ibb", "ibibio" },
             { "iba", "ibani" },
@@ -1198,9 +1210,9 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "dyo", "fonji" },
             { "type.nu.jpan", "jaapani numbrid" },
             { "tr", "t\u00fcrgi" },
+            { "Cakm", metaValue_ccp },
             { "ts", "tsonga" },
             { "swb", "komoori" },
-            { "Cakm", "t\u0161aakma" },
             { "tt", "tatari" },
             { "dyu", "djula" },
             { "tw", "tvii" },
@@ -1208,6 +1220,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "%%BISKE", "San Giorgio/Bila murre" },
             { "150", "Euroopa" },
             { "151", "Ida-Euroopa" },
+            { "type.nu.rohg", "rohingja numbrid" },
             { "154", "P\u00f5hja-Euroopa" },
             { "dzg", "daza" },
             { "155", "L\u00e4\u00e4ne-Euroopa" },
@@ -1241,12 +1254,12 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "syc", "vanas\u00fc\u00fcria" },
             { "Osma", "osmani" },
             { "quc", "kit\u0161e" },
-            { "type.nu.gonm", "masaram gondi numbrid" },
+            { "type.nu.gonm", "Masarami gondi numbrid" },
             { "Newa", metaValue_new },
-            { "gaa", "gaa" },
             { "wa", "vallooni" },
             { "gag", "gagauusi" },
             { "syr", metaValue_syr },
+            { "type.nu.gong", "G\u016bnj\u0101la gondi numbrid" },
             { "Grek", metaValue_el },
             { "gan", "kani" },
             { "kiu", "k\u00f5rmand\u017eki" },
@@ -1254,7 +1267,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "Xsux", "sumeri-akadi kiilkiri" },
             { "wo", "volofi" },
             { "zgh", "tamasikti (Maroko)" },
-            { "ar_001", "araabia (t\u00e4nap\u00e4evane)" },
+            { "ar_001", "t\u00e4nap\u00e4eva araabia kirjakeel" },
             { "Cans", "Kanada p\u00f5lisrahvaste \u00fchtlustatud silpkiri" },
             { "gay", "gajo" },
             { "Mong", metaValue_mn },
@@ -1337,6 +1350,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "ilo", "iloko" },
             { "%%VALENCIA", "valentsia" },
             { "Cprt", "K\u00fcprose silpkiri" },
+            { "Diak", "divehi" },
             { "%%BAKU1926", "\u00fchtlustatud t\u00fcrgi-ladina t\u00e4hestik" },
             { "%%IJEKAVSK", "\u0161tokavi ije-line murrak" },
             { "mua", "mundangi" },
@@ -1356,6 +1370,7 @@ public class LocaleNames_et extends OpenListResourceBundle {
             { "inh", "ingu\u0161i" },
             { "krj", "kinaraia" },
             { "kri", "krio" },
+            { "fa_AF", "dari" },
             { "krl", "karjala" },
             { "efi", "efiki" },
             { "tcy", "tulu" },

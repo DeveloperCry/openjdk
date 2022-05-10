@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,6 +49,7 @@ public interface XMLEventConsumer {
    * is undefined.
    *
    * @param event the event to add, may not be null
+   * @throws XMLStreamException if there is an error in adding the event
    */
   public void add(XMLEvent event)
     throws XMLStreamException;

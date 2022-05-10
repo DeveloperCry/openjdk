@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,6 +64,11 @@ import java.awt.Image;
  */
 public abstract class AbstractMultiResolutionImage extends java.awt.Image
         implements MultiResolutionImage {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected AbstractMultiResolutionImage() {}
 
     /**
      * This method simply delegates to the same method on the base image and

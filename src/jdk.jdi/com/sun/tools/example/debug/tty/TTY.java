@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,15 +40,31 @@ import com.sun.jdi.request.*;
 import com.sun.jdi.connect.*;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.io.*;
 
 public class TTY implements EventNotifier {
+    /**
+     * Commands that are repeatable on empty input.
+     */
+    protected static final Set<String> REPEATABLE = Set.of(
+        "up", "down", "step", "stepi", "next", "cont", "list", "pop", "reenter"
+    );
+
+    /**
+     * Commands that reset the default source line to be displayed by {@code list}.
+     */
+    protected static final Set<String> LIST_RESET = Set.of(
+        "run", "suspend", "resume", "up", "down", "kill", "interrupt", "threadgroup", "step", "stepi", "next", "cont",
+        "pop", "reenter"
+    );
+
     EventHandler handler = null;
 
     /**
      * List of Strings to execute at each stop.
      */
-    private List<String> monitorCommands = new ArrayList<String>();
+    private List<String> monitorCommands = new CopyOnWriteArrayList<>();
     private int monitorCount = 0;
 
     /**
@@ -57,6 +73,16 @@ public class TTY implements EventNotifier {
     private static final String progname = "jdb";
 
     private volatile boolean shuttingDown = false;
+
+    /**
+     * The number of the next source line to target for {@code list}, if any.
+     */
+    protected Integer nextListTarget = null;
+
+    /**
+     * Whether to repeat when the user enters an empty command.
+     */
+    protected boolean repeat = false;
 
     public void setShuttingDown(boolean s) {
        shuttingDown = s;
@@ -100,6 +126,17 @@ public class TTY implements EventNotifier {
     public void breakpointEvent(BreakpointEvent be)  {
         Thread.yield();  // fetch output
         MessageOutput.lnprint("Breakpoint hit:");
+        // Print breakpoint location and prompt if suspend policy is
+        // SUSPEND_NONE or SUSPEND_EVENT_THREAD. In case of SUSPEND_ALL
+        // policy this is handled by vmInterrupted() method.
+        int suspendPolicy = be.request().suspendPolicy();
+        switch (suspendPolicy) {
+            case EventRequest.SUSPEND_EVENT_THREAD:
+            case EventRequest.SUSPEND_NONE:
+                printBreakpointLocation(be);
+                MessageOutput.printPrompt();
+                break;
+        }
     }
 
     @Override
@@ -227,6 +264,10 @@ public class TTY implements EventNotifier {
                                              Commands.locationString(loc)});
     }
 
+    private void printBreakpointLocation(BreakpointEvent be) {
+        printLocationWithSourceLine(be.thread().name(), be.location());
+    }
+
     private void printCurrentLocation() {
         ThreadInfo threadInfo = ThreadInfo.getCurrentThreadInfo();
         StackFrame frame;
@@ -239,24 +280,27 @@ public class TTY implements EventNotifier {
         if (frame == null) {
             MessageOutput.println("No frames on the current call stack");
         } else {
-            Location loc = frame.location();
-            printBaseLocation(threadInfo.getThread().name(), loc);
-            // Output the current source line, if possible
-            if (loc.lineNumber() != -1) {
-                String line;
-                try {
-                    line = Env.sourceLine(loc, loc.lineNumber());
-                } catch (java.io.IOException e) {
-                    line = null;
-                }
-                if (line != null) {
-                    MessageOutput.println("source line number and line",
-                                          new Object [] {loc.lineNumber(),
-                                                         line});
-                }
-            }
+            printLocationWithSourceLine(threadInfo.getThread().name(), frame.location());
         }
         MessageOutput.println();
+    }
+
+    private void printLocationWithSourceLine(String threadName, Location loc) {
+        printBaseLocation(threadName, loc);
+        // Output the current source line, if possible
+        if (loc.lineNumber() != -1) {
+            String line;
+            try {
+                line = Env.sourceLine(loc, loc.lineNumber());
+            } catch (java.io.IOException e) {
+                line = null;
+            }
+            if (line != null) {
+                MessageOutput.println("source line number and line",
+                                           new Object [] {loc.lineNumber(),
+                                                          line});
+            }
+        }
     }
 
     private void printLocationOfEvent(LocatableEvent theEvent) {
@@ -286,6 +330,7 @@ public class TTY implements EventNotifier {
         {"clear",        "y",         "n"},
         {"connectors",   "y",         "y"},
         {"cont",         "n",         "n"},
+        {"dbgtrace",     "y",         "y"},
         {"disablegc",    "n",         "n"},
         {"down",         "n",         "y"},
         {"dump",         "n",         "y"},
@@ -315,6 +360,7 @@ public class TTY implements EventNotifier {
         {"read",         "y",         "y"},
         {"redefine",     "n",         "n"},
         {"reenter",      "n",         "n"},
+        {"repeat",       "y",         "y"},
         {"resume",       "n",         "n"},
         {"run",          "y",         "n"},
         {"save",         "n",         "n"},
@@ -388,11 +434,14 @@ public class TTY implements EventNotifier {
     };
 
 
-    void executeCommand(StringTokenizer t) {
+    /**
+     * @return the name (first token) of the command processed
+     */
+    String executeCommand(StringTokenizer t) {
         String cmd = t.nextToken().toLowerCase();
+
         // Normally, prompt for the next command after this one is done
         boolean showPrompt = true;
-
 
         /*
          * Anything starting with # is discarded as a no-op or 'comment'.
@@ -406,8 +455,8 @@ public class TTY implements EventNotifier {
                 try {
                     int repeat = Integer.parseInt(cmd);
                     String subcom = t.nextToken("");
-                    while (repeat-- > 0) {
-                        executeCommand(new StringTokenizer(subcom));
+                    for (int r = 0; r < repeat; r += 1) {
+                        cmd = executeCommand(new StringTokenizer(subcom));
                         showPrompt = false; // Bypass the printPrompt() below.
                     }
                 } catch (NumberFormatException exc) {
@@ -415,6 +464,7 @@ public class TTY implements EventNotifier {
                 }
             } else {
                 int commandNumber = isCommand(cmd);
+
                 /*
                  * Check for an unknown command
                  */
@@ -428,7 +478,6 @@ public class TTY implements EventNotifier {
                     MessageOutput.println("Command is not supported on a read-only VM connection",
                                           cmd);
                 } else {
-
                     Commands evaluator = new Commands();
                     try {
                         if (cmd.equals("print")) {
@@ -464,6 +513,8 @@ public class TTY implements EventNotifier {
                         } else if (cmd.equals("resume")) {
                             evaluator.commandResume(t);
                         } else if (cmd.equals("cont")) {
+                            MessageOutput.printPrompt(true);
+                            showPrompt = false;
                             evaluator.commandCont();
                         } else if (cmd.equals("threadgroups")) {
                             evaluator.commandThreadGroups();
@@ -474,12 +525,19 @@ public class TTY implements EventNotifier {
                         } else if (cmd.equals("ignore")) {
                             evaluator.commandIgnoreException(t);
                         } else if (cmd.equals("step")) {
+                            MessageOutput.printPrompt(true);
+                            showPrompt = false;
                             evaluator.commandStep(t);
                         } else if (cmd.equals("stepi")) {
+                            MessageOutput.printPrompt(true);
+                            showPrompt = false;
                             evaluator.commandStepi();
                         } else if (cmd.equals("next")) {
+                            MessageOutput.printPrompt(true);
+                            showPrompt = false;
                             evaluator.commandNext();
                         } else if (cmd.equals("kill")) {
+                            showPrompt = false;        // asynchronous command
                             evaluator.commandKill(t);
                         } else if (cmd.equals("interrupt")) {
                             evaluator.commandInterrupt(t);
@@ -521,7 +579,7 @@ public class TTY implements EventNotifier {
                         } else if (cmd.equals("unwatch")) {
                             evaluator.commandUnwatch(t);
                         } else if (cmd.equals("list")) {
-                            evaluator.commandList(t);
+                            nextListTarget = evaluator.commandList(t, repeat ? nextListTarget : null);
                         } else if (cmd.equals("lines")) { // Undocumented command: useful for testing.
                             evaluator.commandLines(t);
                         } else if (cmd.equals("classpath")) {
@@ -560,11 +618,15 @@ public class TTY implements EventNotifier {
                             evaluator.commandExclude(t);
                         } else if (cmd.equals("read")) {
                             readCommand(t);
+                        } else if (cmd.equals("dbgtrace")) {
+                            evaluator.commandDbgTrace(t);
                         } else if (cmd.equals("help") || cmd.equals("?")) {
                             help();
                         } else if (cmd.equals("version")) {
                             evaluator.commandVersion(progname,
                                                      Bootstrap.virtualMachineManager());
+                        } else if (cmd.equals("repeat")) {
+                            doRepeat(t);
                         } else if (cmd.equals("quit") || cmd.equals("exit")) {
                             if (handler != null) {
                                 handler.shutdown();
@@ -589,6 +651,12 @@ public class TTY implements EventNotifier {
         if (showPrompt) {
             MessageOutput.printPrompt();
         }
+
+        if (LIST_RESET.contains(cmd)) {
+            nextListTarget = null;
+        }
+
+        return cmd;
     }
 
     /*
@@ -630,7 +698,6 @@ public class TTY implements EventNotifier {
         }
     }
 
-
     void readCommand(StringTokenizer t) {
         if (t.hasMoreTokens()) {
             String cmdfname = t.nextToken();
@@ -639,6 +706,19 @@ public class TTY implements EventNotifier {
             }
         } else {
             MessageOutput.println("Usage: read <command-filename>");
+        }
+    }
+
+    protected void doRepeat(StringTokenizer t) {
+        if (t.hasMoreTokens()) {
+            var choice = t.nextToken().toLowerCase();
+            if ((choice.equals("on") || choice.equals("off")) && !t.hasMoreTokens()) {
+                repeat = choice.equals("on");
+            } else {
+                MessageOutput.println("repeat usage");
+            }
+        } else {
+            MessageOutput.println(repeat ? "repeat is on" : "repeat is off");
         }
     }
 
@@ -718,8 +798,6 @@ public class TTY implements EventNotifier {
             BufferedReader in =
                     new BufferedReader(new InputStreamReader(System.in));
 
-            String lastLine = null;
-
             Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 
             /*
@@ -757,6 +835,9 @@ public class TTY implements EventNotifier {
 
             // Process interactive commands.
             MessageOutput.printPrompt();
+
+            String lastLine = null;
+            String lastCommandName = null;
             while (true) {
                 String ln = in.readLine();
                 if (ln == null) {
@@ -778,7 +859,11 @@ public class TTY implements EventNotifier {
                 StringTokenizer t = new StringTokenizer(ln);
                 if (t.hasMoreTokens()) {
                     lastLine = ln;
-                    executeCommand(t);
+                    lastCommandName = executeCommand(t);
+                } else if (repeat && lastLine != null && REPEATABLE.contains(lastCommandName)) {
+                    // We want list auto-advance even if the user started with a listing target.
+                    String newCommand = lastCommandName.equals("list") && nextListTarget != null ? "list" : lastLine;
+                    executeCommand(new StringTokenizer(newCommand));
                 } else {
                     MessageOutput.printPrompt();
                 }
@@ -901,7 +986,7 @@ public class TTY implements EventNotifier {
                    // Old-style options (These should remain in place as long as
                    //  the standard VM accepts them)
                    token.equals("-noasyncgc") || token.equals("-prof") ||
-                   token.equals("-verify") || token.equals("-noverify") ||
+                   token.equals("-verify") ||
                    token.equals("-verifyremote") ||
                    token.equals("-verbosegc") ||
                    token.startsWith("-ms") || token.startsWith("-mx") ||
@@ -1038,8 +1123,8 @@ public class TTY implements EventNotifier {
         /*
          * Here are examples of jdb command lines and how the options
          * are interpreted as arguments to the program being debugged.
-         * arg1       arg2
-         * ----       ----
+         *                     arg1       arg2
+         *                     ----       ----
          * jdb hello a b       a          b
          * jdb hello "a b"     a b
          * jdb hello a,b       a,b
@@ -1076,14 +1161,10 @@ public class TTY implements EventNotifier {
                            connectSpec);
                 return;
             }
-            connectSpec += "options=" + javaArgs + ",";
         }
 
         try {
-            if (! connectSpec.endsWith(",")) {
-                connectSpec += ","; // (Bug ID 4285874)
-            }
-            Env.init(connectSpec, launchImmediately, traceFlags);
+            Env.init(connectSpec, launchImmediately, traceFlags, javaArgs);
             new TTY();
         } catch(Exception e) {
             MessageOutput.printException("Internal exception:", e);

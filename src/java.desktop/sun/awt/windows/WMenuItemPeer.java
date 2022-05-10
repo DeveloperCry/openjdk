@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import sun.util.logging.PlatformLogger;
 
+@SuppressWarnings("removal")
 class WMenuItemPeer extends WObjectPeer implements MenuItemPeer {
     private static final PlatformLogger log = PlatformLogger.getLogger("sun.awt.WMenuItemPeer");
 

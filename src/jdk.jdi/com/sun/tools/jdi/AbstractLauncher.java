@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,14 +46,14 @@ import com.sun.jdi.connect.spi.TransportService;
 abstract class AbstractLauncher extends ConnectorImpl
                                 implements LaunchingConnector
 {
-    abstract public VirtualMachine
+    public abstract VirtualMachine
         launch(Map<String, ? extends Connector.Argument> arguments)
         throws IOException, IllegalConnectorArgumentsException,
                VMStartException;
 
-    abstract public String name();
+    public abstract String name();
 
-    abstract public String description();
+    public abstract String description();
 
     ThreadGroup grp;
 

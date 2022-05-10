@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -58,6 +58,7 @@ public class MarshalOutputStream extends ObjectOutputStream
     /**
      * Creates a marshal output stream with the given protocol version.
      */
+    @SuppressWarnings("removal")
     public MarshalOutputStream(OutputStream out, int protocolVersion)
         throws IOException
     {

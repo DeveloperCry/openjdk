@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -59,7 +59,7 @@ public class ResourceResolverException extends XMLSecurityException {
      * @param uri
      * @param baseURI
      */
-    public ResourceResolverException(String msgID, Object exArgs[], String uri,
+    public ResourceResolverException(String msgID, Object[] exArgs, String uri,
                                      String baseURI) {
         super(msgID, exArgs);
 
@@ -99,7 +99,7 @@ public class ResourceResolverException extends XMLSecurityException {
      * @param exArgs
      */
     public ResourceResolverException(Exception originalException, String uri,
-                                     String baseURI, String msgID, Object exArgs[]) {
+                                     String baseURI, String msgID, Object[] exArgs) {
         super(originalException, msgID, exArgs);
 
         this.uri = uri;
@@ -107,7 +107,7 @@ public class ResourceResolverException extends XMLSecurityException {
     }
 
     @Deprecated
-    public ResourceResolverException(String msgID, Object exArgs[],
+    public ResourceResolverException(String msgID, Object[] exArgs,
                                      Exception originalException, String uri,
                                      String baseURI) {
         this(originalException, uri, baseURI, msgID, exArgs);

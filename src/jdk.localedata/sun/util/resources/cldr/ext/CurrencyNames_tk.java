@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -93,11 +89,11 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "BTN", "BTN" },
             { "BWP", "BWP" },
             { "BYN", "BYN" },
-            { "BYR", "BYR" },
             { "BZD", "BZD" },
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "COP", "COP" },
             { "CRC", "CRC" },
             { "CUC", "CUC" },
@@ -153,6 +149,7 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -187,7 +184,7 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "SOS", "SOS" },
             { "SRD", "SRD" },
             { "SSP", "SSP" },
-            { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -203,6 +200,7 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
@@ -213,12 +211,12 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "all", "Alban leki" },
             { "amd", "Ermeni dramy" },
             { "ang", "Niderland antil guldeni" },
-            { "aoa", "Angol kwanzasy" },
+            { "aoa", "Angola kwanzasy" },
             { "ars", "Argentin pesosy" },
             { "aud", "Awstrali\u00fda dollary" },
             { "awg", "Aruba florini" },
             { "azn", "Azerba\u00fdjan manady" },
-            { "bam", "Konwertirlen\u00fd\u00e4n Bosni\u00fda we Gersogowina markasy" },
+            { "bam", "Konwertirlen\u00fd\u00e4n Bosni\u00fda we Gersegowina markasy" },
             { "bbd", "Barbados dollary" },
             { "bdt", "Banglade\u015f takasy" },
             { "bgn", "Bolgar lewi" },
@@ -238,7 +236,7 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "cdf", "Kongo franky" },
             { "chf", "\u015ewe\u00fdsar franky" },
             { "clp", "\u00c7ili pesosy" },
-            { "cnh", "CNH" },
+            { "cnh", "Hyta\u00fd \u00fduany (of\u015for)" },
             { "cny", "Hyta\u00fd \u00fduany" },
             { "cop", "Kolumbi\u00fda pesosy" },
             { "crc", "Kosta-Rika kolony" },
@@ -342,7 +340,7 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "syp", "Siri\u00fda funty" },
             { "szl", "Swazi lilangeni" },
             { "thb", "Ta\u00fdland baty" },
-            { "tjs", "T\u00e4jik somonisy" },
+            { "tjs", "T\u00e4jik somonisi" },
             { "tmt", "T\u00fcrkmen manady" },
             { "tnd", "Tunis dinary" },
             { "top", "Tonga paangasy" },
@@ -355,7 +353,8 @@ public class CurrencyNames_tk extends OpenListResourceBundle {
             { "usd", "AB\u015e dollary" },
             { "uyu", "Urugwa\u00fd pesosy" },
             { "uzs", "\u00d6zbek somy" },
-            { "vef", "Wenesuela boliwary" },
+            { "vef", "Wenesuela boliwary (2008\u20132018)" },
+            { "ves", "Wenesuela boliwary" },
             { "vnd", "W\u00fdetnam dongy" },
             { "vuv", "Wanuatu watusy" },
             { "wst", "Samoa talasy" },

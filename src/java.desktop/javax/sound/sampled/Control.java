@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,13 +66,13 @@ public abstract class Control {
     }
 
     /**
-     * Obtains a string describing the control type and its current state.
+     * Returns a string representation of the control.
      *
      * @return a string representation of the control
      */
     @Override
     public String toString() {
-        return new String(getType() + " Control");
+        return String.format("%s control", getType());
     }
 
     /**
@@ -120,10 +120,9 @@ public abstract class Control {
         }
 
         /**
-         * Provides the {@code String} representation of the control type. This
-         * {@code String} is the same name that was passed to the constructor.
+         * Returns type's name as the string representation of the control type.
          *
-         * @return the control type name
+         * @return a string representation of the control type
          */
         @Override
         public final String toString() {

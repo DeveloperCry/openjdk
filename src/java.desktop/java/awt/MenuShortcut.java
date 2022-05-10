@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,10 +22,12 @@
  *
  *
  */
+
 package java.awt;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 
 /**
  * The {@code MenuShortcut} class represents a keyboard accelerator
@@ -87,9 +89,10 @@ public class MenuShortcut implements java.io.Serializable
      */
     boolean usesShift;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+     @Serial
      private static final long serialVersionUID = 143448358473180225L;
 
     /**

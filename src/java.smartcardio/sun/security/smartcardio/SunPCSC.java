@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,6 +65,7 @@ public final class SunPCSC extends Provider {
         }
     }
 
+    @SuppressWarnings("removal")
     public SunPCSC() {
         super("SunPCSC", PROVIDER_VER, "Sun PC/SC provider");
 

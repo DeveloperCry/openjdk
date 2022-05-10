@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,8 +41,8 @@ public class CharValueImpl extends PrimitiveValueImpl
     }
 
     public boolean equals(Object obj) {
-        if ((obj != null) && (obj instanceof CharValue)) {
-            return (value == ((CharValue)obj).value()) &&
+        if (obj instanceof CharValue other) {
+            return (value == other.value()) &&
                    super.equals(obj);
         } else {
             return false;

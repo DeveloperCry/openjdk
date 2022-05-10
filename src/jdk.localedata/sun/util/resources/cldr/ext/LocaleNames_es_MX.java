@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -79,7 +75,6 @@ public class LocaleNames_es_MX extends OpenListResourceBundle {
             { "034", "Asia meridional" },
             { "035", "Sudeste Asi\u00e1tico" },
             { "039", "Europa meridional" },
-            { "057", "Regi\u00f3n de Micronesia" },
             { "145", "Asia Occidental" },
             { "151", "Europa Oriental" },
             { "154", "Europa septentrional" },
@@ -88,27 +83,26 @@ public class LocaleNames_es_MX extends OpenListResourceBundle {
             { "CI", "C\u00f4te d\u2019Ivoire" },
             { "EZ", "zona euro" },
             { "GG", "Guernsey" },
+            { "RO", "Rumania" },
+            { "SA", "Arabia Saudita" },
+            { "SZ", "Eswatini" },
             { "TA", "Trist\u00e1n de Acu\u00f1a" },
-            { "TL", "Timor-Leste" },
             { "UM", "Islas menores alejadas de EE. UU." },
-            { "UN", "UN" },
-            { "VI", "Islas V\u00edrgenes de EE. UU." },
+            { "UN", "ONU" },
             { "eu", "euskera" },
             { "lo", "lao" },
             { "nr", "ndebele meridional" },
             { "pa", "punyab\u00ed" },
-            { "rn", "kiroundi" },
             { "ss", "siswati" },
-            { "st", "sesotho meridional" },
             { "sw", "suajili" },
             { "tn", "setswana" },
-            { "wo", "wolof" },
             { "ace", "acehn\u00e9s" },
             { "arp", "arapaho" },
             { "bas", "basa" },
             { "bax", "bamun" },
-            { "bho", "bhojpuri" },
+            { "bho", "bhoshpuri" },
             { "bla", "siksika" },
+            { "bua", "buriat" },
             { "dum", "neerland\u00e9s medieval" },
             { "enm", "ingl\u00e9s medieval" },
             { "frm", "franc\u00e9s medieval" },
@@ -116,62 +110,29 @@ public class LocaleNames_es_MX extends OpenListResourceBundle {
             { "gmh", "alem\u00e1n de la alta edad media" },
             { "grc", "griego antiguo" },
             { "hak", "kejia (China)" },
+            { "hil", "hiligain\u00f3n" },
             { "hsn", "xiang (China)" },
+            { "inh", "ingusetio" },
             { "kbd", "kabardiano" },
+            { "krc", "karach\u00e1i b\u00e1lkaro" },
+            { "kum", "cumuco" },
             { "lus", "lushai" },
             { "mga", "irland\u00e9s medieval" },
             { "nan", "min nan (Chino)" },
             { "nso", "sotho septentrional" },
-            { "pcm", "pcm" },
             { "shu", "\u00e1rabe chadiano" },
             { "syr", "siriaco" },
             { "tet", "tet\u00fan" },
-            { "wuu", "wuu" },
+            { "tyv", "tuviniano" },
+            { "wuu", "chino wu" },
+            { "xal", "kalmyk" },
             { "zgh", "tamazight marroqu\u00ed est\u00e1ndar" },
             { "Hanb", "hanb" },
             { "Mlym", "malay\u00e1lam" },
-            { "Telu", "telug\u00fa" },
             { "sw_CD", "suajili del Congo" },
-            { "key.ca", "Calendario" },
-            { "key.co", "Orden" },
-            { "key.cu", "Moneda" },
             { "type.ca.roc", "calendario minguo" },
-            { "type.m0.bgn", "BGN" },
-            { "type.nu.arab", "D\u00edgitos en ar\u00e1bigo-\u00edndico" },
-            { "type.nu.armn", "N\u00fameros en armenio" },
-            { "type.nu.ethi", "N\u00fameros en et\u00edope" },
-            { "type.nu.geor", "N\u00fameros en georgiano" },
-            { "type.nu.grek", "N\u00fameros en griego" },
             { "type.nu.gujr", "d\u00edgitos en gujarati" },
-            { "type.nu.guru", "D\u00edgitos en gurmuji" },
-            { "type.nu.hans", "N\u00fameros en chino simplificado" },
-            { "type.nu.hant", "N\u00fameros en chino tradicional" },
-            { "type.nu.hebr", "N\u00fameros en hebreo" },
-            { "type.nu.knda", "n\u00fameros en kannada" },
-            { "type.nu.laoo", "D\u00edgitos en lao" },
-            { "type.nu.mlym", "D\u00edgitos en malabar" },
-            { "type.nu.taml", "N\u00fameros en tamil" },
-            { "type.nu.telu", "D\u00edgitos en telug\u00fa" },
-            { "type.nu.tibt", "D\u00edgitos en tibetano" },
             { "type.co.ducet", "orden de clasificaci\u00f3n de Unicode predeterminado" },
-            { "type.d0.fwidth", "Ancho completo" },
-            { "type.d0.hwidth", "Ancho medio" },
-            { "type.lb.normal", "salto de l\u00ednea normal" },
-            { "type.m0.ungegn", "UNGEGN" },
-            { "type.ms.metric", "sistema m\u00e9trico" },
-            { "type.nu.arabext", "D\u00edgitos en \u00e1rabigo-\u00edndico extendido" },
-            { "type.nu.armnlow", "N\u00fameros en armenio en min\u00fascula" },
-            { "type.nu.greklow", "N\u00fameros en griego en min\u00fascula" },
-            { "type.nu.hanidec", "Numeros decimales en chino" },
-            { "type.nu.hansfin", "N\u00fameros financieros en chino simplificado" },
-            { "type.nu.hantfin", "N\u00fameros financieros en chino tradicional" },
-            { "type.nu.jpanfin", "N\u00fameros financieros en japon\u00e9s" },
-            { "type.nu.tamldec", "D\u00edgitos en tamil" },
-            { "type.co.standard", "Orden est\u00e1ndar" },
-            { "type.ms.uksystem", "sistema imperial" },
-            { "type.ms.ussystem", "sistema estadounidense" },
-            { "type.ca.gregorian", "Calendario gregoriano" },
-            { "type.co.traditional", "Orden tradicional" },
         };
         return data;
     }

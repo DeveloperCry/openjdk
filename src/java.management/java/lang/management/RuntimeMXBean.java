@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -74,6 +74,7 @@ public interface RuntimeMXBean extends PlatformManagedObject {
      *
      * @since 10
      */
+    @SuppressWarnings("removal")
     public default long getPid() {
         return AccessController.doPrivileged((PrivilegedAction<Long>)
                 () -> ProcessHandle.current().pid());

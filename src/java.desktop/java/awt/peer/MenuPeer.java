@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 1998, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,13 +37,6 @@ import java.awt.MenuItem;
  * instances.
  */
 public interface MenuPeer extends MenuItemPeer {
-
-    /**
-     * Adds a separator (e.g. a horizontal line or similar) to the menu.
-     *
-     * @see Menu#addSeparator()
-     */
-    void addSeparator();
 
     /**
      * Adds the specified menu item to the menu.

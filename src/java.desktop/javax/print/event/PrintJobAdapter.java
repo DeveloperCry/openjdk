@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,6 +35,11 @@ package javax.print.event;
  * methods you need, rather than all of the methods.
  */
 public abstract class PrintJobAdapter implements PrintJobListener {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected PrintJobAdapter() {}
 
     /**
      * Called to notify the client that data has been successfully transferred

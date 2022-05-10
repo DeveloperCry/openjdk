@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,7 @@ import java.io.IOException;
 /*
  * Windows implementation of sun.management.FileSystem
  */
+@SuppressWarnings("removal")
 public class FileSystemImpl extends FileSystem {
 
     public boolean supportsFileSecurity(File f) throws IOException {

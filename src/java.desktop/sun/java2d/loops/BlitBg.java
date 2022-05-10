@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,18 +25,17 @@
 
 package sun.java2d.loops;
 
-import java.awt.Font;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.AlphaComposite;
-import java.awt.Transparency;
+import java.awt.Font;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.awt.image.BufferedImage;
+
 import sun.awt.image.BufImgSurfaceData;
-import sun.java2d.loops.GraphicsPrimitive;
-import sun.java2d.SurfaceData;
 import sun.java2d.SunGraphics2D;
+import sun.java2d.SurfaceData;
 import sun.java2d.pipe.Region;
 
 /**
@@ -118,9 +117,9 @@ public class BlitBg extends GraphicsPrimitive
         GraphicsPrimitiveMgr.registerGeneral(new BlitBg(null, null, null));
     }
 
-    public GraphicsPrimitive makePrimitive(SurfaceType srctype,
-                                           CompositeType comptype,
-                                           SurfaceType dsttype)
+    protected GraphicsPrimitive makePrimitive(SurfaceType srctype,
+                                              CompositeType comptype,
+                                              SurfaceType dsttype)
     {
         /*
         System.out.println("Constructing general blitbg for:");

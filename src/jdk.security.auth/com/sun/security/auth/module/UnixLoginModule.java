@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -71,6 +71,11 @@ public class UnixLoginModule implements LoginModule {
     private UnixNumericGroupPrincipal GIDPrincipal;
     private LinkedList<UnixNumericGroupPrincipal> supplementaryGroups =
                 new LinkedList<>();
+
+    /**
+     * Creates a {@code UnixLoginModule}.
+     */
+    public UnixLoginModule() {}
 
     /**
      * Initialize this {@code LoginModule}.

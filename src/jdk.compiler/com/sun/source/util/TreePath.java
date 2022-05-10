@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,13 +26,14 @@
 package com.sun.source.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import com.sun.source.tree.*;
 
 /**
  * A path of tree nodes, typically used to represent the sequence of ancestor
- * nodes of a tree node up to the top level CompilationUnitTree node.
+ * nodes of a tree node up to the top-level {@code CompilationUnitTree} node.
  *
  * @author Jonathan Gibbons
  * @since 1.6
@@ -62,6 +63,7 @@ public class TreePath implements Iterable<Tree> {
 
         class Result extends Error {
             static final long serialVersionUID = -5942088234594905625L;
+            @SuppressWarnings("serial") // Type of field is not Serializable
             TreePath path;
             Result(TreePath path) {
                 this.path = path;
@@ -138,11 +140,11 @@ public class TreePath implements Iterable<Tree> {
     }
 
     /**
-     *  Iterates from leaves to root.
+     * Iterates from leaves to root.
      */
     @Override
     public Iterator<Tree> iterator() {
-        return new Iterator<Tree>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return next != null;
@@ -150,6 +152,9 @@ public class TreePath implements Iterable<Tree> {
 
             @Override
             public Tree next() {
+                if (next == null) {
+                    throw new NoSuchElementException();
+                }
                 Tree t = next.leaf;
                 next = next.parent;
                 return t;

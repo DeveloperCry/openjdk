@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 1997, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package java.awt;
 
+import java.io.Serial;
+
 /**
  * Thrown when a serious Abstract Window Toolkit error has occurred.
  *
@@ -32,9 +34,10 @@ package java.awt;
  */
 public class AWTError extends Error {
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+     @Serial
      private static final long serialVersionUID = -1819846354050686206L;
 
     /**

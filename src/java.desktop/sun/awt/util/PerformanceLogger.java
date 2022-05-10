@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -72,6 +72,7 @@ import java.io.Writer;
  * exist once those APIs are in place.
  * @author Chet Haase
  */
+@SuppressWarnings("removal")
 public class PerformanceLogger {
 
     // Timing values of global interest

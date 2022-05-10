@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,26 +28,18 @@ package javax.swing.plaf.basic;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.border.*;
 
 import java.applet.Applet;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.*;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-
 import java.util.*;
 
-import sun.swing.DefaultLookup;
 import sun.swing.UIAction;
 
 import sun.awt.AppContext;
@@ -294,7 +286,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
      *
      * @since 1.4
      */
-    private class BasicPopupMenuListener implements PopupMenuListener {
+    private static class BasicPopupMenuListener implements PopupMenuListener {
         public void popupMenuCanceled(PopupMenuEvent e) {
         }
 
@@ -327,7 +319,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
                 if (subitem != null) {
                     lst.add(subitem);
                 }
-                MenuElement newPath[] = new MenuElement[0];
+                MenuElement[] newPath = new MenuElement[0];
                 newPath = lst.toArray(newPath);
                 MenuSelectionManager.defaultManager().setSelectedPath(newPath);
                 e.consume();
@@ -344,12 +336,12 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
 
             MenuSelectionManager manager = e.getMenuSelectionManager();
-            MenuElement path[] = e.getPath();
-            MenuElement items[] = popupMenu.getSubElements();
+            MenuElement[] path = e.getPath();
+            MenuElement[] items = popupMenu.getSubElements();
             int currentIndex = -1;
             int matches = 0;
             int firstMatch = -1;
-            int indexes[] = null;
+            int[] indexes = null;
 
             for (int j = 0; j < items.length; j++) {
                 if (! (items[j] instanceof JMenuItem)) {
@@ -397,7 +389,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
 
                 newItem = items[indexes[(currentIndex + 1) % matches]];
 
-                MenuElement newPath[] = new MenuElement[path.length+1];
+                MenuElement[] newPath = new MenuElement[path.length+1];
                 System.arraycopy(path, 0, newPath, 0, path.length);
                 newPath[path.length] = newItem;
                 manager.setSelectedPath(newPath);
@@ -470,12 +462,12 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
 
             MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-            MenuElement path[] = msm.getSelectedPath();
+            MenuElement[] path = msm.getSelectedPath();
             MenuElement lastElement;
             if(path.length > 0) {
                 lastElement = path[path.length-1];
                 if(lastElement instanceof JMenu) {
-                    MenuElement newPath[] = new MenuElement[path.length+1];
+                    MenuElement[] newPath = new MenuElement[path.length+1];
                     System.arraycopy(path,0,newPath,0,path.length);
                     newPath[path.length] = ((JMenu)lastElement).getPopupMenu();
                     msm.setSelectedPath(newPath);
@@ -494,7 +486,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
         }
         private void selectParentChild(boolean direction) {
             MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-            MenuElement path[] = msm.getSelectedPath();
+            MenuElement[] path = msm.getSelectedPath();
             int len = path.length;
 
             if (direction == PARENT) {
@@ -510,7 +502,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
                     !((JMenu)path[popupIndex-1]).isTopLevelMenu()) {
 
                     // we have a submenu, just close it
-                    MenuElement newPath[] = new MenuElement[popupIndex];
+                    MenuElement[] newPath = new MenuElement[popupIndex];
                     System.arraycopy(path, 0, newPath, 0, popupIndex);
                     msm.setSelectedPath(newPath);
                     return;
@@ -548,7 +540,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
                     path[0].getSubElements(), currentMenu, direction);
 
                 if (nextMenu != null && nextMenu != currentMenu) {
-                    MenuElement newSelection[];
+                    MenuElement[] newSelection;
                     if (len == 2) {
                         // menu is selected but its popup not shown
                         newSelection = new MenuElement[2];
@@ -568,7 +560,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
 
         private void selectItem(boolean direction) {
             MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-            MenuElement path[] = msm.getSelectedPath();
+            MenuElement[] path = msm.getSelectedPath();
             if (path.length == 0) {
                 return;
             }
@@ -638,7 +630,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
 
             } else {
                 // just select the next item, no path expansion needed
-                MenuElement subs[] = path[len-2].getSubElements();
+                MenuElement[] subs = path[len-2].getSubElements();
                 MenuElement nextChild =
                     findEnabledChild(subs, path[len-1], direction);
                 if (nextChild == null) {
@@ -668,7 +660,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
         }
 
         private void shortenSelectedPath() {
-            MenuElement path[] = MenuSelectionManager.defaultManager().getSelectedPath();
+            MenuElement[] path = MenuSelectionManager.defaultManager().getSelectedPath();
             if (path.length <= 2) {
                 MenuSelectionManager.defaultManager().clearSelectedPath();
                 return;
@@ -695,13 +687,13 @@ public class BasicPopupMenuUI extends PopupMenuUI {
                 // clear selection for the topLevelMenu
                 value = path.length;
             }
-            MenuElement newPath[] = new MenuElement[path.length - value];
+            MenuElement[] newPath = new MenuElement[path.length - value];
             System.arraycopy(path, 0, newPath, 0, path.length - value);
             MenuSelectionManager.defaultManager().setSelectedPath(newPath);
         }
     }
 
-    private static MenuElement nextEnabledChild(MenuElement e[],
+    private static MenuElement nextEnabledChild(MenuElement[] e,
                                                 int fromIndex, int toIndex) {
         for (int i=fromIndex; i<=toIndex; i++) {
             if (e[i] != null) {
@@ -716,7 +708,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
         return null;
     }
 
-    private static MenuElement previousEnabledChild(MenuElement e[],
+    private static MenuElement previousEnabledChild(MenuElement[] e,
                                                 int fromIndex, int toIndex) {
         for (int i=fromIndex; i>=toIndex; i--) {
             if (e[i] != null) {
@@ -731,7 +723,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
         return null;
     }
 
-    static MenuElement findEnabledChild(MenuElement e[], int fromIndex,
+    static MenuElement findEnabledChild(MenuElement[] e, int fromIndex,
                                                 boolean forward) {
         MenuElement result;
         if (forward) {
@@ -745,7 +737,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
         return result;
     }
 
-    static MenuElement findEnabledChild(MenuElement e[],
+    static MenuElement findEnabledChild(MenuElement[] e,
                                    MenuElement elem, boolean forward) {
         for (int i=0; i<e.length; i++) {
             if (e[i] == elem) {
@@ -778,6 +770,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
         }
 
+        @SuppressWarnings("removal")
         void grabWindow(MenuElement[] newPath) {
             // A grab needs to be added
             final Toolkit tk = Toolkit.getDefaultToolkit();
@@ -813,6 +806,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
         }
 
+        @SuppressWarnings("removal")
         void ungrabWindow() {
             final Toolkit tk = Toolkit.getDefaultToolkit();
             // The grab should be removed
@@ -932,7 +926,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
         }
 
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings("removal")
         boolean isInPopup(Component src) {
             for (Component c=src; c!=null; c=c.getParent()) {
                 if (c instanceof Applet || c instanceof Window) {
@@ -1150,7 +1144,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
             }
         }
 
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings("removal")
         public void stateChanged(ChangeEvent ev) {
             if (!(UIManager.getLookAndFeel() instanceof BasicLookAndFeel)) {
                 uninstall();
@@ -1226,6 +1220,7 @@ public class BasicPopupMenuUI extends PopupMenuUI {
                 // menu hidden -- return focus to where it had been before
                 // and uninstall menu keybindings
                    removeItems();
+                   menuInputMap = null;
             } else {
                 if (popup != lastPopup) {
                     receivedKeyPressed = false;

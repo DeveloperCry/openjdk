@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package java.awt.print;
 
+import java.io.Serial;
+
 /**
  * The {@code PrinterAbortException} class is a subclass of
  * {@link PrinterException} and is used to indicate that a user
@@ -33,6 +35,11 @@ package java.awt.print;
  */
 
 public class PrinterAbortException extends PrinterException {
+
+    /**
+     * Use serialVersionUID from JDK 9 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = 4725169026278854136L;
 
     /**

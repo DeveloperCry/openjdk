@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -150,6 +150,7 @@ public class DiagnosticCommandImpl extends NotificationEmitterSupport
 
         public String execute(String[] args) {
             if (permission != null) {
+                @SuppressWarnings("removal")
                 SecurityManager sm = System.getSecurityManager();
                 if (sm != null) {
                     sm.checkPermission(permission);
@@ -334,10 +335,10 @@ public class DiagnosticCommandImpl extends NotificationEmitterSupport
         return new ImmutableDescriptor(map);
     }
 
-    private final static String notifName =
+    private static final String notifName =
         "javax.management.Notification";
 
-    private final static String[] diagFramNotifTypes = {
+    private static final String[] diagFramNotifTypes = {
         "jmx.mbean.info.changed"
     };
 

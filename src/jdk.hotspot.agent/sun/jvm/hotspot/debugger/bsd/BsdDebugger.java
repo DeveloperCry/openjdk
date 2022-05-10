@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,11 +51,10 @@ public interface BsdDebugger extends JVMDebugger {
   public BsdOopHandle readCompOopHandle(long address) throws DebuggerException;
   public long[]       getThreadIntegerRegisterSet(long unique_thread_id) throws DebuggerException;
   public long         getAddressValue(Address addr) throws DebuggerException;
-  public Address      newAddress(long value) throws DebuggerException;
 
   // For BsdCDebugger
-  public List         getThreadList();
-  public List         getLoadObjectList();
+  public List<ThreadProxy> getThreadList();
+  public List<LoadObject> getLoadObjectList();
   public ClosestSymbol lookup(long address);
 
   // NOTE: this interface implicitly contains the following methods:

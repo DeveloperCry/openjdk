@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,10 +46,8 @@ import java.io.NotSerializableException;
 public class NodeChangeEvent extends java.util.EventObject {
     /**
      * The node that was added or removed.
-     *
-     * @serial
      */
-    private Preferences child;
+    private transient Preferences child;
 
     /**
      * Constructs a new {@code NodeChangeEvent} instance.

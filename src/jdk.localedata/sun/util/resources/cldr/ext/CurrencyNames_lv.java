@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -145,7 +141,6 @@ public class CurrencyNames_lv extends OpenListResourceBundle {
             { "LBP", "LBP" },
             { "LKR", "LKR" },
             { "LRD", "LRD" },
-            { "LTL", "LTL" },
             { "LVL", "Ls" },
             { "LYD", "LYD" },
             { "MAD", "MAD" },
@@ -208,11 +203,11 @@ public class CurrencyNames_lv extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
             { "ZAR", "ZAR" },
-            { "ZMK", "ZMK" },
             { "ZMW", "ZMW" },
             { "aed", "Apvienoto Ar\u0101bu Emir\u0101tu dirh\u0113ms" },
             { "afn", "Afganist\u0101nas afg\u0101ns" },
@@ -358,7 +353,7 @@ public class CurrencyNames_lv extends OpenListResourceBundle {
             { "rsd", "Serbijas din\u0101rs" },
             { "rub", "Krievijas rublis" },
             { "rwf", "Ruandas franks" },
-            { "sar", "Sa\u016bda ri\u0101ls" },
+            { "sar", "Sa\u016bda Ar\u0101bijas ri\u0101ls" },
             { "sbd", "Z\u0101lamana Salu dol\u0101rs" },
             { "scr", "Sei\u0161elu salu r\u016bpija" },
             { "sdg", "Sud\u0101nas m\u0101rci\u0146a" },
@@ -394,7 +389,8 @@ public class CurrencyNames_lv extends OpenListResourceBundle {
             { "uyu", "Urugvajas peso" },
             { "uzs", "Uzbekist\u0101nas sums" },
             { "veb", "Venecu\u0113las boliv\u0101rs (1871\u20132008)" },
-            { "vef", "Venecu\u0113las boliv\u0101rs" },
+            { "vef", "Venecu\u0113las boliv\u0101rs (2008\u20132018)" },
+            { "ves", "Venecu\u0113las boliv\u0101rs" },
             { "vnd", "Vjetnamas dongi" },
             { "vuv", "Vanuatu vatu" },
             { "wst", "Samoa tala" },

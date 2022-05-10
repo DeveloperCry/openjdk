@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -62,7 +62,7 @@ public class CanonicalizationException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public CanonicalizationException(String msgID, Object exArgs[]) {
+    public CanonicalizationException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -89,13 +89,13 @@ public class CanonicalizationException extends XMLSecurityException {
      * @param exArgs
      */
     public CanonicalizationException(
-        Exception originalException, String msgID, Object exArgs[]
+        Exception originalException, String msgID, Object[] exArgs
     ) {
         super(originalException, msgID, exArgs);
     }
 
     @Deprecated
-    public CanonicalizationException(String msgID, Object exArgs[], Exception originalException) {
+    public CanonicalizationException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);
     }
 }

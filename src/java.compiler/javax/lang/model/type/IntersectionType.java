@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,9 +45,7 @@ import java.util.List;
 public interface IntersectionType extends TypeMirror {
 
     /**
-     * Return the bounds comprising this intersection type.
-     *
-     * @return the bounds of this intersection type
+     * {@return the bounds comprising this intersection type}
      */
     List<? extends TypeMirror> getBounds();
 }

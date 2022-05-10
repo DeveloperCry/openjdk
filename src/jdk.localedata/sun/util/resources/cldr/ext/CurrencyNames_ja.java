@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -233,6 +229,7 @@ public class CurrencyNames_ja extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MTL", "MTL" },
             { "MTP", "MTP" },
             { "MUR", "MUR" },
@@ -289,6 +286,7 @@ public class CurrencyNames_ja extends OpenListResourceBundle {
             { "SRG", "SRG" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SUR", "SUR" },
             { "SVC", "SVC" },
             { "SYP", "SYP" },
@@ -318,6 +316,7 @@ public class CurrencyNames_ja extends OpenListResourceBundle {
             { "UZS", "UZS" },
             { "VEB", "VEB" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VNN", "VNN" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -372,7 +371,7 @@ public class CurrencyNames_ja extends OpenListResourceBundle {
             { "ars", "\u30a2\u30eb\u30bc\u30f3\u30c1\u30f3 \u30da\u30bd" },
             { "ats", "\u30aa\u30fc\u30b9\u30c8\u30ea\u30a2 \u30b7\u30ea\u30f3\u30b0" },
             { "aud", "\u30aa\u30fc\u30b9\u30c8\u30e9\u30ea\u30a2 \u30c9\u30eb" },
-            { "awg", "\u30a2\u30eb\u30d0 \u30ae\u30eb\u30c0\u30fc" },
+            { "awg", "\u30a2\u30eb\u30d0 \u30d5\u30ed\u30ea\u30f3" },
             { "azm", "\u30a2\u30bc\u30eb\u30d0\u30a4\u30b8\u30e3\u30f3 \u30de\u30ca\u30c8 (1993\u20132006)" },
             { "azn", "\u30a2\u30bc\u30eb\u30d0\u30a4\u30b8\u30e3\u30f3 \u30de\u30ca\u30c8" },
             { "bad", "\u30dc\u30b9\u30cb\u30a2\u30fb\u30d8\u30eb\u30c4\u30a7\u30b4\u30d3\u30ca \u30c7\u30a3\u30ca\u30fc\u30eb (1992\u20131994)" },
@@ -613,7 +612,8 @@ public class CurrencyNames_ja extends OpenListResourceBundle {
             { "uyu", "\u30a6\u30eb\u30b0\u30a2\u30a4 \u30da\u30bd" },
             { "uzs", "\u30a6\u30ba\u30d9\u30ad\u30b9\u30bf\u30f3 \u30b9\u30e0" },
             { "veb", "\u30d9\u30cd\u30ba\u30a8\u30e9 \u30dc\u30ea\u30d0\u30eb (1871\u20132008)" },
-            { "vef", "\u30d9\u30cd\u30ba\u30a8\u30e9 \u30dc\u30ea\u30d0\u30eb" },
+            { "vef", "\u30d9\u30cd\u30ba\u30a8\u30e9 \u30dc\u30ea\u30d0\u30eb (2008\u20132018)" },
+            { "ves", "\u30d9\u30cd\u30ba\u30a8\u30e9 \u30dc\u30ea\u30d0\u30eb" },
             { "vnd", "\u30d9\u30c8\u30ca\u30e0 \u30c9\u30f3" },
             { "vnn", "\u30d9\u30c8\u30ca\u30e0 \u30c9\u30f3\uff081978\u20131985\uff09" },
             { "vuv", "\u30d0\u30cc\u30a2\u30c4 \u30d0\u30c4" },

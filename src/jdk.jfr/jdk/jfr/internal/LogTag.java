@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,21 +63,33 @@ public enum LogTag {
      */
     JFR_SYSTEM_METADATA(6),
     /**
+     *  Covers streaming (for Hotspot developers)
+     */
+    JFR_SYSTEM_STREAMING(7),
+    /**
+     *  Covers throttling (for Hotspot developers)
+     */
+    JFR_SYSTEM_THROTTLE(8),
+    /**
      *  Covers metadata for Java user (for Hotspot developers)
      */
-    JFR_METADATA(7),
+    JFR_METADATA(9),
     /**
      * Covers events (for users of the JDK)
      */
-    JFR_EVENT(8),
+    JFR_EVENT(10),
     /**
      * Covers setting (for users of the JDK)
      */
-    JFR_SETTING(9),
+    JFR_SETTING(11),
     /**
      * Covers usage of jcmd with JFR
      */
-    JFR_DCMD(10);
+    JFR_DCMD(12),
+    /**
+     * -XX:StartFlightRecording
+     */
+    JFR_START(13);
 
     /* set from native side */
     volatile int tagSetLevel = 100; // prevent logging if JVM log system has not been initialized
@@ -87,4 +99,13 @@ public enum LogTag {
     LogTag(int tagId) {
         id = tagId;
     }
-}
+
+    public LogLevel level() {
+        for (LogLevel l : LogLevel.values()) {
+            if (l.level == tagSetLevel) {
+                return l;
+            }
+        }
+        return LogLevel.WARN; // default
+    }
+ }

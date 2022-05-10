@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,50 +67,67 @@ public class FormatData_sr_Cyrl_XK extends ListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final String[] metaValue_MonthAbbreviations = new String[] {
-               "\u0458\u0430\u043d.",
-               "\u0444\u0435\u0431.",
+               "\u0458\u0430\u043d",
+               "\u0444\u0435\u0431",
                "\u043c\u0430\u0440\u0442",
-               "\u0430\u043f\u0440.",
+               "\u0430\u043f\u0440",
                "\u043c\u0430\u0458",
                "\u0458\u0443\u043d",
                "\u0458\u0443\u043b",
-               "\u0430\u0432\u0433.",
-               "\u0441\u0435\u043f\u0442.",
-               "\u043e\u043a\u0442.",
-               "\u043d\u043e\u0432.",
-               "\u0434\u0435\u0446.",
+               "\u0430\u0432\u0433",
+               "\u0441\u0435\u043f\u0442",
+               "\u043e\u043a\u0442",
+               "\u043d\u043e\u0432",
+               "\u0434\u0435\u0446",
                "",
             };
-        final String[] metaValue_DayAbbreviations = new String[] {
-               "\u043d\u0435\u0434.",
-               "\u043f\u043e\u043d.",
-               "\u0443\u0442.",
-               "\u0441\u0440.",
-               "\u0447\u0435\u0442.",
-               "\u043f\u0435\u0442.",
-               "\u0441\u0443\u0431.",
+        final String[] metaValue_AmPmMarkers = new String[] {
+               "\u043f\u0440\u0435 \u043f\u043e\u0434\u043d\u0435",
+               "\u043f\u043e \u043f\u043e\u0434\u043d\u0435",
+               "\u043f\u043e\u043d\u043e\u045b",
+               "\u043f\u043e\u0434\u043d\u0435",
+               "\u0458\u0443\u0442\u0440\u043e",
+               "",
+               "\u043f\u043e \u043f\u043e\u0434.",
+               "",
+               "\u0443\u0432\u0435\u0447\u0435",
+               "",
+               "\u043d\u043e\u045b\u0443",
+               "",
             };
         final String[] metaValue_narrow_AmPmMarkers = new String[] {
                "a",
                "p",
+               "\u043f\u043e\u043d\u043e\u045b",
+               "\u043f\u043e\u0434\u043d\u0435",
+               "\u0458\u0443\u0442\u0440\u043e",
+               "",
+               "\u043f\u043e \u043f\u043e\u0434.",
+               "",
+               "\u0432\u0435\u0447\u0435",
+               "",
+               "\u043d\u043e\u045b",
+               "",
             };
         final Object[][] data = new Object[][] {
-            { "roc.DayAbbreviations", metaValue_DayAbbreviations },
-            { "standalone.DayAbbreviations", metaValue_DayAbbreviations },
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
+            { "islamic.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
+            { "AmPmMarkers", metaValue_AmPmMarkers },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
-            { "buddhist.DayAbbreviations", metaValue_DayAbbreviations },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
-            { "japanese.DayAbbreviations", metaValue_DayAbbreviations },
             { "narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "japanese.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
-            { "islamic.DayAbbreviations", metaValue_DayAbbreviations },
-            { "DayAbbreviations", metaValue_DayAbbreviations },
+            { "abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
+            { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
+            { "japanese.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "roc.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
             { "buddhist.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
+            { "buddhist.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
+            { "roc.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
         };
         return data;
     }

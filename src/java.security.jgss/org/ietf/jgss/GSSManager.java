@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -137,6 +137,11 @@ import java.security.Provider;
  * @since 1.4
  */
 public abstract class GSSManager {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    public GSSManager() {}
 
     /**
      * Returns the default GSSManager implementation.

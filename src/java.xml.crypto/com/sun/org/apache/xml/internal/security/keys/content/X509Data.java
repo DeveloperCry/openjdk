@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -71,7 +71,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
         }
         if (sibling == null || sibling.getNodeType() != Node.ELEMENT_NODE) {
             /* No Elements found */
-            Object exArgs[] = { "Elements", Constants._TAG_X509DATA };
+            Object[] exArgs = { "Elements", Constants._TAG_X509DATA };
             throw new XMLSecurityException("xml.WrongContent", exArgs);
         }
     }

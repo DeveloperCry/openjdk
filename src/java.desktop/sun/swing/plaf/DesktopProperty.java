@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -111,7 +111,7 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
      * Updates the UIs of all the known Frames.
      */
     protected void updateAllUIs() {
-        Frame appFrames[] = Frame.getFrames();
+        Frame[] appFrames = Frame.getFrames();
         for (Frame appFrame : appFrames) {
             updateWindowUI(appFrame);
         }
@@ -122,7 +122,7 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
      */
     private static void updateWindowUI(Window window) {
         SwingUtilities.updateComponentTreeUI(window);
-        Window ownedWins[] = window.getOwnedWindows();
+        Window[] ownedWins = window.getOwnedWindows();
         for (Window ownedWin : ownedWins) {
             updateWindowUI(ownedWin);
         }

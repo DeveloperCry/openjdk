@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,7 @@ public class SysPropsPanel extends JPanel {
     }
 
     private String getFlags() {
-       final StringBuffer buf = new StringBuffer();
+       final StringBuilder buf = new StringBuilder();
        buf.append("<html><head><title>System Properties</title></head><body>");
        buf.append("<table border='1'>");
 

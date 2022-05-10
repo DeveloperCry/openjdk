@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -105,9 +105,9 @@ public interface ClassLoadingMXBean extends PlatformManagedObject {
      * @param value {@code true} to enable the verbose output;
      *              {@code false} to disable.
      *
-     * @exception  java.lang.SecurityException if a security manager
-     *             exists and the caller does not have
-     *             ManagementPermission("control").
+     * @throws  java.lang.SecurityException if a security manager
+     *          exists and the caller does not have
+     *          ManagementPermission("control").
      */
     public void setVerbose(boolean value);
 

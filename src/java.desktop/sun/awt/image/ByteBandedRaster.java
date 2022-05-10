@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,7 @@
  */
 
 package sun.awt.image;
+
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.awt.image.RasterFormatException;
@@ -136,9 +137,9 @@ public class ByteBandedRaster extends SunWritableRaster {
         if (sampleModel instanceof BandedSampleModel) {
             BandedSampleModel bsm = (BandedSampleModel)sampleModel;
             this.scanlineStride = bsm.getScanlineStride();
-            int bankIndices[] = bsm.getBankIndices();
-            int bandOffsets[] = bsm.getBandOffsets();
-            int dOffsets[] = dataBuffer.getOffsets();
+            int[] bankIndices = bsm.getBankIndices();
+            int[] bandOffsets = bsm.getBandOffsets();
+            int[] dOffsets = dataBuffer.getOffsets();
             dataOffsets = new int[bankIndices.length];
             data = new byte[bankIndices.length][];
             int xOffset = aRegion.x - origin.x;
@@ -228,7 +229,7 @@ public class ByteBandedRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte outData[];
+        byte[] outData;
         if (obj == null) {
             outData = new byte[numDataElements];
         } else {
@@ -275,7 +276,7 @@ public class ByteBandedRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte outData[];
+        byte[] outData;
         if (obj == null) {
             outData = new byte[numDataElements*w*h];
         } else {
@@ -415,7 +416,7 @@ public class ByteBandedRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte inData[] = (byte[])obj;
+        byte[] inData = (byte[])obj;
         int off = (y-minY)*scanlineStride + (x-minX);
         for (int i = 0; i < numDataElements; i++) {
             data[i][dataOffsets[i] + off] = inData[i];
@@ -509,7 +510,7 @@ public class ByteBandedRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        byte inData[] = (byte[])obj;
+        byte[] inData = (byte[])obj;
         int yoff = (y-minY)*scanlineStride + (x-minX);
 
         for (int c = 0; c < numDataElements; c++) {
@@ -639,7 +640,7 @@ public class ByteBandedRaster extends SunWritableRaster {
     public WritableRaster createWritableChild (int x, int y,
                                                int width, int height,
                                                int x0, int y0,
-                                               int bandList[]) {
+                                               int[] bandList) {
 
         if (x < this.minX) {
             throw new RasterFormatException("x lies outside raster");
@@ -694,7 +695,7 @@ public class ByteBandedRaster extends SunWritableRaster {
     public Raster createChild (int x, int y,
                                    int width, int height,
                                    int x0, int y0,
-                                   int bandList[]) {
+                                   int[] bandList) {
         return createWritableChild(x, y, width, height, x0, y0, bandList);
     }
 
@@ -818,10 +819,11 @@ public class ByteBandedRaster extends SunWritableRaster {
     }
 
     public String toString() {
-        return new String ("ByteBandedRaster: width = "+width+" height = "
-                           + height
-                           +" #bands "+numDataElements
-                           +" minX = "+minX+" minY = "+minY);
+        return "ByteBandedRaster: width = " + width
+                + " height = " + height
+                + " #bands " + numDataElements
+                + " minX = " + minX
+                + " minY = " + minY;
     }
 
 }

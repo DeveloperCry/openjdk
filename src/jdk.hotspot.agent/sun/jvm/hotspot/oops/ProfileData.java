@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,7 +51,7 @@ public abstract class ProfileData {
   }
 
   // Low-level accessors for underlying data
-  int intptrAt(int index) {
+  long intptrAt(int index) {
     //assert(0 <= index && index < cellCount(), "oob");
     return data().cellAt(index);
   }

@@ -630,7 +630,7 @@ final class NimbusDefaults {
         //Initialize PopupMenu
         d.put("PopupMenu.contentMargins", new InsetsUIResource(6, 1, 6, 1));
         d.put("PopupMenu.opaque", Boolean.TRUE);
-        d.put("PopupMenu.consumeEventOnClose", Boolean.TRUE);
+        d.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
         d.put("PopupMenu[Disabled].backgroundPainter", new LazyPainter("javax.swing.plaf.nimbus.PopupMenuPainter", PopupMenuPainter.BACKGROUND_DISABLED, new Insets(9, 0, 11, 0), new Dimension(220, 313), false, AbstractRegionPainter.PaintContext.CacheMode.NO_CACHING, 1.0, 1.0));
         d.put("PopupMenu[Enabled].backgroundPainter", new LazyPainter("javax.swing.plaf.nimbus.PopupMenuPainter", PopupMenuPainter.BACKGROUND_ENABLED, new Insets(11, 2, 11, 2), new Dimension(220, 313), false, AbstractRegionPainter.PaintContext.CacheMode.NO_CACHING, 1.0, 1.0));
 
@@ -1025,14 +1025,15 @@ final class NimbusDefaults {
 
         //Initialize ToolTip
         d.put("ToolTip.contentMargins", new InsetsUIResource(4, 4, 4, 4));
+        d.put("ToolTip.opaque", Boolean.TRUE);
         d.put("ToolTip[Enabled].backgroundPainter", new LazyPainter("javax.swing.plaf.nimbus.ToolTipPainter", ToolTipPainter.BACKGROUND_ENABLED, new Insets(1, 1, 1, 1), new Dimension(10, 10), false, AbstractRegionPainter.PaintContext.CacheMode.NO_CACHING, 1.0, 1.0));
         d.put("ToolTip[Disabled].backgroundPainter", new LazyPainter("javax.swing.plaf.nimbus.ToolTipPainter", ToolTipPainter.BACKGROUND_DISABLED, new Insets(1, 1, 1, 1), new Dimension(10, 10), false, AbstractRegionPainter.PaintContext.CacheMode.NO_CACHING, 1.0, 1.0));
 
         //Initialize Tree
         d.put("Tree.contentMargins", new InsetsUIResource(0, 0, 0, 0));
         d.put("Tree.opaque", Boolean.TRUE);
-        addColor(d, "Tree.textForeground", "text", 0.0f, 0.0f, 0.0f, 0, false);
-        addColor(d, "Tree.textBackground", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0, false);
+        addColor(d, "Tree.textForeground", "text", 0.0f, 0.0f, 0.0f, 0);
+        addColor(d, "Tree.textBackground", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
         addColor(d, "Tree.background", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
         d.put("Tree.rendererFillBackground", Boolean.FALSE);
         d.put("Tree.leftChildIndent", Integer.valueOf(12));
@@ -1044,8 +1045,8 @@ final class NimbusDefaults {
         d.put("Tree.repaintWholeRow", Boolean.TRUE);
         d.put("Tree.rowHeight", Integer.valueOf(0));
         d.put("Tree.rendererMargins", new InsetsUIResource(2, 0, 1, 5));
-        addColor(d, "Tree.selectionForeground", "nimbusSelectedText", 0.0f, 0.0f, 0.0f, 0, false);
-        addColor(d, "Tree.selectionBackground", "nimbusSelectionBackground", 0.0f, 0.0f, 0.0f, 0, false);
+        addColor(d, "Tree.selectionForeground", "nimbusSelectedText", 0.0f, 0.0f, 0.0f, 0);
+        addColor(d, "Tree.selectionBackground", "nimbusSelectionBackground", 0.0f, 0.0f, 0.0f, 0);
         addColor(d, "Tree.dropLineColor", "nimbusFocus", 0.0f, 0.0f, 0.0f, 0);
         d.put("Tree:TreeCell.contentMargins", new InsetsUIResource(0, 0, 0, 0));
         addColor(d, "Tree:TreeCell[Enabled].background", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);

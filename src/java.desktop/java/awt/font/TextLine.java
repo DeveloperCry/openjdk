@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1293,7 +1293,7 @@ final class TextLine {
   /*
    * The new version requires that chunks be at the same level.
    */
-    private static int firstVisualChunk(int order[], byte direction[],
+    private static int firstVisualChunk(int[] order, byte[] direction,
                                         int start, int limit)
     {
         if (order != null && direction != null) {

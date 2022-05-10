@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,7 +28,6 @@ import java.lang.module.ModuleDescriptor;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import jdk.internal.module.ModuleTarget;
 
 /**
   * Link-time representation of a module.

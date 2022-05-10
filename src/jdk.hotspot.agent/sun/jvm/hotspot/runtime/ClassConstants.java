@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,8 @@ public interface ClassConstants
     public static final int JVM_CONSTANT_MethodType         = 16;
     public static final int JVM_CONSTANT_Dynamic            = 17;
     public static final int JVM_CONSTANT_InvokeDynamic      = 18;
+    public static final int JVM_CONSTANT_Module             = 19;
+    public static final int JVM_CONSTANT_Package            = 20;
 
     // JVM_CONSTANT_MethodHandle subtypes
     public static final int JVM_REF_getField                = 1;

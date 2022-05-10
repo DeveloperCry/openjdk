@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,7 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;  // for Javadoc
  * allows a listener to be registered with the MBean as a notification
  * listener.</p>
  *
- * <h3>Notification dispatch</h3>
+ * <h2>Notification dispatch</h2>
  *
  * <p>When an MBean emits a notification, it considers each listener that has been
  * added with {@link #addNotificationListener addNotificationListener} and not

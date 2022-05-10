@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,24 +56,24 @@ final class EventHandlerCreator {
     // with for example WLS.
     private static final int CLASS_VERSION = 52;
 
-    // This is needed so a new EventHandler is automatically generated in MetadataRespoistory
+    // This is needed so a new EventHandler is automatically generated in MetadataRepository
     // if a user Event class is loaded using APPCDS/CDS.
     private static final String SUFFIX  = "_" + System.currentTimeMillis() + "-" + JVM.getJVM().getPid();
 
     private static final String FIELD_EVENT_TYPE = "platformEventType";
     private static final String FIELD_PREFIX_STRING_POOL = "stringPool";
 
-    private final static Type TYPE_STRING_POOL = Type.getType(StringPool.class);
-    private final static Type TYPE_EVENT_WRITER = Type.getType(EventWriter.class);
-    private final static Type TYPE_PLATFORM_EVENT_TYPE = Type.getType(PlatformEventType.class);
-    private final static Type TYPE_EVENT_HANDLER = Type.getType(EventHandler.class);
-    private final static Type TYPE_SETTING_CONTROL = Type.getType(SettingControl.class);
-    private final static Type TYPE_EVENT_TYPE = Type.getType(EventType.class);
-    private final static Type TYPE_EVENT_CONTROL = Type.getType(EventControl.class);
-    private final static String DESCRIPTOR_EVENT_HANDLER = "(" + Type.BOOLEAN_TYPE.getDescriptor() + TYPE_EVENT_TYPE.getDescriptor() + TYPE_EVENT_CONTROL.getDescriptor() + ")V";
-    private final static Method METHOD_GET_EVENT_WRITER = new Method("getEventWriter", "()" + TYPE_EVENT_WRITER.getDescriptor());
-    private final static Method METHOD_EVENT_HANDLER_CONSTRUCTOR = new Method("<init>", DESCRIPTOR_EVENT_HANDLER);
-    private final static Method METHOD_RESET = new Method("reset", "()V");
+    private static final Type TYPE_STRING_POOL = Type.getType(StringPool.class);
+    private static final Type TYPE_EVENT_WRITER = Type.getType(EventWriter.class);
+    private static final Type TYPE_PLATFORM_EVENT_TYPE = Type.getType(PlatformEventType.class);
+    private static final Type TYPE_EVENT_HANDLER = Type.getType(EventHandler.class);
+    private static final Type TYPE_SETTING_CONTROL = Type.getType(SettingControl.class);
+    private static final Type TYPE_EVENT_TYPE = Type.getType(EventType.class);
+    private static final Type TYPE_EVENT_CONTROL = Type.getType(EventControl.class);
+    private static final String DESCRIPTOR_EVENT_HANDLER = "(" + Type.BOOLEAN_TYPE.getDescriptor() + TYPE_EVENT_TYPE.getDescriptor() + TYPE_EVENT_CONTROL.getDescriptor() + ")V";
+    private static final Method METHOD_GET_EVENT_WRITER = new Method("getEventWriter", "()" + TYPE_EVENT_WRITER.getDescriptor());
+    private static final Method METHOD_EVENT_HANDLER_CONSTRUCTOR = new Method("<init>", DESCRIPTOR_EVENT_HANDLER);
+    private static final Method METHOD_RESET = new Method("reset", "()V");
 
     private final ClassWriter classWriter;
     private final String className;
@@ -121,7 +121,7 @@ final class EventHandlerCreator {
                 if (internalName != null) {
                     fieldInfos.add(new FieldInfo(fieldName, fieldDescriptor, internalName));
                 } else {
-                    throw new InternalError("Could not locate field " + fieldName + " for event type" + type.getName());
+                    throw new InternalError("Could not locate field " + fieldName + " for event type " + type.getName());
                 }
             }
         }
@@ -134,7 +134,7 @@ final class EventHandlerCreator {
         buildWriteMethod();
         byte[] bytes = classWriter.toByteArray();
         ASMToolkit.logASM(className, bytes);
-        return SecuritySupport.defineClass(className, bytes, Event.class.getClassLoader()).asSubclass(EventHandler.class);
+        return SecuritySupport.defineClass(EventHandler.class, bytes).asSubclass(EventHandler.class);
     }
 
     public static EventHandler instantiateEventHandler(Class<? extends EventHandler> handlerClass, boolean registered, EventType eventType, EventControl eventControl) throws Error {

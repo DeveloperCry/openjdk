@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -71,7 +71,7 @@ import sun.swing.SwingUtilities2;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -108,19 +108,24 @@ public class MetalLookAndFeel extends BasicLookAndFeel
      */
     private static boolean useSystemFonts;
 
+    /**
+     * Constructs a {@code MetalLookAndFeel}.
+     */
+    public MetalLookAndFeel() {}
 
     /**
      * Returns true if running on Windows.
      */
     static boolean isWindows() {
         if (!checkedWindows) {
+            @SuppressWarnings("removal")
             OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
             if (osType == OSInfo.OSType.WINDOWS) {
                 isWindows = true;
+                @SuppressWarnings("removal")
                 String systemFonts = AccessController.doPrivileged(
                     new GetPropertyAction("swing.useSystemFontSettings"));
-                useSystemFonts = (systemFonts != null &&
-                               (Boolean.valueOf(systemFonts).booleanValue()));
+                useSystemFonts = Boolean.parseBoolean(systemFonts);
             }
             checkedWindows = true;
         }
@@ -1392,8 +1397,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
             "Tree.openIcon",(LazyValue) t -> MetalIconFactory.getTreeFolderIcon(),
             "Tree.closedIcon",(LazyValue) t -> MetalIconFactory.getTreeFolderIcon(),
             "Tree.leafIcon",(LazyValue) t -> MetalIconFactory.getTreeLeafIcon(),
-            "Tree.expandedIcon",(LazyValue) t -> MetalIconFactory.getTreeControlIcon(Boolean.valueOf(MetalIconFactory.DARK)),
-            "Tree.collapsedIcon",(LazyValue) t -> MetalIconFactory.getTreeControlIcon(Boolean.valueOf( MetalIconFactory.LIGHT )),
+            "Tree.expandedIcon",(LazyValue) t -> MetalIconFactory.getTreeControlIcon(MetalIconFactory.DARK),
+            "Tree.collapsedIcon",(LazyValue) t -> MetalIconFactory.getTreeControlIcon(MetalIconFactory.LIGHT),
 
             "Tree.line", primaryControl, // horiz lines
             "Tree.hash", primaryControl,  // legs
@@ -1631,6 +1636,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
             else {
                 // Create the default theme. We prefer Ocean, but will
                 // use DefaultMetalTheme if told to.
+                @SuppressWarnings("removal")
                 String theme = AccessController.doPrivileged(
                                new GetPropertyAction("swing.metalTheme"));
                 if ("steel".equals(theme)) {
@@ -2226,7 +2232,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
          */
         private static void updateWindowUI(Window window) {
             SwingUtilities.updateComponentTreeUI(window);
-            Window ownedWins[] = window.getOwnedWindows();
+            Window[] ownedWins = window.getOwnedWindows();
             for (Window w : ownedWins) {
                 updateWindowUI(w);
             }
@@ -2236,7 +2242,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
          * Updates the UIs of all the known Frames.
          */
         private static void updateAllUIs() {
-            Frame appFrames[] = Frame.getFrames();
+            Frame[] appFrames = Frame.getFrames();
             for (Frame frame : appFrames) {
                 updateWindowUI(frame);
             }

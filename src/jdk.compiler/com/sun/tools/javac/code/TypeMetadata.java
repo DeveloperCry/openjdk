@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,9 +35,9 @@ import java.util.Set;
  * TypeMetadata is essentially an immutable {@code EnumMap<Entry.Kind, <? extends Entry>>}
  *
  * A metadata class represented by a subtype of Entry can express a property on a Type instance.
- * Thers should be at most one instance of an Entry per Entry.Kind on any given Type instance.
+ * There should be at most one instance of an Entry per Entry.Kind on any given Type instance.
  *
- * Metadata classes of a specific kind are responsible for how they combine themselvs.
+ * Metadata classes of a specific kind are responsible for how they combine themselves.
  *
  * @implNote {@code Entry:combine} need not be commutative.
  */

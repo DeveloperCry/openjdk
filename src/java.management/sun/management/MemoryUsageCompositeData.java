@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,7 @@ import javax.management.openmbean.OpenDataException;
  * construction of a CompositeData use in the local case.
  */
 public class MemoryUsageCompositeData extends LazyCompositeData {
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private final MemoryUsage usage;
 
     private MemoryUsageCompositeData(MemoryUsage u) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,7 @@
 
 package java.awt.font;
 
-import jdk.internal.misc.JavaAWTFontAccess;
+import jdk.internal.access.JavaAWTFontAccess;
 
 class JavaAWTFontAccessImpl implements JavaAWTFontAccess {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,10 +25,9 @@
 
 /**
  * Defines the API of the Java SE Platform.
- * <P>
  *
- * <dl>
- * <dt class="simpleTagLabel" style="font-family:'DejaVu Sans', Arial, Helvetica, sans serif">Optional for the Java SE Platform:</dt>
+ * <dl class="notes">
+ * <dt>Optional for the Java SE Platform:</dt>
  * <dd>
  *   <a href="{@docRoot}/../specs/jni/index.html">Java Native Interface (JNI)</a><br>
  *   <a href="{@docRoot}/../specs/jvmti.html">Java Virtual Machine Tool Interface (JVM TI)</a><br>

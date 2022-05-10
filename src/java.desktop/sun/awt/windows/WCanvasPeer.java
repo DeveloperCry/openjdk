@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,8 +69,7 @@ class WCanvasPeer extends WComponentPeer implements CanvasPeer {
     @Override
     public void paint(Graphics g) {
         Dimension d = ((Component)target).getSize();
-        if (g instanceof Graphics2D ||
-            g instanceof sun.awt.Graphics2Delegate) {
+        if (g instanceof Graphics2D) {
             // background color is setup correctly, so just use clearRect
             g.clearRect(0, 0, d.width, d.height);
         } else {

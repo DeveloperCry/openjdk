@@ -34,7 +34,7 @@ public class LauncherProperties {
         
         /**
          * launcher.err.cant.read.file=\
-         *    error reading file {0}: {1}
+         *    error reading source file {0}: {1}
          */
         public static Error CantReadFile(Path arg0, Object arg1) {
             return new Error("launcher", "cant.read.file", arg0, arg1);
@@ -54,7 +54,7 @@ public class LauncherProperties {
         
         /**
          * launcher.err.file.not.found=\
-         *    file not found: {0}
+         *    source file not found: {0}
          */
         public static Error FileNotFound(Path arg0) {
             return new Error("launcher", "file.not.found", arg0);
@@ -62,7 +62,7 @@ public class LauncherProperties {
         
         /**
          * launcher.err.invalid.filename=\
-         *    invalid filename: {0}
+         *    invalid path for source file: {0}
          */
         public static Error InvalidFilename(String arg0) {
             return new Error("launcher", "invalid.filename", arg0);
@@ -90,13 +90,13 @@ public class LauncherProperties {
         
         /**
          * launcher.err.no.args=\
-         *    no filename
+         *    no path for source file
          */
         public static final Error NoArgs = new Error("launcher", "no.args");
         
         /**
          * launcher.err.no.class=\
-         *    no class declared in file
+         *    no class declared in source file
          */
         public static final Error NoClass = new Error("launcher", "no.class");
         
@@ -106,14 +106,6 @@ public class LauncherProperties {
          */
         public static Error NoValueForOption(String arg0) {
             return new Error("launcher", "no.value.for.option", arg0);
-        }
-        
-        /**
-         * launcher.err.unexpected.class=\
-         *    class found on application class path: {0}
-         */
-        public static Error UnexpectedClass(String arg0) {
-            return new Error("launcher", "unexpected.class", arg0);
         }
     }
 }

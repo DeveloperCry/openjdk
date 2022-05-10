@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -93,6 +89,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "mwl", "miranda" },
             { "Zsym", "belgilar" },
             { "Zsye", "emoji" },
+            { "ccp", "chakma" },
             { "tem", "timne" },
             { "teo", "teso" },
             { "rap", "rapanui" },
@@ -212,7 +209,6 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "FO", "Farer orollari" },
             { "Taml", metaValue_ta },
             { "FR", "Fransiya" },
-            { "root", "tub aholi tili" },
             { "GA", "Gabon" },
             { "GB", "Buyuk Britaniya" },
             { "pcm", "kreol (Nigeriya)" },
@@ -246,7 +242,6 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "HT", "Gaiti" },
             { "HU", "Vengriya" },
             { "IC", "Kanar orollari" },
-            { "nan", "nan" },
             { "ID", "Indoneziya" },
             { "IE", "Irlandiya" },
             { "nap", "neapolitan" },
@@ -318,7 +313,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "Marshall orollari" },
             { "ale", "aleut" },
-            { "MK", "Makedoniya" },
+            { "MK", "Shimoliy Makedoniya" },
             { "ML", "Mali" },
             { "MM", "Myanma (Birma)" },
             { "MN", "Mongoliya" },
@@ -459,7 +454,6 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "034", "Janubiy Osiyo" },
             { "035", "Janubi-sharqiy Osiyo" },
             { "UG", "Uganda" },
-            { "hak", "hak" },
             { "039", "Janubiy Yevropa" },
             { "Sinh", metaValue_si },
             { "UM", "AQSH yondosh orollari" },
@@ -489,7 +483,9 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "wae", "valis" },
             { "WS", "Samoa" },
             { "wal", "volamo" },
+            { "XA", "Qalbaki urg\u2018u" },
             { "war", "varay" },
+            { "XB", "Qalbaki Bidi" },
             { "awa", "avadxi" },
             { "061", "Polineziya" },
             { "XK", "Kosovo" },
@@ -529,7 +525,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "type.nu.roman", "rim raqamlari" },
             { "sah", "saxa" },
             { "saq", "samburu" },
-            { "sat", "santal" },
+            { "sat", "santali" },
             { "sba", "ngambay" },
             { "Guru", "gurmukxi" },
             { "lua", "luba-lulua" },
@@ -617,7 +613,6 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "type.nu.latn", "zamonaviy arab raqamlari" },
             { "Hant", "an\u2019anaviy xitoy" },
             { "ff", "fula" },
-            { "hsn", "hsn" },
             { "fi", "fincha" },
             { "fj", "fiji" },
             { "fon", "fon" },
@@ -667,7 +662,6 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "ka", "gruzincha" },
             { "bla", "siksika" },
             { "mak", "makasar" },
-            { "wuu", "wuu" },
             { "sms", "skolt-saam" },
             { "ki", "kikuyu" },
             { "mas", "masay" },
@@ -710,7 +704,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "my", "birman" },
             { "Armn", metaValue_hy },
             { "mdf", "moksha" },
-            { "dsb", "quyi sorbcha" },
+            { "dsb", "quyi sorb" },
             { "na", "nauru" },
             { "type.co.search", "qidiruv" },
             { "nb", "norveg-bokmal" },
@@ -774,7 +768,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "en_AU", "ingliz (Avstraliya)" },
             { "sa", "sanskrit" },
             { "sc", "sardin" },
-            { "sd", "sindxi" },
+            { "sd", "sindhi" },
             { "se", "shimoliy saam" },
             { "min", "minangkabau" },
             { "sg", "sango" },
@@ -888,6 +882,7 @@ public class LocaleNames_uz extends OpenListResourceBundle {
             { "type.nu.tamldec", "tamil raqamlari" },
             { "krc", "qorachoy-bolqor" },
             { "inh", "ingush" },
+            { "fa_AF", "dari" },
             { "krl", "karel" },
             { "efi", "efik" },
             { "key.nu", "raqamlar" },

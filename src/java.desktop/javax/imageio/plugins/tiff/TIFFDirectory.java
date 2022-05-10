@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -396,9 +396,8 @@ public class TIFFDirectory implements Cloneable {
 
         // Copy any high-index fields.
         if(!highFields.isEmpty()) {
-            Iterator<Integer> keys = highFields.keySet().iterator();
-            while(keys.hasNext()) {
-                fields[nextIndex++] = highFields.get(keys.next());
+            for (Integer tagNumber : highFields.keySet()) {
+                fields[nextIndex++] = highFields.get(tagNumber);
             }
         }
 

@@ -3,10 +3,10 @@ package jdk.jshell.resources;
 public final class l10n extends java.util.ListResourceBundle {
     protected final Object[][] getContents() {
         return new Object[][] {
-            { "jshell.diag.modifier.plural.fatal", "Modifiers {0} not permitted in top-level declarations" },
-            { "jshell.diag.modifier.plural.ignore", "Modifiers {0} not permitted in top-level declarations, ignored" },
-            { "jshell.diag.modifier.single.fatal", "Modifier {0} not permitted in top-level declarations" },
-            { "jshell.diag.modifier.single.ignore", "Modifier {0} not permitted in top-level declarations, ignored" },
+            { "jshell.diag.modifier.plural.fatal", "Modifiers {0} not permitted" },
+            { "jshell.diag.modifier.plural.ignore", "Modifiers {0} not permitted, ignored" },
+            { "jshell.diag.modifier.single.fatal", "Modifier {0} not permitted" },
+            { "jshell.diag.modifier.single.ignore", "Modifier {0} not permitted, ignored" },
             { "jshell.diag.object.method.fatal", "JShell method names must not match Object methods: {0}" },
             { "jshell.exc.alien", "Snippet not from this JShell: {0}" },
             { "jshell.exc.closed", "JShell ({0}) has been closed." },

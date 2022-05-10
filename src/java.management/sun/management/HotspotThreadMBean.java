@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,7 +50,7 @@ public interface HotspotThreadMBean {
      * @throws java.lang.UnsupportedOperationException if the Java virtual
      * machine does not support CPU time measurement.
      *
-     * @see java.lang.management.ThreadMBean#isThreadCpuTimeSupported
+     * @see java.lang.management.ThreadMXBean#isThreadCpuTimeSupported
      */
     public java.util.Map<String,Long> getInternalThreadCpuTimes();
 

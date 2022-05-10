@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -62,6 +62,7 @@ public class CompositeDataSupport
      * respective values.
      *         A {@link SortedMap} is used for faster retrieval of elements.
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private final SortedMap<String, Object> contents;
 
     /**

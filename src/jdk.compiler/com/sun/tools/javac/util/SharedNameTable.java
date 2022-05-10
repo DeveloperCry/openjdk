@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,7 @@ public class SharedNameTable extends Name.Table {
     // maintain a freelist of recently used name tables for reuse.
     private static List<SoftReference<SharedNameTable>> freelist = List.nil();
 
-    static public synchronized SharedNameTable create(Names names) {
+    public static synchronized SharedNameTable create(Names names) {
         while (freelist.nonEmpty()) {
             SharedNameTable t = freelist.head.get();
             freelist = freelist.tail;
@@ -54,7 +54,7 @@ public class SharedNameTable extends Name.Table {
         return new SharedNameTable(names);
     }
 
-    static private synchronized void dispose(SharedNameTable t) {
+    private static synchronized void dispose(SharedNameTable t) {
         freelist = freelist.prepend(new SoftReference<>(t));
     }
 
@@ -203,10 +203,9 @@ public class SharedNameTable extends Name.Table {
          */
         @DefinedBy(Api.LANGUAGE_MODEL)
         public boolean equals(Object other) {
-            if (other instanceof Name)
-                return
-                    table == ((Name)other).table && index == ((Name) other).getIndex();
-            else return false;
+            return (other instanceof Name name)
+                    && table == name.table
+                    && index == name.getIndex();
         }
 
     }

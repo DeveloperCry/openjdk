@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -334,7 +334,7 @@ public final class RendererStats implements MarlinConst {
     static final class RendererStatsHolder {
 
         // singleton
-        private static volatile RendererStatsHolder SINGLETON = null;
+        private static volatile RendererStatsHolder SINGLETON;
 
         static synchronized RendererStatsHolder getInstance() {
             if (SINGLETON == null) {
@@ -354,6 +354,7 @@ public final class RendererStats implements MarlinConst {
         private final ConcurrentLinkedQueue<RendererStats> allStats
             = new ConcurrentLinkedQueue<RendererStats>();
 
+        @SuppressWarnings("removal")
         private RendererStatsHolder() {
             AccessController.doPrivileged(
                 (PrivilegedAction<Void>) () -> {

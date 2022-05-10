@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -175,6 +171,20 @@ public class FormatData_ccp extends ListResourceBundle {
                "\ud804\udd39",
                "\ud804\udd3a",
             };
+        final String[] metaValue_AmPmMarkers = new String[] {
+               "AM",
+               "PM",
+               "",
+               "",
+               "\ud804\udd1b\ud804\udd27\ud804\udd16\ud804\udd33\ud804\udd20\ud804\udd03\ud804\udd1f\ud804\udd27\ud804\udd23\ud804\udd33\ud804\udd20\ud804\udd2c",
+               "\ud804\udd1d\ud804\udd2c\ud804\udd1a\ud804\udd33\ud804\udd20\ud804\udd2c",
+               "\ud804\udd18\ud804\udd28\ud804\udd1d\ud804\udd2a\ud804\udd0e\ud804\udd33\ud804\udd20",
+               "\ud804\udd1d\ud804\udd2c\ud804\udd23\ud804\udd33\ud804\udd20\ud804\udd2c",
+               "\ud804\udd25\ud804\udd0e\ud804\udd27\ud804\udd1a\ud804\udd33\ud804\udd20",
+               "",
+               "\ud804\udd22\ud804\udd2c\ud804\udd16\ud804\udd34",
+               "",
+            };
         final String[] metaValue_long_Eras = new String[] {
                "\ud804\udd08\ud804\udd33\ud804\udd22\ud804\udd28\ud804\udd0c\ud804\udd34\ud804\udd11\ud804\udd34\ud804\udd1b\ud804\udd2b\ud804\udd22\ud804\udd34\ud804\udd1d\ud804\udd27",
                "\ud804\udd08\ud804\udd33\ud804\udd22\ud804\udd28\ud804\udd0c\ud804\udd34\ud804\udd11\ud804\udd1b\ud804\udd34\ud804\udd18\ud804\udd27",
@@ -197,11 +207,7 @@ public class FormatData_ccp extends ListResourceBundle {
                "d MMM, y GGGG",
                "d/M/y G",
             };
-        final String[] metaValue_japanese_narrow_AmPmMarkers = new String[] {
-               "AM",
-               "PM",
-            };
-        final String[] metaValue_islamic_long_Eras = new String[] {
+        final String[] metaValue_java_time_islamic_long_Eras = new String[] {
                "",
                "\ud804\udd21\ud804\udd2a\ud804\udd07\ud804\udd34",
             };
@@ -218,25 +224,49 @@ public class FormatData_ccp extends ListResourceBundle {
                "\u2030",
                "\u221e",
                "NaN",
+               "",
+               "",
+            };
+        final String[] metaValue_short_CompactNumberPatterns = new String[] {
+               "",
+               "",
+               "",
+               "{other:0K}",
+               "{other:00K}",
+               "{other:000K}",
+               "{other:0M}",
+               "{other:00M}",
+               "{other:000M}",
+               "{other:0G}",
+               "{other:00G}",
+               "{other:000G}",
+               "{other:0T}",
+               "{other:00T}",
+               "{other:000T}",
             };
         final Object[][] data = new Object[][] {
             { "MonthNames", metaValue_MonthNames },
             { "field.year", "\ud804\udd1d\ud804\udd27\ud804\udd0f\ud804\udd27\ud804\udd22\ud804\udd34" },
+            { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
+            { "AmPmMarkers", metaValue_AmPmMarkers },
             { "timezone.gmtFormat", "GMT {0}" },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "standalone.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
             { "roc.QuarterNames", metaValue_QuarterNames },
             { "roc.MonthNarrows", metaValue_MonthNarrows },
             { "calendarname.islamic-civil", "\ud804\udd03\ud804\udd28\ud804\udd25\ud804\udd34\ud804\udd23\ud804\udd1f\ud804\udd28\ud804\udd07\ud804\udd34-\ud804\udd25\ud804\udd28\ud804\udd1e\ud804\udd28\ud804\udd23\ud804\udd34 \ud804\udd1d\ud804\udd27\ud804\udd22\ud804\udd34\ud804\udd25\ud804\udd27\ud804\udd1b\ud804\udd27\ud804\udd1a\ud804\udd34\ud804\udd0f\ud804\udd29" },
-            { "islamic.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "islamic.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "japanese.TimePatterns", metaValue_TimePatterns },
             { "narrow.Eras", metaValue_long_Eras },
+            { "abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "timezone.regionFormat.standard", "{0} \ud804\udd1f\ud804\udd1a\ud804\udd27\ud804\udd07\ud804\udd34 \ud804\udd03\ud804\udd27\ud804\udd07\ud804\udd34\ud804\udd16\ud804\udd27\ud804\udd16\ud804\udd34" },
             { "DefaultNumberingSystem", "cakm" },
+            { "japanese.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "calendarname.japanese", "\ud804\udd0e\ud804\udd1b\ud804\udd1a\ud804\udd28 \ud804\udd07\ud804\udd33\ud804\udd20\ud804\udd23\ud804\udd2c\ud804\udd1a\ud804\udd34\ud804\udd13\ud804\udd22\ud804\udd34" },
             { "japanese.MonthNames", metaValue_MonthNames },
             { "standalone.DayAbbreviations", metaValue_DayAbbreviations },
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
+            { "java.time.islamic.narrow.Eras", metaValue_java_time_islamic_long_Eras },
             { "long.Eras", metaValue_long_Eras },
             { "roc.QuarterNarrows", metaValue_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
@@ -250,12 +280,22 @@ public class FormatData_ccp extends ListResourceBundle {
                     "{1} {0}",
                 }
             },
+            { "cakm.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##,##0.00\u00a4",
+                    "#,##0%",
+                    "",
+                }
+            },
+            { "narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "latn.NumberElements", metaValue_cakm_NumberElements },
             { "MonthNarrows", metaValue_MonthNarrows },
             { "japanese.DatePatterns", metaValue_buddhist_DatePatterns },
             { "buddhist.DayNames", metaValue_DayNames },
             { "field.minute", "\ud804\udd1f\ud804\udd28\ud804\udd1a\ud804\udd28\ud804\udd16\ud804\udd34" },
             { "field.era", "\ud804\udd21\ud804\udd2a\ud804\udd07\ud804\udd34" },
+            { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
             { "field.dayperiod", "AM/PM" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.MonthNames",
@@ -279,7 +319,7 @@ public class FormatData_ccp extends ListResourceBundle {
             { "calendarname.roc", "\ud804\udd1f\ud804\udd28\ud804\udd01\ud804\udd09\ud804\udd2a\ud804\udd03\ud804\udd2e \ud804\udd07\ud804\udd33\ud804\udd20\ud804\udd23\ud804\udd2c\ud804\udd1a\ud804\udd34\ud804\udd13\ud804\udd22\ud804\udd34" },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
-            { "islamic.Eras", metaValue_islamic_long_Eras },
+            { "islamic.Eras", metaValue_java_time_islamic_long_Eras },
             { "field.month", "\ud804\udd1f\ud804\udd0f\ud804\udd34" },
             { "field.second", "\ud804\udd25\ud804\udd2c\ud804\udd09\ud804\udd2c\ud804\udd1a\ud804\udd34" },
             { "islamic.MonthNarrows",
@@ -301,41 +341,40 @@ public class FormatData_ccp extends ListResourceBundle {
             },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##,##0.###",
-                    "#,##,##0.00\u00a4",
-                    "#,##,##0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "calendarname.islamic", "\ud804\udd03\ud804\udd28\ud804\udd25\ud804\udd34\ud804\udd23\ud804\udd1f\ud804\udd28\ud804\udd07\ud804\udd34 \ud804\udd07\ud804\udd33\ud804\udd20\ud804\udd23\ud804\udd2c\ud804\udd1a\ud804\udd34\ud804\udd13\ud804\udd22\ud804\udd34" },
-            { "japanese.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "DayPeriodRules", "night1:20:00-04:00;morning2:06:00-12:00;afternoon1:12:00-16:00;morning1:04:00-06:00;afternoon2:16:00-18:00;evening1:18:00-20:00" },
+            { "japanese.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthAbbreviations", metaValue_standalone_MonthNames },
+            { "long.CompactNumberPatterns", metaValue_short_CompactNumberPatterns },
             { "timezone.regionFormat", "{0} \ud804\udd03\ud804\udd27\ud804\udd07\ud804\udd34\ud804\udd16\ud804\udd27" },
             { "buddhist.QuarterNarrows", metaValue_QuarterNarrows },
-            { "roc.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "standalone.QuarterNames", metaValue_QuarterNames },
             { "japanese.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
             { "roc.DayAbbreviations", metaValue_DayAbbreviations },
             { "standalone.DayNarrows", metaValue_DayNarrows },
-            { "islamic.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
             { "TimePatterns", metaValue_TimePatterns },
             { "islamic.DayNarrows", metaValue_DayNarrows },
             { "field.zone", "\ud804\udd03\ud804\udd27\ud804\udd07\ud804\udd34\ud804\udd16\ud804\udd27\ud804\udd22\ud804\udd34 \ud804\udd0e\ud804\udd09" },
             { "japanese.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
+            { "buddhist.narrow.AmPmMarkers", metaValue_AmPmMarkers },
+            { "buddhist.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "Eras", metaValue_long_Eras },
             { "roc.DayNames", metaValue_DayNames },
             { "islamic.QuarterNames", metaValue_QuarterNames },
             { "QuarterNarrows", metaValue_QuarterNarrows },
+            { "islamic.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "standalone.QuarterNarrows", metaValue_QuarterNarrows },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "field.weekday", "\ud804\udd25\ud804\udd1b\ud804\udd34\ud804\udd16\ud804\udd22\ud804\udd34 \ud804\udd18\ud804\udd28\ud804\udd1a\ud804\udd34" },
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.DayAbbreviations", metaValue_DayAbbreviations },
-            { "islamic.long.Eras", metaValue_islamic_long_Eras },
+            { "islamic.long.Eras", metaValue_java_time_islamic_long_Eras },
+            { "java.time.islamic.Eras", metaValue_java_time_islamic_long_Eras },
             { "japanese.QuarterNames", metaValue_QuarterNames },
             { "buddhist.QuarterAbbreviations", metaValue_standalone_QuarterAbbreviations },
             { "cakm.NumberElements", metaValue_cakm_NumberElements },
@@ -349,9 +388,10 @@ public class FormatData_ccp extends ListResourceBundle {
             { "buddhist.QuarterNames", metaValue_QuarterNames },
             { "islamic.QuarterNarrows", metaValue_QuarterNarrows },
             { "roc.DayNarrows", metaValue_DayNarrows },
-            { "roc.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns", metaValue_short_CompactNumberPatterns },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "timezone.regionFormat.daylight", "{0} \ud804\udd18\ud804\udd28\ud804\udd1d\ud804\udd2a\ud804\udd0c\ud804\udd34\ud804\udd0e\ud804\udd33\ud804\udd20 \ud804\udd03\ud804\udd27\ud804\udd07\ud804\udd34\ud804\udd16\ud804\udd27\ud804\udd16\ud804\udd34" },
             { "DatePatterns",
@@ -367,13 +407,23 @@ public class FormatData_ccp extends ListResourceBundle {
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
             { "field.hour", "\ud804\udd0a\ud804\udd2e\ud804\udd1a\ud804\udd34\ud804\udd13" },
-            { "islamic.narrow.Eras", metaValue_islamic_long_Eras },
+            { "islamic.narrow.Eras", metaValue_java_time_islamic_long_Eras },
             { "calendarname.buddhist", "\ud804\udd1d\ud804\udd2a\ud804\udd16\ud804\udd34\ud804\udd19\ud804\udd2e \ud804\udd07\ud804\udd33\ud804\udd20\ud804\udd23\ud804\udd2c\ud804\udd1a\ud804\udd34\ud804\udd13\ud804\udd22\ud804\udd34" },
             { "standalone.MonthNames", metaValue_standalone_MonthNames },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##,##0.###",
+                    "#,##,##0.00\u00a4",
+                    "#,##,##0%",
+                    "#,##,##0.00\u00a4;(#,##,##0.00\u00a4)",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
+            { "java.time.islamic.long.Eras", metaValue_java_time_islamic_long_Eras },
             { "japanese.DayNarrows", metaValue_DayNarrows },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
+            { "roc.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "calendarname.gregory", metaValue_calendarname_gregorian },
         };
         return data;

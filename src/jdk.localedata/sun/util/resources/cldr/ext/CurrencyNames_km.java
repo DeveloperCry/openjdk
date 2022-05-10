@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -226,7 +222,7 @@ public class CurrencyNames_km extends OpenListResourceBundle {
             { "bhd", "\u178c\u17b8\u178e\u17b6\u200b\u1794\u17b6\u179a\u17c9\u17c2\u1793" },
             { "bif", "\u17a0\u17d2\u179c\u17d2\u179a\u1784\u17cb\u200b\u1794\u17ca\u17bc\u179a\u17bb\u1793\u178c\u17b8" },
             { "bmd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u1794\u17ca\u17ba\u1798\u17bb\u1799\u178a\u17b6" },
-            { "bnd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u1794\u17d2\u179a\u17bb\u1799\u178e\u17c1" },
+            { "bnd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u1796\u17d2\u179a\u17bb\u1799\u178e\u17c1" },
             { "bob", "\u1794\u17bc\u179b\u17b8\u179c\u17b8\u178e\u17bc\u200b\u1794\u17bc\u179b\u17b8\u179c\u17b8" },
             { "brl", "\u179a\u17c0\u179b\u200b\u1794\u17d2\u179a\u17c1\u179f\u17ca\u17b8\u179b" },
             { "bsd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u1794\u17b6\u17a0\u17b6\u1798\u17c9\u17b6" },
@@ -239,8 +235,8 @@ public class CurrencyNames_km extends OpenListResourceBundle {
             { "cdf", "\u17a0\u17d2\u179c\u17d2\u179a\u1784\u17cb\u200b\u1780\u17bb\u1784\u17a0\u17d2\u1782\u17c4" },
             { "chf", "\u17a0\u17d2\u179c\u17d2\u179a\u1784\u17cb\u179f\u17d2\u179c\u17b8\u179f" },
             { "clp", "\u1794\u17c9\u17c1\u179f\u17bc\u1788\u17b8\u179b\u17b8" },
-            { "cnh", "\u1799\u17c9\u1793\u17cb\u1785\u17b7\u1793 (\u1780\u17d2\u179a\u17c5\u1794\u17d2\u179a\u1791\u17c1\u179f)" },
-            { "cny", "\u1799\u17c9\u1793\u17cb\u200b\u1785\u17b7\u1793" },
+            { "cnh", "\u1799\u17d0\u1793\u1785\u17b7\u1793 (\u1780\u17d2\u179a\u17c5\u1794\u17d2\u179a\u1791\u17c1\u179f)" },
+            { "cny", "\u1799\u17d0\u1793\u1785\u17b7\u1793" },
             { "cop", "\u1794\u17c9\u17c1\u179f\u17bc\u1780\u17bc\u17a1\u17bb\u17c6\u1794\u17ca\u17b8" },
             { "crc", "\u1780\u17bc\u17a1\u17bb\u1784\u200b\u1780\u17bc\u179f\u17d2\u178f\u17b6\u179a\u17b8\u1780\u17b6" },
             { "cuc", "\u1794\u17c9\u17c1\u179f\u17bc\u200b\u1782\u17bb\u1799\u1794\u17b6\u17a2\u17b6\u1785\u200b\u1794\u1798\u17d2\u179b\u17c2\u1784\u200b\u1794\u17b6\u1793" },
@@ -312,7 +308,7 @@ public class CurrencyNames_km extends OpenListResourceBundle {
             { "mzn", "\u1798\u17b8\u1791\u17b8\u1781\u179b\u200b\u1798\u17c9\u17bc\u179f\u17c6\u1794\u17ca\u17b7\u1780" },
             { "nad", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u178e\u17b6\u1798\u17b8\u1794\u17ca\u17b8" },
             { "ngn", "\u178e\u17c3\u179a\u17c9\u17b6\u200b\u1793\u17b8\u17a0\u17d2\u179f\u17c1\u179a\u17b8\u1799\u17c9\u17b6" },
-            { "nio", "\u1781\u178c\u17bc\u1794\u17b6\u200b\u1793\u17b8\u1780\u17b6\u179a\u17c9\u17b6\u17a0\u17d2\u1782\u17b6" },
+            { "nio", "\u1781\u178c\u17bc\u1794\u17b6\u200b\u1793\u17b8\u1780\u17b6\u179a\u17c9\u17b6\u17a0\u17d2\u1780\u17b6" },
             { "nok", "\u1780\u17d2\u179a\u17bc\u178e\u17c1\u200b\u1793\u17d0\u179a\u179c\u17c9\u17c1" },
             { "npr", "\u179a\u17bc\u1796\u17b8\u1793\u17c1\u1794\u17c9\u17b6\u179b\u17cb" },
             { "nzd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u1793\u17bc\u179c\u17c2\u179b\u179f\u17c1\u17a1\u1784\u17cb" },
@@ -358,7 +354,8 @@ public class CurrencyNames_km extends OpenListResourceBundle {
             { "usd", "\u178a\u17bb\u179b\u17d2\u179b\u17b6\u179a\u200b\u17a2\u17b6\u1798\u17c1\u179a\u17b7\u1780" },
             { "uyu", "\u1794\u17c9\u17c1\u179f\u17bc\u17a2\u17ca\u17bb\u1799\u179a\u17bc\u17a0\u17d2\u1782\u17b6\u1799" },
             { "uzs", "\u179f\u17bb\u1798\u17a2\u17ca\u17bc\u1794\u17c1\u1782\u17b8\u179f\u17d2\u1790\u17b6\u1793" },
-            { "vef", "\u1794\u17ca\u17bc\u179b\u17b8\u179c\u17c9\u17b6\u200b\u179c\u17c9\u17c1\u178e\u17c1\u179f\u17ca\u17bb\u1799\u17a2\u17c1\u17a1\u17b6" },
+            { "vef", "\u1794\u17ca\u17bc\u179b\u17b8\u179c\u17c9\u17b6\u200b\u179c\u17c9\u17c1\u178e\u17c1\u179f\u17ca\u17bb\u1799\u17a2\u17c1\u17a1\u17b6 (2008\u20132018)" },
+            { "ves", "\u1794\u17ca\u17bc\u179b\u17b8\u179c\u17c9\u17b6\u200b\u179c\u17c9\u17c1\u178e\u17c1\u179f\u17ca\u17bb\u1799\u17a2\u17c1\u17a1\u17b6" },
             { "vnd", "\u178a\u17bb\u1784\u200b\u179c\u17c0\u178f\u178e\u17b6\u1798" },
             { "vuv", "\u179c\u17c9\u17b6\u1791\u17bc\u179c\u17c9\u17b6\u1793\u17bc\u17a2\u17b6\u1791\u17bc" },
             { "wst", "\u178f\u17b6\u17a1\u17b6\u200b\u179f\u17b6\u1798\u17d0\u179a" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,10 +25,11 @@
 
 package java.awt;
 
+import java.io.Serial;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Iterator;
 import java.util.LinkedList;
+
 import sun.awt.AWTAccessor;
 import sun.awt.AppContext;
 import sun.awt.SunToolkit;
@@ -44,10 +45,13 @@ import sun.awt.SunToolkit;
  *
  * @author David Mendenhall
  */
+@SuppressWarnings("removal")
 class SequencedEvent extends AWTEvent implements ActiveEvent {
-    /*
-     * serialVersionUID
+
+    /**
+     * Use serialVersionUID from JDK 1.6 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = 547742659238625067L;
 
     private static final int ID =
@@ -55,11 +59,13 @@ class SequencedEvent extends AWTEvent implements ActiveEvent {
     private static final LinkedList<SequencedEvent> list = new LinkedList<>();
 
     private final AWTEvent nested;
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private AppContext appContext;
     private boolean disposed;
     private final LinkedList<AWTEvent> pendingEvents = new LinkedList<>();
 
     private static boolean fxAppThreadIsDispatchThread;
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Thread fxCheckSequenceThread;
     static {
         AWTAccessor.setSequencedEventAccessor(new AWTAccessor.SequencedEventAccessor() {
@@ -94,9 +100,7 @@ class SequencedEvent extends AWTEvent implements ActiveEvent {
                 // Move forward dispatching only if the event is previous
                 // in SequencedEvent.list. Otherwise, hold it for reposting later.
                 synchronized (SequencedEvent.class) {
-                    Iterator<SequencedEvent> it = list.iterator();
-                    while (it.hasNext()) {
-                        SequencedEvent iev = it.next();
+                    for (SequencedEvent iev : list) {
                         if (iev.equals(currentSequencedEvent)) {
                             break;
                         } else if (iev.equals(ev)) {

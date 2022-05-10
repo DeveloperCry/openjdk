@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -60,6 +60,7 @@ public class WEmbeddedFrame extends EmbeddedFrame {
      */
     private boolean isEmbeddedInIE = false;
 
+    @SuppressWarnings("removal")
     private static String printScale = AccessController.doPrivileged(
         new GetPropertyAction("sun.java2d.print.pluginscalefactor"));
 
@@ -180,6 +181,7 @@ public class WEmbeddedFrame extends EmbeddedFrame {
         }
     }
 
+    @SuppressWarnings("removal")
     protected static int getPrintScaleFactor() {
         // check if value is already cached
         if (pScale != 0)

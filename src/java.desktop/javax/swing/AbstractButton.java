@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,12 +49,12 @@ import javax.swing.text.*;
  * configuring a button.  Refer to <a href="Action.html#buttonActions">
  * Swing Components Supporting <code>Action</code></a> for more
  * details, and you can find more information in <a
- * href="http://docs.oracle.com/javase/tutorial/uiswing/misc/action.html">How
+ * href="https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html">How
  * to Use Actions</a>, a section in <em>The Java Tutorial</em>.
  * <p>
  * For further information see
  * <a
- href="http://docs.oracle.com/javase/tutorial/uiswing/components/button.html">How to Use Buttons, Check Boxes, and Radio Buttons</a>,
+ href="https://docs.oracle.com/javase/tutorial/uiswing/components/button.html">How to Use Buttons, Check Boxes, and Radio Buttons</a>,
  * a section in <em>The Java Tutorial</em>.
  * <p>
  * <strong>Warning:</strong>
@@ -62,7 +62,7 @@ import javax.swing.text.*;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -234,6 +234,11 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     protected transient ChangeEvent changeEvent;
 
     private boolean hideActionText = false;
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected AbstractButton() {}
 
     /**
      * Sets the <code>hideActionText</code> property, which determines
@@ -1918,7 +1923,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
@@ -2341,7 +2346,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      * @since 1.4
@@ -2350,6 +2355,11 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     protected abstract class AccessibleAbstractButton
         extends AccessibleJComponent implements AccessibleAction,
         AccessibleValue, AccessibleText, AccessibleExtendedComponent {
+
+        /**
+         * Constructor for subclasses to call.
+         */
+        protected AccessibleAbstractButton() {}
 
         /**
          * Returns the accessible name of this object.
@@ -2384,8 +2394,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             if (defaultIcon instanceof Accessible) {
                 AccessibleContext ac =
                     ((Accessible)defaultIcon).getAccessibleContext();
-                if (ac != null && ac instanceof AccessibleIcon) {
-                    return new AccessibleIcon[] { (AccessibleIcon)ac };
+                if (ac instanceof AccessibleIcon ai) {
+                    return new AccessibleIcon[] { ai };
                 }
             }
             return null;
@@ -2431,8 +2441,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             if (!relationSet.contains(AccessibleRelation.MEMBER_OF)) {
                 // get the members of the button group if one exists
                 ButtonModel model = getModel();
-                if (model != null && model instanceof DefaultButtonModel) {
-                    ButtonGroup group = ((DefaultButtonModel)model).getGroup();
+                if (model instanceof DefaultButtonModel defaultModel) {
+                    ButtonGroup group = defaultModel.getGroup();
                     if (group != null) {
                         // set the target of the MEMBER_OF relation to be
                         // the members of the button group.
@@ -2605,7 +2615,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
                 }
                 Rectangle2D.Float shape =
                     new Rectangle2D.Float(r.x, r.y, r.width, r.height);
-                Position.Bias bias[] = new Position.Bias[1];
+                Position.Bias[] bias = new Position.Bias[1];
                 return view.viewToModel(p.x, p.y, shape, bias);
             } else {
                 return -1;

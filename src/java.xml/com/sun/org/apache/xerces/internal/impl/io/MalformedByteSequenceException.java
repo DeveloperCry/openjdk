@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -45,6 +45,7 @@ public class MalformedByteSequenceException extends CharConversionException {
     //
 
     /** message formatter **/
+    @SuppressWarnings("serial") // Type of field is not Serializable
     private MessageFormatter fFormatter;
 
     /** locale for error message **/
@@ -57,6 +58,7 @@ public class MalformedByteSequenceException extends CharConversionException {
     private String fKey;
 
     /** replacement arguements for the error message **/
+    @SuppressWarnings("serial") // Array component type is not Serializable
     private Object[] fArguments;
 
     /** message text for this message, initially null **/

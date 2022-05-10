@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,11 +31,14 @@ import javax.swing.plaf.*;
 import java.beans.*;
 
 import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
-import java.awt.*;
+import java.awt.Point;
 
 import sun.swing.DefaultLookup;
 import sun.swing.UIAction;
@@ -347,7 +350,7 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      * The default DesktopManager installed by the UI.
      */
     @SuppressWarnings("serial") // JDK-implementation class
-    private class BasicDesktopManager extends DefaultDesktopManager
+    private static class BasicDesktopManager extends DefaultDesktopManager
             implements UIResource {
     }
 
@@ -566,10 +569,7 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
                 if (cycleRoot != null) {
                     FocusTraversalPolicy policy =
                         cycleRoot.getFocusTraversalPolicy();
-                    if (policy != null && policy instanceof
-                            SortingFocusTraversalPolicy) {
-                        SortingFocusTraversalPolicy sPolicy =
-                            (SortingFocusTraversalPolicy)policy;
+                    if (policy instanceof SortingFocusTraversalPolicy sPolicy) {
                         boolean idc = sPolicy.getImplicitDownCycleTraversal();
                         try {
                             sPolicy.setImplicitDownCycleTraversal(false);
@@ -678,6 +678,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class OpenAction extends AbstractAction {
+        /**
+         * Constructs an {@code OpenAction}.
+         */
+        protected OpenAction() {}
         public void actionPerformed(ActionEvent evt) {
             JDesktopPane dp = (JDesktopPane)evt.getSource();
             SHARED_ACTION.setState(dp, Actions.RESTORE);
@@ -693,6 +697,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class CloseAction extends AbstractAction {
+        /**
+         * Constructs a {@code CloseAction}.
+         */
+        protected CloseAction() {}
         public void actionPerformed(ActionEvent evt) {
             JDesktopPane dp = (JDesktopPane)evt.getSource();
             SHARED_ACTION.setState(dp, Actions.CLOSE);
@@ -712,6 +720,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class MinimizeAction extends AbstractAction {
+        /**
+         * Constructs a {@code MinimizeAction}.
+         */
+        protected MinimizeAction() {}
         public void actionPerformed(ActionEvent evt) {
             JDesktopPane dp = (JDesktopPane)evt.getSource();
             SHARED_ACTION.setState(dp, Actions.MINIMIZE);
@@ -731,6 +743,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class MaximizeAction extends AbstractAction {
+        /**
+         * Constructs a {@code MaximizeAction}.
+         */
+        protected MaximizeAction() {}
         public void actionPerformed(ActionEvent evt) {
             JDesktopPane dp = (JDesktopPane)evt.getSource();
             SHARED_ACTION.setState(dp, Actions.MAXIMIZE);
@@ -750,6 +766,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class NavigateAction extends AbstractAction {
+        /**
+         * Constructs a {@code NavigateAction}.
+         */
+        protected NavigateAction() {}
         public void actionPerformed(ActionEvent evt) {
             JDesktopPane dp = (JDesktopPane)evt.getSource();
             dp.selectFrame(true);

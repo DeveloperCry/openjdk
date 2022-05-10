@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.awt.dnd.DragSource;
 import java.awt.dnd.MouseDragGestureRecognizer;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 
 import sun.awt.dnd.SunDragSourceContextPeer;
 
@@ -51,6 +52,10 @@ import sun.awt.dnd.SunDragSourceContextPeer;
 
 final class WMouseDragGestureRecognizer extends MouseDragGestureRecognizer {
 
+    /**
+     * Use serialVersionUID from JDK 1.4 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = -3527844310018033570L;
 
     /*

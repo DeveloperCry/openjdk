@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -122,9 +118,32 @@ public class FormatData_pa_Arab extends ListResourceBundle {
                "d MMM y GGGG",
                "dd/MM/y G",
             };
+        final String[] metaValue_arabext_NumberPatterns = new String[] {
+               "#,##0.###",
+               "\u00a4\u00a0#,##0.00",
+               "#,##0%",
+               "",
+            };
         final Object[][] data = new Object[][] {
             { "MonthNames", metaValue_MonthNames },
             { "field.year", "\u0648\u0631\u06be\u0627" },
+            { "arabext.NumberElements",
+                new String[] {
+                    "\u066b",
+                    "\u066c",
+                    "\u061b",
+                    "\u066a",
+                    "\u06f0",
+                    "#",
+                    "\u200e-\u200e",
+                    "\u00d7\u06f1\u06f0^",
+                    "\u0609",
+                    "\u221e",
+                    "NaN",
+                    "",
+                    "",
+                }
+            },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "roc.QuarterNames", metaValue_QuarterNames },
             { "TimePatterns", metaValue_TimePatterns },
@@ -141,7 +160,6 @@ public class FormatData_pa_Arab extends ListResourceBundle {
             { "long.Eras", metaValue_long_Eras },
             { "islamic.DayNames", metaValue_DayNames },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
-            { "buddhist.MonthAbbreviations", metaValue_MonthNames },
             { "field.weekday", "\u06c1\u0641\u062a\u06d2 \u062f\u0627 \u062f\u0646" },
             { "buddhist.MonthNames", metaValue_MonthNames },
             { "latn.NumberElements",
@@ -157,6 +175,8 @@ public class FormatData_pa_Arab extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.DatePatterns", metaValue_buddhist_DatePatterns },
@@ -171,6 +191,7 @@ public class FormatData_pa_Arab extends ListResourceBundle {
             { "DayNames", metaValue_DayNames },
             { "field.month", "\u0645\u06c1\u064a\u0646\u0627" },
             { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
+            { "arabext.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "roc.MonthNames", metaValue_MonthNames },
             { "field.week", "\u06c1\u0641\u062a\u06c1" },
             { "DayAbbreviations", metaValue_DayNames },
@@ -194,6 +215,7 @@ public class FormatData_pa_Arab extends ListResourceBundle {
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthNames },
+            { "latn.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterNames },

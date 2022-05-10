@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -30,13 +30,12 @@ import com.sun.org.apache.bcel.internal.ExceptionConst;
  * OR
  * <PRE>Stack: ..., objectref, value.word1, value.word2 -&gt; ...</PRE>
  *
- * @version $Id: PUTFIELD.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class PUTFIELD extends FieldInstruction implements PopInstruction, ExceptionThrower {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     PUTFIELD() {
     }

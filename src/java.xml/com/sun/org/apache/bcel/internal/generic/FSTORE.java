@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,13 +25,12 @@ package com.sun.org.apache.bcel.internal.generic;
  * FSTORE - Store float into local variable
  * <PRE>Stack: ..., value -&gt; ... </PRE>
  *
- * @version $Id: FSTORE.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class FSTORE extends StoreInstruction {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     FSTORE() {
         super(com.sun.org.apache.bcel.internal.Const.FSTORE, com.sun.org.apache.bcel.internal.Const.FSTORE_0);

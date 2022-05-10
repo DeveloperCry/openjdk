@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,13 +28,9 @@ import com.sun.beans.finder.PrimitiveWrapperMap;
 
 import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 
@@ -521,8 +517,8 @@ static class java_util_Collection_PersistenceDelegate extends DefaultPersistence
         if (newO.size() != 0) {
             invokeStatement(oldInstance, "clear", new Object[]{}, out);
         }
-        for (Iterator<?> i = oldO.iterator(); i.hasNext();) {
-            invokeStatement(oldInstance, "add", new Object[]{i.next()}, out);
+        for (Object o : oldO) {
+            invokeStatement(oldInstance, "add", new Object[]{o}, out);
         }
     }
 }
@@ -756,7 +752,7 @@ static final class java_awt_AWTKeyStroke_PersistenceDelegate extends Persistence
 static class StaticFieldsPersistenceDelegate extends PersistenceDelegate {
     protected void installFields(Encoder out, Class<?> cls) {
         if (Modifier.isPublic(cls.getModifiers()) && isPackageAccessible(cls)) {
-            Field fields[] = cls.getFields();
+            Field[] fields = cls.getFields();
             for(int i = 0; i < fields.length; i++) {
                 Field field = fields[i];
                 // Don't install primitives, their identity will not be preserved
@@ -1322,6 +1318,7 @@ static final class sun_swing_PrintColorUIResource_PersistenceDelegate extends Pe
         }
     }
 
+    @SuppressWarnings("removal")
     static Object getPrivateFieldValue(Object instance, String name) {
         Field field = fields.get(name);
         if (field == null) {

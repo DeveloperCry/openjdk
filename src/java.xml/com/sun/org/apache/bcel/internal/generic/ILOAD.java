@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,13 +25,12 @@ package com.sun.org.apache.bcel.internal.generic;
  * ILOAD - Load int from local variable onto stack
  * <PRE>Stack: ... -&gt; ..., result</PRE>
  *
- * @version $Id: ILOAD.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class ILOAD extends LoadInstruction {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     ILOAD() {
         super(com.sun.org.apache.bcel.internal.Const.ILOAD, com.sun.org.apache.bcel.internal.Const.ILOAD_0);

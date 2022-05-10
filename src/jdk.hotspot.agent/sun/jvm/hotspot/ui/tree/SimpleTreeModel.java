@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,8 +45,7 @@ public class SimpleTreeModel implements TreeModel {
       public String getValue()                          { return toString(); }
     };
   private SimpleTreeNode root = singletonNullRoot;
-  /** List<TreeModelListener> */
-  private List listeners = new ArrayList();
+  private List<TreeModelListener> listeners = new ArrayList<>();
 
   public void setRoot(SimpleTreeNode node) {
     if (node != null) {

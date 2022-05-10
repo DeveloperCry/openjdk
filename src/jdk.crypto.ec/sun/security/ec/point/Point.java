@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,6 +38,7 @@ public interface Point {
 
     IntegerFieldModuloP getField();
     AffinePoint asAffine();
+    boolean affineEquals(Point p);
 
     ImmutablePoint fixed();
     MutablePoint mutable();

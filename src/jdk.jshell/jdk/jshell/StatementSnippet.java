@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,7 +36,7 @@ import jdk.jshell.Key.StatementKey;
  * and thus is thread-safe.
  *
  * @since 9
- * @jls 14.5: Statement.
+ * @jls 14.5 Statements
  */
 public class StatementSnippet extends Snippet {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -136,6 +132,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "CLE", "CLE" },
             { "CLF", "CLF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "CNX", "CNX" },
             { "CNY", "CNY" },
             { "COP", "COP" },
@@ -241,6 +238,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MTL", "MTL" },
             { "MTP", "MTP" },
             { "MUR", "MUR" },
@@ -330,6 +328,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "UZS", "UZS" },
             { "VEB", "VEB" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VNN", "VNN" },
             { "VUV", "VUV" },
@@ -421,7 +420,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "buk", "burmanski kyat" },
             { "bwp", "bocvanska pula" },
             { "byb", "bjeloruska nova rublja (1994\u20131999)" },
-            { "byn", "bjeloruska rublja" },
+            { "byn", "bjeloruski rubalj" },
             { "byr", "bjeloruska rublja (2000\u20132016)" },
             { "bzd", "belizeanski dolar" },
             { "cad", "kanadski dolar" },
@@ -502,7 +501,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "jpy", "japanski jen" },
             { "kes", "kenijski \u0161iling" },
             { "kgs", "kirgiski som" },
-            { "khr", "kambo\u0111anski rijal" },
+            { "khr", "kambod\u017eanski rijal" },
             { "kmf", "komorski franak" },
             { "kpw", "sjevernokorejski won" },
             { "krh", "ju\u017enokorejski hvan" },
@@ -528,7 +527,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "maf", "marokanski franak" },
             { "mdc", "moldavski kupon" },
             { "mdl", "moldavski lej" },
-            { "mga", "madagaskarski ariary" },
+            { "mga", "malga\u0161ki arijari" },
             { "mgf", "madagaskarski franak" },
             { "mkd", "makedonski denar" },
             { "mkn", "stari makedonski denar" },
@@ -536,7 +535,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "mmk", "mjanmarski kjat" },
             { "mnt", "mongolski tugrik" },
             { "mop", "makao\u0161ka pataka" },
-            { "mro", "mauritanijska ouguja (1973\u20132017)" },
+            { "mro", "mauritanijska ouguja (1973. \u2013 2017.)" },
             { "mru", "mauritanijska ouguja" },
             { "mtl", "malte\u0161ka lira" },
             { "mtp", "malte\u0161ka funta" },
@@ -576,10 +575,10 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "rol", "starorumunjski lek" },
             { "ron", "rumunjski lej" },
             { "rsd", "srpski dinar" },
-            { "rub", "ruska rublja" },
+            { "rub", "ruski rubalj" },
             { "rur", "ruska rublja (1991.\u20131998.)" },
             { "rwf", "ruandski franak" },
-            { "sar", "saudijski rial" },
+            { "sar", "saudijski rijal" },
             { "sbd", "solmonskooto\u010dni dolar" },
             { "scr", "sej\u0161elska rupija" },
             { "sdd", "sudanski dinar" },
@@ -626,7 +625,8 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "uyu", "urugvajski pezo" },
             { "uzs", "uzbekistanski som" },
             { "veb", "venezuelanski bolivar (1871.\u20132008.)" },
-            { "vef", "venezuelanski bolivar" },
+            { "vef", "venezuelanski bolivar (2008. \u2013 2018.)" },
+            { "ves", "venezuelanski bolivar" },
             { "vnd", "vijetnamski dong" },
             { "vnn", "vijetnamski dong (1978.\u20131985.)" },
             { "vuv", "vanuatski vatu" },
@@ -653,7 +653,7 @@ public class CurrencyNames_hr extends OpenListResourceBundle {
             { "xua", "obra\u010dunska jedinica ADB" },
             { "xxx", "nepoznata valuta" },
             { "ydd", "jemenski dinar" },
-            { "yer", "jemenski rial" },
+            { "yer", "jemenski rijal" },
             { "yud", "jugoslavenski \u010dvrsti dinar" },
             { "yum", "jugoslavenski novi dinar" },
             { "yun", "jugoslavenski konvertibilni dinar" },

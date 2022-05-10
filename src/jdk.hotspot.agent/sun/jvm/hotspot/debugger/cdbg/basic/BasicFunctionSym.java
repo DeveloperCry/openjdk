@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -53,7 +53,7 @@ public class BasicFunctionSym extends BasicBlockSym implements FunctionSym {
       return null;
     }
 
-    StringBuffer res = new StringBuffer();
+    StringBuilder res = new StringBuilder();
     res.append(getName());
     res.append("(");
     FunctionType type = (FunctionType) getType();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,6 +48,7 @@ public class TransformerException extends Exception {
     private static final long serialVersionUID = 975798773772956428L;
 
     /** Field locator specifies where the error occurred */
+    @SuppressWarnings("serial") // Type of field is not Serializable
     SourceLocator locator;
 
     /**
@@ -229,6 +230,7 @@ public class TransformerException extends Exception {
      * @return A string with location info, or null
      * if there is no location information.
      */
+    @SuppressWarnings("removal")
     public String getLocationAsString() {
         if (locator == null) {
             return null;

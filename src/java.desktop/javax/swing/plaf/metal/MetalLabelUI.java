@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -57,11 +57,17 @@ public class MetalLabelUI extends BasicLabelUI
     private static final Object METAL_LABEL_UI_KEY = new Object();
 
     /**
+     * Constructs a {@code MetalLabelUI}.
+     */
+    public MetalLabelUI() {}
+
+    /**
      * Returns an instance of {@code MetalLabelUI}.
      *
      * @param c a component
      * @return an instance of {@code MetalLabelUI}
      */
+    @SuppressWarnings("removal")
     public static ComponentUI createUI(JComponent c) {
         if (System.getSecurityManager() != null) {
             AppContext appContext = AppContext.getAppContext();

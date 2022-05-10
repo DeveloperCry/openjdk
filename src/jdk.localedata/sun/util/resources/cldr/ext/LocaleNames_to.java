@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -100,6 +96,7 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "151", "\u02bbEulope fakahahake" },
             { "154", "\u02bbEulope fakatokelau" },
             { "155", "\u02bbEulope fakahihifo" },
+            { "202", "\u02bbAfilika fakasahala-tonga" },
             { "419", "\u02bbAmelika fakalatina" },
             { "AC", "Motu \u02bbAsenisini" },
             { "AD", "\u02bbAnitola" },
@@ -251,9 +248,9 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "MF", "S\u0101 M\u0101tini (fakafalanis\u0113)" },
             { "MG", "Matakasika" },
             { "MH", "\u02bbOtumotu M\u0101solo" },
-            { "MK", "Maset\u014dnia" },
+            { "MK", "Maset\u014dnia fakatokelau" },
             { "ML", "M\u0101li" },
-            { "MM", "Pema" },
+            { "MM", "Mianim\u0101 (Pema)" },
             { "MN", "Mongok\u014dlia" },
             { "MO", "Makau SAR Siaina" },
             { "MP", "\u02bbOtumotu Maliana tokelau" },
@@ -321,7 +318,7 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "SV", "\u02bbEle Salavatoa" },
             { "SX", "S\u0101 M\u0101tini (fakah\u014dlani)" },
             { "SY", "S\u012blia" },
-            { "SZ", "Suasilani" },
+            { "SZ", "\u02bbEsuatini" },
             { "TA", "Tulisitani ta Kunuha" },
             { "TC", "\u02bbOtumotu Tuki mo Kaikosi" },
             { "TD", "S\u0101ti" },
@@ -330,7 +327,7 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "TH", "Tailani" },
             { "TJ", "Tasikitani" },
             { "TK", "Tokelau" },
-            { "TL", "Timoa hahake" },
+            { "TL", "Timoa fakahahake" },
             { "TM", "T\u016bkimenisitani" },
             { "TN", "Tun\u012bsia" },
             { "TO", "Tonga" },
@@ -355,6 +352,8 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "VU", "Vanuatu" },
             { "WF", "\u02bbUvea mo Futuna" },
             { "WS", "Ha\u02bbamoa" },
+            { "XA", "fasi\u02bbalea loi" },
+            { "XB", "fua-ua loi" },
             { "XK", "K\u014dsovo" },
             { "YE", "Iemeni" },
             { "YT", "Maiote" },
@@ -609,6 +608,7 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "car", "lea fakakalipa" },
             { "cay", "lea fakakaiuka" },
             { "cch", "lea faka\u02bbatisami" },
+            { "ccp", "lea fakas\u0101kima" },
             { "ceb", "lea fakasepuano" },
             { "cgg", "lea fakakika" },
             { "chb", "lea fakas\u012bpisa" },
@@ -1122,15 +1122,14 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "Zxxx", "tohinima ta\u02bbetohitohi\u02bbi" },
             { "Zyyy", "tohinima fakatatau" },
             { "Zzzz", "tohinima ta\u02bbe\u02bbiloa" },
-            { "root", "lea faka\u02bbilonga-tefito" },
             { "de_AT", "lea fakasiamane-\u02bbaositulia" },
             { "de_CH", "lea fakasiamane-hake-suisilani" },
             { "en_AU", "lea fakap\u0101langi-\u02bbaositel\u0113lia" },
             { "en_CA", "lea fakap\u0101langi-k\u0101nata" },
             { "en_GB", "lea fakapilit\u0101nia" },
             { "en_US", "lea fakap\u0101langi-\u02bbamelika" },
-            { "es_ES", "lea fakasip\u0113nisi-\u2018iulope" },
-            { "es_MX", "lea fakasip\u0113nisi-mekisikou" },
+            { "es_ES", "lea fakasipeini-\u02bbeulope" },
+            { "es_MX", "lea fakasipeini-mekisikou" },
             { "fr_CA", "lea fakafalanis\u0113-k\u0101nata" },
             { "fr_CH", "lea fakafalanis\u0113-suisilani" },
             { "nl_BE", "lea fakah\u014dlani-pelesiume" },
@@ -1139,7 +1138,7 @@ public class LocaleNames_to extends OpenListResourceBundle {
             { "ro_MD", "lea fakamolit\u0101via" },
             { "sw_CD", "lea fakasuahili-kongik\u014d" },
             { "ar_001", "lea faka\u02bbalepea (m\u0101mani)" },
-            { "es_419", "lea fakasip\u0113nisi l\u0101tini-\u02bbamelika" },
+            { "es_419", "lea fakasipeini-l\u0101tini-\u02bbamelika" },
             { "key.ca", "tohi m\u0101hina" },
             { "key.cf", "anga pa\u02bbanga" },
             { "key.co", "tohi hokohoko" },

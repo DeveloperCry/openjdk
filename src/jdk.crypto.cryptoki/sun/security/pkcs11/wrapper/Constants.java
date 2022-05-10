@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /* Copyright  (c) 2002 Graz University of Technology. All rights reserved.
@@ -50,7 +50,7 @@ package sun.security.pkcs11.wrapper;
 
 
 /**
- * This class holds only final static member variables that are constants
+ * This class holds only static final member variables that are constants
  * in this package.
  *
  * @author Karl Scheibelhofer <Karl.Scheibelhofer@iaik.at>

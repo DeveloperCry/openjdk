@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -96,6 +92,7 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "mwl", "\u09ae\u09bf\u09f0\u09be\u09a3\u09cd\u09a1\u09bf\u099c" },
             { "Zsym", "\u09aa\u09cd\u09f0\u09a4\u09c0\u0995" },
             { "Zsye", "\u0987\u09ae\u2019\u099c\u09bf" },
+            { "ccp", "\u099a\u09be\u0995\u09cd\u200c\u09ae\u09be" },
             { "tem", "\u099f\u09bf\u09ae\u09cd\u09a8\u09c7" },
             { "teo", "\u09a4\u09c7\u099b\u09cb" },
             { "rap", "\u09f0\u09be\u09aa\u09be\u09a8\u09c1\u0987" },
@@ -215,7 +212,6 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "FO", "\u09ab\u09be\u09f0\u09cb \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c" },
             { "Taml", metaValue_ta },
             { "FR", "\u09ab\u09cd\u09f0\u09be\u09a8\u09cd\u09b8" },
-            { "root", "\u09f0\u09c1\u099f" },
             { "type.ca.indian", "\u09ad\u09be\u09f0\u09a4\u09c0\u09af\u09bc \u09f0\u09be\u09b7\u09cd\u099f\u09cd\u09f0\u09c0\u09af\u09bc \u09aa\u099e\u09cd\u099c\u09bf\u0995\u09be" },
             { "GA", "\u0997\u09c7\u09ac\u09a8" },
             { "GB", "\u09b8\u0982\u09af\u09c1\u0995\u09cd\u09a4 \u09f0\u09be\u099c\u09cd\u09af" },
@@ -298,6 +294,7 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "LB", "\u09b2\u09c7\u09ac\u09be\u09a8\u09a8" },
             { "LC", "\u099b\u09c7\u0987\u09a3\u09cd\u099f \u09b2\u09c1\u099a\u09bf\u09af\u09bc\u09be" },
             { "gwi", "\u099c\u09bf\u0989\u0987\u099a\u09bf\u09a8" },
+            { "nds", "\u09b2\u2019 \u099c\u09be\u09f0\u09cd\u09ae\u09be\u09a8" },
             { "LI", "\u09b2\u09bf\u099a\u099f\u09c7\u09a8\u09b7\u09cd\u099f\u09c7\u0987\u09a8" },
             { "LK", "\u09b6\u09cd\u09b0\u09c0\u09b2\u0982\u0995\u09be" },
             { "LR", "\u09b2\u09bf\u09ac\u09c7\u09f0\u09bf\u09af\u09bc\u09be" },
@@ -320,12 +317,12 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "\u09ae\u09be\u09f0\u09cd\u09b6\u09cd\u09ac\u09be\u09b2 \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c" },
             { "ale", "\u0986\u09b2\u09c7\u0989\u099f" },
-            { "MK", "\u09ae\u09c7\u099a\u09bf\u09a1\u09cb\u09a8\u09c0\u09af\u09bc\u09be" },
+            { "MK", "\u0989\u09a4\u09cd\u09a4\u09f0 \u09ae\u09c7\u099a\u09bf\u09a1\u09cb\u09a8\u09c0\u09af\u09bc\u09be" },
             { "ML", "\u09ae\u09be\u09b2\u09bf" },
             { "MM", "\u09ae\u09cd\u09af\u09be\u09a8\u09ae\u09be\u09f0 (\u09ac\u09be\u09f0\u09cd\u09ae\u09be)" },
             { "MN", "\u09ae\u0999\u09cd\u0997\u09cb\u09b2\u09bf\u09af\u09bc\u09be" },
             { "new", "\u09a8\u09c7\u09f1\u09be\u09f0\u09bf" },
-            { "MO", "\u09ae\u09be\u0995\u09be\u0989 \u098f\u099b. \u098f. \u0986\u09f0. \u099a\u09c0\u09a8" },
+            { "MO", "\u09ae\u09be\u0995\u09be\u0993 \u098f\u099b. \u098f. \u0986\u09f0. \u099a\u09c0\u09a8" },
             { "MP", "\u0989\u09a4\u09cd\u09a4\u09f0 \u09ae\u09be\u09f0\u09bf\u09af\u09bc\u09be\u09a8\u09be \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c" },
             { "MQ", "\u09ae\u09be\u09f0\u09cd\u099f\u09bf\u09a8\u09bf\u0995" },
             { "MR", "\u09ae\u09be\u0989\u09f0\u09bf\u099f\u09be\u09a8\u09bf\u09af\u09bc\u09be" },
@@ -386,7 +383,7 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "tvl", metaValue_TV },
             { "001", "\u09ac\u09bf\u09b6\u09cd\u09ac" },
             { "002", "\u0986\u09ab\u09cd\u09f0\u09bf\u0995\u09be" },
-            { "003", "\u0989\u09a6\u09c0\u099a\u09cd\u09af \u0986\u09ae\u09c7\u09f0\u09bf\u0995\u09be" },
+            { "003", "\u0989\u09a4\u09cd\u09a4\u09f0 \u0986\u09ae\u09c7\u09f0\u09bf\u0995\u09be" },
             { "RE", "\u09f0\u09bf\u0987\u0989\u09a8\u09bf\u09af\u09bc\u09a8" },
             { "005", "\u09a6\u0995\u09cd\u09b7\u09bf\u09a3 \u0986\u09ae\u09c7\u09f0\u09bf\u0995\u09be" },
             { "jbo", "\u09b2\u09cb\u099c\u09cd\u09ac\u09be\u09a8" },
@@ -427,11 +424,11 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "SV", "\u098f\u09b2 \u099b\u09c7\u09b2\u09ad\u09c7\u09a1\u2019\u09f0" },
             { "SX", "\u099a\u09bf\u09a3\u09cd\u099f \u09ae\u09be\u09f0\u09cd\u099f\u09c7\u09a8" },
             { "SY", "\u099a\u09bf\u09f0\u09bf\u09af\u09bc\u09be" },
-            { "SZ", "\u09b8\u09cd\u09ac\u09be\u099c\u09bf\u09b2\u09c7\u09a3\u09cd\u09a1" },
+            { "SZ", "\u0987\u099a\u09cd\u099a\u09c1\u099f\u09bf\u09a8\u09bf" },
             { "TA", "\u09a4\u09cd\u09f0\u09bf\u09b8\u09cd\u09a4\u09be\u09a8 \u09a6\u09cd\u09af\u09be \u0995\u09c1\u09a8\u09b9\u09be" },
             { "asa", "\u0986\u099b\u09c1" },
             { "type.ms.ussystem", "\u09ae\u09be\u09f0\u09cd\u0995\u09bf\u09a8 \u09af\u09c1\u0995\u09cd\u09a4\u09f0\u09be\u09b7\u09cd\u099f\u09cd\u09f0\u09f0 \u099c\u09cb\u0996-\u09ae\u09be\u0996\u09f0 \u09aa\u09cd\u09f0\u09a3\u09be\u09b2\u09c0" },
-            { "021", "\u0989\u09a4\u09cd\u09a4\u09f0\u09c0\u09af\u09bc \u0986\u09ae\u09c7\u09f0\u09bf\u0995\u09be" },
+            { "021", "\u0989\u09a6\u09c0\u099a\u09cd\u09af \u0986\u09ae\u09c7\u09f0\u09bf\u0995\u09be" },
             { "TC", "\u099f\u09be\u09f0\u09cd\u0995\u099b \u0985\u09f0\u09c1 \u0995\u09c7\u0987\u0995\u2019\u099b \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c" },
             { "yav", "\u09af\u09bc\u09be\u0982\u09ac\u09c7\u09a8" },
             { "TD", "\u099a\u09be\u09a1" },
@@ -495,7 +492,9 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "wae", "\u09f1\u09be\u09b2\u099b\u09c7\u09f0" },
             { "WS", "\u099a\u09be\u09ae\u09cb\u09f1\u09be" },
             { "wal", "\u0993\u09b2\u09c7\u0987\u099f\u09be" },
+            { "XA", "\u099b\u09c1\u09a1\u09c1-\u098f\u0995\u099a\u09c7\u09a3\u09cd\u099f" },
             { "war", "\u09f1\u09be\u09f0\u09c7" },
+            { "XB", "\u099b\u09c1\u09a1\u09c1-\u09ac\u09bf\u09a1\u09bf" },
             { "awa", "\u0986\u09f1\u09be\u09a7\u09bf" },
             { "061", "\u09aa\u09b2\u09bf\u09a8\u09c7\u099a\u09bf\u09af\u09bc\u09be" },
             { "XK", "\u0995\u099a\u2019\u09ad\u2019" },
@@ -776,7 +775,7 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "en_AU", "\u0985\u09b7\u09cd\u099f\u09cd\u09f0\u09c7\u09b2\u09bf\u09af\u09bc\u09be\u09a8 \u0987\u0982\u09f0\u09be\u099c\u09c0" },
             { "sa", "\u09b8\u0982\u09b8\u09cd\u0995\u09c3\u09a4" },
             { "sc", "\u099b\u09be\u09f0\u09cd\u09a1\u09bf\u09a8\u09bf\u09af\u09bc\u09be\u09a8" },
-            { "sd", "\u09b8\u09bf\u09a8\u09cd\u09a7\u09bf" },
+            { "sd", "\u09b8\u09bf\u09a8\u09cd\u09a7\u09c0" },
             { "se", "\u0989\u09a6\u09c0\u099a\u09cd\u09af \u099b\u09be\u09ae\u09bf" },
             { "min", "\u09ae\u09bf\u09a8\u09be\u0982\u0995\u09be\u09ac\u09be\u0989" },
             { "sg", "\u099b\u09be\u0999\u09cd\u0997\u09cb" },
@@ -887,6 +886,7 @@ public class LocaleNames_as extends OpenListResourceBundle {
             { "type.nu.tamldec", "\u09a4\u09be\u09ae\u09bf\u09b2 \u0985\u0982\u0995" },
             { "krc", "\u0995\u09be\u09f0\u09be\u099a\u09c7-\u09ac\u09be\u09b2\u09cd\u0995\u09be\u09f0" },
             { "inh", "\u0987\u0982\u0997\u09c1\u099a" },
+            { "fa_AF", "\u09a6\u09be\u09f0\u09bf" },
             { "krl", "\u0995\u09c7\u09f0\u09c7\u09b2\u09bf\u09af\u09bc\u09be\u09a8" },
             { "efi", "\u098f\u09ab\u09bf\u0995" },
             { "key.nu", "\u09b8\u0982\u0996\u09cd\u09af\u09be" },

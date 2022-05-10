@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -619,7 +619,7 @@ class ThreadTab extends Tab implements ActionListener, DocumentListener, ListSel
         }
     }
 
-    private class PromptingTextField extends JTextField implements FocusListener {
+    private static class PromptingTextField extends JTextField implements FocusListener {
         private String prompt;
         boolean promptRemoved = false;
         Color fg;
@@ -665,7 +665,7 @@ class ThreadTab extends Tab implements ActionListener, DocumentListener, ListSel
         }
 
         public void focusLost(FocusEvent e) {
-            if (promptRemoved && getText().equals("")) {
+            if (promptRemoved && getText().isEmpty()) {
                 setText(prompt);
                 setForeground(Color.gray);
                 promptRemoved = false;

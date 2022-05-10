@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,8 @@ import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import sun.security.internal.spec.TlsPrfParameterSpec;
 
 import static sun.security.pkcs11.TemplateManager.*;
@@ -51,7 +53,7 @@ import static sun.security.pkcs11.wrapper.PKCS11Constants.*;
  */
 final class P11TlsPrfGenerator extends KeyGeneratorSpi {
 
-    private final static String MSG =
+    private static final String MSG =
             "TlsPrfGenerator must be initialized using a TlsPrfParameterSpec";
 
     // token instance
@@ -146,34 +148,36 @@ final class P11TlsPrfGenerator extends KeyGeneratorSpi {
                         Functions.getHashMechId(spec.getPRFHashAlg()),
                         spec.getOutputLength(), ulServerOrClient);
                 Session session = null;
+                long keyID = p11Key.getKeyID();
                 try {
                     session = token.getOpSession();
                     token.p11.C_SignInit(session.id(),
-                            new CK_MECHANISM(mechanism, params), p11Key.keyID);
+                            new CK_MECHANISM(mechanism, params), keyID);
                     token.p11.C_SignUpdate(session.id(), 0, seed, 0, seed.length);
                     byte[] out = token.p11.C_SignFinal
                                         (session.id(), spec.getOutputLength());
-                    k = new SecretKeySpec(out, "TlsPrf");
+                    return new SecretKeySpec(out, "TlsPrf");
                 } catch (PKCS11Exception e) {
                     throw new ProviderException("Could not calculate PRF", e);
                 } finally {
+                    p11Key.releaseKeyID();
                     token.releaseSession(session);
                 }
             } else {
                 throw new ProviderException("Only Finished message authentication code"+
                                             " generation supported for TLS 1.2.");
             }
-            return k;
         }
 
-        byte[] label = P11Util.getBytesUTF8(spec.getLabel());
+        byte[] label = spec.getLabel().getBytes(UTF_8);
 
         if (mechanism == CKM_NSS_TLS_PRF_GENERAL) {
             Session session = null;
+            long keyID = p11Key.getKeyID();
             try {
                 session = token.getOpSession();
                 token.p11.C_SignInit
-                    (session.id(), new CK_MECHANISM(mechanism), p11Key.keyID);
+                    (session.id(), new CK_MECHANISM(mechanism), keyID);
                 token.p11.C_SignUpdate(session.id(), 0, label, 0, label.length);
                 token.p11.C_SignUpdate(session.id(), 0, seed, 0, seed.length);
                 byte[] out = token.p11.C_SignFinal
@@ -182,6 +186,7 @@ final class P11TlsPrfGenerator extends KeyGeneratorSpi {
             } catch (PKCS11Exception e) {
                 throw new ProviderException("Could not calculate PRF", e);
             } finally {
+                p11Key.releaseKeyID();
                 token.releaseSession(session);
             }
         }
@@ -192,15 +197,16 @@ final class P11TlsPrfGenerator extends KeyGeneratorSpi {
         CK_TLS_PRF_PARAMS params = new CK_TLS_PRF_PARAMS(seed, label, out);
 
         Session session = null;
+        long keyID = p11Key.getKeyID();
         try {
             session = token.getOpSession();
-            long keyID = token.p11.C_DeriveKey(session.id(),
-                new CK_MECHANISM(mechanism, params), p11Key.keyID, null);
-            // ignore keyID, returned PRF bytes are in 'out'
+            token.p11.C_DeriveKey(session.id(),
+                new CK_MECHANISM(mechanism, params), keyID, null);
             return new SecretKeySpec(out, "TlsPrf");
         } catch (PKCS11Exception e) {
             throw new ProviderException("Could not calculate PRF", e);
         } finally {
+            p11Key.releaseKeyID();
             token.releaseSession(session);
         }
     }

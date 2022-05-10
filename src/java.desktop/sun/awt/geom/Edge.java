@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,7 +73,7 @@ final class Edge {
     private int lastResult;
     private double lastLimit;
 
-    public int compareTo(Edge other, double yrange[]) {
+    public int compareTo(Edge other, double[] yrange) {
         if (other == lastEdge && yrange[0] < lastLimit) {
             if (yrange[1] > lastLimit) {
                 yrange[1] = lastLimit;

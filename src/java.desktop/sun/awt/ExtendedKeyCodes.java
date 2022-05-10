@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,7 +44,7 @@ public class ExtendedKeyCodes {
      // known keyboard layout. For instance, sterling sign is on the primary layer
      // of the Mac Italian layout.
      private static final HashSet<Integer> extendedKeyCodesSet =
-                                                  new HashSet<Integer>(501, 1.0f);
+                                                  new HashSet<Integer>(496, 1.0f);
      public static final int getExtendedKeyCodeForChar( int c ) {
          int uc = Character.toUpperCase( c );
          int lc = Character.toLowerCase( c );
@@ -394,7 +394,6 @@ public class ExtendedKeyCodes {
          extendedKeyCodesSet.add(0x01000000+0x06AF);
          extendedKeyCodesSet.add(0x01000000+0x06BE);
          extendedKeyCodesSet.add(0x01000000+0x06CC);
-         extendedKeyCodesSet.add(0x01000000+0x06CC);
          extendedKeyCodesSet.add(0x01000000+0x06D2);
          extendedKeyCodesSet.add(0x01000000+0x0493);
          extendedKeyCodesSet.add(0x01000000+0x0497);
@@ -577,12 +576,8 @@ public class ExtendedKeyCodes {
          extendedKeyCodesSet.add(0x01000000+0x0E59);
          extendedKeyCodesSet.add(0x01000000+0x0587);
          extendedKeyCodesSet.add(0x01000000+0x0589);
-         extendedKeyCodesSet.add(0x01000000+0x0589);
-         extendedKeyCodesSet.add(0x01000000+0x055D);
          extendedKeyCodesSet.add(0x01000000+0x055D);
          extendedKeyCodesSet.add(0x01000000+0x055B);
-         extendedKeyCodesSet.add(0x01000000+0x055B);
-         extendedKeyCodesSet.add(0x01000000+0x055E);
          extendedKeyCodesSet.add(0x01000000+0x055E);
          extendedKeyCodesSet.add(0x01000000+0x0561);
          extendedKeyCodesSet.add(0x01000000+0x0562);

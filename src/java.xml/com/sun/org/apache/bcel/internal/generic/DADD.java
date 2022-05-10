@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -26,7 +26,6 @@ package com.sun.org.apache.bcel.internal.generic;
  * <PRE>Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt;</PRE>
  *        ..., result.word1, result1.word2
  *
- * @version $Id: DADD.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class DADD extends ArithmeticInstruction {
 

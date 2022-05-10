@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,6 +66,7 @@ import sun.util.resources.OpenListResourceBundle;
 public class LocaleNames_cs extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
+        final String metaValue_ccp = "\u010dakma";
         final String metaValue_kpe = "kpelle";
         final String metaValue_nqo = "n\u2019ko";
         final String metaValue_vai = "vai";
@@ -85,6 +82,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "Tagb", "tagbanwa" },
             { "Zsye", "emod\u017ei" },
             { "xmf", "mingrel\u0161tina" },
+            { "ccp", metaValue_ccp },
             { "egy", "egypt\u0161tina star\u00e1" },
             { "raj", "r\u00e1d\u017east\u00e1n\u0161tina" },
             { "Phag", "phags-pa" },
@@ -244,7 +242,6 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "pcd", "picard\u0161tina" },
             { "tkl", "tokelau\u0161tina" },
             { "grb", "grebo" },
-            { "root", "ko\u0159en" },
             { "type.ca.indian", "Indick\u00fd n\u00e1rodn\u00ed kalend\u00e1\u0159" },
             { "rgn", "roma\u0148ol\u0161tina" },
             { "grc", "staro\u0159e\u010dtina" },
@@ -393,7 +390,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "ale", "aleut\u0161tina" },
             { "Thai", "thajsk\u00e9" },
             { "type.nu.vaii", "Vaisk\u00e9 \u010d\u00edslice" },
-            { "MK", "Makedonie" },
+            { "MK", "Severn\u00ed Makedonie" },
             { "ML", "Mali" },
             { "MM", "Myanmar (Barma)" },
             { "MN", "Mongolsko" },
@@ -531,7 +528,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "SM", "San Marino" },
             { "SN", "Senegal" },
             { "SO", "Som\u00e1lsko" },
-            { "arn", "mapudungun\u0161tina" },
+            { "arn", "mapudungun" },
             { "arp", "arapa\u017e\u0161tina" },
             { "type.nu.taml", "Tamilsk\u00e9 tradi\u010dn\u00ed \u010d\u00edslice" },
             { "SR", "Surinam" },
@@ -540,11 +537,11 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "ST", "Svat\u00fd Tom\u00e1\u0161 a Princ\u016fv ostrov" },
             { "arq", "arab\u0161tina (al\u017e\u00edrsk\u00e1)" },
             { "SV", "Salvador" },
-            { "ars", "arab\u0161tina (nad\u017ed)" },
+            { "ars", "arab\u0161tina (Nad\u017ed)" },
             { "SX", "Svat\u00fd Martin (Nizozemsko)" },
             { "SY", "S\u00fdrie" },
             { "yao", "jao\u0161tina" },
-            { "SZ", "Svazijsko" },
+            { "SZ", "Eswatini" },
             { "arw", "arawack\u00e9 jazyky" },
             { "arz", "arab\u0161tina (egyptsk\u00e1)" },
             { "ary", "arab\u0161tina (marock\u00e1)" },
@@ -557,6 +554,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "TC", "Turks a Caicos" },
             { "yav", "jangben\u0161tina" },
             { "TD", "\u010cad" },
+            { "Qaag", "zawgyi" },
             { "TF", "Francouzsk\u00e1 ji\u017en\u00ed \u00fazem\u00ed" },
             { "ase", "znakov\u00e1 \u0159e\u010d (americk\u00e1)" },
             { "TG", "Togo" },
@@ -635,7 +633,9 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "Bass", "bassa vah" },
             { "wal", "wolajt\u0161tina" },
             { "was", "wa\u0161tina" },
+            { "XA", "simulovan\u00e1 diakritika" },
             { "war", "waraj\u0161tina" },
+            { "XB", "simulovan\u00fd obousm\u011brn\u00fd z\u00e1pis" },
             { "awa", "awadh\u0161tina" },
             { "061", "Polyn\u00e9sie" },
             { "XK", "Kosovo" },
@@ -735,6 +735,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "scn", "sicil\u0161tina" },
             { "aa", "afar\u0161tina" },
             { "ab", "abch\u00e1z\u0161tina" },
+            { "Aran", "nastaliq" },
             { "bbc", "batak toba" },
             { "ae", "avest\u00e1n\u0161tina" },
             { "af", "afrik\u00e1n\u0161tina" },
@@ -1096,9 +1097,9 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "dyo", "jola-fonyi" },
             { "type.nu.jpan", "Japonsk\u00e9 \u010d\u00edslice" },
             { "tr", "ture\u010dtina" },
+            { "Cakm", metaValue_ccp },
             { "ts", "tsonga" },
             { "swb", "komor\u0161tina" },
-            { "Cakm", "\u010dakma" },
             { "tt", "tatar\u0161tina" },
             { "dyu", "djula" },
             { "tw", "twi" },
@@ -1238,6 +1239,7 @@ public class LocaleNames_cs extends OpenListResourceBundle {
             { "inh", "ingu\u0161tina" },
             { "krj", "kinaraj-a" },
             { "kri", "krio" },
+            { "fa_AF", "dar\u00ed" },
             { "krl", "karel\u0161tina" },
             { "efi", "efik\u0161tina" },
             { "tcy", "tulu\u0161tina" },

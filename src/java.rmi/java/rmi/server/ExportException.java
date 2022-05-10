@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 1998, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,13 +29,11 @@ package java.rmi.server;
  * An <code>ExportException</code> is a <code>RemoteException</code>
  * thrown if an attempt to export a remote object fails.  A remote object is
  * exported via the constructors and <code>exportObject</code> methods of
- * <code>java.rmi.server.UnicastRemoteObject</code> and
- * <code>java.rmi.activation.Activatable</code>.
+ * <code>java.rmi.server.UnicastRemoteObject</code>.
  *
  * @author  Ann Wollrath
  * @since   1.1
  * @see java.rmi.server.UnicastRemoteObject
- * @see java.rmi.activation.Activatable
  */
 public class ExportException extends java.rmi.RemoteException {
 

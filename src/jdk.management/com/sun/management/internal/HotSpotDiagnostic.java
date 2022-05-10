@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,11 +47,13 @@ public class HotSpotDiagnostic implements HotSpotDiagnosticMXBean {
 
         String propertyName = "jdk.management.heapdump.allowAnyFileSuffix";
         PrivilegedAction<Boolean> pa = () -> Boolean.parseBoolean(System.getProperty(propertyName, "false"));
+        @SuppressWarnings("removal")
         boolean allowAnyFileSuffix = AccessController.doPrivileged(pa);
         if (!allowAnyFileSuffix && !outputFile.endsWith(".hprof")) {
             throw new IllegalArgumentException("heapdump file must have .hprof extention");
         }
 
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkWrite(outputFile);

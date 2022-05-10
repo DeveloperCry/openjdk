@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -88,13 +88,13 @@ public class FormatData_zh_TW extends ParallelListResourceBundle {
             "\u6c11\u570b\u524d",
             "\u6c11\u570b",
         };
+        final String[] gregoryEras = {
+            "\u897f\u5143\u524d",
+            "\u897f\u5143",
+        };
         return new Object[][] {
-            { "Eras",
-                new String[] { // era strings
-                    "\u897f\u5143\u524d",
-                    "\u897f\u5143"
-                }
-            },
+            { "Eras", gregoryEras },
+            { "short.Eras", gregoryEras },
             { "standalone.MonthAbbreviations",
                 new String[] {
                     "1\u6708",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,7 @@
 /**
  * Defines the Java Debug Interface.
  * <p>
- * The Java&trade; Debug Interface (JDI) is a high level Java API providing
+ * The Java Debug Interface (JDI) is a high level Java API providing
  * information useful for debuggers and similar systems needing access to the
  * running state of a (usually remote) virtual machine.
  * <p>
@@ -46,7 +46,7 @@
  * This module includes a simple command-line debugger,
  * <em>{@index jdb jdb tool}</em>.
  *
- * <h3>Global Exceptions</h3>
+ * <h2>Global Exceptions</h2>
  * <p>
  * This section documents exceptions which apply to the entire API and are thus
  * not documented on individual methods.
@@ -104,10 +104,7 @@
  * </blockquote>
  *
  *
- * <dl style="font-family:'DejaVu Sans', Arial, Helvetica, sans serif">
- * <dt class="simpleTagLabel">Tool Guides:
- * <dd>{@extLink jdb_tool_reference jdb}
- * </dl>
+ * @toolGuide jdb
  *
  * @provides com.sun.jdi.connect.Connector
  *
@@ -120,8 +117,6 @@
  * Java Platform Debugger Architecture (JPDA)</a>
  */
 module jdk.jdi {
-    // source file: file:///t:/workspace/open/src/jdk.jdi/share/classes/module-info.java
-    //              file:///t:/workspace/open/src/jdk.jdi/windows/classes/module-info.java.extra
     requires jdk.attach;
     requires jdk.jdwp.agent;
     exports com.sun.jdi;

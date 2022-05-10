@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,9 +40,9 @@ import static com.sun.tools.javac.main.Option.PROFILE;
  *  deletion without notice.</b>
  */
 public enum Profile {
-    COMPACT1("compact1", 1, Target.JDK1_8, Target.JDK1_9, Target.JDK1_10, Target.JDK1_11),
-    COMPACT2("compact2", 2, Target.JDK1_8, Target.JDK1_9, Target.JDK1_10, Target.JDK1_11),
-    COMPACT3("compact3", 3, Target.JDK1_8, Target.JDK1_9, Target.JDK1_10, Target.JDK1_11),
+    COMPACT1("compact1", 1, Target.JDK1_8),
+    COMPACT2("compact2", 2, Target.JDK1_8),
+    COMPACT3("compact3", 3, Target.JDK1_8),
 
     DEFAULT {
         @Override

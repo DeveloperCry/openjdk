@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -232,7 +228,6 @@ public class LocaleNames_gsw extends OpenListResourceBundle {
             { "FR", "Frankriich" },
             { "tkl", "Tokelauanisch" },
             { "grb", "Grebo" },
-            { "root", "Root" },
             { "type.ca.indian", "Indisch Nationaalkal\u00e4nder" },
             { "grc", "Altgriechisch" },
             { "GA", "Gabun" },
@@ -349,7 +344,6 @@ public class LocaleNames_gsw extends OpenListResourceBundle {
             { "MH", "Marshallinsle" },
             { "ale", "Aleutisch" },
             { "Thai", "Thai" },
-            { "MK", "Mazedoonie" },
             { "ML", "Maali" },
             { "MM", "Myanmar (Burma)" },
             { "MN", "Mongolei" },
@@ -776,7 +770,6 @@ public class LocaleNames_gsw extends OpenListResourceBundle {
             { "Armn", metaValue_hy },
             { "mdf", "Mokschamordwinisch" },
             { "dsb", "Nidersorbisch" },
-            { "Armi", "Armi" },
             { "na", "Nauruisch" },
             { "nb", "Norwegisch Bokm\u00e5l" },
             { "nd", "Nord-Ndebele-Schpraach" },
@@ -949,7 +942,6 @@ public class LocaleNames_gsw extends OpenListResourceBundle {
             { "%%MONOTON", "Monotonisch" },
             { "Geor", metaValue_ka },
             { "kmb", "Kimbundu-Schpraach" },
-            { "Cham", "Cham" },
             { "gez", "Geez" },
             { "Syrn", "Oschtsyrisch" },
             { "Tglg", metaValue_tl },

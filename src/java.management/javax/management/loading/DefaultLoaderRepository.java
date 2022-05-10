@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,6 +54,11 @@ import javax.management.MBeanServerFactory;
  */
 @Deprecated
 public class DefaultLoaderRepository {
+
+    /**
+     * Constructs a {@code DefaultLoaderRepository}.
+     */
+    public DefaultLoaderRepository() {}
 
     /**
      * Go through the list of class loaders and try to load the requested

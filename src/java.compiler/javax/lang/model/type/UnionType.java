@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,14 +33,13 @@ import java.util.List;
  * Union types can appear as the type of a multi-catch exception
  * parameter.
  *
+ * @jls 14.20 The try statement
  * @since 1.7
  */
 public interface UnionType extends TypeMirror {
 
     /**
-     * Return the alternatives comprising this union type.
-     *
-     * @return the alternatives comprising this union type.
+     * {@return the alternatives comprising this union type}
      */
     List<? extends TypeMirror> getAlternatives();
 }

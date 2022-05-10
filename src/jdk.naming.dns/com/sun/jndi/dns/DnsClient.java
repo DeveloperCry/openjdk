@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,10 +26,14 @@
 package com.sun.jndi.dns;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.PortUnreachableException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.security.SecureRandom;
 import javax.naming.*;
 
@@ -82,7 +86,7 @@ public class DnsClient {
     private static final SecureRandom random = JCAUtil.getSecureRandom();
     private InetAddress[] servers;
     private int[] serverPorts;
-    private int timeout;                // initial timeout on UDP queries in ms
+    private int timeout;                // initial timeout on UDP and TCP queries in ms
     private int retries;                // number of UDP retries
 
     private final Object udpSocketLock = new Object();
@@ -100,7 +104,7 @@ public class DnsClient {
     /*
      * Each server is of the form "server[:port]".  IPv6 literal host names
      * include delimiting brackets.
-     * "timeout" is the initial timeout interval (in ms) for UDP queries,
+     * "timeout" is the initial timeout interval (in ms) for queries,
      * and "retries" gives the number of retries per server.
      */
     public DnsClient(String[] servers, int timeout, int retries)
@@ -146,7 +150,7 @@ public class DnsClient {
         }
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     protected void finalize() {
         close();
     }
@@ -237,6 +241,7 @@ public class DnsClient {
 
                             // Try each server, starting with the one that just
                             // provided the truncated message.
+                            int retryTimeout = (timeout * (1 << retry));
                             for (int j = 0; j < servers.length; j++) {
                                 int ij = (i + j) % servers.length;
                                 if (doNotRetry[ij]) {
@@ -244,7 +249,7 @@ public class DnsClient {
                                 }
                                 try {
                                     Tcp tcp =
-                                        new Tcp(servers[ij], serverPorts[ij]);
+                                        new Tcp(servers[ij], serverPorts[ij], retryTimeout);
                                     byte[] msg2;
                                     try {
                                         msg2 = doTcpQuery(tcp, pkt);
@@ -272,19 +277,22 @@ public class DnsClient {
                             } // servers
                         }
                         return new ResourceRecords(msg, msg.length, hdr, false);
-
+                    } catch (UncheckedIOException | PortUnreachableException ex) {
+                        // DatagramSocket.connect in doUdpQuery can throw UncheckedIOException
+                        // DatagramSocket.send in doUdpQuery can throw PortUnreachableException
+                        if (debug) {
+                            dprint("Caught Exception:" + ex);
+                        }
+                        if (caughtException == null) {
+                            caughtException = ex;
+                        }
+                        doNotRetry[i] = true;
                     } catch (IOException e) {
                         if (debug) {
                             dprint("Caught IOException:" + e);
                         }
                         if (caughtException == null) {
                             caughtException = e;
-                        }
-                        // Use reflection to allow pre-1.4 compilation.
-                        // This won't be needed much longer.
-                        if (e.getClass().getName().equals(
-                                "java.net.PortUnreachableException")) {
-                            doNotRetry[i] = true;
                         }
                     } catch (NameNotFoundException e) {
                         // This is authoritative, so return immediately
@@ -327,7 +335,7 @@ public class DnsClient {
         // Try each name server.
         for (int i = 0; i < servers.length; i++) {
             try {
-                Tcp tcp = new Tcp(servers[i], serverPorts[i]);
+                Tcp tcp = new Tcp(servers[i], serverPorts[i], timeout);
                 byte[] msg;
                 try {
                     msg = doTcpQuery(tcp, pkt);
@@ -404,35 +412,30 @@ public class DnsClient {
                 // Packets may only be sent to or received from this server address
                 udpSocket.connect(server, port);
                 int pktTimeout = (timeout * (1 << retry));
-                try {
-                    udpSocket.send(opkt);
+                udpSocket.send(opkt);
 
-                    // timeout remaining after successive 'receive()'
-                    int timeoutLeft = pktTimeout;
-                    int cnt = 0;
-                    do {
-                        if (debug) {
-                           cnt++;
-                            dprint("Trying RECEIVE(" +
-                                    cnt + ") retry(" + (retry + 1) +
-                                    ") for:" + xid  + "    sock-timeout:" +
-                                    timeoutLeft + " ms.");
-                        }
-                        udpSocket.setSoTimeout(timeoutLeft);
-                        long start = System.currentTimeMillis();
-                        udpSocket.receive(ipkt);
-                        long end = System.currentTimeMillis();
+                // timeout remaining after successive 'receive()'
+                int timeoutLeft = pktTimeout;
+                int cnt = 0;
+                do {
+                    if (debug) {
+                        cnt++;
+                        dprint("Trying RECEIVE(" +
+                                cnt + ") retry(" + (retry + 1) +
+                                ") for:" + xid + "    sock-timeout:" +
+                                timeoutLeft + " ms.");
+                    }
+                    udpSocket.setSoTimeout(timeoutLeft);
+                    long start = System.currentTimeMillis();
+                    udpSocket.receive(ipkt);
+                    long end = System.currentTimeMillis();
 
-                        byte[] data = ipkt.getData();
-                        if (isMatchResponse(data, xid)) {
-                            return data;
-                        }
-                        timeoutLeft = pktTimeout - ((int) (end - start));
-                    } while (timeoutLeft > minTimeout);
-
-                } finally {
-                    udpSocket.disconnect();
-                }
+                    byte[] data = ipkt.getData();
+                    if (isMatchResponse(data, xid)) {
+                        return data;
+                    }
+                    timeoutLeft = pktTimeout - ((int) (end - start));
+                } while (timeoutLeft > minTimeout);
                 return null; // no matching packet received within the timeout
             }
         }
@@ -462,11 +465,11 @@ public class DnsClient {
      */
     private byte[] continueTcpQuery(Tcp tcp) throws IOException {
 
-        int lenHi = tcp.in.read();      // high-order byte of response length
+        int lenHi = tcp.read();      // high-order byte of response length
         if (lenHi == -1) {
             return null;        // EOF
         }
-        int lenLo = tcp.in.read();      // low-order byte of response length
+        int lenLo = tcp.read();      // low-order byte of response length
         if (lenLo == -1) {
             throw new IOException("Corrupted DNS response: bad length");
         }
@@ -474,7 +477,7 @@ public class DnsClient {
         byte[] msg = new byte[len];
         int pos = 0;                    // next unfilled position in msg
         while (len > 0) {
-            int n = tcp.in.read(msg, pos, len);
+            int n = tcp.read(msg, pos, len);
             if (n == -1) {
                 throw new IOException(
                         "Corrupted DNS response: too little data");
@@ -682,19 +685,61 @@ public class DnsClient {
 
 class Tcp {
 
-    private Socket sock;
-    java.io.InputStream in;
-    java.io.OutputStream out;
+    private final Socket sock;
+    private final java.io.InputStream in;
+    final java.io.OutputStream out;
+    private int timeoutLeft;
 
-    Tcp(InetAddress server, int port) throws IOException {
-        sock = new Socket(server, port);
-        sock.setTcpNoDelay(true);
-        out = new java.io.BufferedOutputStream(sock.getOutputStream());
-        in = new java.io.BufferedInputStream(sock.getInputStream());
+    Tcp(InetAddress server, int port, int timeout) throws IOException {
+        sock = new Socket();
+        try {
+            long start = System.currentTimeMillis();
+            sock.connect(new InetSocketAddress(server, port), timeout);
+            timeoutLeft = (int) (timeout - (System.currentTimeMillis() - start));
+            if (timeoutLeft <= 0)
+                throw new SocketTimeoutException();
+
+            sock.setTcpNoDelay(true);
+            out = new java.io.BufferedOutputStream(sock.getOutputStream());
+            in = new java.io.BufferedInputStream(sock.getInputStream());
+        } catch (Exception e) {
+            try {
+                sock.close();
+            } catch (IOException ex) {
+                e.addSuppressed(ex);
+            }
+            throw e;
+        }
     }
 
     void close() throws IOException {
         sock.close();
+    }
+
+    private interface SocketReadOp {
+        int read() throws IOException;
+    }
+
+    private int readWithTimeout(SocketReadOp reader) throws IOException {
+        if (timeoutLeft <= 0)
+            throw new SocketTimeoutException();
+
+        sock.setSoTimeout(timeoutLeft);
+        long start = System.currentTimeMillis();
+        try {
+            return reader.read();
+        }
+        finally {
+            timeoutLeft -= System.currentTimeMillis() - start;
+        }
+    }
+
+    int read() throws IOException {
+        return readWithTimeout(() -> in.read());
+    }
+
+    int read(byte b[], int off, int len) throws IOException {
+        return readWithTimeout(() -> in.read(b, off, len));
     }
 }
 

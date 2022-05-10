@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,7 @@ package java.awt;
 
 import java.awt.geom.Dimension2D;
 import java.beans.Transient;
+import java.io.Serial;
 
 /**
  * The {@code Dimension} class encapsulates the width and
@@ -73,9 +74,10 @@ public class Dimension extends Dimension2D implements java.io.Serializable {
      */
     public int height;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+     @Serial
      private static final long serialVersionUID = 4723952579491349524L;
 
     /**

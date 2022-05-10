@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -221,7 +217,6 @@ public class LocaleNames_brx extends OpenListResourceBundle {
             { "FR", "\u092b\u094d\u0930\u093e\u0901\u0938" },
             { "tkl", metaValue_TK },
             { "grb", "\u0917\u094d\u0930\u0947\u092c\u094b" },
-            { "root", "\u0930\u0941\u091f" },
             { "grc", "\u092a\u094d\u0930\u093e\u091a\u0940\u0928 \u092f\u0942\u0928\u093e\u0928\u0940" },
             { "GA", "\u0917\u0948\u092c\u0949\u0928" },
             { "vot", "\u0935\u094b\u091f\u0940\u0915" },
@@ -337,7 +332,6 @@ public class LocaleNames_brx extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "\u092e\u093e\u0930\u094d\u0936\u0932 \u0926\u094d\u0935\u0940\u092a" },
             { "ale", "\u0905\u0932\u0941\u091f" },
-            { "MK", "\u092e\u0948\u0938\u0947\u0921\u094b\u0928\u093f\u092f\u093e" },
             { "ML", "\u092e\u093e\u0932\u0940" },
             { "MM", "\u092e\u094d\u092f\u093e\u0928\u092e\u093e\u0930" },
             { "MN", "\u092e\u0902\u0917\u094b\u0932\u093f\u092f\u093e" },

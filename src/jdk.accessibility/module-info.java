@@ -30,8 +30,6 @@
  * @since 9
  */
 module jdk.accessibility {
-    // source file: file:///t:/workspace/open/src/jdk.accessibility/share/classes/module-info.java
-    //              file:///t:/workspace/open/src/jdk.accessibility/windows/classes/module-info.java.extra
     requires transitive java.desktop;
     exports com.sun.java.accessibility.util;
 

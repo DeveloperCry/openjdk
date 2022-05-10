@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -113,7 +113,7 @@ public class Jstat {
             formatter = new OptionOutputFormatter(monitoredVm, format);
         } else {
             List<Monitor> logged = monitoredVm.findByPattern(arguments.counterNames());
-            Collections.sort(logged, arguments.comparator());
+            logged.sort(arguments.comparator());
             List<Monitor> constants = new ArrayList<Monitor>();
 
             for (Iterator<Monitor> i = logged.iterator(); i.hasNext(); /* empty */) {

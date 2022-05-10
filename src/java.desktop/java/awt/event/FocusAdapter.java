@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,12 +44,18 @@ package java.awt.event;
  *
  * @see FocusEvent
  * @see FocusListener
- * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/focuslistener.html">Tutorial: Writing a Focus Listener</a>
+ * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/focuslistener.html">Tutorial: Writing a Focus Listener</a>
  *
  * @author Carl Quinn
  * @since 1.1
  */
 public abstract class FocusAdapter implements FocusListener {
+
+    /**
+     * Constructs a {@code FocusAdapter}.
+     */
+    protected FocusAdapter() {}
+
     /**
      * Invoked when a component gains the keyboard focus.
      */

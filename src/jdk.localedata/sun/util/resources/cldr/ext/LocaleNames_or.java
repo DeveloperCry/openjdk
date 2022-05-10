@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -77,7 +73,6 @@ public class LocaleNames_or extends OpenListResourceBundle {
         final String metaValue_TO = "\u0b1f\u0b4b\u0b19\u0b4d\u0b17\u0b3e";
         final String metaValue_TV = "\u0b24\u0b41\u0b2d\u0b3e\u0b32\u0b41";
         final String metaValue_ar = "\u0b06\u0b30\u0b2c\u0b3f\u0b15\u0b4d";
-        final String metaValue_bn = "\u0b2c\u0b19\u0b4d\u0b17\u0b3e\u0b33\u0b40";
         final String metaValue_el = "\u0b17\u0b4d\u0b30\u0b40\u0b15\u0b4d";
         final String metaValue_gu = "\u0b17\u0b41\u0b1c\u0b41\u0b30\u0b3e\u0b1f\u0b40";
         final String metaValue_jv = "\u0b1c\u0b3e\u0b2d\u0b3e\u0b28\u0b40\u0b1c\u0b4d";
@@ -85,12 +80,15 @@ public class LocaleNames_or extends OpenListResourceBundle {
         final String metaValue_ko = "\u0b15\u0b4b\u0b30\u0b3f\u0b06\u0b28\u0b4d";
         final String metaValue_la = "\u0b32\u0b3e\u0b1f\u0b3f\u0b28\u0b4d";
         final String metaValue_lo = "\u0b32\u0b3e\u0b13";
+        final String metaValue_ml = "\u0b2e\u0b3e\u0b32\u0b3e\u0b5f\u0b32\u0b2e\u0b4d";
         final String metaValue_or = "\u0b13\u0b21\u0b3c\u0b3f\u0b06";
+        final String metaValue_si = "\u0b38\u0b3f\u0b02\u0b39\u0b33";
         final String metaValue_su = "\u0b38\u0b41\u0b26\u0b3e\u0b28\u0b40\u0b1c\u0b4d";
         final String metaValue_ta = "\u0b24\u0b3e\u0b2e\u0b3f\u0b32\u0b4d";
         final String metaValue_te = "\u0b24\u0b47\u0b32\u0b41\u0b17\u0b41";
         final String metaValue_th = "\u0b25\u0b3e\u0b07";
         final String metaValue_ban = "\u0b2c\u0b3e\u0b32\u0b3f\u0b28\u0b40\u0b1c\u0b4d";
+        final String metaValue_ccp = "\u0b1a\u0b15\u0b2e\u0b3e";
         final String metaValue_got = "\u0b17\u0b4b\u0b25\u0b3f\u0b15\u0b4d";
         final String metaValue_zbl = "\u0b2c\u0b4d\u0b32\u0b3f\u0b38\u0b3f\u0b2e\u0b4d\u0b2c\u0b32\u0b38\u0b4d";
         final Object[][] data = new Object[][] {
@@ -102,6 +100,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "mwr", "\u0b2e\u0b3e\u0b30\u0b71\u0b3e\u0b30\u0b40" },
             { "Tagb", "\u0b24\u0b17\u0b2c\u0b3e\u0b28\u0b4d\u0b71\u0b3e" },
             { "Zsye", "\u0b07\u0b2e\u0b4b\u0b1c\u0b3f" },
+            { "ccp", metaValue_ccp },
             { "egy", "\u0b2a\u0b4d\u0b30\u0b3e\u0b1a\u0b40\u0b28\u0b4d \u0b2e\u0b3f\u0b36\u0b3f\u0b30\u0b3f" },
             { "raj", "\u0b30\u0b3e\u0b1c\u0b38\u0b4d\u0b25\u0b3e\u0b28\u0b40" },
             { "Phag", "\u0b2b\u0b3e\u0b17\u0b38\u0b4d-\u0b2a\u0b3e" },
@@ -166,7 +165,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "CA", "\u0b15\u0b3e\u0b28\u0b3e\u0b21\u0b3e" },
             { "CC", "\u0b15\u0b4b\u0b15\u0b4b\u0b38\u0b4d (\u0b15\u0b40\u0b32\u0b3f\u0b02) \u0b26\u0b4d\u0b35\u0b40\u0b2a\u0b2a\u0b41\u0b1e\u0b4d\u0b1c" },
             { "mzn", "\u0b2e\u0b3e\u0b1c\u0b3e\u0b28\u0b21\u0b47\u0b30\u0b3e\u0b28\u0b3f" },
-            { "CD", "\u0b15\u0b19\u0b4d\u0b17\u0b4b-\u0b15\u0b3f\u0b28\u0b38\u0b3e\u0b38\u0b3e" },
+            { "CD", "\u0b15\u0b19\u0b4d\u0b17\u0b4b (\u0b21\u0b3f\u0b06\u0b30\u0b38\u0b3f)" },
             { "CF", "\u0b2e\u0b27\u0b4d\u0b5f \u0b06\u0b2b\u0b4d\u0b30\u0b3f\u0b15\u0b40\u0b5f \u0b38\u0b3e\u0b27\u0b3e\u0b30\u0b23\u0b24\u0b28\u0b4d\u0b24\u0b4d\u0b30" },
             { "CG", "\u0b15\u0b19\u0b4d\u0b17\u0b4b-\u0b2c\u0b4d\u0b30\u0b3e\u0b1c\u0b3f\u0b2d\u0b3f\u0b32\u0b4d\u0b32\u0b47" },
             { "CH", "\u0b38\u0b4d\u0b71\u0b3f\u0b1c\u0b30\u0b32\u0b4d\u0b5f\u0b3e\u0b23\u0b4d\u0b21" },
@@ -247,7 +246,6 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "FR", "\u0b2b\u0b4d\u0b30\u0b3e\u0b28\u0b4d\u0b38" },
             { "tkl", metaValue_TK },
             { "grb", "\u0b17\u0b4d\u0b30\u0b47\u0b2c\u0b4b" },
-            { "root", "\u0b30\u0b4b\u0b1f\u0b4d" },
             { "grc", "\u0b2a\u0b4d\u0b30\u0b3e\u0b1a\u0b40\u0b28\u0b4d \u0b5f\u0b41\u0b28\u0b3e\u0b28\u0b40" },
             { "GA", "\u0b17\u0b3e\u0b2c\u0b4b\u0b28\u0b4d" },
             { "vot", "\u0b2d\u0b4b\u0b1f\u0b3f\u0b15\u0b4d" },
@@ -265,7 +263,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "enm", "\u0b2e\u0b27\u0b4d\u0b5f \u0b07\u0b01\u0b30\u0b3e\u0b1c\u0b40" },
             { "GM", "\u0b17\u0b3e\u0b2e\u0b4d\u0b2c\u0b3f\u0b06" },
             { "GN", "\u0b17\u0b41\u0b07\u0b28\u0b3f\u0b06" },
-            { "GP", "\u0b17\u0b41\u0b06\u0b21\u0b47\u0b32\u0b4b\u0b2a\u0b4d\u200c" },
+            { "GP", "\u0b17\u0b41\u0b06\u0b21\u0b47\u0b32\u0b4b\u0b2a\u0b4d" },
             { "GQ", "\u0b07\u0b15\u0b4d\u0b2c\u0b3e\u0b1f\u0b47\u0b30\u0b3f\u0b06\u0b32\u0b4d \u0b17\u0b41\u0b07\u0b28\u0b3f\u0b06" },
             { "GR", "\u0b17\u0b4d\u0b30\u0b40\u0b38\u0b4d" },
             { "GS", "\u0b26\u0b15\u0b4d\u0b37\u0b3f\u0b23 \u0b1c\u0b30\u0b4d\u0b1c\u0b3f\u0b06 \u0b0f\u0b2c\u0b02 \u0b26\u0b15\u0b4d\u0b37\u0b3f\u0b23 \u0b38\u0b3e\u0b23\u0b4d\u0b21\u0b71\u0b3f\u0b1a\u0b4d \u0b26\u0b4d\u0b71\u0b40\u0b2a\u0b2a\u0b41\u0b1e\u0b4d\u0b1c" },
@@ -309,8 +307,8 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "type.nu.beng", "\u0b2c\u0b19\u0b4d\u0b17\u0b33\u0b3e \u0b05\u0b19\u0b4d\u0b15\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
             { "JE", "\u0b1c\u0b30\u0b4d\u0b38\u0b3f" },
             { "type.ca.islamic", "\u0b07\u0b38\u0b32\u0b3e\u0b2e\u0b3f\u0b15\u0b4d\u200c \u0b15\u0b4d\u0b5f\u0b3e\u0b32\u0b47\u0b23\u0b4d\u0b21\u0b30\u0b4d\u200c" },
-            { "Beng", metaValue_bn },
             { "JM", "\u0b1c\u0b3e\u0b2e\u0b3e\u0b07\u0b15\u0b3e" },
+            { "Beng", "\u0b2c\u0b19\u0b4d\u0b17\u0b3e\u0b33\u0b40" },
             { "JO", "\u0b1c\u0b4b\u0b30\u0b4d\u0b21\u0b3e\u0b28\u0b4d" },
             { "JP", "\u0b1c\u0b3e\u0b2a\u0b3e\u0b28" },
             { "ain", "\u0b06\u0b07\u0b28\u0b41" },
@@ -325,7 +323,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "KG", "\u0b15\u0b3f\u0b30\u0b4d\u0b17\u0b3f\u0b1c\u0b3f\u0b38\u0b4d\u0b24\u0b3e\u0b28" },
             { "KH", "\u0b15\u0b3e\u0b2e\u0b4d\u0b2c\u0b4b\u0b21\u0b3f\u0b06" },
             { "KI", "\u0b15\u0b3f\u0b30\u0b3f\u0b2c\u0b3e\u0b1f\u0b3f" },
-            { "KM", "\u0b15\u0b4b\u0b2e\u0b4b\u0b30\u0b38\u0b4d\u200c" },
+            { "KM", "\u0b15\u0b4b\u0b2e\u0b4b\u0b30\u0b38\u0b4d" },
             { "KN", "\u0b38\u0b47\u0b23\u0b4d\u0b1f \u0b15\u0b3f\u0b1f\u0b38\u0b4d\u200c \u0b0f\u0b2c\u0b02 \u0b28\u0b47\u0b2d\u0b3f\u0b38\u0b4d\u200c" },
             { "Knda", "\u0b15\u0b28\u0b4d\u0b28\u0b21\u0b3c" },
             { "Zinh", "\u0b2c\u0b02\u0b36\u0b17\u0b24" },
@@ -365,15 +363,15 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "Thaa", "\u0b25\u0b3e\u0b28\u0b3e" },
             { "MA", "\u0b2e\u0b4b\u0b30\u0b4b\u0b15\u0b4d\u0b15\u0b4b" },
             { "MC", "\u0b2e\u0b4b\u0b28\u0b3e\u0b15\u0b4b" },
-            { "MD", "\u0b2e\u0b3e\u0b32\u0b21\u0b4b\u0b2d\u0b3e" },
+            { "MD", "\u0b2e\u0b4b\u0b32\u0b21\u0b4b\u0b2d\u0b3e" },
             { "ME", "\u0b2e\u0b23\u0b4d\u0b1f\u0b47\u0b28\u0b3f\u0b17\u0b4d\u0b30\u0b4b" },
             { "MF", "\u0b38\u0b47\u0b23\u0b4d\u0b1f \u0b2e\u0b3e\u0b30\u0b4d\u0b1f\u0b3f\u0b28\u0b4d" },
             { "lam", "\u0b32\u0b3e\u0b2e\u0b4d\u0b2c\u0b3e" },
             { "MG", "\u0b2e\u0b3e\u0b21\u0b3e\u0b17\u0b3e\u0b38\u0b4d\u0b15\u0b30\u0b4d" },
             { "Thai", metaValue_th },
-            { "MH", "\u0b2e\u0b3e\u0b30\u0b4d\u0b36\u0b3e\u0b32\u0b4d\u200c \u0b26\u0b4d\u0b71\u0b40\u0b2a\u0b2a\u0b41\u0b1e\u0b4d\u0b1c" },
+            { "MH", "\u0b2e\u0b3e\u0b30\u0b4d\u0b36\u0b3e\u0b32\u0b4d \u0b26\u0b4d\u0b71\u0b40\u0b2a\u0b2a\u0b41\u0b1e\u0b4d\u0b1c" },
             { "ale", "\u0b06\u0b32\u0b47\u0b07\u0b1f\u0b41" },
-            { "MK", "\u0b2e\u0b3e\u0b38\u0b47\u0b21\u0b4b\u0b28\u0b3f\u0b06" },
+            { "MK", "\u0b09\u0b24\u0b4d\u0b24\u0b30 \u0b2e\u0b3e\u0b38\u0b47\u0b21\u0b4b\u0b28\u0b3f\u0b06" },
             { "ML", "\u0b2e\u0b3e\u0b32\u0b3f" },
             { "MM", "\u0b2e\u0b3f\u0b06\u0b01\u0b2e\u0b3e\u0b30" },
             { "MN", "\u0b2e\u0b19\u0b4d\u0b17\u0b4b\u0b32\u0b3f\u0b06" },
@@ -398,7 +396,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "type.ca.hebrew", "\u0b39\u0b3f\u0b2c\u0b43 \u0b15\u0b4d\u0b5f\u0b3e\u0b32\u0b47\u0b23\u0b4d\u0b21\u0b30\u0b4d\u200c" },
             { "NC", "\u0b28\u0b42\u0b24\u0b28 \u0b15\u0b3e\u0b32\u0b47\u0b21\u0b4b\u0b28\u0b3f\u0b06" },
             { "NE", "\u0b28\u0b3e\u0b07\u0b1c\u0b30" },
-            { "NF", "\u0b28\u0b30\u0b4d\u0b2b\u0b15\u0b4d\u200c \u0b26\u0b4d\u0b71\u0b40\u0b2a" },
+            { "NF", "\u0b28\u0b30\u0b4d\u0b2b\u0b15\u0b4d \u0b26\u0b4d\u0b35\u0b40\u0b2a" },
             { "NG", "\u0b28\u0b3e\u0b07\u0b1c\u0b47\u0b30\u0b3f\u0b06" },
             { "trv", "\u0b24\u0b3e\u0b30\u0b4b\u0b15\u0b4b" },
             { "Phlp", "\u0b38\u0b4d\u0b32\u0b3e\u0b1f\u0b30\u0b4d \u0b2a\u0b3e\u0b39\u0b3e\u0b32\u0b3e\u0b71\u0b40" },
@@ -500,7 +498,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "SX", "\u0b38\u0b3f\u0b23\u0b4d\u0b1f \u0b2e\u0b3e\u0b30\u0b4d\u0b1f\u0b40\u0b28\u0b4d\u200c" },
             { "SY", "\u0b38\u0b3f\u0b30\u0b3f\u0b06" },
             { "yao", "\u0b5f\u0b3e\u0b13" },
-            { "SZ", "\u0b38\u0b4d\u0b71\u0b3e\u0b1c\u0b3f\u0b32\u0b4d\u0b5f\u0b3e\u0b23\u0b4d\u0b21" },
+            { "SZ", "\u0b07\u0b38\u0b4d\u0b71\u0b3e\u0b24\u0b3f\u0b28\u0b40" },
             { "arw", "\u0b06\u0b30\u0b71\u0b15" },
             { "yap", "\u0b5f\u0b3e\u0b2a\u0b40\u0b38\u0b4d" },
             { "TA", "\u0b1f\u0b4d\u0b30\u0b3e\u0b07\u0b37\u0b4d\u0b1f\u0b28\u0b4d\u200c \u0b26\u0b3e \u0b15\u0b41\u0b28\u0b4d\u200c\u0b1a\u0b3e" },
@@ -530,7 +528,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "TZ", "\u0b24\u0b3e\u0b1e\u0b4d\u0b1c\u0b3e\u0b28\u0b3f\u0b06" },
             { "nmg", "\u0b15\u0b71\u0b3e\u0b38\u0b3f\u0b13" },
             { "Zzzz", "\u0b05\u0b1c\u0b23\u0b3e \u0b32\u0b3f\u0b2a\u0b3f" },
-            { "UA", "\u0b5f\u0b41\u0b15\u0b4d\u0b30\u0b47\u0b28\u0b4d\u200c" },
+            { "UA", "\u0b5f\u0b41\u0b15\u0b4d\u0b30\u0b47\u0b28\u0b4d" },
             { "rup", "\u0b06\u0b30\u0b4b\u0b2e\u0b3e\u0b28\u0b3f\u0b06\u0b28\u0b4d" },
             { "030", "\u0b2a\u0b42\u0b30\u0b4d\u0b2c \u0b0f\u0b38\u0b3f\u0b06" },
             { "tyv", "\u0b24\u0b41\u0b2d\u0b3f\u0b28\u0b3f\u0b06\u0b28\u0b4d" },
@@ -540,17 +538,18 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "035", "\u0b26\u0b15\u0b4d\u0b37\u0b3f\u0b23\u0b2a\u0b42\u0b30\u0b4d\u0b2c \u0b0f\u0b38\u0b3f\u0b06" },
             { "UG", "\u0b09\u0b17\u0b3e\u0b23\u0b4d\u0b21\u0b3e" },
             { "039", "\u0b26\u0b15\u0b4d\u0b37\u0b3f\u0b23 \u0b5f\u0b41\u0b30\u0b4b\u0b2a\u0b4d" },
-            { "Sinh", "\u0b38\u0b3f\u0b02\u0b39\u0b3e\u0b32\u0b3e" },
+            { "Sinh", metaValue_si },
             { "UM", "\u0b2f\u0b41\u0b15\u0b4d\u0b24\u0b30\u0b3e\u0b37\u0b4d\u0b1f\u0b4d\u0b30 \u0b06\u0b09\u0b1f\u0b4d\u200c\u0b32\u0b3e\u0b07\u0b19\u0b4d\u0b17 \u0b26\u0b4d\u0b35\u0b40\u0b2a\u0b2a\u0b41\u0b1e\u0b4d\u0b1c" },
             { "UN", "\u0b1c\u0b3e\u0b24\u0b3f\u0b38\u0b02\u0b18" },
             { "US", "\u0b2f\u0b41\u0b15\u0b4d\u0b24 \u0b30\u0b3e\u0b37\u0b4d\u0b1f\u0b4d\u0b30" },
             { "haw", "\u0b39\u0b3e\u0b71\u0b3e\u0b07\u0b28\u0b4d" },
+            { "%%1959ACAD", "\u0b0f\u0b15\u0b3e\u0b21\u0b47\u0b2e\u0b3f\u0b15" },
             { "UY", "\u0b09\u0b30\u0b41\u0b17\u0b41\u0b0f" },
             { "prg", "\u0b2a\u0b4d\u0b30\u0b41\u0b38\u0b3f\u0b5f" },
             { "UZ", "\u0b09\u0b1c\u0b2c\u0b47\u0b15\u0b3f\u0b38\u0b4d\u0b24\u0b3e\u0b28" },
             { "tzm", "\u0b15\u0b47\u0b28\u0b4d\u0b26\u0b4d\u0b30\u0b40\u0b5f \u0b06\u0b1f\u0b32\u0b3e\u0b38\u0b4d \u0b1f\u0b3e\u0b2e\u0b3e\u0b1c\u0b3f\u0b18\u0b3e\u0b1f\u0b4d" },
             { "nnh", "\u0b28\u0b3e\u0b17\u0b3f\u0b2e\u0b2c\u0b4b\u0b28\u0b4d" },
-            { "VA", "\u0b2d\u0b3e\u0b1f\u0b3f\u0b15\u0b3e\u0b28\u0b4d\u200c \u0b38\u0b3f\u0b1f\u0b3f" },
+            { "VA", "\u0b2d\u0b3e\u0b1f\u0b3f\u0b15\u0b3e\u0b28\u0b4d \u0b38\u0b3f\u0b1f\u0b3f" },
             { "pro", "\u0b2a\u0b41\u0b30\u0b41\u0b23\u0b3e \u0b2a\u0b4d\u0b30\u0b47\u0b2d\u0b47\u0b28\u0b47\u0b38\u0b3f\u0b06\u0b32\u0b4d" },
             { "VC", "\u0b38\u0b47\u0b23\u0b4d\u0b1f \u0b2d\u0b3f\u0b28\u0b38\u0b47\u0b23\u0b4d\u0b1f \u0b0f\u0b2c\u0b02 \u0b26\u0b3f \u0b17\u0b4d\u0b30\u0b47\u0b28\u0b3e\u0b21\u0b3f\u0b38\u0b4d" },
             { "VE", "\u0b2d\u0b47\u0b28\u0b47\u0b1c\u0b41\u0b0f\u0b32\u0b3e" },
@@ -571,7 +570,9 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "WS", "\u0b38\u0b3e\u0b2e\u0b4b\u0b06" },
             { "wal", "\u0b71\u0b3e\u0b32\u0b2e\u0b4b" },
             { "was", "\u0b71\u0b3e\u0b38\u0b4b" },
+            { "XA", "\u0b38\u0b3f\u0b5f\u0b41\u0b21\u0b4b-\u0b0f\u0b38\u0b47\u0b23\u0b4d\u0b1f" },
             { "war", "\u0b71\u0b3e\u0b30\u0b48" },
+            { "XB", "\u0b38\u0b3f\u0b5f\u0b41\u0b21\u0b4b-\u0b2c\u0b3f\u0b21\u0b3f" },
             { "awa", "\u0b06\u0b71\u0b3e\u0b27\u0b3f" },
             { "061", "\u0b2a\u0b32\u0b3f\u0b28\u0b47\u0b38\u0b3f\u0b06" },
             { "XK", "\u0b15\u0b4b\u0b38\u0b4b\u0b2d\u0b4b" },
@@ -630,6 +631,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "jpr", "\u0b1c\u0b41\u0b21\u0b47\u0b13-\u0b2a\u0b30\u0b4d\u0b38\u0b3f\u0b06\u0b28\u0b4d" },
             { "sba", "\u0b28\u0b17\u0b3e\u0b2e\u0b2c\u0b47" },
             { "Guru", "\u0b17\u0b41\u0b30\u0b2e\u0b41\u0b16\u0b40" },
+            { "%%ALUKU", "\u0b06\u0b32\u0b41\u0b15\u0b41 \u0b09\u0b2a\u0b2d\u0b3e\u0b37\u0b3e" },
             { "lua", "\u0b32\u0b41\u0b2c\u0b3e-\u0b32\u0b41\u0b32\u0b41\u0b06" },
             { "sbp", "\u0b38\u0b3e\u0b28\u0b17\u0b41" },
             { "lui", "\u0b32\u0b41\u0b07\u0b38\u0b47\u0b28\u0b4b" },
@@ -670,16 +672,17 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "Linb", "\u0b32\u0b3f\u0b28\u0b3f\u0b5f\u0b30\u0b4d \u0b2c\u0b3f" },
             { "ay", "\u0b06\u0b5f\u0b2e\u0b3e\u0b30\u0b3e" },
             { "az", "\u0b06\u0b1c\u0b47\u0b30\u0b2c\u0b3e\u0b07\u0b1c\u0b3e\u0b28\u0b3f" },
-            { "ba", "\u0b2c\u0b3e\u0b36\u0b15\u0b3f\u0b30\u0b4d\u200c" },
+            { "%%UNIFON", "\u0b5f\u0b41\u0b28\u0b3f\u0b2b\u0b28\u0b4d \u0b2b\u0b28\u0b47\u0b1f\u0b3f\u0b15\u0b4d \u0b06\u0b32\u0b2b\u0b3e\u0b2c\u0b47\u0b1f\u0b4d" },
+            { "ba", "\u0b2c\u0b3e\u0b36\u0b15\u0b3f\u0b30\u0b4d" },
             { "be", "\u0b2c\u0b47\u0b32\u0b3e\u0b30\u0b41\u0b37\u0b3f\u0b06\u0b28\u0b4d" },
             { "bg", "\u0b2c\u0b41\u0b32\u0b17\u0b47\u0b30\u0b3f\u0b06\u0b28\u0b4d" },
             { "bi", "\u0b2c\u0b3f\u0b38\u0b32\u0b3e\u0b2e\u0b3e" },
             { "bm", "\u0b2c\u0b3e\u0b2e\u0b4d\u0b2c\u0b3e\u0b30\u0b3e" },
-            { "bn", metaValue_bn },
+            { "bn", "\u0b2c\u0b19\u0b4d\u0b17\u0b33\u0b3e" },
             { "bo", "\u0b24\u0b3f\u0b2c\u0b4d\u0b2c\u0b24\u0b40\u0b5f" },
             { "dgr", "\u0b21\u0b4b\u0b17\u0b4d\u0b30\u0b3f\u0b2c\u0b4d" },
             { "br", "\u0b2c\u0b4d\u0b30\u0b47\u0b1f\u0b28\u0b4d" },
-            { "bs", "\u0b15\u0b3e\u0b1f\u0b32\u0b3e\u0b28\u0b4d" },
+            { "bs", "\u0b2c\u0b4b\u0b38\u0b28\u0b3f\u0b06\u0b28\u0b4d" },
             { "Mymr", "\u0b2e\u0b4d\u0b5f\u0b3e\u0b28\u0b2e\u0b3e\u0b30\u0b4d" },
             { "type.nu.laoo", "\u0b32\u0b3e\u0b13 \u0b05\u0b19\u0b4d\u0b15\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
             { "seh", "\u0b38\u0b47\u0b28\u0b3e" },
@@ -707,6 +710,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "Bugi", "\u0b2c\u0b41\u0b17\u0b3e\u0b28\u0b40\u0b1c\u0b4d" },
             { "bem", "\u0b2c\u0b47\u0b2e\u0b4d\u0b2c\u0b3e" },
             { "sga", "\u0b2a\u0b41\u0b30\u0b41\u0b23\u0b3e \u0b07\u0b30\u0b3f\u0b36\u0b4d" },
+            { "type.nu.mong", "\u0b2e\u0b19\u0b4d\u0b17\u0b4b\u0b32\u0b40\u0b5f \u0b21\u0b3f\u0b1c\u0b3f\u0b1f\u0b4d" },
             { "dv", "\u0b21\u0b3f\u0b2d\u0b47\u0b39\u0b40" },
             { "es_419", "\u0b32\u0b3e\u0b1f\u0b3f\u0b28\u0b4d\u200c \u0b06\u0b2e\u0b47\u0b30\u0b3f\u0b15\u0b40\u0b5f \u0b38\u0b4d\u0b2a\u0b3e\u0b28\u0b3f\u0b38\u0b4d\u200c" },
             { "dz", "\u0b26\u0b21\u0b1c\u0b4b\u0b19\u0b4d\u0b17\u0b16\u0b3e" },
@@ -781,9 +785,9 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "frr", "\u0b09\u0b24\u0b4d\u0b24\u0b30 \u0b2b\u0b4d\u0b30\u0b3f\u0b38\u0b3f\u0b5f\u0b3e\u0b28\u0b4d" },
             { "is", "\u0b06\u0b07\u0b38\u0b32\u0b3e\u0b23\u0b4d\u0b21\u0b3f\u0b15\u0b4d" },
             { "it", "\u0b07\u0b1f\u0b3e\u0b32\u0b40\u0b5f" },
-            { "iu", "\u0b07\u0b28\u0b41\u0b15\u0b1f\u0b41\u0b24\u0b4d\u200c" },
+            { "iu", "\u0b07\u0b28\u0b41\u0b15\u0b1f\u0b3f\u0b1f\u0b41\u0b24\u0b4d\u200c" },
+            { "Mlym", metaValue_ml },
             { "ja", "\u0b1c\u0b3e\u0b2a\u0b3e\u0b28\u0b40" },
-            { "Mlym", "\u0b2e\u0b32\u0b5f\u0b3e\u0b32\u0b2e\u0b4d" },
             { "Sara", "\u0b38\u0b3e\u0b30\u0b3e\u0b24\u0b3f" },
             { "doi", "\u0b21\u0b4b\u0b17\u0b4d\u0b30\u0b40" },
             { "sma", "\u0b26\u0b15\u0b4d\u0b37\u0b3f\u0b23 \u0b38\u0b3e\u0b2e\u0b3f" },
@@ -797,7 +801,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "ka", metaValue_ka },
             { "bla", "\u0b38\u0b3f\u0b15\u0b38\u0b3f\u0b15\u0b3e" },
             { "mak", "\u0b2e\u0b15\u0b3e\u0b38\u0b30\u0b4d" },
-            { "sms", "\u0b38\u0b4d\u0b15\u0b4b\u0b32\u0b4d\u0b1f \u0b38\u0b3e\u0b2e\u0b40" },
+            { "sms", "\u0b38\u0b4d\u0b15\u0b4b\u0b32\u0b4d\u0b1f \u0b38\u0b3e\u0b2e\u0b3f" },
             { "man", "\u0b2e\u0b3e\u0b23\u0b4d\u0b21\u0b3f\u0b19\u0b4d\u0b17\u0b4b" },
             { "kg", "\u0b15\u0b19\u0b4d\u0b17\u0b4b" },
             { "Goth", metaValue_got },
@@ -839,7 +843,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "type.co.ducet", "\u0b21\u0b3f\u0b2b\u0b32\u0b4d\u0b1f \u0b5f\u0b41\u0b28\u0b3f\u0b15\u0b4b\u0b21\u0b4d\u200c \u0b38\u0b30\u0b4d\u0b1f\u0b4d\u200c \u0b15\u0b4d\u0b30\u0b2e" },
             { "mi", "\u0b2e\u0b3e\u0b13\u0b30\u0b40" },
             { "mk", "\u0b2e\u0b3e\u0b38\u0b47\u0b21\u0b4b\u0b28\u0b3f\u0b06\u0b28\u0b4d" },
-            { "ml", "\u0b2e\u0b3e\u0b32\u0b3e\u0b5f\u0b32\u0b2e\u0b4d" },
+            { "ml", metaValue_ml },
             { "mn", "\u0b2e\u0b19\u0b4d\u0b17\u0b4b\u0b33\u0b3f\u0b5f" },
             { "mr", "\u0b2e\u0b30\u0b3e\u0b20\u0b40" },
             { "ms", "\u0b2e\u0b3e\u0b32\u0b5f" },
@@ -908,7 +912,8 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "brx", "\u0b2c\u0b4b\u0b21\u0b4b" },
             { "Lana", "\u0b32\u0b3e\u0b28\u0b3e" },
             { "kde", "\u0b2e\u0b3e\u0b15\u0b4b\u0b23\u0b4d\u0b21\u0b47" },
-            { "Ethi", "\u0b07\u0b25\u0b4b\u0b2a\u0b3f\u0b15\u0b4d" },
+            { "%%VAIDIKA", "\u0b2c\u0b48\u0b26\u0b3f\u0b15" },
+            { "Ethi", "\u0b07\u0b25\u0b3f\u0b13\u0b2a\u0b3f\u0b15\u0b4d\u200c" },
             { "type.hc.h12", "12 \u0b18\u0b23\u0b4d\u0b1f\u0b3f\u0b06 \u0b2a\u0b26\u0b4d\u0b27\u0b24\u0b3f (1\u201312)" },
             { "type.hc.h11", "12 \u0b18\u0b23\u0b4d\u0b1f\u0b3f\u0b06 \u0b2a\u0b26\u0b4d\u0b27\u0b24\u0b3f (0\u201311)" },
             { "rm", "\u0b30\u0b4b\u0b2e\u0b3e\u0b28\u0b36\u0b4d\u200c" },
@@ -932,7 +937,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "min", "\u0b2e\u0b3f\u0b28\u0b3e\u0b19\u0b4d\u0b17\u0b3e\u0b2c\u0b3e\u0b09" },
             { "sg", "\u0b38\u0b3e\u0b19\u0b4d\u0b17\u0b4b" },
             { "sh", "\u0b38\u0b30\u0b4d\u0b2c\u0b4b-\u0b15\u0b4d\u0b30\u0b4b\u0b06\u0b1f\u0b3f\u0b06\u0b28\u0b4d" },
-            { "si", "\u0b38\u0b3f\u0b02\u0b39\u0b33" },
+            { "si", metaValue_si },
             { "sux", "\u0b38\u0b41\u0b2e\u0b47\u0b30\u0b3f\u0b06\u0b28\u0b4d" },
             { "sk", "\u0b38\u0b4d\u0b32\u0b4b\u0b2d\u0b3e\u0b15\u0b4d" },
             { "sl", "\u0b38\u0b4d\u0b32\u0b4b\u0b2d\u0b47\u0b28\u0b3f\u0b06\u0b28\u0b4d" },
@@ -971,9 +976,9 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "dyo", "\u0b1c\u0b4b\u0b32\u0b3e-\u0b2b\u0b4b\u0b28\u0b5f\u0b3f" },
             { "type.nu.jpan", "\u0b1c\u0b3e\u0b2a\u0b3e\u0b28\u0b40 \u0b38\u0b02\u0b16\u0b4d\u0b5f\u0b3e\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
             { "tr", "\u0b24\u0b41\u0b30\u0b4d\u0b15\u0b3f\u0b38\u0b4d" },
+            { "Cakm", metaValue_ccp },
             { "ts", "\u0b38\u0b4b\u0b19\u0b4d\u0b17\u0b3e" },
             { "swb", "\u0b15\u0b4b\u0b2e\u0b4b\u0b30\u0b3f\u0b5f" },
-            { "Cakm", "\u0b1a\u0b15\u0b2e\u0b3e" },
             { "tt", "\u0b24\u0b3e\u0b24\u0b3e\u0b30\u0b4d" },
             { "dyu", "\u0b21\u0b41\u0b06\u0b32\u0b3e" },
             { "tw", "\u0b24\u0b4d\u0b71\u0b3f" },
@@ -993,6 +998,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "zen", "\u0b1c\u0b47\u0b28\u0b3e\u0b17\u0b3e" },
             { "uz", "\u0b09\u0b1c\u0b2c\u0b47\u0b15\u0b4d" },
             { "kha", "\u0b16\u0b3e\u0b38\u0b40" },
+            { "%%1996", "1996\u0b30 \u0b1c\u0b30\u0b4d\u0b2e\u0b3e\u0b28 \u0b2c\u0b30\u0b4d\u0b23\u0b4d\u0b23\u0b2a\u0b4d\u0b30\u0b15\u0b30\u0b23" },
             { "Sylo", "\u0b38\u0b40\u0b32\u0b3f\u0b24\u0b4b \u0b28\u0b17\u0b30\u0b40" },
             { "ve", "\u0b2d\u0b47\u0b23\u0b4d\u0b21\u0b3e" },
             { "type.ca.roc", "\u0b2e\u0b3f\u0b19\u0b4d\u0b17\u0b4b\u0b13 \u0b15\u0b4d\u0b5f\u0b3e\u0b32\u0b47\u0b23\u0b4d\u0b21\u0b30\u0b4d\u200c" },
@@ -1032,6 +1038,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "Moon", "\u0b1a\u0b28\u0b4d\u0b26\u0b4d\u0b30" },
             { "moh", "\u0b2e\u0b4b\u0b39\u0b4c\u0b15" },
             { "kkj", "\u0b15\u0b3e\u0b15\u0b4b" },
+            { "%%1694ACAD", "\u0b06\u0b26\u0b4d\u0b5f \u0b06\u0b27\u0b41\u0b28\u0b3f\u0b15 \u0b2b\u0b30\u0b3e\u0b38\u0b40" },
             { "yi", "\u0b5f\u0b3f\u0b21\u0b3f\u0b38\u0b4d" },
             { "mos", "\u0b2e\u0b4b\u0b38\u0b3f" },
             { "Syrc", "\u0b38\u0b3f\u0b30\u0b3f\u0b5f\u0b3e\u0b15\u0b4d" },
@@ -1065,12 +1072,14 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "zh_Hans", "\u0b38\u0b30\u0b33\u0b40\u0b15\u0b43\u0b24 \u0b1a\u0b3e\u0b07\u0b28\u0b3f\u0b1c\u0b4d\u200c" },
             { "Hung", "\u0b2a\u0b41\u0b30\u0b41\u0b23\u0b3e \u0b39\u0b19\u0b4d\u0b17\u0b47\u0b30\u0b3f\u0b06\u0b28\u0b4d" },
             { "kok", "\u0b15\u0b4b\u0b19\u0b4d\u0b15\u0b23\u0b3f" },
+            { "%%1901", "\u0b2a\u0b3e\u0b30\u0b2e\u0b4d\u0b2a\u0b30\u0b3f\u0b15 \u0b1c\u0b30\u0b4d\u0b2e\u0b3e\u0b28 \u0b2c\u0b30\u0b4d\u0b23\u0b4d\u0b23\u0b2a\u0b4d\u0b30\u0b15\u0b30\u0b23" },
             { "kos", "\u0b15\u0b4b\u0b38\u0b30\u0b48\u0b28\u0b4d" },
             { "zh_Hant", "\u0b2a\u0b3e\u0b30\u0b2e\u0b4d\u0b2a\u0b30\u0b3f\u0b15 \u0b1a\u0b3e\u0b07\u0b28\u0b3f\u0b1c\u0b4d\u200c" },
             { "Sund", metaValue_su },
             { "kpe", "\u0b15\u0b48\u0b2a\u0b47\u0b32\u0b47" },
             { "type.nu.khmr", "\u0b16\u0b3f\u0b2e\u0b30\u0b4d\u200c \u0b05\u0b19\u0b4d\u0b15\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
             { "ilo", "\u0b07\u0b32\u0b4b\u0b15\u0b4b" },
+            { "%%VALENCIA", "\u0b2d\u0b47\u0b32\u0b47\u0b28\u0b38\u0b3f\u0b06\u0b28\u0b4d" },
             { "Cprt", "\u0b38\u0b3f\u0b2a\u0b4d\u0b30\u0b05\u0b1f\u0b4d" },
             { "mua", "\u0b2e\u0b41\u0b28\u0b21\u0b3e\u0b02" },
             { "type.nu.guru", "\u0b17\u0b41\u0b30\u0b2e\u0b41\u0b16\u0b40 \u0b05\u0b19\u0b4d\u0b15\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
@@ -1085,6 +1094,7 @@ public class LocaleNames_or extends OpenListResourceBundle {
             { "type.nu.tamldec", "\u0b24\u0b3e\u0b2e\u0b3f\u0b32\u0b4d \u0b05\u0b19\u0b4d\u0b15\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },
             { "krc", "\u0b15\u0b30\u0b3e\u0b1a\u0b5f-\u0b2c\u0b32\u0b4d\u0b15\u0b3e\u0b30" },
             { "inh", "\u0b07\u0b01\u0b19\u0b4d\u0b17\u0b41\u0b36\u0b4d" },
+            { "fa_AF", "\u0b26\u0b3e\u0b30\u0b3f" },
             { "krl", "\u0b15\u0b3e\u0b30\u0b47\u0b32\u0b3f\u0b5f\u0b3e\u0b28\u0b4d" },
             { "efi", "\u0b0f\u0b2b\u0b3f\u0b15\u0b4d" },
             { "key.nu", "\u0b38\u0b02\u0b16\u0b4d\u0b5f\u0b3e\u0b17\u0b41\u0b21\u0b3c\u0b3f\u0b15" },

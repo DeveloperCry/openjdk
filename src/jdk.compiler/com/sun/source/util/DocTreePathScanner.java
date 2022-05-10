@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,6 +38,11 @@ import com.sun.source.doctree.DocTree;
  * @since 1.8
  */
 public class DocTreePathScanner<R, P> extends DocTreeScanner<R, P> {
+    /**
+     * Constructs a {@code DocTreePathScanner}.
+     */
+    public DocTreePathScanner() {}
+
     /**
      * Scans a tree from a position identified by a tree path.
      * @param path the path

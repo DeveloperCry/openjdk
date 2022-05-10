@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,9 +33,18 @@ public class UnixSystem {
 
     private native void getUnixInfo();
 
+    // Warning: the following 4 fields are used by Unix.c
+
+    /** The current username. */
     protected String username;
+
+    /** The current user ID. */
     protected long uid;
+
+    /** The current group ID. */
     protected long gid;
+
+    /** The current list of groups. */
     protected long[] groups;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,6 @@ import java.util.Iterator;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Symbol;
 
-import com.sun.tools.javac.util.Filter;
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Scope.LookupKind.NON_RECURSIVE;
 

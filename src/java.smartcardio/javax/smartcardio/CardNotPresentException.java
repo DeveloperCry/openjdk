@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,7 +35,7 @@ package javax.smartcardio;
  */
 public class CardNotPresentException extends CardException {
 
-    private final static long serialVersionUID = 1346879911706545215L;
+    private static final long serialVersionUID = 1346879911706545215L;
 
     /**
      * Constructs a new CardNotPresentException with the specified detail message.

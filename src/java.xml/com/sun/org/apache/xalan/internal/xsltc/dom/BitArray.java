@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -133,7 +133,7 @@ public class BitArray implements Externalizable {
      * This method returns the Nth bit that is set in the bit array. The
      * current position is cached in the following 4 variables and will
      * help speed up a sequence of next() call in an index iterator. This
-     * method is a mess, but it is fast and it works, so don't fuck with it.
+     * method is a mess, but it is fast and it works, so don't change it.
      */
     private int _pos = Integer.MAX_VALUE;
     private int _node = 0;

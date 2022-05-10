@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,9 +55,9 @@ public class MSISO2022JP extends ISO2022_JP
     }
 
     private static class CoderHolder {
-        final static DoubleByte.Decoder DEC0208 =
+        static final DoubleByte.Decoder DEC0208 =
             (DoubleByte.Decoder)new JIS_X_0208_MS932().newDecoder();
-        final static DoubleByte.Encoder ENC0208 =
+        static final DoubleByte.Encoder ENC0208 =
             (DoubleByte.Encoder)new JIS_X_0208_MS932().newEncoder();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -133,7 +133,7 @@ public interface DirStateFactory extends StateFactory {
  * @return A {@code Result} containing the object's state for binding
  * and the corresponding
  * attributes to be bound; null if the object don't use this factory.
- * @exception NamingException If this factory encountered an exception
+ * @throws NamingException If this factory encountered an exception
  * while attempting to get the object's state, and no other factories are
  * to be tried.
  *

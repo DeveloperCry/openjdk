@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -201,6 +201,10 @@ public class KerberosTicket implements Destroyable, Refreshable,
     KerberosTicket proxy = null;
 
     private transient boolean destroyed = false;
+
+    transient KerberosPrincipal clientAlias = null;
+
+    transient KerberosPrincipal serverAlias = null;
 
     /**
      * Constructs a {@code KerberosTicket} using credentials information that a
@@ -598,7 +602,11 @@ public class KerberosTicket implements Destroyable, Refreshable,
         try {
             krb5Creds = new sun.security.krb5.Credentials(asn1Encoding,
                                                     client.getName(),
+                                                    (clientAlias != null ?
+                                                            clientAlias.getName() : null),
                                                     server.getName(),
+                                                    (serverAlias != null ?
+                                                            serverAlias.getName() : null),
                                                     sessionKey.getEncoded(),
                                                     sessionKey.getKeyType(),
                                                     flags,
@@ -831,6 +839,13 @@ public class KerberosTicket implements Destroyable, Refreshable,
         return true;
     }
 
+    /**
+     * Restores the state of this object from the stream.
+     *
+     * @param  s the {@code ObjectInputStream} from which data is read
+     * @throws IOException if an I/O error occurs
+     * @throws ClassNotFoundException if a serialized class cannot be loaded
+     */
     private void readObject(ObjectInputStream s)
             throws IOException, ClassNotFoundException {
         s.defaultReadObject();

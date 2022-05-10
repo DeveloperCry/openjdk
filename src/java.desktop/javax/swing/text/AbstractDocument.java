@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,17 +22,40 @@
  *
  *
  */
+
 package javax.swing.text;
 
-import java.util.*;
-import java.io.*;
 import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectInputValidation;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Serial;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.text.Bidi;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.swing.UIManager;
-import javax.swing.undo.*;
-import javax.swing.event.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.tree.TreeNode;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.CompoundEdit;
+import javax.swing.undo.UndoableEdit;
 
 import sun.font.BidiUtils;
 import sun.swing.SwingUtilities2;
@@ -91,7 +114,7 @@ import sun.swing.text.UndoableEditLockSupport;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -124,6 +147,7 @@ public abstract class AbstractDocument implements Document, Serializable {
 
         if (defaultI18NProperty == null) {
             // determine default setting for i18n support
+            @SuppressWarnings("removal")
             String o = java.security.AccessController.doPrivileged(
                 new java.security.PrivilegedAction<String>() {
                     public String run() {
@@ -414,7 +438,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * <p>
      * This method is thread safe, although most Swing methods
      * are not. Please see
-     * <A HREF="http://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
+     * <A HREF="https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
      * in Swing</A> for more information.
      *
      * @param r the renderer to execute
@@ -575,7 +599,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * <p>
      * This method is thread safe, although most Swing methods
      * are not. Please see
-     * <A HREF="http://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
+     * <A HREF="https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
      * in Swing</A> for more information.
      *
      * @param offs the starting offset &gt;= 0
@@ -688,7 +712,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * <p>
      * This method is thread safe, although most Swing methods
      * are not. Please see
-     * <A HREF="http://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
+     * <A HREF="https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
      * in Swing</A> for more information.
      *
      * @param offs the starting offset &gt;= 0
@@ -825,7 +849,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * <p>
      * This method is thread safe, although most Swing methods
      * are not. Please see
-     * <A HREF="http://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
+     * <A HREF="https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency
      * in Swing</A> for more information.
      *
      * @param offs the position in the model &gt;= 0
@@ -1057,10 +1081,10 @@ public abstract class AbstractDocument implements Document, Serializable {
         // Calculate the bidi levels for the affected range of paragraphs.  The
         // levels array will contain a bidi level for each character in the
         // affected text.
-        byte levels[] = calculateBidiLevels( firstPStart, lastPEnd );
+        byte[] levels = calculateBidiLevels( firstPStart, lastPEnd );
 
 
-        Vector<Element> newElements = new Vector<Element>();
+        ArrayList<Element> newElements = new ArrayList<Element>();
 
         // Calculate the first span of characters in the affected range with
         // the same bidi level.  If this level is the same as the level of the
@@ -1079,9 +1103,9 @@ public abstract class AbstractDocument implements Document, Serializable {
             if( prevLevel==levels[0] ) {
                 firstSpanStart = prevElem.getStartOffset();
             } else if( prevElem.getEndOffset() > firstPStart ) {
-                newElements.addElement(new BidiElement(bidiRoot,
-                                                       prevElem.getStartOffset(),
-                                                       firstPStart, prevLevel));
+                newElements.add(new BidiElement(bidiRoot,
+                                                prevElem.getStartOffset(),
+                                                firstPStart, prevLevel));
             } else {
                 removeFromIndex++;
             }
@@ -1128,32 +1152,32 @@ public abstract class AbstractDocument implements Document, Serializable {
         // Otherwise, create elements for the first and last spans as well as
         // any spans in between.
         if((firstSpanEnd==lastSpanStart)&&(levels[0]==levels[levels.length-1])){
-            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
-                                                   lastSpanEnd, levels[0]));
+            newElements.add(new BidiElement(bidiRoot, firstSpanStart,
+                                            lastSpanEnd, levels[0]));
         } else {
             // Create an element for the first span.
-            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
-                                                   firstSpanEnd+firstPStart,
-                                                   levels[0]));
+            newElements.add(new BidiElement(bidiRoot, firstSpanStart,
+                                            firstSpanEnd+firstPStart,
+                                            levels[0]));
             // Create elements for the spans in between the first and last
             for( int i=firstSpanEnd; i<lastSpanStart; ) {
                 //System.out.println("executed line 872");
                 int j;
                 for( j=i;  (j<levels.length) && (levels[j] == levels[i]); j++ );
-                newElements.addElement(new BidiElement(bidiRoot, firstPStart+i,
-                                                       firstPStart+j,
-                                                       (int)levels[i]));
+                newElements.add(new BidiElement(bidiRoot, firstPStart+i,
+                                                firstPStart+j,
+                                                (int)levels[i]));
                 i=j;
             }
             // Create an element for the last span.
-            newElements.addElement(new BidiElement(bidiRoot,
-                                                   lastSpanStart+firstPStart,
-                                                   lastSpanEnd,
-                                                   levels[levels.length-1]));
+            newElements.add(new BidiElement(bidiRoot,
+                                            lastSpanStart+firstPStart,
+                                            lastSpanEnd,
+                                            levels[levels.length-1]));
         }
 
         if( newNextElem != null )
-            newElements.addElement( newNextElem );
+            newElements.add( newNextElem );
 
 
         // Calculate the set of existing bidi elements which must be
@@ -1167,8 +1191,7 @@ public abstract class AbstractDocument implements Document, Serializable {
             removedElems[i] = bidiRoot.getElement(removeFromIndex+i);
         }
 
-        Element[] addedElems = new Element[ newElements.size() ];
-        newElements.copyInto( addedElems );
+        Element[] addedElems = newElements.toArray(new Element[0]);
 
         // Update the change record.
         ElementEdit ee = new ElementEdit( bidiRoot, removeFromIndex,
@@ -1185,7 +1208,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      */
     private byte[] calculateBidiLevels( int firstPStart, int lastPEnd ) {
 
-        byte levels[] = new byte[ lastPEnd - firstPStart ];
+        byte[] levels = new byte[ lastPEnd - firstPStart ];
         int  levelsEnd = 0;
         Boolean defaultDirection = null;
         Object d = getProperty(TextAttribute.RUN_DIRECTION);
@@ -1436,6 +1459,7 @@ public abstract class AbstractDocument implements Document, Serializable {
 
     // --- serialization ---------------------------------------------
 
+    @Serial
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream s)
       throws ClassNotFoundException, IOException
@@ -1775,7 +1799,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
@@ -2215,11 +2239,13 @@ public abstract class AbstractDocument implements Document, Serializable {
 
         // --- serialization ---------------------------------------------
 
+        @Serial
         private void writeObject(ObjectOutputStream s) throws IOException {
             s.defaultWriteObject();
             StyleContext.writeAttributeSet(s, attributes);
         }
 
+        @Serial
         private void readObject(ObjectInputStream s)
             throws ClassNotFoundException, IOException
         {
@@ -2245,7 +2271,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
@@ -2500,7 +2526,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      *
@@ -2634,12 +2660,14 @@ public abstract class AbstractDocument implements Document, Serializable {
 
         // --- serialization ---------------------------------------------
 
+        @Serial
         private void writeObject(ObjectOutputStream s) throws IOException {
             s.defaultWriteObject();
             s.writeInt(p0.getOffset());
             s.writeInt(p1.getOffset());
         }
 
+        @Serial
         private void readObject(ObjectInputStream s)
             throws ClassNotFoundException, IOException
         {
@@ -2961,11 +2989,12 @@ public abstract class AbstractDocument implements Document, Serializable {
 
     }
 
-    static class DefaultDocumentEventUndoableWrapper implements
+    class DefaultDocumentEventUndoableWrapper extends DefaultDocumentEvent implements
             UndoableEdit, UndoableEditLockSupport
     {
         final DefaultDocumentEvent dde;
         public DefaultDocumentEventUndoableWrapper(DefaultDocumentEvent dde) {
+            super(dde.getOffset(),dde.getLength(),dde.type);
             this.dde = dde;
         }
 

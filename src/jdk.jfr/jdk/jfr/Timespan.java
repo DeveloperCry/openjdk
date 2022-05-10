@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,7 +69,7 @@ public @interface Timespan {
      * <p>
      * By default, the unit is nanoseconds.
      *
-     * @return the time span unit, default {@code #NANOSECONDS}, not {@code null}
+     * @return the time span unit, default {@link #NANOSECONDS}, not {@code null}
      */
     String value() default NANOSECONDS;
 }

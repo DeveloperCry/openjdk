@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,21 +28,27 @@ package java.awt.desktop;
 import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.io.Serial;
 
 /**
- * Event sent when the user session has been changed.
- *
- * Some systems may provide a reason of a user session change.
+ * Event sent when the user session has been changed. Some systems may provide a
+ * reason of a user session change.
  *
  * @see UserSessionListener#userSessionActivated(UserSessionEvent)
  * @see UserSessionListener#userSessionDeactivated(UserSessionEvent)
- *
  * @since 9
  */
 public final class UserSessionEvent extends AppEvent {
 
+    /**
+     * Use serialVersionUID from JDK 9 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = 6747138462796569055L;
 
+    /**
+     * The reason of the user session change.
+     */
     private final Reason reason;
 
     /**

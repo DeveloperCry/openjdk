@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -59,7 +59,7 @@ import java.util.*;
  *
  *     protected Phase(Context context) {
  *         context.put(phaseKey, this);
- *         // other intitialization follows...
+ *         // other initialization follows...
  *     }
  * }
  * }</pre>
@@ -145,8 +145,7 @@ public class Context {
     public <T> T get(Key<T> key) {
         checkState(ht);
         Object o = ht.get(key);
-        if (o instanceof Factory<?>) {
-            Factory<?> fac = (Factory<?>)o;
+        if (o instanceof Factory<?> fac) {
             o = fac.make(this);
             if (o instanceof Factory<?>)
                 throw new AssertionError("T extends Context.Factory");

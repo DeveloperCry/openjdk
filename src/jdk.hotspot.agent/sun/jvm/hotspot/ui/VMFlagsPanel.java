@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,7 +50,7 @@ public class VMFlagsPanel extends JPanel {
 
     private String getFlags() {
        VM.Flag[] flags = VM.getVM().getCommandLineFlags();
-       StringBuffer buf = new StringBuffer();
+       StringBuilder buf = new StringBuilder();
        buf.append("<html><head><title>VM Command Line Flags</title></head><body>");
        if (flags == null) {
           buf.append("<b>Command Flag info not available (use 1.4.1_03 or later)!</b>");

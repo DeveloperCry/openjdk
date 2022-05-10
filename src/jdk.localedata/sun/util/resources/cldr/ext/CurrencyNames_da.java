@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -155,6 +151,7 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -190,6 +187,7 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "\u0e3f" },
@@ -202,14 +200,15 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "TZS", "TZS" },
             { "UAH", "UAH" },
             { "UGX", "UGX" },
-            { "USD", "$" },
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
             { "ZAR", "ZAR" },
+            { "ZMK", "ZMK" },
             { "ZMW", "ZMW" },
             { "adp", "Andorransk peseta" },
             { "aed", "dirham fra de Forenede Arabiske Emirater" },
@@ -311,7 +310,7 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "gwe", "Portugisisk guinea escudo" },
             { "gwp", "Guineansk peso" },
             { "gyd", "guyansk dollar" },
-            { "hkd", "Hongkong dollar" },
+            { "hkd", "hongkongsk dollar" },
             { "hnl", "honduransk lempira" },
             { "hrd", "Kroatisk dinar" },
             { "hrk", "kroatisk kuna" },
@@ -385,7 +384,7 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "omr", "omansk rial" },
             { "pab", "panamansk balboa" },
             { "pei", "peruviansk inti" },
-            { "pen", "peruviansk sol" },
+            { "pen", "peruansk sol" },
             { "pes", "peruviansk sol (1863\u20131965)" },
             { "pgk", "papuansk kina" },
             { "php", "filippinsk peso" },
@@ -433,7 +432,7 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "tpe", "Escudo fra Timor" },
             { "trl", "Tyrkisk lire (1922\u20132005)" },
             { "try", "tyrkisk lira" },
-            { "ttd", "dollar fra Trinidad og Tobago" },
+            { "ttd", "trinidadisk dollar" },
             { "twd", "ny taiwansk dollar" },
             { "tzs", "tanzanisk shilling" },
             { "uah", "ukrainsk grynia" },
@@ -447,7 +446,8 @@ public class CurrencyNames_da extends OpenListResourceBundle {
             { "uyu", "uruguayansk peso" },
             { "uzs", "usbekisk sum" },
             { "veb", "Venezuelansk bolivar (1871\u20132008)" },
-            { "vef", "venezuelansk bolivar" },
+            { "vef", "venezuelansk bolivar (2008\u20132018)" },
+            { "ves", "venezuelansk bolivar" },
             { "vnd", "vietnamesisk dong" },
             { "vuv", "vanuaisk vatu" },
             { "wst", "samoansk tala" },

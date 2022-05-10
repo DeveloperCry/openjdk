@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -149,7 +149,7 @@ public class WizardDlg extends JDialog
         this.panels = panels;
         panesPanel.removeAll();
         for(int i = 0; i < numCards; i++)
-            panesPanel.add((JPanel)panels.elementAt(i), (new Integer(i)).toString());
+            panesPanel.add((JPanel)panels.elementAt(i), (Integer.valueOf(i)).toString());
 
         validate();
         enableBackNextButtons();
@@ -178,7 +178,7 @@ public class WizardDlg extends JDialog
         p3.add(new JButton("Three"));
         JPanel p4 = new JPanel();
         p4.add(new JButton("Four"));
-        Vector panels = new Vector();
+        Vector<JPanel> panels = new Vector<>();
         panels.addElement(p1);
         panels.addElement(p2);
         panels.addElement(p3);

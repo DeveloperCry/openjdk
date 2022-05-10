@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1298,7 +1298,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
     }
 
     @SuppressWarnings("serial") // Superclass is not serializable across versions
-    private class OpaqueLabel extends JLabel {
+    private static class OpaqueLabel extends JLabel {
         public boolean isOpaque() {
             return true;
         }

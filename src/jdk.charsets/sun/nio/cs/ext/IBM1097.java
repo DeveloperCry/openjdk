@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,14 +48,15 @@ public class IBM1097 extends Charset implements HistoricallyNamedCharset
     }
 
     public CharsetDecoder newDecoder() {
-        return new SingleByte.Decoder(this, b2c, false);
+        return new SingleByte.Decoder(this, Holder.b2c, false, false);
     }
 
     public CharsetEncoder newEncoder() {
-        return new SingleByte.Encoder(this, c2b, c2bIndex, false);
+        return new SingleByte.Encoder(this, Holder.c2b, Holder.c2bIndex, false);
     }
 
-    private final static String b2cTable = 
+    private static class Holder {
+        private static final String b2cTable = 
         "\uFB8A\u0061\u0062\u0063\u0064\u0065\u0066\u0067" +      // 0x80 - 0x87
         "\u0068\u0069\u00AB\u00BB\uFEB1\uFEB3\uFEB5\uFEB7" +      // 0x88 - 0x8f
         "\uFEB9\u006A\u006B\u006C\u006D\u006E\u006F\u0070" +      // 0x90 - 0x97
@@ -90,13 +91,14 @@ public class IBM1097 extends Charset implements HistoricallyNamedCharset
         "\uFEAF\u0060\u003A\u0023\u0040\'\u003D\"" ;      // 0x78 - 0x7f
 
 
-    private final static char[] b2c = b2cTable.toCharArray();
-    private final static char[] c2b = new char[0x500];
-    private final static char[] c2bIndex = new char[0x100];
+        private static final char[] b2c = b2cTable.toCharArray();
+        private static final char[] c2b = new char[0x500];
+        private static final char[] c2bIndex = new char[0x100];
 
-    static {
-        char[] b2cMap = b2c;
-        char[] c2bNR = null;
-        SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+        static {
+            char[] b2cMap = b2c;
+            char[] c2bNR = null;
+            SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+        }
     }
 }

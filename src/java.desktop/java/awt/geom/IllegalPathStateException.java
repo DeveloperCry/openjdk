@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package java.awt.geom;
 
+import java.io.Serial;
+
 /**
  * The {@code IllegalPathStateException} represents an
  * exception that is thrown if an operation is performed on a path
@@ -35,6 +37,11 @@ package java.awt.geom;
  */
 
 public class IllegalPathStateException extends RuntimeException {
+
+    /**
+     * Use serialVersionUID from JDK 9 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = -5158084205220481094L;
 
     /**

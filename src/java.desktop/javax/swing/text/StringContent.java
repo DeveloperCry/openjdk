@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,7 +27,6 @@ package javax.swing.text;
 import java.util.Vector;
 import java.io.Serializable;
 import javax.swing.undo.*;
-import javax.swing.SwingUtilities;
 
 /**
  * An implementation of the AbstractDocument.Content interface that is
@@ -44,7 +43,7 @@ import javax.swing.SwingUtilities;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -324,7 +323,7 @@ public final class StringContent implements AbstractDocument.Content, Serializab
      * it.... the update table holds only a reference
      * to this grungy thing.
      */
-    final class PosRec {
+    static final class PosRec {
 
         PosRec(int offset) {
             this.offset = offset;
@@ -351,7 +350,7 @@ public final class StringContent implements AbstractDocument.Content, Serializab
             return rec.offset;
         }
 
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings("removal")
         protected void finalize() throws Throwable {
             // schedule the record to be removed later
             // on another thread.
@@ -369,7 +368,7 @@ public final class StringContent implements AbstractDocument.Content, Serializab
      * Used to hold a reference to a Position that is being reset as the
      * result of removing from the content.
      */
-    final class UndoPosRef {
+    static final class UndoPosRef {
         UndoPosRef(PosRec rec) {
             this.rec = rec;
             this.undoLocation = rec.offset;

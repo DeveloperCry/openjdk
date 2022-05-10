@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -256,7 +252,6 @@ public class LocaleNames_ug extends OpenListResourceBundle {
             { "Kpel", "\u0643\u067e\u06d0\u0644\u0644\u06d0\u0686\u06d5" },
             { "tkl", "\u062a\u0648\u0643\u06d0\u0644\u0627\u06cb\u0686\u06d5" },
             { "grb", "\u06af\u0631\u06d0\u0628\u0648\u0686\u06d5" },
-            { "root", "\u063a\u0648\u0644 \u062a\u0649\u0644" },
             { "%%DAJNKO", "\u062f\u0627\u0698\u0649\u0646\u0643\u0648 \u0626\u06d0\u0644\u0649\u067e\u0628\u06d5\u0633\u0649" },
             { "type.ca.indian", "\u06be\u0649\u0646\u062f\u0649\u0633\u062a\u0627\u0646 \u062f\u06c6\u0644\u06d5\u062a \u064a\u0649\u0644\u0646\u0627\u0645\u06d5\u0633\u0649" },
             { "grc", "\u0642\u06d5\u062f\u0649\u0645\u0643\u0649 \u06af\u0649\u0631\u06d0\u0643\u0686\u06d5" },
@@ -397,7 +392,7 @@ public class LocaleNames_ug extends OpenListResourceBundle {
             { "MH", "\u0645\u0627\u0631\u0634\u0627\u0644 \u0626\u0627\u0631\u0627\u0644\u0644\u0649\u0631\u0649" },
             { "ale", "\u0626\u0627\u0644\u06d0\u064a\u06c7\u062a\u0686\u06d5" },
             { "type.nu.vaii", "\u06cb\u0627\u064a\u0686\u06d5 \u0631\u06d5\u0642\u06d5\u0645\u0644\u06d5\u0631" },
-            { "MK", "\u0645\u0627\u0643\u06d0\u062f\u0648\u0646\u0649\u064a\u06d5" },
+            { "MK", "\u0634\u0649\u0645\u0627\u0644\u0649\u064a \u0645\u0627\u0643\u06d0\u062f\u0648\u0646\u0649\u064a\u06d5" },
             { "ML", "\u0645\u0627\u0644\u0649" },
             { "MM", "\u0628\u0649\u0631\u0645\u0627" },
             { "MN", "\u0645\u0648\u06ad\u063a\u06c7\u0644\u0649\u064a\u06d5" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -96,7 +92,6 @@ public class LocaleNames_lv extends OpenListResourceBundle {
         final String metaValue_te = "telugu";
         final String metaValue_th = "taju";
         final String metaValue_tl = "tagalu";
-        final String metaValue_zh = "\u0137\u012bnie\u0161u";
         final String metaValue_arc = "aramie\u0161u";
         final String metaValue_ban = "balie\u0161u";
         final String metaValue_cop = "koptu";
@@ -112,6 +107,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "cch", "atsamu" },
             { "mwr", "marvaru" },
             { "Zsye", "emocijz\u012bmes" },
+            { "ccp", "\u010dakmu" },
             { "egy", "\u0113\u0123iptie\u0161u" },
             { "raj", "rad\u017east\u0101\u0146u" },
             { "tem", "temnu" },
@@ -128,7 +124,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "AG", "Antigva un Barbuda" },
             { "type.ca.ethiopic", "etiopie\u0161u kalend\u0101rs" },
             { "AI", "Angilja" },
-            { "key.tz", "Laika josla" },
+            { "key.tz", "laika josla" },
             { "AL", "Alb\u0101nija" },
             { "AM", "Arm\u0113nija" },
             { "AO", "Angola" },
@@ -248,19 +244,18 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "FJ", "Fid\u017ei" },
             { "FK", "Folklenda salas" },
             { "FM", "Mikron\u0113zija" },
-            { "key.va", "Lokaliz\u0101cijas variants" },
+            { "key.va", "lokaliz\u0101cijas variants" },
             { "FO", "F\u0113ru salas" },
             { "Taml", metaValue_ta },
             { "FR", "Francija" },
             { "tkl", "tokelavie\u0161u" },
             { "grb", "grebo" },
-            { "root", "sakne" },
             { "type.ca.indian", "Indijas nacion\u0101lais kalend\u0101rs" },
             { "grc", "sengrie\u0137u" },
             { "GA", "Gabona" },
             { "vot", "votu" },
-            { "GB", "Lielbrit\u0101nija" },
-            { "pcm", "pid\u017eins" },
+            { "GB", "Apvienot\u0101 Karaliste" },
+            { "pcm", "Nig\u0113rijas pid\u017einvaloda" },
             { "GD", "Gren\u0101da" },
             { "GE", "Gruzija" },
             { "GF", "Francijas Gvi\u0101na" },
@@ -302,7 +297,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "naq", "nama" },
             { "zza", "zazaki" },
             { "IL", "Izra\u0113la" },
-            { "IM", "Mena" },
+            { "IM", "Menas sala" },
             { "IN", "Indija" },
             { "type.co.eor", "Eiropas rakst\u012bbu k\u0101rto\u0161anas sec\u012ba" },
             { "IO", "Indijas oke\u0101na Britu teritorija" },
@@ -324,7 +319,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "guz", "gusii" },
             { "tog", "Njasas tongu" },
             { "type.nu.knda", "Kannadu cipari" },
-            { "de_CH", "\u0160veices aug\u0161v\u0101cu" },
+            { "de_CH", "aug\u0161v\u0101cu (\u0160veice)" },
             { "type.co.phonetic", "Fon\u0113tisk\u0101 k\u0101rto\u0161anas sec\u012bba" },
             { "type.ca.buddhist", "budistu kalend\u0101rs" },
             { "KE", "Kenija" },
@@ -377,12 +372,12 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "MH", "M\u0101r\u0161ala salas" },
             { "ale", "aleutu" },
             { "type.nu.vaii", "VAI cipari" },
-            { "MK", "Ma\u0137edonija" },
+            { "MK", "Zieme\u013cma\u0137edonija" },
             { "ML", "Mali" },
             { "MM", "Mjanma (Birma)" },
             { "MN", "Mongolija" },
             { "new", "nevaru" },
-            { "MO", "\u0136\u012bnas \u012bpa\u0161\u0101s p\u0101rvaldes apgabals Makao" },
+            { "MO", "\u0136TR \u012bpa\u0161ais administrat\u012bvais re\u0123ions Makao" },
             { "MP", "Zieme\u013cu Marianas salas" },
             { "MQ", "Martinika" },
             { "MR", "Maurit\u0101nija" },
@@ -422,11 +417,12 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "ang", "senang\u013cu" },
             { "OM", "Om\u0101na" },
             { "anp", "angika" },
-            { "crs", "kreolu fran\u010du" },
+            { "crs", "francisk\u0101 kreolisk\u0101 valoda (Sei\u0161elu salas)" },
             { "Xpeo", "senperie\u0161u" },
             { "PA", "Panama" },
             { "type.ca.islamic-civil", "isl\u0101ma pilso\u0146u kalend\u0101rs" },
             { "csb", "ka\u0161ubu" },
+            { "en_GB", "ang\u013cu (Lielbrit\u0101nija)" },
             { "PE", "Peru" },
             { "PF", "Francijas Polin\u0113zija" },
             { "PG", "Papua-Jaungvineja" },
@@ -438,7 +434,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "PN", "Pitk\u0113rnas salas" },
             { "PR", "Puertoriko" },
             { "Bali", metaValue_ban },
-            { "PS", "Palest\u012bna" },
+            { "PS", "Palest\u012bnas teritorijas" },
             { "PT", "Portug\u0101le" },
             { "PW", "Palau" },
             { "nia", "njasu" },
@@ -499,10 +495,10 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "SX", "Sintm\u0101rtena" },
             { "SY", "S\u012brija" },
             { "yao", "jao" },
-            { "SZ", "Svazilenda" },
+            { "SZ", "Svatini" },
             { "arw", "aravaku" },
             { "yap", "japie\u0161u" },
-            { "TA", "Tristana da Ku\u0146as salas" },
+            { "TA", "Tristana da Ku\u0146jas salu teritorijas" },
             { "asa", "asu" },
             { "type.ms.ussystem", "amerik\u0101\u0146u m\u0113rvien\u012bbu sist\u0113ma" },
             { "021", "Amerikas zieme\u013cu da\u013ca" },
@@ -533,7 +529,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "rup", "arom\u016bnu" },
             { "030", "Austrum\u0101zija" },
             { "tyv", "tuvie\u0161u" },
-            { "sw_CD", "Kongo svahili" },
+            { "sw_CD", "svahili (Kongo)" },
             { "034", "Dienvid\u0101zija" },
             { "hai", "haidu" },
             { "035", "Centr\u0101laustrum\u0101zija" },
@@ -570,7 +566,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "WF", "Volisa un Futunas salas" },
             { "type.co.traditional", "tradicion\u0101l\u0101 k\u0101rto\u0161anas sec\u012bba" },
             { "057", "Mikron\u0113zijas re\u0123ions" },
-            { "jgo", "jgo" },
+            { "jgo", "ngomba" },
             { "lkt", "lakotu" },
             { "type.nu.finance", "Finan\u0161u cipari" },
             { "type.co.compat", "sader\u012bg\u0101 k\u0101rto\u0161anas sec\u012bba" },
@@ -578,7 +574,9 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "WS", "Samoa" },
             { "wal", "valamu" },
             { "was", "va\u0161o" },
+            { "XA", "pseidoakcenti" },
             { "war", "varaju" },
+            { "XB", "pseidodivvirzienu" },
             { "awa", "avadhu" },
             { "061", "Polin\u0113zija" },
             { "XK", "Kosova" },
@@ -593,7 +591,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "YT", "Majota" },
             { "ZA", "Dienvid\u0101frikas Republika" },
             { "type.lb.loose", "Br\u012bvais rindi\u0146as p\u0101rtraukuma stils" },
-            { "Deva", "dev\u0101nag\u0101ri" },
+            { "Deva", "d\u0113van\u0101gari" },
             { "type.nu.geor", "Gruz\u012bnu cipari" },
             { "Hira", "hiragana" },
             { "ZM", "Zambija" },
@@ -671,7 +669,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "an", "aragonie\u0161u" },
             { "Jpan", metaValue_ja },
             { "ar", metaValue_ar },
-            { "Hrkt", "katakana vai hiragana" },
+            { "Hrkt", "jap\u0101\u0146u zilbju alfab\u0113ts" },
             { "as", "asamie\u0161u" },
             { "Lina", "line\u0101r\u0101 A" },
             { "av", "av\u0101ru" },
@@ -737,8 +735,8 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "Hang", "hangils" },
             { "Samr", "samarie\u0161u" },
             { "shi", "\u0161ilhu" },
-            { "Hani", metaValue_zh },
             { "hsb", "aug\u0161sorbu" },
+            { "Hani", "ha\u0146u" },
             { "shn", "\u0161anu" },
             { "fa", "persie\u0161u" },
             { "Hans", "vienk\u0101r\u0161ot\u0101" },
@@ -759,7 +757,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "sid", "sidamu" },
             { "fy", "rietumfr\u012bzu" },
             { "ga", "\u012bru" },
-            { "gd", "g\u0113lu" },
+            { "gd", "skotu g\u0113lu" },
             { "gl", "galisie\u0161u" },
             { "gn", "gvaranu" },
             { "bho", "bhod\u017ep\u016bru" },
@@ -782,7 +780,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "frc", "kad\u017e\u016bnu fran\u010du" },
             { "%%FONIPA", "Starptautiskais fon\u0113tiskais alfab\u0113ts" },
             { "ia", "interlingva" },
-            { "Jamo", "d\u017eamo" },
+            { "Jamo", "jamo" },
             { "id", "indon\u0113zie\u0161u" },
             { "type.nu.tibt", "Tibetie\u0161u cipari" },
             { "ie", "interlingve" },
@@ -911,7 +909,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "bra", "brad\u017eie\u0161u" },
             { "key.ca", "Kalend\u0101rs" },
             { "Laoo", metaValue_lo },
-            { "mgo", "mgo" },
+            { "mgo", "metu" },
             { "type.hc.h23", "24 stundu sist\u0113ma (0\u201323)" },
             { "type.hc.h24", "24 stundu sist\u0113ma (1\u201324)" },
             { "ssy", metaValue_ssy },
@@ -925,7 +923,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "type.hc.h11", "12 stundu sist\u0113ma (0\u201311)" },
             { "rm", "retorom\u0101\u0146u" },
             { "rn", "rundu" },
-            { "key.cu", "Val\u016bta" },
+            { "key.cu", "val\u016bta" },
             { "ro", "rum\u0101\u0146u" },
             { "%%SAAHO", metaValue_ssy },
             { "type.nu.orya", "Oriju cipari" },
@@ -1029,7 +1027,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "Lydi", "l\u012bdie\u0161u" },
             { "Xsux", "\u0161umeru-akadie\u0161u \u0137\u012b\u013craksts" },
             { "wo", "volofu" },
-            { "zgh", "standarta marok\u0101\u0146u berberu" },
+            { "zgh", "standarta tamazigtu (Maroka)" },
             { "ar_001", "m\u016bsdienu standarta ar\u0101bu" },
             { "gay", "gajo" },
             { "Mong", metaValue_mn },
@@ -1057,7 +1055,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "vai", "vaju" },
             { "za", "d\u017euanu" },
             { "kln", "kalend\u017e\u012bnu" },
-            { "zh", metaValue_zh },
+            { "zh", "\u0137\u012bnie\u0161u" },
             { "Bopo", "bopomofo" },
             { "key.lb", "Rindi\u0146as p\u0101rtraukuma stils" },
             { "zu", "zulu" },
@@ -1100,6 +1098,7 @@ public class LocaleNames_lv extends OpenListResourceBundle {
             { "type.nu.tamldec", "Tamilu cipari" },
             { "krc", "kara\u010daju un balk\u0101ru" },
             { "inh", "ingu\u0161u" },
+            { "fa_AF", "dar\u012b" },
             { "krl", "kar\u0113\u013cu" },
             { "efi", "efiku" },
             { "key.nu", "Cipari" },

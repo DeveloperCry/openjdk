@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -244,7 +244,7 @@ final class FingerPrint {
         private final Set<Method> methods = new HashSet<>();
 
         public ClassAttributes() {
-            super(Opcodes.ASM6);
+            super(Opcodes.ASM7);
         }
 
         private boolean isPublic(int access) {

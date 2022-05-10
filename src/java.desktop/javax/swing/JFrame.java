@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,7 +50,7 @@ import javax.accessibility.AccessibleStateSet;
  * You can find task-oriented documentation about using <code>JFrame</code>
  * in <em>The Java Tutorial</em>, in the section
  * <a
- href="http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html">How to Make Frames</a>.
+ href="https://docs.oracle.com/javase/tutorial/uiswing/components/frame.html">How to Make Frames</a>.
  *
  * <p>
  * The <code>JFrame</code> class is slightly incompatible with <code>Frame</code>.
@@ -88,7 +88,7 @@ import javax.accessibility.AccessibleStateSet;
  * For more information on content panes
  * and other features that root panes provide,
  * see <a
- href="http://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html">Using Top-Level Containers</a> in <em>The Java Tutorial</em>.
+ href="https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html">Using Top-Level Containers</a> in <em>The Java Tutorial</em>.
  * <p>
  * In a multi-screen environment, you can create a <code>JFrame</code>
  * on a different screen device.  See {@link java.awt.Frame} for more
@@ -104,7 +104,7 @@ import javax.accessibility.AccessibleStateSet;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -385,6 +385,7 @@ public class JFrame  extends Frame implements WindowConstants,
         }
 
         if (operation == EXIT_ON_CLOSE) {
+            @SuppressWarnings("removal")
             SecurityManager security = System.getSecurityManager();
             if (security != null) {
                 security.checkExit(0);
@@ -426,7 +427,7 @@ public class JFrame  extends Frame implements WindowConstants,
      * are currently typed to {@code JComponent}.
      * <p>
      * Please see
-     * <a href="http://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html">
+     * <a href="https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html">
      * How to Use Drag and Drop and Data Transfer</a>, a section in
      * <em>The Java Tutorial</em>, for more information.
      *
@@ -881,6 +882,11 @@ public class JFrame  extends Frame implements WindowConstants,
      * elements.
      */
     protected class AccessibleJFrame extends AccessibleAWTFrame {
+
+        /**
+         * Constructs an {@code AccessibleJFrame}.
+         */
+        protected AccessibleJFrame() {}
 
         // AccessibleContext methods
         /**

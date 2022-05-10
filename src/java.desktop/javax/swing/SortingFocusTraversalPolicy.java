@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -95,12 +95,10 @@ public class SortingFocusTraversalPolicy
      * When false, the default (tim-sort) algo is used, which may lead to an exception.
      * See: JDK-8048887
      */
-    private static final boolean legacySortingFTPEnabled;
-
-    static {
-        legacySortingFTPEnabled = "true".equals(AccessController.doPrivileged(
-            new GetPropertyAction("swing.legacySortingFTPEnabled", "true")));
-    }
+    @SuppressWarnings("removal")
+    private static final boolean legacySortingFTPEnabled = "true".equals(
+            AccessController.doPrivileged(
+                    new GetPropertyAction("swing.legacySortingFTPEnabled", "true")));
 
     /**
      * Constructs a SortingFocusTraversalPolicy without a Comparator.

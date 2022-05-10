@@ -1,6 +1,6 @@
 
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -255,7 +255,7 @@ public class LookupOp implements BufferedImageOp, RasterOp {
         int numBands  = src.getNumBands();
         int height    = src.getHeight();
         int width     = src.getWidth();
-        int srcPix[]  = new int[numBands];
+        int[] srcPix  = new int[numBands];
 
         // Create a new destination Raster, if needed
 

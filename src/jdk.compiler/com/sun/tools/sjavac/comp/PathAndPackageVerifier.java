@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -138,8 +138,8 @@ public class PathAndPackageVerifier implements TaskListener {
         @Override
         public String next() {
             Name name;
-            if (next instanceof JCIdent) {
-                name = ((JCIdent) next).name;
+            if (next instanceof JCIdent identNext) {
+                name = identNext.name;
                 next = null;
             } else {
                 JCFieldAccess fa = (JCFieldAccess) next;

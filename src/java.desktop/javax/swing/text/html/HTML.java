@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,10 +22,15 @@
  *
  *
  */
+
 package javax.swing.text.html;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Hashtable;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -38,7 +43,13 @@ import javax.swing.text.StyleContext;
  * @author  Sunita Mani
  *
  */
+@SuppressWarnings("doclint:missing")
 public class HTML {
+
+    /**
+     * Constructs a {@code HTML}.
+     */
+    public HTML() {}
 
     /**
      * Typesafe enumeration for an HTML tag.  Although the
@@ -553,7 +564,7 @@ public class HTML {
          */
         public static final Tag COMMENT = new Tag("comment");
 
-        static final Tag allTags[]  = {
+        static final Tag[] allTags  = {
             A, ADDRESS, APPLET, AREA, B, BASE, BASEFONT, BIG,
             BLOCKQUOTE, BODY, BR, CAPTION, CENTER, CITE, CODE,
             DD, DFN, DIR, DIV, DL, DT, EM, FONT, FORM, FRAME,
@@ -613,6 +624,7 @@ public class HTML {
             return false;
         }
 
+        @Serial
         private void writeObject(java.io.ObjectOutputStream s)
                      throws IOException {
             s.defaultWriteObject();
@@ -622,6 +634,7 @@ public class HTML {
             s.writeObject(name);
         }
 
+        @Serial
         private void readObject(ObjectInputStream s)
             throws ClassNotFoundException, IOException {
             s.defaultReadObject();
@@ -1060,7 +1073,7 @@ public class HTML {
         public static final Attribute COMMENT = new Attribute("comment");
         static final Attribute MEDIA = new Attribute("media");
 
-        static final Attribute allAttributes[] = {
+        static final Attribute[] allAttributes = {
             FACE,
             COMMENT,
             SIZE,
@@ -1250,7 +1263,7 @@ public class HTML {
         String istr = (String) attr.getAttribute(key);
         if (istr != null) {
             try {
-                value = Integer.valueOf(istr).intValue();
+                value = Integer.parseInt(istr);
             } catch (NumberFormatException e) {
                 value = def;
             }

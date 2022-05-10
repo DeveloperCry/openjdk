@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -89,6 +89,7 @@ class NumericValueExp extends QueryEval implements ValueExp {
     static {
         try {
             GetPropertyAction act = new GetPropertyAction("jmx.serial.form");
+            @SuppressWarnings("removal")
             String form = AccessController.doPrivileged(act);
             compat = (form != null && form.equals("1.0"));
         } catch (Exception e) {

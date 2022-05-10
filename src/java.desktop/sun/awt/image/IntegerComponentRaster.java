@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,7 @@
  */
 
 package sun.awt.image;
+
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.awt.image.RasterFormatException;
@@ -272,7 +273,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        int outData[];
+        int[] outData;
         if (obj == null) {
             outData = new int[numDataElements];
         } else {
@@ -320,7 +321,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        int outData[];
+        int[] outData;
         if (obj instanceof int[]) {
             outData = (int[])obj;
         } else {
@@ -364,7 +365,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        int inData[] = (int[])obj;
+        int[] inData = (int[])obj;
 
         int off = (y-minY)*scanlineStride +
                   (x-minX)*pixelStride;
@@ -423,7 +424,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
 
         int srcOffX = inRaster.getMinX();
         int srcOffY = inRaster.getMinY();
-        int tdata[] = null;
+        int[] tdata = null;
 
         if (inRaster instanceof IntegerComponentRaster &&
             (pixelStride == 1) && (numDataElements == 1)) {
@@ -496,7 +497,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        int inData[] = (int[])obj;
+        int[] inData = (int[])obj;
 
         int yoff = (y-minY)*scanlineStride +
                    (x-minX)*pixelStride;
@@ -540,7 +541,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
     public WritableRaster createWritableChild (int x, int y,
                                                int width, int height,
                                                int x0, int y0,
-                                               int bandList[]) {
+                                               int[] bandList) {
         if (x < this.minX) {
             throw new RasterFormatException("x lies outside raster");
         }
@@ -594,7 +595,7 @@ public class IntegerComponentRaster extends SunWritableRaster {
     public Raster createChild (int x, int y,
                                int width, int height,
                                int x0, int y0,
-                               int bandList[]) {
+                               int[] bandList) {
         return createWritableChild(x, y, width, height, x0, y0, bandList);
     }
 
@@ -714,13 +715,13 @@ public class IntegerComponentRaster extends SunWritableRaster {
     }
 
     public String toString() {
-        return new String ("IntegerComponentRaster: width = "+width
-                           +" height = " + height
-                           +" #Bands = " + numBands
-                           +" #DataElements "+numDataElements
-                           +" xOff = "+sampleModelTranslateX
-                           +" yOff = "+sampleModelTranslateY
-                           +" dataOffset[0] "+dataOffsets[0]);
+        return "IntegerComponentRaster: width = " + width
+                + " height = " + height
+                + " #Bands = " + numBands
+                + " #DataElements " + numDataElements
+                + " xOff = " + sampleModelTranslateX
+                + " yOff = " + sampleModelTranslateY
+                + " dataOffset[0] " + dataOffsets[0];
     }
 
 //    /**

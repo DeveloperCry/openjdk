@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,7 @@
  */
 
 package sun.awt.image;
+
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.awt.image.RasterFormatException;
@@ -259,7 +260,7 @@ public class ShortComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        short outData[];
+        short[] outData;
         if (obj == null) {
             outData = new short[numDataElements];
         } else {
@@ -307,7 +308,7 @@ public class ShortComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        short outData[];
+        short[] outData;
         if (obj == null) {
             outData = new short[w*h*numDataElements];
         } else {
@@ -460,7 +461,7 @@ public class ShortComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        short inData[] = (short[])obj;
+        short[] inData = (short[])obj;
         int off = (y-minY)*scanlineStride +
                   (x-minX)*pixelStride;
         for (int i = 0; i < numDataElements; i++) {
@@ -558,7 +559,7 @@ public class ShortComponentRaster extends SunWritableRaster {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
         }
-        short inData[] = (short[])obj;
+        short[] inData = (short[])obj;
         int yoff = (y-minY)*scanlineStride +
                    (x-minX)*pixelStride;
         int xoff;
@@ -877,10 +878,10 @@ public class ShortComponentRaster extends SunWritableRaster {
     }
 
     public String toString() {
-        return new String ("ShortComponentRaster: width = "+width
-                           +" height = " + height
-                           +" #numDataElements "+numDataElements);
-                           // +" xOff = "+xOffset+" yOff = "+yOffset);
+        return "ShortComponentRaster: width = " + width
+                + " height = " + height
+                + " #numDataElements " + numDataElements;
+                // +" xOff = "+xOffset+" yOff = "+yOffset);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -337,7 +337,7 @@ public interface ExecutionControl extends AutoCloseable {
     /**
      * The abstract base of all {@code ExecutionControl} exceptions.
      */
-    public static abstract class ExecutionControlException extends Exception {
+    public abstract static class ExecutionControlException extends Exception {
 
         private static final long serialVersionUID = 1L;
 
@@ -410,7 +410,7 @@ public interface ExecutionControl extends AutoCloseable {
     /**
      * The abstract base of of exceptions specific to running user code.
      */
-    public static abstract class RunException extends ExecutionControlException {
+    public abstract static class RunException extends ExecutionControlException {
 
         private static final long serialVersionUID = 1L;
 

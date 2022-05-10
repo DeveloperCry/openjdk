@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,8 @@
  */
 
 package java.awt;
+
+import java.io.Serial;
 
 /**
  * The {@code GridLayout} class is a layout manager that
@@ -55,26 +57,21 @@ package java.awt;
  * If the container's {@code ComponentOrientation} property is horizontal
  * and right-to-left, the example produces the output shown in Figure 2.
  *
- * <table style="float:center;width:600">
- * <caption style="display:none">Figures</caption>
- * <tr style="text-align:center">
- * <td><img SRC="doc-files/GridLayout-1.gif"
- *      alt="Shows 6 buttons in rows of 2. Row 1 shows buttons 1 then 2.
- * Row 2 shows buttons 3 then 4. Row 3 shows buttons 5 then 6.">
- * </td>
- *
- * <td style="text-align:center"><img SRC="doc-files/GridLayout-2.gif"
- *              alt="Shows 6 buttons in rows of 2. Row 1 shows buttons 2 then 1.
- * Row 2 shows buttons 4 then 3. Row 3 shows buttons 6 then 5.">
- * </td>
- * </tr>
- *
- * <tr style="text-align:center">
- * <td>Figure 1: Horizontal, Left-to-Right</td>
- *
- * <td>Figure 2: Horizontal, Right-to-Left</td>
- * </tr>
- * </table>
+ * <div style="margin:0 auto;width:600px;text-align:center;font-weight:bold">
+ *   <div style="float:left">
+ *     <p><img SRC="doc-files/GridLayout-1.gif"
+ *        alt="Shows 6 buttons in rows of 2. Row 1 shows buttons 1 then 2.
+ *        Row 2 shows buttons 3 then 4. Row 3 shows buttons 5 then 6.">
+ *     <p>Figure 1: Horizontal, Left-to-Right
+ *   </div>
+ *   <div style="float:right">
+ *     <p><img SRC="doc-files/GridLayout-2.gif"
+ *        alt="Shows 6 buttons in rows of 2. Row 1 shows buttons 2 then 1.
+ *        Row 2 shows buttons 4 then 3. Row 3 shows buttons 6 then 5.">
+ *     <p>Figure 2: Horizontal, Right-to-Left
+ *   </div>
+ *   <br style="clear:both;">
+ * </div>
  * <p>
  * When both the number of rows and the number of columns have
  * been set to non-zero values, either by a constructor or
@@ -92,9 +89,11 @@ package java.awt;
  * @since   1.0
  */
 public class GridLayout implements LayoutManager, java.io.Serializable {
-    /*
-     * serialVersionUID
+
+    /**
+     * Use serialVersionUID from JDK 1.6 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = -7411804673224730901L;
 
     /**

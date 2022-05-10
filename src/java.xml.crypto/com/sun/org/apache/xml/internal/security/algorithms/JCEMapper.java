@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -38,8 +38,7 @@ public class JCEMapper {
     private static final com.sun.org.slf4j.internal.Logger LOG =
         com.sun.org.slf4j.internal.LoggerFactory.getLogger(JCEMapper.class);
 
-    private static Map<String, Algorithm> algorithmsMap =
-        new ConcurrentHashMap<String, Algorithm>();
+    private static Map<String, Algorithm> algorithmsMap = new ConcurrentHashMap<>();
 
     private static String providerName;
 
@@ -181,6 +180,10 @@ public class JCEMapper {
         algorithmsMap.put(
              XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1,
              new Algorithm("RSA", "SHA3-512withRSAandMGF1", "Signature")
+        );
+        algorithmsMap.put(
+             XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS,
+             new Algorithm("RSA", "RSASSA-PSS", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1,

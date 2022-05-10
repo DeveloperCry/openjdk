@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -28,7 +28,6 @@ package com.sun.org.apache.bcel.internal.generic;
  * @see BranchHandle
  * @see LocalVariableGen
  * @see CodeExceptionGen
- * @version $Id: InstructionTargeter.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public interface InstructionTargeter {
 

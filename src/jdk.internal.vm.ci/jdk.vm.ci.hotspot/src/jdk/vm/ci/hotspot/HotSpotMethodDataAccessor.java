@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2011, 2019, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 package jdk.vm.ci.hotspot;
 
 import jdk.vm.ci.meta.JavaMethodProfile;
@@ -14,10 +36,12 @@ abstract class HotSpotMethodDataAccessor {
 
     final int tag;
     final int staticSize;
+    final HotSpotMethodData.VMState state;
     final HotSpotVMConfig config;
 
-    protected HotSpotMethodDataAccessor(HotSpotVMConfig config, int tag, int staticSize) {
-        this.config = config;
+    protected HotSpotMethodDataAccessor(HotSpotMethodData.VMState state, int tag, int staticSize) {
+        this.state = state;
+        this.config = state.config;
         this.tag = tag;
         this.staticSize = staticSize;
     }
@@ -60,8 +84,8 @@ abstract class HotSpotMethodDataAccessor {
     }
 
     TriState getExceptionSeen(HotSpotMethodData data, int position) {
-        final int EXCEPTIONS_MASK = 1 << config.bitDataExceptionSeenFlag;
-        return TriState.get((getFlags(data, position) & EXCEPTIONS_MASK) != 0);
+        final int exceptionsMask = 1 << config.bitDataExceptionSeenFlag;
+        return TriState.get((getFlags(data, position) & exceptionsMask) != 0);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,6 +38,7 @@ public class VMStartException extends Exception {
 
     private static final long serialVersionUID = 6408644824640801020L;
 
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     Process process;
 
     public VMStartException(Process process) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -90,8 +90,8 @@ public class PublicApiCollector implements TaskListener {
 
     private void collectClassSymbols(JCCompilationUnit cu) {
         for (Tree t : cu.getTypeDecls()) {
-            if (t instanceof JCClassDecl)  // Can also be a JCSkip
-                classSymbols.add(((JCClassDecl) t).sym);
+            if (t instanceof JCClassDecl classDecl)  // Can also be a JCSkip
+                classSymbols.add(classDecl.sym);
         }
     }
 

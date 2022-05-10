@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -112,7 +112,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         throws XMLSecurityException {
 
         if (cert.getVersion() < 3) {
-            Object exArgs[] = { cert.getVersion() };
+            Object[] exArgs = { cert.getVersion() };
             throw new XMLSecurityException("certificate.noSki.lowVersion", exArgs);
         }
 
@@ -133,7 +133,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
          * OCTET STRING, and the next two bytes are the tag and length of
          * the ski OCTET STRING.
          */
-        byte skidValue[] = new byte[extensionValue.length - 4];
+        byte[] skidValue = new byte[extensionValue.length - 4];
 
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 

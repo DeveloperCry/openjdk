@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,12 +66,28 @@ import sun.util.resources.TimeZoneNamesBundle;
 public class TimeZoneNames_pt_AO extends TimeZoneNamesBundle {
     @Override
     protected final Object[][] getContents() {
-        final String[] Europe_Western = new String[] {
-               "Hora padr\u00e3o da Europa Ocidental",
+        final String[] Azores = new String[] {
+               "Hora padr\u00e3o dos A\u00e7ores",
                "\u2205\u2205\u2205",
-               "Hora de ver\u00e3o da Europa Ocidental",
+               "Hora de ver\u00e3o dos A\u00e7ores",
                "\u2205\u2205\u2205",
-               "Hora da Europa Ocidental",
+               "Hora dos A\u00e7ores",
+               "\u2205\u2205\u2205",
+            };
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+            };
+        final String[] Europe_Central = new String[] {
+               "Hora padr\u00e3o da Europa Central",
+               "\u2205\u2205\u2205",
+               "Hora de ver\u00e3o da Europa Central",
+               "\u2205\u2205\u2205",
+               "Hora da Europa Central",
                "\u2205\u2205\u2205",
             };
         final String[] Europe_Eastern = new String[] {
@@ -86,177 +98,80 @@ public class TimeZoneNames_pt_AO extends TimeZoneNamesBundle {
                "Hora da Europa Oriental",
                "\u2205\u2205\u2205",
             };
-        final String[] Azores = new String[] {
-               "Hora padr\u00e3o dos A\u00e7ores",
+        final String[] Europe_Western = new String[] {
+               "Hora padr\u00e3o da Europa Ocidental",
                "\u2205\u2205\u2205",
-               "Hora de ver\u00e3o dos A\u00e7ores",
+               "Hora de ver\u00e3o da Europa Ocidental",
                "\u2205\u2205\u2205",
-               "Hora dos A\u00e7ores",
-               "\u2205\u2205\u2205",
-            };
-        final String[] Europe_Central = new String[] {
-               "Hora padr\u00e3o da Europa Central",
-               "\u2205\u2205\u2205",
-               "Hora de ver\u00e3o da Europa Central",
-               "\u2205\u2205\u2205",
-               "Hora da Europa Central",
+               "Hora da Europa Ocidental",
                "\u2205\u2205\u2205",
             };
         final Object[][] data = new Object[][] {
             { "Europe/Paris", Europe_Central },
-            { "Africa/Casablanca", Europe_Western },
             { "Europe/Bucharest", Europe_Eastern },
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ljubljana", Europe_Central },
-            { "Asia/Nicosia", Europe_Eastern },
-            { "Europe/Kaliningrad", Europe_Eastern },
-            { "Europe/Berlin", Europe_Central },
-            { "Africa/El_Aaiun", Europe_Western },
-            { "Africa/Cairo", Europe_Eastern },
-            { "Europe/Lisbon", Europe_Western },
-            { "Europe/Oslo", Europe_Central },
+            { "UTC", EMPTY_ZONE },
+            { "ART", Europe_Eastern },
+            { "ECT", Europe_Central },
             { "Asia/Gaza", Europe_Eastern },
-            { "Europe/Chisinau", Europe_Eastern },
-            { "Atlantic/Faeroe", Europe_Western },
-            { "Europe/Stockholm", Europe_Central },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Budapest", Europe_Central },
-            { "Atlantic/Canary", Europe_Western },
-            { "Europe/Bratislava", Europe_Central },
-            { "Europe/San_Marino", Europe_Central },
-            { "Europe/Zagreb", Europe_Central },
-            { "Europe/Copenhagen", Europe_Central },
-            { "Europe/Helsinki", Europe_Eastern },
-            { "Europe/Malta", Europe_Central },
-            { "Asia/Beirut", Europe_Eastern },
-            { "Atlantic/Azores", Azores },
-            { "Europe/Brussels", Europe_Central },
-            { "Europe/Vienna", Europe_Central },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Busingen", Europe_Central },
-            { "Europe/Warsaw", Europe_Central },
-            { "Europe/Tallinn", Europe_Eastern },
-            { "Europe/Podgorica", Europe_Central },
-            { "Europe/Skopje", Europe_Central },
-            { "Asia/Damascus", Europe_Eastern },
-            { "Europe/Sarajevo", Europe_Central },
-            { "Europe/Tirane", Europe_Central },
-            { "Europe/Luxembourg", Europe_Central },
-            { "Europe/Belgrade", Europe_Central },
-            { "Arctic/Longyearbyen", Europe_Central },
-            { "Europe/Riga", Europe_Eastern },
-            { "Europe/Kiev", Europe_Eastern },
-            { "Asia/Hebron", Europe_Eastern },
-            { "Europe/Rome", Europe_Central },
-            { "Europe/Zaporozhye", Europe_Eastern },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Atlantic/Jan_Mayen", Europe_Central },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Ceuta", Europe_Central },
-            { "Africa/Algiers", Europe_Central },
-            { "Europe/Mariehamn", Europe_Eastern },
-            { "Europe/Zurich", Europe_Central },
-            { "Europe/Vilnius", Europe_Eastern },
-            { "Europe/Amsterdam", Europe_Central },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Atlantic/Madeira", Europe_Western },
-            { "Europe/Vatican", Europe_Central },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Gibraltar", Europe_Central },
             { "Asia/Amman", Europe_Eastern },
-            { "Europe/Madrid", Europe_Central },
-            { "Europe/Uzhgorod", Europe_Eastern },
+            { "Asia/Beirut", Europe_Eastern },
+            { "Asia/Hebron", Europe_Eastern },
+            { "Europe/Kiev", Europe_Eastern },
+            { "Europe/Oslo", Europe_Central },
+            { "Europe/Riga", Europe_Eastern },
+            { "Europe/Rome", Europe_Central },
+            { "Africa/Cairo", Europe_Eastern },
+            { "Africa/Ceuta", Europe_Central },
+            { "Africa/Tunis", Europe_Central },
+            { "Asia/Nicosia", Europe_Eastern },
+            { "Europe/Malta", Europe_Central },
             { "Europe/Sofia", Europe_Eastern },
             { "Europe/Vaduz", Europe_Central },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Prague", Europe_Central },
-            { "Africa/Tunis", Europe_Central },
+            { "Asia/Damascus", Europe_Eastern },
             { "Europe/Athens", Europe_Eastern },
-            { "Europe/Andorra", Europe_Central },
-            { "Africa/Tripoli", Europe_Eastern },
+            { "Europe/Berlin", Europe_Central },
+            { "Europe/Lisbon", Europe_Western },
+            { "Europe/Madrid", Europe_Central },
             { "Europe/Monaco", Europe_Central },
+            { "Europe/Prague", Europe_Central },
+            { "Europe/Skopje", Europe_Central },
+            { "Europe/Tirane", Europe_Central },
+            { "Europe/Vienna", Europe_Central },
+            { "Europe/Warsaw", Europe_Central },
+            { "Europe/Zagreb", Europe_Central },
+            { "Europe/Zurich", Europe_Central },
+            { "Africa/Algiers", Europe_Central },
+            { "Africa/Tripoli", Europe_Eastern },
+            { "Europe/Andorra", Europe_Central },
+            { "Europe/Tallinn", Europe_Eastern },
+            { "Europe/Vatican", Europe_Central },
+            { "Europe/Vilnius", Europe_Eastern },
+            { "Atlantic/Azores", Azores },
+            { "Atlantic/Canary", Europe_Western },
+            { "Atlantic/Faeroe", Europe_Western },
+            { "Europe/Belgrade", Europe_Central },
+            { "Europe/Brussels", Europe_Central },
+            { "Europe/Budapest", Europe_Central },
+            { "Europe/Busingen", Europe_Central },
+            { "Europe/Chisinau", Europe_Eastern },
+            { "Europe/Helsinki", Europe_Eastern },
+            { "Europe/Sarajevo", Europe_Central },
+            { "Europe/Uzhgorod", Europe_Eastern },
+            { "Atlantic/Madeira", Europe_Western },
+            { "Europe/Amsterdam", Europe_Central },
+            { "Europe/Gibraltar", Europe_Central },
+            { "Europe/Ljubljana", Europe_Central },
+            { "Europe/Mariehamn", Europe_Eastern },
+            { "Europe/Podgorica", Europe_Central },
+            { "Europe/Stockholm", Europe_Central },
+            { "Europe/Bratislava", Europe_Central },
+            { "Europe/Copenhagen", Europe_Central },
+            { "Europe/Luxembourg", Europe_Central },
+            { "Europe/San_Marino", Europe_Central },
+            { "Europe/Zaporozhye", Europe_Eastern },
+            { "Atlantic/Jan_Mayen", Europe_Central },
+            { "Europe/Kaliningrad", Europe_Eastern },
+            { "Arctic/Longyearbyen", Europe_Central },
         };
         return data;
     }

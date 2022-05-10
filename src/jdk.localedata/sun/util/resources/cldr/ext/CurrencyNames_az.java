@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -154,6 +150,7 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -205,6 +202,7 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
@@ -252,7 +250,7 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "brl", "Braziliya Real\u0131" },
             { "brn", "Braziliya kruzado novas\u0131" },
             { "brr", "Braziliya kruzeyrosu" },
-            { "bsd", "Bahama Dollar\u0131" },
+            { "bsd", "Baham Dollar\u0131" },
             { "btn", "Butan Nqultrumu" },
             { "buk", "Burmis Kyat\u0131" },
             { "bwp", "Botsvana Pulas\u0131" },
@@ -296,12 +294,12 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "fjd", "Fici Dollar\u0131" },
             { "fkp", "Folklend Adalar\u0131 Funtu" },
             { "frf", "Frans\u0131z Markas\u0131" },
-            { "gbp", "Britaniya Funt" },
+            { "gbp", "Britaniya Funtu" },
             { "gek", "G\u00fcrc\u00fcstan Kupon Lariti" },
             { "gel", "G\u00fcrc\u00fcstan Larisi" },
             { "ghc", "Qana Sedisi (1979\u20132007)" },
             { "ghs", "Qana Sedisi" },
-            { "gip", "Gibraltar Funtu" },
+            { "gip", "C\u0259b\u0259li-Tariq Funtu" },
             { "gmd", "Qambiya Dalasisi" },
             { "gnf", "Qvineya Frank\u0131" },
             { "gns", "Qvineya Sulisi" },
@@ -332,7 +330,7 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "jod", "\u0130ordaniya Dinar\u0131" },
             { "jpy", "Yaponiya Yeni" },
             { "kes", "Keniya \u015eillinqi" },
-            { "kgs", "K\u0131r\u011f\u0131z\u0131stan Somu" },
+            { "kgs", "Q\u0131r\u011f\u0131z\u0131stan Somu" },
             { "khr", "Kamboca Rieli" },
             { "kmf", "Komor Frank\u0131" },
             { "kpw", "\u015eimali Koreya Vonu" },
@@ -448,7 +446,8 @@ public class CurrencyNames_az extends OpenListResourceBundle {
             { "uyu", "Uruqvay Pesosu" },
             { "uzs", "\u00d6zb\u0259kistan Somu" },
             { "veb", "Venesuela Bolivar\u0131 (1871\u20132008)" },
-            { "vef", "Venesuela Bolivar\u0131" },
+            { "vef", "Venesuela Bolivar\u0131 (2008\u20132018)" },
+            { "ves", "Venesuela Bolivar\u0131" },
             { "vnd", "Vyetnam Donqu" },
             { "vnn", "Vyetnam Donqu (1978\u20131985)" },
             { "vuv", "Vanuatu Vatusu" },

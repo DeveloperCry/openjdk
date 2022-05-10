@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -78,6 +78,11 @@ import sun.awt.AppContext;
  */
 @JavaBean(description = "Minimal information that all accessible objects return")
 public abstract class AccessibleContext {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected AccessibleContext() {}
 
     /**
      * The {@code AppContext} that should be used to dispatch events for this

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -82,6 +82,11 @@ public class NTLoginModule implements LoginModule {
     private NTSidPrimaryGroupPrincipal primaryGroup;    // primary group
     private NTSidGroupPrincipal[] groups;               // supplementary groups
     private NTNumericCredential iToken;                 // impersonation token
+
+    /**
+     * Creates an {@code NTLoginModule}.
+     */
+    public NTLoginModule() {}
 
     /**
      * Initialize this {@code LoginModule}.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,7 @@ public class SAEditorPane extends JEditorPane {
    */
 
   public String getSelectedText() {
-    StringBuffer result = new StringBuffer();
+    StringBuilder result = new StringBuilder();
     Document doc = getDocument();
 
     int start = getSelectionStart();

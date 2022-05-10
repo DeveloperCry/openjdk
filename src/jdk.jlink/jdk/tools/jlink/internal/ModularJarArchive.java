@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,7 +37,6 @@ import jdk.tools.jlink.internal.Archive.Entry.EntryType;
 public class ModularJarArchive extends JarArchive {
 
     private static final String JAR_EXT = ".jar";
-    private static final String MODULE_INFO = "module-info.class";
 
     public ModularJarArchive(String mn, Path jmod, Runtime.Version version) {
         super(mn, jmod, version);

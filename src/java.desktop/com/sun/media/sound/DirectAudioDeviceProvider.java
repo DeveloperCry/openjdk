@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,7 +69,6 @@ public final class DirectAudioDeviceProvider extends MixerProvider {
         int numDevices = nGetNumDevices();
 
         if (infos == null || infos.length != numDevices) {
-            if (Printer.trace) Printer.trace("DirectAudioDeviceProvider: init()");
             // initialize the arrays
             infos = new DirectAudioDeviceInfo[numDevices];
             devices = new DirectAudioDevice[numDevices];
@@ -78,7 +77,6 @@ public final class DirectAudioDeviceProvider extends MixerProvider {
             for (int i = 0; i < infos.length; i++) {
                 infos[i] = nNewDirectAudioDeviceInfo(i);
             }
-            if (Printer.trace) Printer.trace("DirectAudioDeviceProvider: init(): found numDevices: " + numDevices);
         }
     }
 

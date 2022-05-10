@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -720,14 +720,13 @@ public interface Sequencer extends MidiDevice {
         }
 
         /**
-         * Provides this synchronization mode's name as the string
-         * representation of the mode.
+         * Returns mode's name as the string representation of the
+         * synchronization mode.
          *
-         * @return the name of this synchronization mode
+         * @return a string representation of the synchronization mode
          */
         @Override
         public final String toString() {
-
             return name;
         }
 

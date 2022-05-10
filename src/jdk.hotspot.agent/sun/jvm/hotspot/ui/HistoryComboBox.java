@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,7 +31,7 @@ import javax.swing.event.*;
 
 /** Provides an editable text field with history. */
 
-public class HistoryComboBox extends JComboBox {
+public class HistoryComboBox extends JComboBox<String> {
   static final int HISTORY_LENGTH = 15;
 
   public HistoryComboBox() {

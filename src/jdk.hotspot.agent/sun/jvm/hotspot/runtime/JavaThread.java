@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,6 +30,8 @@ import sun.jvm.hotspot.debugger.*;
 import sun.jvm.hotspot.oops.*;
 import sun.jvm.hotspot.types.*;
 import sun.jvm.hotspot.utilities.*;
+import sun.jvm.hotspot.utilities.Observable;
+import sun.jvm.hotspot.utilities.Observer;
 
 /** This is an abstract class because there are certain OS- and
     CPU-specific operations (like the setting and getting of the last
@@ -41,8 +43,7 @@ import sun.jvm.hotspot.utilities.*;
 public class JavaThread extends Thread {
   private static final boolean DEBUG = System.getProperty("sun.jvm.hotspot.runtime.JavaThread.DEBUG") != null;
 
-  private static AddressField  nextField;
-  private static sun.jvm.hotspot.types.OopField threadObjField;
+  private static long          threadObjFieldOffset;
   private static AddressField  anchorField;
   private static AddressField  lastJavaSPField;
   private static AddressField  lastJavaPCField;
@@ -51,6 +52,7 @@ public class JavaThread extends Thread {
   private static AddressField  stackBaseField;
   private static CIntegerField stackSizeField;
   private static CIntegerField terminatedField;
+  private static AddressField activeHandlesField;
 
   private static JavaThreadPDAccess access;
 
@@ -84,8 +86,8 @@ public class JavaThread extends Thread {
     Type type = db.lookupType("JavaThread");
     Type anchorType = db.lookupType("JavaFrameAnchor");
 
-    nextField         = type.getAddressField("_next");
-    threadObjField    = type.getOopField("_threadObj");
+    threadObjFieldOffset = type.getField("_threadObj").getOffset();
+
     anchorField       = type.getAddressField("_anchor");
     lastJavaSPField   = anchorType.getAddressField("_last_Java_sp");
     lastJavaPCField   = anchorType.getAddressField("_last_Java_pc");
@@ -94,6 +96,7 @@ public class JavaThread extends Thread {
     stackBaseField    = type.getAddressField("_stack_base");
     stackSizeField    = type.getCIntegerField("_stack_size");
     terminatedField   = type.getCIntegerField("_terminated");
+    activeHandlesField = type.getAddressField("_active_handles");
 
     UNINITIALIZED     = db.lookupIntConstant("_thread_uninitialized").intValue();
     NEW               = db.lookupIntConstant("_thread_new").intValue();
@@ -118,15 +121,6 @@ public class JavaThread extends Thread {
 
   void setThreadPDAccess(JavaThreadPDAccess access) {
     this.access = access;
-  }
-
-  public JavaThread next() {
-    Address threadAddr = nextField.getValue(addr);
-    if (threadAddr == null) {
-      return null;
-    }
-
-    return VM.getVM().getThreads().createJavaThreadWrapper(threadAddr);
   }
 
   /** NOTE: for convenience, this differs in definition from the underlying VM.
@@ -356,7 +350,9 @@ public class JavaThread extends Thread {
   public Oop getThreadObj() {
     Oop obj = null;
     try {
-      obj = VM.getVM().getObjectHeap().newOop(threadObjField.getValue(addr));
+      Address addr = getAddress().addOffsetTo(threadObjFieldOffset);
+      VMOopHandle vmOopHandle = VMObjectFactory.newObject(VMOopHandle.class, addr);
+      obj = vmOopHandle.resolve();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -395,14 +391,14 @@ public class JavaThread extends Thread {
     Address stackBase = getStackBase();
     // Be robust
     if (sp == null) return false;
-    return stackBase.greaterThanOrEqual(a) && sp.lessThanOrEqual(a);
+    return stackBase.greaterThan(a) && sp.lessThanOrEqual(a);
   }
 
   public boolean isLockOwned(Address a) {
     Address stackBase = getStackBase();
     Address stackLimit = stackBase.addOffsetTo(-getStackSize());
 
-    return stackBase.greaterThanOrEqual(a) && stackLimit.lessThanOrEqual(a);
+    return stackBase.greaterThan(a) && stackLimit.lessThanOrEqual(a);
 
     // FIXME: should traverse MonitorArray/MonitorChunks as in VM
   }
@@ -413,6 +409,14 @@ public class JavaThread extends Thread {
       return OopUtilities.threadOopGetParkBlocker(threadObj);
     }
     return null;
+  }
+
+  public JNIHandleBlock activeHandles() {
+    Address a = activeHandlesField.getAddress(addr);
+    if (a == null) {
+      return null;
+    }
+    return new JNIHandleBlock(a);
   }
 
   public void printInfoOn(PrintStream tty) {
@@ -473,7 +477,7 @@ public class JavaThread extends Thread {
     return fr;
   }
 
-  private Address lastSPDbg() {
+  public Address lastSPDbg() {
     return access.getLastSP(addr);
   }
 
@@ -493,7 +497,7 @@ public class JavaThread extends Thread {
     out.print(" tid=");
     out.print(this.getAddress());
     out.print(" nid=");
-    out.print(String.format("0x%x ",this.getOSThread().threadId()));
+    out.print(String.format("%d ",this.getOSThread().threadId()));
     out.print(getOSThread().getThreadState().getPrintVal());
     out.print(" [");
     if(this.getLastJavaSP() == null){

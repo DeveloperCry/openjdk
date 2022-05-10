@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -93,6 +93,7 @@ public class ServerNotifForwarder {
                 connectionId, name, getSubject());
         }
         try {
+            @SuppressWarnings("removal")
             boolean instanceOf =
             AccessController.doPrivileged(
                     new PrivilegedExceptionAction<Boolean>() {
@@ -114,15 +115,13 @@ public class ServerNotifForwarder {
 
         // 6238731: set the default domain if no domain is set.
         ObjectName nn = name;
-        if (name.getDomain() == null || name.getDomain().equals("")) {
+        if (name.getDomain() == null || name.getDomain().isEmpty()) {
             try {
                 nn = ObjectName.getInstance(mbeanServer.getDefaultDomain(),
                                             name.getKeyPropertyList());
             } catch (MalformedObjectNameException mfoe) {
                 // impossible, but...
-                IOException ioe = new IOException(mfoe.getMessage());
-                ioe.initCause(mfoe);
-                throw ioe;
+                throw new IOException(mfoe.getMessage(), mfoe);
             }
         }
 
@@ -345,6 +344,7 @@ public class ServerNotifForwarder {
     // PRIVATE METHODS
     //----------------
 
+    @SuppressWarnings("removal")
     private Subject getSubject() {
         return Subject.getSubject(AccessController.getContext());
     }
@@ -373,6 +373,7 @@ public class ServerNotifForwarder {
         checkMBeanPermission(mbeanServer,name,actions);
     }
 
+    @SuppressWarnings("removal")
     static void checkMBeanPermission(
             final MBeanServer mbs, final ObjectName name, final String actions)
             throws InstanceNotFoundException, SecurityException {
@@ -485,7 +486,7 @@ public class ServerNotifForwarder {
     private final long connectionTimeout;
 
     private static int listenerCounter = 0;
-    private final static int[] listenerCounterLock = new int[0];
+    private static final int[] listenerCounterLock = new int[0];
 
     private NotificationBuffer notifBuffer;
     private final Map<ObjectName, Set<IdAndFilter>> listenerMap =

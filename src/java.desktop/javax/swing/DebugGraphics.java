@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -770,7 +770,7 @@ public class DebugGraphics extends Graphics {
     /**
      * Overrides <code>Graphics.drawPolyline</code>.
      */
-    public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
+    public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
         DebugGraphicsInfo info = info();
 
         if (debugLog()) {
@@ -805,7 +805,7 @@ public class DebugGraphics extends Graphics {
     /**
      * Overrides <code>Graphics.drawPolygon</code>.
      */
-    public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
+    public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         DebugGraphicsInfo info = info();
 
         if (debugLog()) {
@@ -840,7 +840,7 @@ public class DebugGraphics extends Graphics {
     /**
      * Overrides <code>Graphics.fillPolygon</code>.
      */
-    public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
+    public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         DebugGraphicsInfo info = info();
 
         if (debugLog()) {
@@ -945,7 +945,7 @@ public class DebugGraphics extends Graphics {
     /**
      * Overrides <code>Graphics.drawBytes</code>.
      */
-    public void drawBytes(byte data[], int offset, int length, int x, int y) {
+    public void drawBytes(byte[] data, int offset, int length, int x, int y) {
         DebugGraphicsInfo info = info();
 
         Font font = graphics.getFont();
@@ -981,7 +981,7 @@ public class DebugGraphics extends Graphics {
     /**
      * Overrides <code>Graphics.drawChars</code>.
      */
-    public void drawChars(char data[], int offset, int length, int x, int y) {
+    public void drawChars(char[] data, int offset, int length, int x, int y) {
         DebugGraphicsInfo info = info();
 
         Font font = graphics.getFont();
@@ -1417,8 +1417,8 @@ public class DebugGraphics extends Graphics {
             Container container = (Container)component;
             int debugOptions = 0;
 
-            while (container != null && (container instanceof JComponent)) {
-                debugOptions |= info.getDebugOptions((JComponent)container);
+            while (container instanceof JComponent jc) {
+                debugOptions |= info.getDebugOptions(jc);
                 container = container.getParent();
             }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -98,6 +94,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "mwl", "\u13bb\u13b3\u13d5\u13cf" },
             { "Zsym", "\u13d7\u13ac\u13df\u13b6\u13cd\u13d9\u13d7" },
             { "Zsye", "\u13a1\u13bc\u13e5" },
+            { "ccp", "\u13e3\u13a7\u13b9" },
             { "tem", "\u13d8\u13b9\u13c1" },
             { "teo", "\u13d6\u13d0" },
             { "rap", "\u13b3\u13c6\u13c4\u13eb" },
@@ -123,7 +120,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "en_US", "\u13a0\u13b9\u13f0\u13df \u13a9\u13b5\u13cf" },
             { "AX", "\u13a3\u13b4\u13c5\u13d3 \u13da\u13a6\u13da\u13db\u13a2" },
             { "AZ", metaValue_AZ },
-            { "BA", "\u13c9\u13cf\u13c2\u13a0 & \u13b2\u13e4\u13aa\u13eb" },
+            { "BA", "\u13c9\u13cf\u13c2\u13a0 & \u13b2\u13e4\u13aa\u13eb\u13be" },
             { "BB", "\u13c6\u13c7\u13d9\u13cd" },
             { "ceb", "\u13ce\u13c6\u13c3" },
             { "BD", "\u13c6\u13c2\u13a6\u13b5\u13d5\u13cd" },
@@ -217,7 +214,6 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "FO", "\u13ea\u13b6 \u13da\u13a6\u13da\u13db\u13a2" },
             { "Taml", metaValue_ta },
             { "FR", "\u13a6\u13b8\u13e5\u13f1" },
-            { "root", "\u13a4\u13be\u13cd\u13a6\u13b8" },
             { "GA", "\u13a6\u13c9\u13c2" },
             { "GB", "\u13a9\u13b5\u13cf\u13f2" },
             { "pcm", "\u13be\u13a9\u13b5\u13a0\u13c2 \u13c8\u13e5\u13c2" },
@@ -299,6 +295,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "LB", "\u13b4\u13c6\u13be\u13c2" },
             { "LC", "\u13a4\u13d3\u13c5\u13d8 \u13b7\u13cf\u13ef" },
             { "gwi", "\u13c8\u13e5\u13c2" },
+            { "nds", "\u13a1\u13b3\u13d7 \u13a0\u13c2\u13d3\u13e5" },
             { "LI", "\u13b5\u13a6\u13d7\u13c2\u13cd\u13d3\u13c2" },
             { "LK", "\u13cd\u13b5 \u13b3\u13c2\u13a7" },
             { "LR", "\u13b3\u13c8\u13b5\u13ef" },
@@ -321,7 +318,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "MH", "\u13b9\u13cc\u13b5 \u13da\u13a6\u13da\u13db\u13a2" },
             { "ale", "\u13a0\u13b5\u13a4\u13d8" },
             { "Thai", "\u13d4\u13f1 \u13d4\u13ef\u13b4\u13c2" },
-            { "MK", "\u13b9\u13ce\u13d9\u13c2\u13ef" },
+            { "MK", "\u13e7\u13f4\u13dc \u13b9\u13ce\u13d9\u13c2\u13ef" },
             { "ML", metaValue_ML },
             { "MM", "\u13b9\u13ef\u13b9\u13b5 (\u13c7\u13b5\u13b9)" },
             { "MN", "\u13b9\u13c2\u13aa\u13b5\u13a0" },
@@ -427,7 +424,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "SV", "\u13a1\u13b5\u13cc\u13b5\u13c6\u13d9\u13b5" },
             { "SX", "\u13cf\u13c2\u13d8 \u13b9\u13d8\u13c2" },
             { "SY", "\u13cf\u13b5\u13a0" },
-            { "SZ", "\u13a0\u13c2\u13cd\u13e9\u13cf\u13a2" },
+            { "SZ", "\u13a1\u13cd\u13e9\u13d8\u13c2" },
             { "TA", "\u13df\u13cd\u13db\u13c2 \u13d3 \u13ab\u13be\u13ad" },
             { "asa", "\u13a0\u13d1" },
             { "type.ms.ussystem", "US \u13a0\u13df\u13b6\u13db \u13c4\u13cd\u13d7\u13d3\u13c5\u13a2" },
@@ -445,7 +442,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "ybb", "\u13f0\u13b9\u13cb" },
             { "TM", "\u13db\u13b5\u13a9\u13ba\u13c2\u13cd\u13d4\u13c2" },
             { "TN", "\u13da\u13c2\u13cf\u13cd\u13a0" },
-            { "TO", "\u13d4\u13c2\u13aa" },
+            { "TO", "\u13d9\u13be\u13a6" },
             { "TR", "\u13ac\u13c3" },
             { "TT", "\u13df\u13c2\u13d5\u13d7 \u13a0\u13b4 \u13d9\u13c6\u13aa" },
             { "TV", metaValue_TV },
@@ -491,7 +488,9 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "wae", "\u13e9\u13b5\u13ce\u13b5" },
             { "WS", "\u13cc\u13bc\u13a0" },
             { "wal", "\u13ec\u13b3\u13f1\u13d4" },
+            { "XA", "\u13e1\u13d9-\u13c4\u13cd\u13db\u13a2\u13a5\u13a7\u13c1\u13ac\u13a2" },
             { "war", "\u13e9\u13b4" },
+            { "XB", "\u13e1\u13d9-\u13c8\u13d7" },
             { "awa", "\u13a0\u13e9\u13d7" },
             { "061", "\u13c6\u13b5\u13c2\u13cf\u13a0" },
             { "XK", "\u13aa\u13d0\u13c9" },
@@ -587,7 +586,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "cy", "\u13ea\u13b5\u13cf" },
             { "type.nu.ethi", "\u13a2\u13d7\u13ef\u13c8\u13a9 \u13d7\u13ce\u13cd\u13d7" },
             { "da", "\u13d5\u13c2\u13cd" },
-            { "pt_PT", "\u13c9\u13e5\u13a6\u13b3 \u13c9\u13e7\u13a9\u13cd" },
+            { "pt_PT", "\u13f3\u13b3\u13c8 \u13c9\u13e7\u13a9\u13cd" },
             { "de", "\u13d9\u13a2\u13e5" },
             { "type.cf.standard", "\u13a0\u13df\u13b6\u13cd\u13d7 \u13a0\u13d5\u13b3 \u13f1\u13ac\u13c1\u13b8\u13af" },
             { "bem", "\u13c7\u13b9\u13c6" },
@@ -606,7 +605,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "eo", "\u13a1\u13cd\u13c7\u13b3\u13c2\u13d9" },
             { "es", "\u13cd\u13c6\u13c2" },
             { "et", "\u13a1\u13cd\u13d9\u13c2\u13a0\u13c2" },
-            { "Hanb", "\u13ad\u13c2-\u13c6\u13c9\u13bc\u13ec" },
+            { "Hanb", "\u13ad\u13c2 \u13be\u13bf \u13c6\u13c9\u13bc\u13ec" },
             { "eu", "\u13c6\u13cd\u13a8" },
             { "Hang", "\u13ad\u13c2\u13ab\u13b5" },
             { "shi", "\u13d4\u13e4\u13b5\u13af\u13d8" },
@@ -785,7 +784,6 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "type.nu.arab", "\u13a0\u13b3\u13c8-\u13a1\u13c2\u13d7\u13a9 \u13d7\u13ce\u13cd\u13d7" },
             { "sq", "\u13a0\u13b5\u13c7\u13c2" },
             { "sr", "\u13d2\u13c8\u13a0\u13c2" },
-            { "ListKeyTypePattern", "{0}, {1}" },
             { "ss", "\u13cd\u13e9\u13d8" },
             { "type.cf.account", "\u13a0\u13d5\u13b3 \u13d7\u13ce\u13af\u13af \u13a0\u13d5\u13b3 \u13f1\u13ac\u13c1\u13b8\u13af" },
             { "st", "\u13e7\u13a6\u13be\u13ee \u13d7\u13dc \u13d0\u13e0" },
@@ -886,6 +884,7 @@ public class LocaleNames_chr extends OpenListResourceBundle {
             { "type.nu.tamldec", "\u13d4\u13bb\u13b5 \u13d7\u13ce\u13cd\u13d7" },
             { "krc", "\u13a7\u13b3\u13e3\u13f1-\u13c6\u13b5\u13a7\u13b5" },
             { "inh", "\u13a2\u13c2\u13ab\u13cf" },
+            { "fa_AF", "\u13d3\u13b5" },
             { "krl", "\u13a7\u13b4\u13b5\u13a0\u13c2" },
             { "efi", "\u13a1\u13eb\u13a9" },
             { "key.nu", "\u13d7\u13ce\u13cd\u13d7" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -95,6 +95,7 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
         super(originator);
     }
 
+    @Override
     public void setOutput(Object output) {
         super.setOutput(output); // validates output
         if (output != null) {
@@ -106,14 +107,17 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
             this.stream = null;
     }
 
+    @Override
     public ImageWriteParam getDefaultWriteParam() {
         return new BMPImageWriteParam();
     }
 
+    @Override
     public IIOMetadata getDefaultStreamMetadata(ImageWriteParam param) {
         return null;
     }
 
+    @Override
     public IIOMetadata getDefaultImageMetadata(ImageTypeSpecifier imageType,
                                                ImageWriteParam param) {
         BMPMetadata meta = new BMPMetadata();
@@ -127,21 +131,25 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
         return meta;
     }
 
+    @Override
     public IIOMetadata convertStreamMetadata(IIOMetadata inData,
                                              ImageWriteParam param) {
         return null;
     }
 
+    @Override
     public IIOMetadata convertImageMetadata(IIOMetadata metadata,
                                             ImageTypeSpecifier type,
                                             ImageWriteParam param) {
         return null;
     }
 
+    @Override
     public boolean canWriteRasters() {
         return true;
     }
 
+    @Override
     public void write(IIOMetadata streamMetadata,
                       IIOImage image,
                       ImageWriteParam param) throws IOException {
@@ -202,10 +210,8 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
 
         IIOMetadata imageMetadata = image.getMetadata();
         BMPMetadata bmpImageMetadata = null;
-        if (imageMetadata != null
-            && imageMetadata instanceof BMPMetadata)
-        {
-            bmpImageMetadata = (BMPMetadata)imageMetadata;
+        if (imageMetadata instanceof BMPMetadata bmp) {
+            bmpImageMetadata = bmp;
         } else {
             ImageTypeSpecifier imageType =
                 new ImageTypeSpecifier(colorModel, sampleModel);
@@ -295,7 +301,7 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
 
         noTransform &= bgrOrder;
 
-        int sampleSize[] = sampleModel.getSampleSize();
+        int[] sampleSize = sampleModel.getSampleSize();
 
         //XXX: check more
 
@@ -322,7 +328,7 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
                                   + BMPCompressionTypes.getName(compressionType));
         }
 
-        byte r[] = null, g[] = null, b[] = null, a[] = null;
+        byte[] r = null, g = null, b = null, a = null;
 
         if (compressionType == BI_BITFIELDS) {
             bitsPerPixel =
@@ -752,7 +758,7 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
     }
 
     private void writePixels(int l, int scanlineBytes, int bitsPerPixel,
-                             int pixels[],
+                             int[] pixels,
                              int padding, int numBands,
                              IndexColorModel icm) throws IOException {
         int pixel = 0;
@@ -867,9 +873,9 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
                 // Case where IndexColorModel had > 256 colors.
                 int entries = icm.getMapSize();
 
-                byte r[] = new byte[entries];
-                byte g[] = new byte[entries];
-                byte b[] = new byte[entries];
+                byte[] r = new byte[entries];
+                byte[] g = new byte[entries];
+                byte[] b = new byte[entries];
 
                 icm.getReds(r);
                 icm.getGreens(g);
@@ -1316,6 +1322,7 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
         stream.writeInt(dword);
     }
 
+    @Override
     public void reset() {
         super.reset();
         stream = null;
@@ -1336,12 +1343,14 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
             }
 
             writer.addIIOWriteProgressListener(new IIOWriteProgressAdapter() {
+                    @Override
                     public void imageProgress(ImageWriter source, float percentageDone) {
                         processImageProgress(percentageDone);
                     }
                 });
 
             writer.addIIOWriteWarningListener(new IIOWriteWarningListener() {
+                    @Override
                     public void warningOccurred(ImageWriter source, int imageIndex, String warning) {
                         processWarningOccurred(imageIndex, warning);
                     }
@@ -1372,26 +1381,33 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
         return count;
     }
 
-    private class IIOWriteProgressAdapter implements IIOWriteProgressListener {
+    private static class IIOWriteProgressAdapter implements IIOWriteProgressListener {
 
+        @Override
         public void imageComplete(ImageWriter source) {
         }
 
+        @Override
         public void imageProgress(ImageWriter source, float percentageDone) {
         }
 
+        @Override
         public void imageStarted(ImageWriter source, int imageIndex) {
         }
 
+        @Override
         public void thumbnailComplete(ImageWriter source) {
         }
 
+        @Override
         public void thumbnailProgress(ImageWriter source, float percentageDone) {
         }
 
+        @Override
         public void thumbnailStarted(ImageWriter source, int imageIndex, int thumbnailIndex) {
         }
 
+        @Override
         public void writeAborted(ImageWriter source) {
         }
     }

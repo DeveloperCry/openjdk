@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2003, 2006, Oracle and/or its affiliates. All rights reserved.
- * Copyright (c) 2015, Red Hat Inc.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Red Hat Inc.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -138,7 +138,16 @@ public class AARCH64CurrentFrameGuess {
                 setValues(curSP, null, pc);
                 return true;
               }
+              Frame oldFrame = frame;
               frame = frame.sender(map);
+              if (frame.getSP().lessThanOrEqual(oldFrame.getSP())) {
+                // Frame points to itself or to a location in the wrong direction.
+                // Break the loop and move on to next offset.
+                if (DEBUG) {
+                  System.out.println("CurrentFrameGuess: frame <= oldFrame: " + frame);
+                }
+                break;
+              }
             }
           } catch (Exception e) {
             if (DEBUG) {
@@ -223,7 +232,13 @@ public class AARCH64CurrentFrameGuess {
         }
       }
 
-      setValues(sp, fp, null);
+      // We found a PC in the frame anchor. Check that it's plausible, and
+      // if it is, use it.
+      if (vm.isJavaPCDbg(pc)) {
+        setValues(sp, fp, pc);
+      } else {
+        setValues(sp, fp, null);
+      }
 
       return true;
     }

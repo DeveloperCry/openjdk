@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,16 +27,24 @@ package javax.swing.tree;
    // ISSUE: this class depends on nothing in AWT -- move to java.util?
 
 import java.beans.Transient;
-import java.io.*;
-import java.util.*;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+import java.util.Vector;
 
 /**
  * A <code>DefaultMutableTreeNode</code> is a general-purpose node in a tree data
  * structure.
  * For examples of using default mutable tree nodes, see
  * <a
- href="http://docs.oracle.com/javase/tutorial/uiswing/components/tree.html">How to Use Trees</a>
+ href="https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html">How to Use Trees</a>
  * in <em>The Java Tutorial.</em>
  *
  * <p>
@@ -77,7 +85,7 @@ import java.util.*;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -89,6 +97,10 @@ import java.util.*;
 public class DefaultMutableTreeNode implements Cloneable,
        MutableTreeNode, Serializable
 {
+    /**
+     * Use serialVersionUID from JDK 1.7 for interoperability.
+     */
+    @Serial
     private static final long serialVersionUID = -4298474751201349152L;
 
     /**
@@ -1280,12 +1292,13 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
     // Serialization support.
+    @Serial
     private void writeObject(ObjectOutputStream s) throws IOException {
         Object[]             tValues;
 
         s.defaultWriteObject();
-        // Save the userObject, if its Serializable.
-        if(userObject != null && userObject instanceof Serializable) {
+        // Save the userObject, if it's Serializable.
+        if (userObject instanceof Serializable) {
             tValues = new Object[2];
             tValues[0] = "userObject";
             tValues[1] = userObject;
@@ -1295,6 +1308,7 @@ public class DefaultMutableTreeNode implements Cloneable,
         s.writeObject(tValues);
     }
 
+    @Serial
     private void readObject(ObjectInputStream s)
         throws IOException, ClassNotFoundException {
 
@@ -1316,7 +1330,7 @@ public class DefaultMutableTreeNode implements Cloneable,
             userObject = tValues[1];
     }
 
-    private final class PreorderEnumeration implements Enumeration<TreeNode> {
+    private static final class PreorderEnumeration implements Enumeration<TreeNode> {
         private final Stack<Enumeration<? extends TreeNode>> stack = new Stack<>();
 
         public PreorderEnumeration(TreeNode rootNode) {
@@ -1348,7 +1362,7 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
 
-    final class PostorderEnumeration implements Enumeration<TreeNode> {
+    static final class PostorderEnumeration implements Enumeration<TreeNode> {
         protected TreeNode root;
         protected Enumeration<? extends TreeNode> children;
         protected Enumeration<TreeNode> subtree;
@@ -1384,7 +1398,7 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
 
-    final class BreadthFirstEnumeration implements Enumeration<TreeNode> {
+    static final class BreadthFirstEnumeration implements Enumeration<TreeNode> {
         protected Queue queue;
 
         public BreadthFirstEnumeration(TreeNode rootNode) {
@@ -1416,11 +1430,11 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
         // A simple queue with a linked list data structure.
-        final class Queue {
+        static final class Queue {
             QNode head; // null if empty
             QNode tail;
 
-            final class QNode {
+            static final class QNode {
                 public Object   object;
                 public QNode    next;   // null if end
                 public QNode(Object object, QNode next) {
@@ -1472,7 +1486,7 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
 
-    final class PathBetweenNodesEnumeration implements Enumeration<TreeNode> {
+    static final class PathBetweenNodesEnumeration implements Enumeration<TreeNode> {
         protected Stack<TreeNode> stack;
 
         public PathBetweenNodesEnumeration(TreeNode ancestor,

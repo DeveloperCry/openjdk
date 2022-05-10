@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -59,6 +59,7 @@ public class TabularType extends OpenType<TabularData> {
      * @serial The items used to index each row element, kept in the order the user gave
      *         This is an unmodifiable {@link ArrayList}
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private List<String> indexNames;
 
 
@@ -165,7 +166,7 @@ public class TabularType extends OpenType<TabularData> {
      */
     private static void checkForEmptyString(String[] arg, String argName) {
         for (int i=0; i<arg.length; i++) {
-            if (arg[i].trim().equals("")) {
+            if (arg[i].trim().isEmpty()) {
                 throw new IllegalArgumentException("Argument's element "+ argName +"["+ i +"] cannot be an empty string.");
             }
         }

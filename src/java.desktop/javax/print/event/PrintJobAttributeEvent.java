@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package javax.print.event;
 
+import java.io.Serial;
+
 import javax.print.DocPrintJob;
 import javax.print.attribute.AttributeSetUtilities;
 import javax.print.attribute.PrintJobAttributeSet;
@@ -39,11 +41,13 @@ public class PrintJobAttributeEvent extends PrintEvent {
     /**
      * Use serialVersionUID from JDK 1.4 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = -6534469883874742101L;
 
     /**
      * The printing service attributes that changed.
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private PrintJobAttributeSet attributes;
 
     /**

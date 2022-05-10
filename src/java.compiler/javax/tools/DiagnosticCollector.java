@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,11 @@ import java.util.Objects;
 public final class DiagnosticCollector<S> implements DiagnosticListener<S> {
     private List<Diagnostic<? extends S>> diagnostics =
             Collections.synchronizedList(new ArrayList<Diagnostic<? extends S>>());
+
+    /**
+     * Creates a new instance of DiagnosticCollector.
+     */
+    public DiagnosticCollector() {}
 
     public void report(Diagnostic<? extends S> diagnostic) {
         Objects.requireNonNull(diagnostic);

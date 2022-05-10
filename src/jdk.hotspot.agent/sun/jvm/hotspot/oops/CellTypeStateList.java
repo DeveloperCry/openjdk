@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,7 @@ import java.util.*;
 /** Auxiliary class for GenerateOopMap */
 public class CellTypeStateList {
   public CellTypeStateList(int size) {
-    list = new ArrayList(size);
+    list = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
       list.add(i, CellTypeState.makeBottom());
     }
@@ -40,7 +40,7 @@ public class CellTypeStateList {
   }
 
   public CellTypeState get(int i) {
-    return (CellTypeState) list.get(i);
+    return list.get(i);
   }
 
   public CellTypeStateList subList(int fromIndex, int toIndex) {
@@ -48,8 +48,8 @@ public class CellTypeStateList {
   }
 
   //----------------------------------------------------------------------
-  private List list;
-  private CellTypeStateList(List list) {
+  private List<CellTypeState> list;
+  private CellTypeStateList(List<CellTypeState> list) {
     this.list = list;
   }
 }

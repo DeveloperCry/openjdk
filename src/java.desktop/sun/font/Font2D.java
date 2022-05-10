@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,8 +30,10 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Locale;
+import java.util.Set;
 
 public abstract class Font2D {
 
@@ -105,7 +107,22 @@ public abstract class Font2D {
      * This pre-supposes that a FontStrike is a shareable object, which
      * it should.
      */
-    protected Reference<FontStrike> lastFontStrike = new SoftReference<>(null);
+    protected Reference<FontStrike> lastFontStrike = new WeakReference<>(null);
+
+    /*
+     * if useWeak is true, proactively clear the cache after this
+     * many strikes are present. 0 means leave it alone.
+     */
+    private int strikeCacheMax = 0;
+    /*
+     * Whether to use weak refs for this font, even if soft refs is the default.
+     */
+    private boolean useWeak;
+
+    void setUseWeakRefs(boolean weak, int maxStrikes) {
+        this.useWeak = weak;
+        this.strikeCacheMax = weak && maxStrikes > 0 ? maxStrikes : 0;
+    }
 
     /*
      * POSSIBLE OPTIMISATION:
@@ -136,21 +153,21 @@ public abstract class Font2D {
         String fName = fullName.toLowerCase();
 
         for (int i=0; i < boldItalicNames.length; i++) {
-            if (fName.indexOf(boldItalicNames[i]) != -1) {
+            if (fName.contains(boldItalicNames[i])) {
                 style = Font.BOLD|Font.ITALIC;
                 return;
             }
         }
 
         for (int i=0; i < italicNames.length; i++) {
-            if (fName.indexOf(italicNames[i]) != -1) {
+            if (fName.contains(italicNames[i])) {
                 style = Font.ITALIC;
                 return;
             }
         }
 
         for (int i=0; i < boldNames.length; i++) {
-            if (fName.indexOf(boldNames[i]) != -1 ) {
+            if (fName.contains(boldNames[i])) {
                 style = Font.BOLD;
                 return;
             }
@@ -304,6 +321,15 @@ public abstract class Font2D {
         return getStrike(desc, false);
     }
 
+    void updateLastStrikeRef(FontStrike strike) {
+        lastFontStrike.clear();
+        if (useWeak) {
+            lastFontStrike = new WeakReference<>(strike);
+        } else {
+            lastFontStrike = new SoftReference<>(strike);
+        }
+    }
+
     FontStrike getStrike(FontStrikeDesc desc) {
         return getStrike(desc, true);
     }
@@ -324,15 +350,13 @@ public abstract class Font2D {
          */
         FontStrike strike = lastFontStrike.get();
         if (strike != null && desc.equals(strike.desc)) {
-            //strike.lastlookupTime = System.currentTimeMillis();
             return strike;
         } else {
             Reference<FontStrike> strikeRef = strikeCache.get(desc);
             if (strikeRef != null) {
                 strike = strikeRef.get();
                 if (strike != null) {
-                    //strike.lastlookupTime = System.currentTimeMillis();
-                    lastFontStrike = new SoftReference<>(strike);
+                    updateLastStrikeRef(strike);
                     StrikeCache.refStrike(strike);
                     return strike;
                 }
@@ -366,28 +390,18 @@ public abstract class Font2D {
              * which is what we want for what is likely a transient strike.
              */
             int txType = desc.glyphTx.getType();
-            if (txType == AffineTransform.TYPE_GENERAL_TRANSFORM ||
+            if (useWeak ||
+                txType == AffineTransform.TYPE_GENERAL_TRANSFORM ||
                 (txType & AffineTransform.TYPE_GENERAL_ROTATION) != 0 &&
                 strikeCache.size() > 10) {
                 strikeRef = StrikeCache.getStrikeRef(strike, true);
             } else {
-                strikeRef = StrikeCache.getStrikeRef(strike);
+                strikeRef = StrikeCache.getStrikeRef(strike, useWeak);
             }
             strikeCache.put(desc, strikeRef);
-            //strike.lastlookupTime = System.currentTimeMillis();
-            lastFontStrike = new SoftReference<>(strike);
+            updateLastStrikeRef(strike);
             StrikeCache.refStrike(strike);
             return strike;
-        }
-    }
-
-    void removeFromCache(FontStrikeDesc desc) {
-        Reference<FontStrike> ref = strikeCache.get(desc);
-        if (ref != null) {
-            Object o = ref.get();
-            if (o == null) {
-                strikeCache.remove(desc);
-            }
         }
     }
 
@@ -405,7 +419,7 @@ public abstract class Font2D {
      */
     public void getFontMetrics(Font font, AffineTransform at,
                                Object aaHint, Object fmHint,
-                               float metrics[]) {
+                               float[] metrics) {
         /* This is called in just one place in Font with "at" == identity.
          * Perhaps this can be eliminated.
          */
@@ -449,7 +463,7 @@ public abstract class Font2D {
      *    metrics[3]: max advance
      */
     public void getFontMetrics(Font font, FontRenderContext frc,
-                               float metrics[]) {
+                               float[] metrics) {
         StrikeMetrics strikeMetrics = getStrike(font, frc).getFontMetrics();
         metrics[0] = strikeMetrics.getAscent();
         metrics[1] = strikeMetrics.getDescent();
@@ -463,13 +477,6 @@ public abstract class Font2D {
      */
     protected byte[] getTableBytes(int tag) {
         return null;
-    }
-
-    /* implemented for fonts backed by an sfnt that has
-     * OpenType or AAT layout tables.
-     */
-    protected long getLayoutTableCache() {
-        return 0L;
     }
 
     /* Used only on OS X.

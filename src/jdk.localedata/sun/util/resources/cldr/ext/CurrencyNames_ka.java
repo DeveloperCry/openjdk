@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -161,6 +157,7 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -197,6 +194,7 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -212,6 +210,7 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -372,7 +371,7 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "nad", "\u10dc\u10d0\u10db\u10d8\u10d1\u10d8\u10e3\u10e0\u10d8 \u10d3\u10dd\u10da\u10d0\u10e0\u10d8" },
             { "ngn", "\u10dc\u10d8\u10d2\u10d4\u10e0\u10d8\u10e3\u10da\u10d8 \u10dc\u10d0\u10d8\u10e0\u10d0" },
             { "nic", "\u10dc\u10d8\u10d9\u10d0\u10e0\u10d0\u10d2\u10e3\u10d0\u10e1 \u10d9\u10dd\u10e0\u10d3\u10dd\u10d1\u10d0" },
-            { "nio", "\u10dc\u10d8\u10d9\u10d0\u10e0\u10d0\u10d2\u10e3\u10e3\u10da\u10d8 \u10d9\u10dd\u10e0\u10d3\u10dd\u10d1\u10d0" },
+            { "nio", "\u10dc\u10d8\u10d9\u10d0\u10e0\u10d0\u10d2\u10e3\u10d0\u10e1 \u10dd\u10e5\u10e0\u10dd\u10e1 \u10d9\u10dd\u10e0\u10d3\u10dd\u10d1\u10d0" },
             { "nlg", "\u10f0\u10dd\u10da\u10d0\u10dc\u10d3\u10d8\u10e3\u10e0\u10d8 \u10d2\u10e3\u10da\u10d3\u10d4\u10dc\u10d8" },
             { "nok", "\u10dc\u10dd\u10e0\u10d5\u10d4\u10d2\u10d8\u10e3\u10da\u10d8 \u10d9\u10e0\u10dd\u10dc\u10d0" },
             { "npr", "\u10dc\u10d4\u10de\u10d0\u10da\u10e3\u10e0\u10d8 \u10e0\u10e3\u10de\u10d8\u10d0" },
@@ -439,7 +438,8 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "uyu", "\u10e3\u10e0\u10e3\u10d2\u10d5\u10d0\u10d8\u10e1 \u10de\u10d4\u10e1\u10dd" },
             { "uzs", "\u10e3\u10d6\u10d1\u10d4\u10d9\u10e3\u10e0\u10d8 \u10e1\u10e3\u10db\u10d8" },
             { "veb", "\u10d5\u10d4\u10dc\u10d4\u10e1\u10e3\u10d4\u10da\u10d8\u10e1 \u10d1\u10dd\u10da\u10d8\u10d5\u10d0\u10e0\u10d8 (1871\u20132008)" },
-            { "vef", "\u10d5\u10d4\u10dc\u10d4\u10e1\u10e3\u10d4\u10da\u10d8\u10e1 \u10d1\u10dd\u10da\u10d8\u10d5\u10d0\u10e0\u10d8" },
+            { "vef", "\u10d5\u10d4\u10dc\u10d4\u10e1\u10e3\u10d4\u10da\u10d8\u10e1 \u10d1\u10dd\u10da\u10d8\u10d5\u10d0\u10e0\u10d8 (2008\u20132018)" },
+            { "ves", "\u10d5\u10d4\u10dc\u10d4\u10e1\u10e3\u10d4\u10da\u10d8\u10e1 \u10d1\u10dd\u10da\u10d8\u10d5\u10d0\u10e0\u10d8" },
             { "vnd", "\u10d5\u10d8\u10d4\u10e2\u10dc\u10d0\u10db\u10e3\u10e0\u10d8 \u10d3\u10dd\u10dc\u10d2\u10d8" },
             { "vuv", "\u10d5\u10d0\u10dc\u10e3\u10d0\u10e2\u10e3\u10e1 \u10d5\u10d0\u10e2\u10e3" },
             { "wst", "\u10e1\u10d0\u10db\u10dd\u10e3\u10e0\u10d8 \u10e2\u10d0\u10da\u10d0" },
@@ -450,7 +450,7 @@ public class CurrencyNames_ka extends OpenListResourceBundle {
             { "xcd", "\u10d0\u10e6\u10db\u10dd\u10e1\u10d0\u10d5\u10da\u10d4\u10d7 \u10d9\u10d0\u10e0\u10d8\u10d1\u10d8\u10e3\u10da\u10d8 \u10d3\u10dd\u10da\u10d0\u10e0\u10d8" },
             { "xeu", "\u10d4\u10d5\u10e0\u10dd\u10de\u10e3\u10da\u10d8 \u10e1\u10d0\u10d5\u10d0\u10da\u10e3\u10e2\u10dd \u10d4\u10e0\u10d7\u10d4\u10e3\u10da\u10d8" },
             { "xfo", "\u10e4\u10e0\u10d0\u10dc\u10d2\u10e3\u10da\u10d8 \u10dd\u10e5\u10e0\u10dd\u10e1 \u10e4\u10e0\u10d0\u10dc\u10d9\u10d8" },
-            { "xof", "(CFA) \u10e4\u10e0\u10d0\u10dc\u10d9\u10d8 (BCEAO)" },
+            { "xof", "\u10d3\u10d0\u10e1\u10d0\u10d5\u10da\u10d4\u10d7 \u10d0\u10e4\u10e0\u10d8\u10d9\u10e3\u10da\u10d8 CFA \u10e4\u10e0\u10d0\u10dc\u10d9\u10d8" },
             { "xpf", "CFP \u10e4\u10e0\u10d0\u10dc\u10d9\u10d8" },
             { "xxx", "\u10e3\u10ea\u10dc\u10dd\u10d1\u10d8 \u10d5\u10d0\u10da\u10e3\u10e2\u10d0" },
             { "ydd", "\u10d8\u10d4\u10db\u10d4\u10dc\u10d8\u10e1 \u10d3\u10d8\u10dc\u10d0\u10e0\u10d8" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -59,7 +59,7 @@ public class StorageResolverException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public StorageResolverException(String msgID, Object exArgs[]) {
+    public StorageResolverException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -85,7 +85,7 @@ public class StorageResolverException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public StorageResolverException(Exception originalException, String msgID, Object exArgs[]) {
+    public StorageResolverException(Exception originalException, String msgID, Object[] exArgs) {
         super(originalException, msgID, exArgs);
     }
 

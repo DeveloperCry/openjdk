@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,8 +48,7 @@ public final class SoftMainMixer {
 
     // A private class thats contains a ModelChannelMixer and it's private buffers.
     // This becomes necessary when we want to have separate delay buffers for each channel mixer.
-    private class SoftChannelMixerContainer
-    {
+    private static class SoftChannelMixerContainer {
         ModelChannelMixer mixer;
         SoftAudioBuffer[] buffers;
     }
@@ -631,8 +630,8 @@ public final class SoftMainMixer {
                 if (!hasactivevoices) {
                     synchronized (control_mutex) {
                         if (stoppedMixers != null) {
-                            if (stoppedMixers.contains(cmixer)) {
-                                stoppedMixers.remove(cmixer);
+                            if (stoppedMixers.contains(cmixer.mixer)) {
+                                stoppedMixers.remove(cmixer.mixer);
                                 cmixer.mixer.stop();
                             }
                         }

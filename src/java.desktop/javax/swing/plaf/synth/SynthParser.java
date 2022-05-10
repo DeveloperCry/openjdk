@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1024,10 +1024,7 @@ class SynthParser extends DefaultHandler {
                                                        painter,
                                                        direction);
 
-        for (Object infoObject: painters) {
-            ParsedSynthStyle.PainterInfo info;
-            info = (ParsedSynthStyle.PainterInfo) infoObject;
-
+        for (ParsedSynthStyle.PainterInfo info: painters) {
             if (painterInfo.equalsPainter(info)) {
                 info.addPainter(painter);
                 return;
@@ -1245,14 +1242,14 @@ class SynthParser extends DefaultHandler {
         }
     }
 
-    public void characters(char ch[], int start, int length)
+    public void characters(char[] ch, int start, int length)
                            throws SAXException {
         if (isForwarding()) {
             getHandler().characters(ch, start, length);
         }
     }
 
-    public void ignorableWhitespace (char ch[], int start, int length)
+    public void ignorableWhitespace (char[] ch, int start, int length)
         throws SAXException {
         if (isForwarding()) {
             getHandler().ignorableWhitespace(ch, start, length);

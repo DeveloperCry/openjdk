@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,10 +50,12 @@ public class Main {
     }
 
     public static class JmodToolProvider implements ToolProvider {
+        @Override
         public String name() {
             return "jmod";
         }
 
+        @Override
         public int run(PrintWriter out, PrintWriter err, String... args) {
             return Main.run(out, err, args);
         }

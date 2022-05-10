@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -182,7 +182,7 @@ final class LdapReferralContext implements DirContext, LdapContext {
         if (urlString == null) {
             urlName = null;
         } else {
-            urlName = urlString.equals("") ? new CompositeName() :
+            urlName = urlString.isEmpty() ? new CompositeName() :
                 new CompositeName().add(urlString);
         }
     }
@@ -198,8 +198,8 @@ final class LdapReferralContext implements DirContext, LdapContext {
 
     void setHopCount(int hopCount) {
         this.hopCount = hopCount;
-        if ((refCtx != null) && (refCtx instanceof LdapCtx)) {
-            ((LdapCtx)refCtx).setHopCount(hopCount);
+        if (refCtx instanceof LdapCtx ldapCtx) {
+            ldapCtx.setHopCount(hopCount);
         }
     }
 
@@ -888,7 +888,7 @@ final class LdapReferralContext implements DirContext, LdapContext {
 
     // ---------------------- Private methods  ---------------------
     private Name toName(String name) throws InvalidNameException {
-        return name.equals("") ? new CompositeName() :
+        return name.isEmpty() ? new CompositeName() :
             new CompositeName().add(name);
     }
 

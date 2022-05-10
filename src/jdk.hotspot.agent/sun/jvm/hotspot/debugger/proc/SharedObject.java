@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,10 @@ class SharedObject extends DSO {
 
   protected long getAddressValue(Address addr) {
     return dbg.getAddressValue(addr);
+  }
+
+  public ClosestSymbol closestSymbolToPC(Address pcAsAddr) throws DebuggerException {
+    return dbg.lookup(dbg.getAddressValue(pcAsAddr));
   }
 
   private ProcDebugger   dbg;

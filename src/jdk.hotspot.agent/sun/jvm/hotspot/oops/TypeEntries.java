@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,17 +48,17 @@ public abstract class TypeEntries<K,M> {
   final MethodDataInterface<K,M> methodData;
 
   boolean wasNullSeen(int index) {
-    int v = pd.intptrAt(index);
+    long v = pd.intptrAt(index);
     return (v & nullSeen) != 0;
   }
 
   boolean isTypeUnknown(int index) {
-    int v = pd.intptrAt(index);
+    long v = pd.intptrAt(index);
     return (v & typeUnknown) != 0;
   }
 
   boolean isTypeNone(int index) {
-    int v = pd.intptrAt(index);
+    long v = pd.intptrAt(index);
     return (v & typeMask) == 0;
   }
 

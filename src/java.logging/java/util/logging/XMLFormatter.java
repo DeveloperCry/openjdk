@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -219,7 +219,7 @@ public class XMLFormatter extends Formatter {
         }
 
         sb.append("  <thread>");
-        sb.append(record.getThreadID());
+        sb.append(record.getLongThreadID());
         sb.append("</thread>\n");
 
         if (record.getMessage() != null) {

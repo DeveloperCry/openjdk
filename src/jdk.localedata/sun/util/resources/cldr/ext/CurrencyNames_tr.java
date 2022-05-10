@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -197,6 +193,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "LBP", "LBP" },
             { "LKR", "LKR" },
             { "LRD", "LRD" },
+            { "LSL", "LSL" },
             { "LTL", "LTL" },
             { "LTT", "LTT" },
             { "LUC", "LUC" },
@@ -216,6 +213,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MTL", "MTL" },
             { "MTP", "MTP" },
             { "MUR", "MUR" },
@@ -295,6 +293,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "UZS", "UZS" },
             { "VEB", "VEB" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VNN", "VNN" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -313,6 +312,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "YUN", "YUN" },
             { "YUR", "YUR" },
             { "ZAR", "ZAR" },
+            { "ZMK", "ZMK" },
             { "ZMW", "ZMW" },
             { "ZWR", "ZWR" },
             { "adp", "Andorra Pezetas\u0131" },
@@ -365,7 +365,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "brr", "Brezilya Kruzeirosu" },
             { "brz", "Brezilya Kruzeirosu (1942\u20131967)" },
             { "bsd", "Bahama Dolar\u0131" },
-            { "btn", "Bhutan Ngultrumu" },
+            { "btn", "Butan Ngultrumu" },
             { "buk", "Burma Kyat\u0131" },
             { "bwp", "Botsvana Pulas\u0131" },
             { "byb", "Yeni Beyaz Rusya Rublesi (1994\u20131999)" },
@@ -392,7 +392,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "cup", "K\u00fcba Pesosu" },
             { "cve", "Cape Verde Esk\u00fcdosu" },
             { "cyp", "G\u00fcney K\u0131br\u0131s Liras\u0131" },
-            { "czk", "\u00c7ek Cumhuriyeti Korunas\u0131" },
+            { "czk", "\u00c7ek Korunas\u0131" },
             { "ddm", "Do\u011fu Alman Mark\u0131" },
             { "dem", "Alman Mark\u0131" },
             { "djf", "Cibuti Frang\u0131" },
@@ -434,7 +434,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "hrk", "H\u0131rvatistan Kunas\u0131" },
             { "htg", "Haiti Gurdu" },
             { "huf", "Macar Forinti" },
-            { "idr", "Endonezya Rupiah\u0131" },
+            { "idr", "Endonezya Rupisi" },
             { "iep", "\u0130rlanda Liras\u0131" },
             { "ilp", "\u0130srail Liras\u0131" },
             { "ilr", "\u0130srail \u015eekeli (1980\u20131985)" },
@@ -485,8 +485,8 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "mmk", "Myanmar Kyat\u0131" },
             { "mnt", "Mo\u011folistan Tugriki" },
             { "mop", "Makao Patakas\u0131" },
-            { "mro", "Moritanya Ouguiyas\u0131 (1973\u20132017)" },
-            { "mru", "Moritanya Ouguiyas\u0131" },
+            { "mro", "Moritanya Ugiyas\u0131 (1973\u20132017)" },
+            { "mru", "Moritanya Ugiyas\u0131" },
             { "mtl", "Malta Liras\u0131" },
             { "mtp", "Malta Sterlini" },
             { "mur", "Mauritius Rupisi" },
@@ -545,7 +545,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "srg", "Surinam Guldeni" },
             { "ssp", "G\u00fcney Sudan Liras\u0131" },
             { "std", "S\u00e3o Tom\u00e9 ve Pr\u00edncipe Dobras\u0131 (1977\u20132017)" },
-            { "stn", "S\u00e3o Tom\u00e9 ve Pr\u00edncipe Dobras\u0131" },
+            { "stn", "Sao Tome ve Principe Dobras\u0131" },
             { "sur", "Sovyet Rublesi" },
             { "svc", "El Salvador Kolonu" },
             { "syp", "Suriye Liras\u0131" },
@@ -575,12 +575,13 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "uyu", "Uruguay Pesosu" },
             { "uzs", "\u00d6zbekistan Somu" },
             { "veb", "Venezuela Bolivar\u0131 (1871\u20132008)" },
-            { "vef", "Venezuela Bolivar\u0131" },
+            { "vef", "Venezuela Bolivar\u0131 (2008\u20132018)" },
+            { "ves", "Venezuela Bolivar\u0131" },
             { "vnd", "Vietnam Dongu" },
             { "vnn", "Vietnam Dongu (1978\u20131985)" },
             { "vuv", "Vanuatu Vatusu" },
             { "wst", "Samoa Talas\u0131" },
-            { "xaf", "CFA Frang\u0131 BEAC" },
+            { "xaf", "Orta Afrika CFA Frang\u0131" },
             { "xag", "G\u00fcm\u00fc\u015f" },
             { "xau", "Alt\u0131n" },
             { "xba", "Birle\u015fik Avrupa Birimi" },
@@ -592,7 +593,7 @@ public class CurrencyNames_tr extends OpenListResourceBundle {
             { "xeu", "Avrupa Para Birimi" },
             { "xfo", "Frans\u0131z Alt\u0131n Frang\u0131" },
             { "xfu", "Frans\u0131z UIC-Frang\u0131" },
-            { "xof", "CFA Frang\u0131 BCEAO" },
+            { "xof", "Bat\u0131 Afrika CFA Frang\u0131" },
             { "xpd", "Paladyum" },
             { "xpf", "CFP Frang\u0131" },
             { "xpt", "Platin" },

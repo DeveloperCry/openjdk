@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -85,7 +85,7 @@ public abstract class LdapReferralException extends ReferralException {
      * See {@code ReferralException} for how to use this method.
      *
      * @return The non-null context at which to continue the method.
-     * @exception NamingException If a naming exception was encountered.
+     * @throws NamingException If a naming exception was encountered.
      * Call either {@code retryReferral()} or {@code skipReferral()}
      * to continue processing referrals.
      */
@@ -109,7 +109,7 @@ public abstract class LdapReferralException extends ReferralException {
      *          referral context. If null, no environment properties will be used.
      *
      * @return The non-null context at which to continue the method.
-     * @exception NamingException If a naming exception was encountered.
+     * @throws NamingException If a naming exception was encountered.
      * Call either {@code retryReferral()} or {@code skipReferral()}
      * to continue processing referrals.
      */
@@ -149,7 +149,7 @@ public abstract class LdapReferralException extends ReferralException {
      * for the new context. If null, the context is initialized with no environment
      * properties.
      * @return The non-null context at which to continue the method.
-     * @exception NamingException If a naming exception was encountered.
+     * @throws NamingException If a naming exception was encountered.
      * Call either {@code retryReferral()} or {@code skipReferral()}
      * to continue processing referrals.
      */

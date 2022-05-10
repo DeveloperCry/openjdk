@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,7 @@ import com.sun.tools.sjavac.pubapi.PubApi;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
+@SuppressWarnings("serial") // Types of instance fields are not Serializable
 public class CompilationSubResult implements Serializable {
 
     static final long serialVersionUID = 46739181113L;

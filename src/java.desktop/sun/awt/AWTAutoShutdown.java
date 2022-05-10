@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -333,6 +333,7 @@ public final class AWTAutoShutdown implements Runnable {
      * Creates and starts a new blocker thread. Doesn't return until
      * the new blocker thread starts.
      */
+    @SuppressWarnings("removal")
     private void activateBlockerThread() {
         AccessController.doPrivileged((PrivilegedAction<Thread>) () -> {
             String name = "AWT-Shutdown";

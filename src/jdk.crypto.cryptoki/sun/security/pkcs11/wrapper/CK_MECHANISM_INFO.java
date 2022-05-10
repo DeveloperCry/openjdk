@@ -1,5 +1,29 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+/*
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /* Copyright  (c) 2002 Graz University of Technology. All rights reserved.
@@ -47,7 +71,7 @@
 
 package sun.security.pkcs11.wrapper;
 
-
+import java.security.ProviderException;
 
 /**
  * class CK_MECHANISM_INFO provides information about a particular mechanism.
@@ -74,6 +98,10 @@ public class CK_MECHANISM_INFO {
      */
     public long ulMinKeySize;
 
+    // the integer version of ulMinKeySize for doing the actual range
+    // check in SunPKCS11 provider, defaults to 0
+    public final int iMinKeySize;
+
     /**
      * <B>PKCS#11:</B>
      * <PRE>
@@ -81,6 +109,10 @@ public class CK_MECHANISM_INFO {
      * </PRE>
      */
     public long ulMaxKeySize;
+
+    // the integer version of ulMaxKeySize for doing the actual range
+    // check in SunPKCS11 provider, defaults to Integer.MAX_VALUE
+    public final int iMaxKeySize;
 
     /**
      * <B>PKCS#11:</B>
@@ -94,6 +126,10 @@ public class CK_MECHANISM_INFO {
                              long flags) {
         this.ulMinKeySize = minKeySize;
         this.ulMaxKeySize = maxKeySize;
+        this.iMinKeySize = ((minKeySize < Integer.MAX_VALUE && minKeySize > 0)?
+                (int)minKeySize : 0);
+        this.iMaxKeySize = ((maxKeySize < Integer.MAX_VALUE && maxKeySize > 0)?
+                (int)maxKeySize : Integer.MAX_VALUE);
         this.flags = flags;
     }
 

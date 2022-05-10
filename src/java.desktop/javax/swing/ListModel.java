@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,7 +31,7 @@ import javax.swing.event.ListDataListener;
  * This interface defines the methods components like JList use
  * to get the value of each cell in a list and the length of the list.
  * Logically the model is a vector, indices vary from 0 to
- * ListDataModel.getSize() - 1.  Any change to the contents or
+ * ListModel.getSize() - 1.  Any change to the contents or
  * length of the data model must be reported to all of the
  * ListDataListeners.
  *

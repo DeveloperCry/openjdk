@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -46,7 +46,7 @@ public class AnnotationElementValueGen extends ElementValueGen
     {
         super(type, cpool);
         if (type != ANNOTATION) {
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "Only element values of type annotation can be built with this ctor - type specified: " + type);
         }
         this.a = annotation;
@@ -69,7 +69,7 @@ public class AnnotationElementValueGen extends ElementValueGen
     @Override
     public String stringifyValue()
     {
-        throw new RuntimeException("Not implemented yet");
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     /**

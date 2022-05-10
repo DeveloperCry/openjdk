@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -116,8 +116,8 @@ public class HotSpotTypeDataBase extends BasicTypeDataBase {
 
         BasicType basicTargetType = createBasicType(cTypeName, false, false, false);
 
-        // transfer fields from GenericGrowableArray to template instance
-        BasicType generic = lookupOrFail("GenericGrowableArray");
+        // transfer fields from GrowableArrayBase to template instance
+        BasicType generic = lookupOrFail("GrowableArrayBase");
         BasicType specific = lookupOrFail("GrowableArray<int>");
         basicTargetType.setSize(specific.getSize());
         Iterator fields = generic.getFields();
@@ -426,7 +426,6 @@ public class HotSpotTypeDataBase extends BasicTypeDataBase {
     boolean isStatic = false;
     long offset = 0;
     Address staticFieldAddr = null;
-    long size = 0;
     long index = 0;
     String opaqueName = "<opaque>";
     lookupOrCreateClass(opaqueName, false, false, false);
@@ -655,14 +654,7 @@ public class HotSpotTypeDataBase extends BasicTypeDataBase {
       }
 
       if (isOopType) {
-        // HACK: turn markOop into a C integer type. This allows
-        // proper handling of it in the Serviceability Agent. (FIXME
-        // -- consider doing something different here)
-        if (typeName.equals("markOop")) {
-          type = new BasicCIntegerType(this, typeName, true);
-        } else {
-          type.setIsOopType(true);
-        }
+        type.setIsOopType(true);
       }
     }
 

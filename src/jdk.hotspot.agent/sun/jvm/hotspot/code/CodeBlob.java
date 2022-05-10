@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,8 +35,8 @@ import sun.jvm.hotspot.utilities.Assert;
 import sun.jvm.hotspot.utilities.CStringUtilities;
 
 import java.io.PrintStream;
-import java.util.Observable;
-import java.util.Observer;
+import sun.jvm.hotspot.utilities.Observable;
+import sun.jvm.hotspot.utilities.Observer;
 
 public class CodeBlob extends VMObject {
   private static AddressField nameField;
@@ -132,8 +132,6 @@ public class CodeBlob extends VMObject {
 
   // Typing
   public boolean isBufferBlob()         { return false; }
-
-  public boolean isAOT()                { return false; }
 
   public boolean isCompiled()           { return false; }
 

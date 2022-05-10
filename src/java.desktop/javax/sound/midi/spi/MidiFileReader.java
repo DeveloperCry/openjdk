@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,11 @@ import javax.sound.midi.Sequence;
  * @since 1.3
  */
 public abstract class MidiFileReader {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected MidiFileReader() {}
 
     /**
      * Obtains the MIDI file format of the input stream provided. The stream

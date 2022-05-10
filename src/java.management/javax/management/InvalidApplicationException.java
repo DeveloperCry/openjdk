@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,7 @@ public class InvalidApplicationException extends Exception   {
     /**
      * @serial The object representing the class of the MBean
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Object val;
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -137,7 +137,16 @@ public class X86CurrentFrameGuess {
                 setValues(curSP, null, pc);
                 return true;
               }
+              Frame oldFrame = frame;
               frame = frame.sender(map);
+              if (frame.getSP().lessThanOrEqual(oldFrame.getSP())) {
+                  // Frame points to itself or to a location in the wrong direction.
+                  // Break the loop and move on to next offset.
+                  if (DEBUG) {
+                      System.out.println("X86CurrentFrameGuess.run: frame <= oldFrame: " + frame);
+                  }
+                  break;
+              }
             }
           } catch (Exception e) {
             if (DEBUG) {

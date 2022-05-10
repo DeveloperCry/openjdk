@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -148,16 +144,32 @@ public class FormatData_my extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "\u1014\u1036\u1014\u1000\u103a",
                "\u100a\u1014\u1031",
+               "\u101e\u1014\u103a\u1038\u1001\u1031\u102b\u1004\u103a\u101a\u1036",
+               "\u1019\u103d\u1014\u103a\u1038\u1010\u100a\u1037\u103a",
+               "\u1014\u1036\u1014\u1000\u103a",
+               "",
+               "\u1014\u1031\u1037\u101c\u101a\u103a",
+               "",
+               "\u100a\u1014\u1031",
+               "",
+               "\u100a",
+               "",
             };
         final String[] metaValue_Eras = new String[] {
                "\u1018\u102e\u1005\u102e",
-               "\u1021\u1031\u1012\u102e",
+               "\u1021\u1012\u1031\u102e",
+            };
+        final String[] metaValue_java_time_TimePatterns = new String[] {
+               "zzzz HH:mm:ss",
+               "z HH:mm:ss",
+               "B HH:mm:ss",
+               "B H:mm",
             };
         final String[] metaValue_TimePatterns = new String[] {
                "zzzz HH:mm:ss",
                "z HH:mm:ss",
-               "HH:mm:ss",
-               "H:mm",
+               "a HH:mm:ss",
+               "a H:mm",
             };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
                "EEEE G dd MMMM y",
@@ -195,6 +207,8 @@ public class FormatData_my extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "\u1002\u100f\u1014\u103a\u1038\u1019\u101f\u102f\u1010\u103a\u101e\u1031\u102c",
+                    "",
+                    "",
                 }
             },
             { "japanese.TimePatterns", metaValue_TimePatterns },
@@ -239,6 +253,8 @@ public class FormatData_my extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "\u1002\u100f\u1014\u103a\u1038\u1019\u101f\u102f\u1010\u103a\u101e\u1031\u102c",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -250,6 +266,7 @@ public class FormatData_my extends ListResourceBundle {
             { "field.dayperiod", "\u1014\u1036\u1014\u1000\u103a/\u100a\u1014\u1031" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "japanese.QuarterNarrows", metaValue_QuarterNarrows },
+            { "java.time.roc.TimePatterns", metaValue_java_time_TimePatterns },
             { "calendarname.roc", "\u1019\u1004\u103a\u1002\u102f\u1021\u102d\u102f \u1015\u103c\u1000\u1039\u1001\u1012\u102d\u1014\u103a" },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_QuarterNames },
@@ -257,19 +274,33 @@ public class FormatData_my extends ListResourceBundle {
             { "field.second", "\u1005\u1000\u1039\u1000\u1014\u1037\u103a" },
             { "DayAbbreviations", metaValue_DayNames },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "#,##0.00\u00a0\u00a4",
-                    "#,##0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "calendarname.islamic", "\u1021\u1005\u1039\u1005\u101c\u102c\u1019\u103a \u1015\u103c\u1000\u1039\u1001\u1012\u102d\u1014\u103a" },
+            { "DayPeriodRules", "midnight:00:00;noon:12:00;night1:19:00-24:00;afternoon1:12:00-16:00;morning1:00:00-12:00;evening1:16:00-19:00" },
             { "japanese.narrow.AmPmMarkers", metaValue_AmPmMarkers },
+            { "java.time.islamic.TimePatterns", metaValue_java_time_TimePatterns },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "timezone.regionFormat", "{0} \u1021\u1001\u103b\u102d\u1014\u103a" },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{other:0\u1011\u1031\u102c\u1004\u103a}",
+                    "{other:0\u101e\u1031\u102c\u1004\u103a\u1038}",
+                    "{other:0\u101e\u102d\u1014\u103a\u1038}",
+                    "{other:0\u101e\u1014\u103a\u1038}",
+                    "{other:0\u1000\u102f\u100b\u1031}",
+                    "{other:00\u1000\u102f\u100b\u1031}",
+                    "{other:\u1000\u102f\u100b\u1031000}",
+                    "{other:\u1000\u102f\u100b\u10310000}",
+                    "{other:\u1000\u102f\u100b\u10310\u101e\u1031\u102c\u1004\u103a\u1038}",
+                    "{other:\u1000\u102f\u100b\u10310\u101e\u102d\u1014\u103a\u1038}",
+                    "{other:\u1000\u102f\u100b\u10310\u101e\u1014\u103a\u1038}",
+                    "{other:0\u1000\u1031\u102c\u100b\u102d}",
+                }
+            },
             { "buddhist.QuarterNarrows", metaValue_QuarterNarrows },
             { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "standalone.QuarterNames", metaValue_QuarterNames },
@@ -277,6 +308,7 @@ public class FormatData_my extends ListResourceBundle {
             { "islamic.QuarterAbbreviations", metaValue_QuarterNames },
             { "roc.DayAbbreviations", metaValue_DayNames },
             { "standalone.DayNarrows", metaValue_DayNarrows },
+            { "java.time.buddhist.TimePatterns", metaValue_java_time_TimePatterns },
             { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
             { "TimePatterns", metaValue_TimePatterns },
             { "islamic.DayNarrows", metaValue_DayNarrows },
@@ -296,11 +328,20 @@ public class FormatData_my extends ListResourceBundle {
             { "islamic.DayAbbreviations", metaValue_DayNames },
             { "japanese.QuarterNames", metaValue_QuarterNames },
             { "buddhist.QuarterAbbreviations", metaValue_QuarterNames },
+            { "mymr.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0%",
+                    "",
+                }
+            },
             { "japanese.DayNames", metaValue_DayNames },
             { "japanese.DayAbbreviations", metaValue_DayNames },
             { "DayNames", metaValue_DayNames },
             { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.MonthNames", metaValue_MonthNames },
+            { "java.time.TimePatterns", metaValue_java_time_TimePatterns },
             { "field.week", "\u1015\u1010\u103a" },
             { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "buddhist.QuarterNames", metaValue_QuarterNames },
@@ -309,6 +350,25 @@ public class FormatData_my extends ListResourceBundle {
             { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{other:0\u1011\u1031\u102c\u1004\u103a}",
+                    "{other:0\u101e\u1031\u102c\u1004\u103a\u1038}",
+                    "{other:0\u101e\u102d\u1014\u103a\u1038}",
+                    "{other:0\u101e\u1014\u103a\u1038}",
+                    "{other:0\u1000\u102f\u100b\u1031}",
+                    "{other:00\u1000\u102f\u100b\u1031}",
+                    "{other:\u1000\u102f\u100b\u1031000}",
+                    "{other:\u1000\u102f\u100b\u10310\u1011}",
+                    "{other:\u1000\u102f\u100b\u10310\u101e}",
+                    "{other:\u100b\u10310\u101e\u102d\u1014\u103a\u1038}",
+                    "{other:\u100b\u10310\u101e\u1014\u103a\u1038}",
+                    "{other:0\u1000\u1031\u102c\u100b\u102d}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "timezone.regionFormat.daylight", "{0} \u1014\u103d\u1031\u101b\u102c\u101e\u102e \u1005\u1036\u1010\u1031\u102c\u103a\u1001\u103b\u102d\u1014\u103a" },
             { "DatePatterns",
@@ -325,7 +385,16 @@ public class FormatData_my extends ListResourceBundle {
             { "standalone.DayNames", metaValue_DayNames },
             { "field.hour", "\u1014\u102c\u101b\u102e" },
             { "calendarname.buddhist", "\u1017\u102f\u1012\u1039\u1013 \u1015\u103c\u1000\u1039\u1001\u1012\u102d\u1014\u103a" },
+            { "java.time.japanese.TimePatterns", metaValue_java_time_TimePatterns },
             { "standalone.MonthNames", metaValue_MonthNames },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0%",
+                    "\u00a4\u00a0#,##0.00",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "japanese.DayNarrows", metaValue_DayNarrows },
             { "QuarterNames", metaValue_QuarterNames },

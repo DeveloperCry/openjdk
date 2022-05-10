@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -29,7 +29,9 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.SyntaxTreeNode;
  */
 public class TypeCheckError extends Exception {
     static final long serialVersionUID = 3246224233917854640L;
+    @SuppressWarnings("serial") // Type of field is not Serializable
     ErrorMsg _error = null;
+    @SuppressWarnings("serial") // Type of field is not Serializable
     SyntaxTreeNode _node = null;
 
     public TypeCheckError(SyntaxTreeNode node) {

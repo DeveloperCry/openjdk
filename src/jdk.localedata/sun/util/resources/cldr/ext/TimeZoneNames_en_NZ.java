@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -78,22 +74,6 @@ public class TimeZoneNames_en_NZ extends TimeZoneNamesBundle {
                "Chatham Time",
                "CHAT",
             };
-        final String[] Australia_Western = new String[] {
-               "Australian Western Standard Time",
-               "AWST",
-               "Australian Western Daylight Time",
-               "AWDT",
-               "Western Australia Time",
-               "AWT",
-            };
-        final String[] Australia_Central = new String[] {
-               "Australian Central Standard Time",
-               "ACST",
-               "Australian Central Daylight Time",
-               "ACDT",
-               "Central Australia Time",
-               "ACT",
-            };
         final String[] Lord_Howe = new String[] {
                "Lord Howe Standard Time",
                "LHST",
@@ -101,6 +81,14 @@ public class TimeZoneNames_en_NZ extends TimeZoneNamesBundle {
                "LHDT",
                "Lord Howe Time",
                "LHT",
+            };
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] New_Zealand = new String[] {
                "New Zealand Standard Time",
@@ -110,13 +98,13 @@ public class TimeZoneNames_en_NZ extends TimeZoneNamesBundle {
                "New Zealand Time",
                "NZT",
             };
-        final String[] Australia_CentralWestern = new String[] {
-               "Australian Central Western Standard Time",
-               "ACWST",
-               "Australian Central Western Daylight Time",
-               "ACWDT",
-               "Australian Central Western Time",
-               "ACWT",
+        final String[] Australia_Central = new String[] {
+               "Australian Central Standard Time",
+               "ACST",
+               "Australian Central Daylight Time",
+               "ACDT",
+               "Central Australia Time",
+               "ACT",
             };
         final String[] Australia_Eastern = new String[] {
                "Australian Eastern Standard Time",
@@ -126,113 +114,44 @@ public class TimeZoneNames_en_NZ extends TimeZoneNamesBundle {
                "Eastern Australia Time",
                "AET",
             };
+        final String[] Australia_Western = new String[] {
+               "Australian Western Standard Time",
+               "AWST",
+               "Australian Western Daylight Time",
+               "AWDT",
+               "Western Australia Time",
+               "AWT",
+            };
+        final String[] Australia_CentralWestern = new String[] {
+               "Australian Central Western Standard Time",
+               "ACWST",
+               "Australian Central Western Daylight Time",
+               "ACWDT",
+               "Australian Central Western Time",
+               "ACWT",
+            };
         final Object[][] data = new Object[][] {
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Pacific/Chatham", Chatham },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Antarctica/South_Pole", New_Zealand },
-            { "Australia/Currie", Australia_Eastern },
-            { "Australia/Melbourne", Australia_Eastern },
-            { "Australia/Hobart", Australia_Eastern },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Australia/Darwin", Australia_Central },
-            { "Australia/Perth", Australia_Western },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "UTC", EMPTY_ZONE },
+            { "ACT", Australia_Central },
+            { "AET", Australia_Eastern },
+            { "NST", New_Zealand },
             { "Australia/Eucla", Australia_CentralWestern },
-            { "Antarctica/McMurdo", New_Zealand },
+            { "Australia/Perth", Australia_Western },
+            { "Pacific/Chatham", Chatham },
+            { "Australia/Currie", Australia_Eastern },
+            { "Australia/Darwin", Australia_Central },
+            { "Australia/Hobart", Australia_Eastern },
             { "Australia/Sydney", Australia_Eastern },
-            { "Australia/Adelaide", Australia_Central },
-            { "Australia/Lord_Howe", Lord_Howe },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Australia/Lindeman", Australia_Eastern },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Australia/Brisbane", Australia_Eastern },
-            { "Australia/Broken_Hill", Australia_Central },
             { "Pacific/Auckland", New_Zealand },
+            { "Antarctica/McMurdo", New_Zealand },
+            { "Australia/Adelaide", Australia_Central },
+            { "Australia/Brisbane", Australia_Eastern },
+            { "Australia/Lindeman", Australia_Eastern },
+            { "Australia/Lord_Howe", Lord_Howe },
+            { "Australia/Melbourne", Australia_Eastern },
+            { "Antarctica/Macquarie", Australia_Eastern },
+            { "Antarctica/South_Pole", New_Zealand },
+            { "Australia/Broken_Hill", Australia_Central },
         };
         return data;
     }

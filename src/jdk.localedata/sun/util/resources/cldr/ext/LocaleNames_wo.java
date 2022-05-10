@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -77,6 +73,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
         final Object[][] data = new Object[][] {
             { "fil", "Filipiye" },
             { "ban", "Bali" },
+            { "es_ES", "Espa\u00f1ol bu Tug\u00ebl" },
             { "AD", "Andoor" },
             { "AE", "Emira Arab Ini" },
             { "AF", "Afganista\u014b" },
@@ -96,6 +93,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "AT", "\u00d3tiriis" },
             { "AU", "Ostarali" },
             { "AW", "Aruba" },
+            { "en_US", "\u00c0ngale bu Amerik" },
             { "AX", "Duni Aal\u00e0nd" },
             { "AZ", "Aserbayja\u014b" },
             { "az", "Aserbayjane" },
@@ -132,7 +130,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "CC", "Duni Koko (Kilin)" },
             { "CF", "Repiblik S\u00e0ntar Afrik" },
             { "CH", "Siwis" },
-            { "CI", "Kodiwaar (C\u00f4te d\u2019Ivoire)" },
+            { "CI", "Kodiwaar" },
             { "CK", "Duni Kuuk" },
             { "CL", "Sili" },
             { "CM", "Kamerun" },
@@ -149,6 +147,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "cy", "Wels" },
             { "CZ", "R\u00e9ewum Cek" },
             { "da", "Danuwa" },
+            { "pt_PT", "Portugees bu Tug\u00ebl" },
             { "DE", "Almaa\u00f1" },
             { "de", "Almaa" },
             { "DJ", "Jibuti" },
@@ -157,7 +156,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "DO", "Repiblik Dominiken" },
             { "bem", "Bemba" },
             { "dv", "Diweyi" },
-            { "es_419", "Espa\u00f1ol (Amerik Latin)" },
+            { "es_419", "Espa\u00f1ol bu Amerik Latin" },
             { "DZ", "Alseri" },
             { "dz", "Dsongkaa" },
             { "EC", "Ekwaat\u00ebr" },
@@ -220,6 +219,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "ckb", "Kurdi gu Diggu" },
             { "he", "Ebr\u00eb" },
             { "hi", "Endo" },
+            { "de_AT", "Almaa bu \u00d3tiriis" },
             { "HM", "Duni H\u00ebrd ak Duni MakDonald" },
             { "HN", "Onduraas" },
             { "HR", "Korowasi" },
@@ -252,6 +252,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "JP", "S\u00e0ppo\u014b" },
             { "sma", "Sami gu Saalum" },
             { "smj", "Lule Sami" },
+            { "de_CH", "Almaa bu Kawe bu Swis" },
             { "smn", "Inari Sami" },
             { "ka", "Sorsiye" },
             { "sms", "Eskolt Sami" },
@@ -264,11 +265,13 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "km", "Xmer" },
             { "KN", "Sa\u014b Kits ak Newis" },
             { "kn", "Kannadaa" },
+            { "fr_CA", "Fra\u00f1se bu Kanadaa" },
             { "ko", "Koreye" },
             { "KP", "Kore Noor" },
             { "kr", "Kanuri" },
             { "ks", "Kashmiri" },
             { "ku", "Kurdi" },
+            { "fr_CH", "Fra\u00f1se bu Swis" },
             { "KW", "Kowet" },
             { "KY", "Duni Kayma\u014b" },
             { "ky", "Kirgiis" },
@@ -299,7 +302,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "mg", "Malagasi" },
             { "MH", "Duni Marsaal" },
             { "mi", "Mawri" },
-            { "MK", "Maseduwaan" },
+            { "MK", "Maseduwaan b\u00ebj G\u00e0nnaar" },
             { "mk", "Maseduwaane" },
             { "ML", "Mali" },
             { "ml", "Malayalam" },
@@ -345,6 +348,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "or", "Oja" },
             { "PA", "Panama" },
             { "pa", "Punjabi" },
+            { "en_GB", "\u00c0ngale bu Gr\u00e0nd Br\u00ebtaa\u00f1" },
             { "PE", "Peru" },
             { "PF", "Polinesi Fara\u00f1se" },
             { "PG", "Papuwasi Gine Gu Bees" },
@@ -360,6 +364,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "pt", "Purtugees" },
             { "PW", "Palaw" },
             { "PY", "Paraguwe" },
+            { "pt_BR", "Purtugees bu Bresil" },
             { "QA", "Kataar" },
             { "niu", "Niweyan" },
             { "qu", "Kesuwa" },
@@ -372,6 +377,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "ru", "Rus" },
             { "RW", "Ruw\u00e0nda" },
             { "rw", "Kinyarw\u00e0nda" },
+            { "en_AU", "\u00c0ngale bu \u00d3straali" },
             { "SA", "Arabi Sawudi" },
             { "sa", "Sanskrit" },
             { "SB", "Duni Salmoon" },
@@ -415,6 +421,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "th", "Tay" },
             { "ti", "Tigri\u00f1a" },
             { "TJ", "Tajikista\u014b" },
+            { "en_CA", "\u00c0ngale bu Kanadaa" },
             { "TK", "Tokoloo" },
             { "tk", "Tirkmen" },
             { "TL", "Timor Leste" },
@@ -465,6 +472,7 @@ public class LocaleNames_wo extends OpenListResourceBundle {
             { "type.co.standard", "SSO (Toftalin wi\u00f1 g\u00ebn a xam)" },
             { "yi", "Yidis" },
             { "yo", "Yoruba" },
+            { "es_MX", "Espa\u00f1ol bu Meksik" },
             { "YT", "Mayot" },
             { "ZA", "Afrik di Sid" },
             { "zh", "Sinuwaa" },

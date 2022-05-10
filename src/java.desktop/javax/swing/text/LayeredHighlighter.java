@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,7 +33,13 @@ import java.awt.Shape;
  * @author  Timothy Prinzing
  * @see     Highlighter
  */
+@SuppressWarnings("doclint:missing")
 public abstract class LayeredHighlighter implements Highlighter {
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected LayeredHighlighter() {}
+
     /**
      * When leaf Views (such as LabelView) are rendering they should
      * call into this method. If a highlight is in the given region it will
@@ -56,6 +62,11 @@ public abstract class LayeredHighlighter implements Highlighter {
      * Layered highlight renderer.
      */
     public abstract static class LayerPainter implements Highlighter.HighlightPainter {
+        /**
+         * Constructor for subclasses to call.
+         */
+        protected LayerPainter() {}
+
         /**
          * @return a shape
          * @param g Graphics used to draw

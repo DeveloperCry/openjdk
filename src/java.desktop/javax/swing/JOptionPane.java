@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,6 +22,7 @@
  *
  *
  */
+
 package javax.swing;
 
 import java.awt.BorderLayout;
@@ -29,40 +30,46 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.KeyboardFocusManager;
 import java.awt.Frame;
-import java.awt.Point;
 import java.awt.HeadlessException;
+import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.Window;
-import java.beans.JavaBean;
-import java.beans.BeanProperty;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.beans.BeanProperty;
+import java.beans.JavaBean;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
-import javax.swing.plaf.OptionPaneUI;
-import javax.swing.event.InternalFrameEvent;
+
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
 import javax.swing.event.InternalFrameAdapter;
-import javax.accessibility.*;
-import static javax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.plaf.OptionPaneUI;
+
 import sun.awt.AWTAccessor;
+
+import static javax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP;
 
 /**
  * <code>JOptionPane</code> makes it easy to pop up a standard dialog box that
  * prompts users for a value or informs them of something.
  * For information about using <code>JOptionPane</code>, see
  * <a
- href="http://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html">How to Make Dialogs</a>,
+ href="https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html">How to Make Dialogs</a>,
  * a section in <em>The Java Tutorial</em>.
  *
  * <p>
@@ -266,7 +273,7 @@ import sun.awt.AWTAccessor;
  *     JOptionPane pane = new JOptionPane(<i>arguments</i>);
  *     pane.set<i>.Xxxx(...); // Configure</i>
  *     JDialog dialog = pane.createDialog(<i>parentComponent, title</i>);
- *     dialog.show();
+ *     dialog.setVisible(true);
  *     Object selectedValue = pane.getValue();
  *     if(selectedValue == null)
  *       return CLOSED_OPTION;
@@ -295,7 +302,7 @@ import sun.awt.AWTAccessor;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -2318,48 +2325,46 @@ public class JOptionPane extends JComponent implements Accessible
     }
 
     // Serialization support.
+    @Serial
     private void writeObject(ObjectOutputStream s) throws IOException {
         Vector<Object> values = new Vector<Object>();
 
         s.defaultWriteObject();
-        // Save the icon, if its Serializable.
-        if(icon != null && icon instanceof Serializable) {
+        // Save the icon, if it's Serializable.
+        if (icon instanceof Serializable) {
             values.addElement("icon");
             values.addElement(icon);
         }
-        // Save the message, if its Serializable.
-        if(message != null && message instanceof Serializable) {
+        // Save the message, if it's Serializable.
+        if (message instanceof Serializable) {
             values.addElement("message");
             values.addElement(message);
         }
-        // Save the treeModel, if its Serializable.
+        // Save the treeModel, if it's Serializable.
         if(options != null) {
-            Vector<Object> serOptions = new Vector<Object>();
+            ArrayList<Object> serOptions = new ArrayList<Object>();
 
             for(int counter = 0, maxCounter = options.length;
                 counter < maxCounter; counter++)
                 if(options[counter] instanceof Serializable)
-                    serOptions.addElement(options[counter]);
+                    serOptions.add(options[counter]);
             if(serOptions.size() > 0) {
-                int             optionCount = serOptions.size();
-                Object[]        arrayOptions = new Object[optionCount];
-
-                serOptions.copyInto(arrayOptions);
+                Object[] arrayOptions = serOptions.toArray(new Object[0]);
                 values.addElement("options");
                 values.addElement(arrayOptions);
             }
         }
-        // Save the initialValue, if its Serializable.
-        if(initialValue != null && initialValue instanceof Serializable) {
+        // Save the initialValue, if it's Serializable.
+        if (initialValue instanceof Serializable) {
             values.addElement("initialValue");
             values.addElement(initialValue);
         }
-        // Save the value, if its Serializable.
-        if(value != null && value instanceof Serializable) {
+        // Save the value, if it's Serializable.
+        if (value instanceof Serializable) {
             values.addElement("value");
             values.addElement(value);
         }
-        // Save the selectionValues, if its Serializable.
+        // Save the selectionValues, if it's Serializable.
         if(selectionValues != null) {
             boolean            serialize = true;
 
@@ -2376,20 +2381,20 @@ public class JOptionPane extends JComponent implements Accessible
                 values.addElement(selectionValues);
             }
         }
-        // Save the inputValue, if its Serializable.
-        if(inputValue != null && inputValue instanceof Serializable) {
+        // Save the inputValue, if it's Serializable.
+        if (inputValue instanceof Serializable) {
             values.addElement("inputValue");
             values.addElement(inputValue);
         }
-        // Save the initialSelectionValue, if its Serializable.
-        if(initialSelectionValue != null &&
-           initialSelectionValue instanceof Serializable) {
+        // Save the initialSelectionValue, if it's Serializable.
+        if (initialSelectionValue instanceof Serializable) {
             values.addElement("initialSelectionValue");
             values.addElement(initialSelectionValue);
         }
         s.writeObject(values);
     }
 
+    @Serial
     private void readObject(ObjectInputStream s)
         throws IOException, ClassNotFoundException {
         ObjectInputStream.GetField f = s.readFields();
@@ -2540,12 +2545,17 @@ public class JOptionPane extends JComponent implements Accessible
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
     @SuppressWarnings("serial") // Same-version serialization only
     protected class AccessibleJOptionPane extends AccessibleJComponent {
+
+        /**
+         * Constructs an {@code AccessibleJOptionPane}.
+         */
+        protected AccessibleJOptionPane() {}
 
         /**
          * Get the role of this object.

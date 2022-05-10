@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -161,6 +157,7 @@ public class CurrencyNames_is extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -198,6 +195,7 @@ public class CurrencyNames_is extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -215,6 +213,7 @@ public class CurrencyNames_is extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -360,7 +359,8 @@ public class CurrencyNames_is extends OpenListResourceBundle {
             { "mzn", "m\u00f3samb\u00edskt metikal" },
             { "nad", "namib\u00edskur dalur" },
             { "ngn", "n\u00edger\u00edsk n\u00e6ra" },
-            { "nio", "n\u00edkara\u00f6gsk kord\u00f3va" },
+            { "nic", "N\u00edkar\u00f6gsk kord\u00f3va (1988\u20131991)" },
+            { "nio", "n\u00edkar\u00f6gsk kord\u00f3va" },
             { "nlg", "Hollenskt gyllini" },
             { "nok", "norsk kr\u00f3na" },
             { "npr", "nep\u00f6lsk r\u00fap\u00eda" },
@@ -426,7 +426,8 @@ public class CurrencyNames_is extends OpenListResourceBundle {
             { "uyu", "\u00far\u00fagv\u00e6skur pesi" },
             { "uzs", "\u00fasbekskt s\u00fam" },
             { "veb", "Bol\u00edvar \u00ed Venes\u00faela (1871\u20132008)" },
-            { "vef", "venes\u00faelskur b\u00f3l\u00edvari" },
+            { "vef", "venes\u00faelskur b\u00f3l\u00edvari (2008\u20132018)" },
+            { "ves", "venes\u00faelskur b\u00f3l\u00edvari" },
             { "vnd", "v\u00edetnamskt dong" },
             { "vuv", "van\u00faat\u00faskt vat\u00fa" },
             { "wst", "Sam\u00f3atala" },

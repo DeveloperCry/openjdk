@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,7 +47,6 @@ public class ThreadStackTrace {
 
     public void dumpStack(int maxDepth) {
         if (!thread.isJavaThread()) {
-            System.out.println("dumpStack: not java Thread returning");
             return;
         }
         try {

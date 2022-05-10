@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -103,6 +99,7 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "mwr", "maruari" },
             { "Tagb", "taqbanva" },
             { "Zsye", "emoji" },
+            { "ccp", "\u00c7akma" },
             { "egy", "q\u0259dim misir" },
             { "raj", "racastani" },
             { "Phag", "faqs-pa" },
@@ -248,7 +245,6 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "FR", "Fransa" },
             { "tkl", "tokelay" },
             { "grb", "qrebo" },
-            { "root", "rut" },
             { "type.ca.indian", "Hindi t\u0259qvimi" },
             { "grc", "q\u0259dim yunan" },
             { "GA", "Qabon" },
@@ -281,7 +277,7 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "ckb", "M\u0259rk\u0259zi k\u00fcrdc\u0259" },
             { "zxx", "dil m\u0259zmunu yoxdur" },
             { "de_AT", "Avstriya almancas\u0131" },
-            { "HK", "Honq Konq X\u00fcsusi \u0130nzibati \u018frazi \u00c7in" },
+            { "HK", "Honq Konq X\u00fcsusi \u0130nzibati Rayonu \u00c7in" },
             { "Vaii", "vay" },
             { "HM", "Herd v\u0259 Makdonald adalar\u0131" },
             { "HN", "Honduras" },
@@ -375,12 +371,12 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "Mar\u015fal adalar\u0131" },
             { "ale", "aleut" },
-            { "MK", "Makedoniya" },
+            { "MK", "\u015eimali Makedoniya" },
             { "ML", "Mali" },
             { "MM", "Myanma" },
             { "MN", "Monqolustan" },
             { "new", "nevari" },
-            { "MO", "Makao X\u00fcsusi \u0130nzibati \u018frazi \u00c7in" },
+            { "MO", "Makao X\u0130R \u00c7in" },
             { "MP", "\u015eimali Marian adalar\u0131" },
             { "MQ", "Martinik" },
             { "MR", "Mavritaniya" },
@@ -503,7 +499,7 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "SX", "Sint-Marten" },
             { "SY", "Suriya" },
             { "yao", "yao" },
-            { "SZ", "Svazilend" },
+            { "SZ", "Esvatini" },
             { "arw", "aravak" },
             { "yap", "yapiz" },
             { "TA", "Tristan da Kunya" },
@@ -576,7 +572,9 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "WS", "Samoa" },
             { "wal", "valamo" },
             { "was", "va\u015fo" },
+            { "XA", "Psevdo-Aksent" },
             { "war", "varay" },
+            { "XB", "Psevdo-Bidi" },
             { "awa", "avadhi" },
             { "061", "Polineziya" },
             { "XK", "Kosovo" },
@@ -587,7 +585,6 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "Batk", "batak" },
             { "Blis", "blissymbols" },
             { "YE", "Y\u0259m\u0259n" },
-            { "nqo", "nqo" },
             { "type.co.standard", "Standart S\u0131ralama" },
             { "fan", "fang" },
             { "fat", "fanti" },
@@ -1093,6 +1090,7 @@ public class LocaleNames_az extends OpenListResourceBundle {
             { "type.nu.tamldec", "Tamil R\u0259q\u0259ml\u0259ri" },
             { "krc", "qara\u00e7ay-balkar" },
             { "inh", "inqu\u015f" },
+            { "fa_AF", "dari" },
             { "krl", "karel" },
             { "efi", "efik" },
             { "key.nu", "R\u0259q\u0259ml\u0259r" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,7 +38,7 @@ import java.security.cert.CertificateException;
  * @deprecated This class has been deprecated.
  */
 
-@Deprecated(since="9")
+@Deprecated(since="9", forRemoval=true)
 public abstract class ContentSigner {
 
     /**
@@ -65,6 +65,7 @@ public abstract class ContentSigner {
      * @throws NullPointerException The exception is thrown if parameters is
      *         null.
      */
+    @SuppressWarnings("removal")
     public abstract byte[] generateSignedData(
         ContentSignerParameters parameters, boolean omitContent,
         boolean applyTimestamp)

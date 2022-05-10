@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -33,9 +33,8 @@ import org.w3c.dom.NodeList;
  */
 public class HelperNodeList implements NodeList {
 
-    /** Field nodes */
-    List<Node> nodes = new ArrayList<>();
-    boolean allNodesMustHaveSameParent = false;
+    private final List<Node> nodes = new ArrayList<>();
+    private final boolean allNodesMustHaveSameParent;
 
     /**
      *

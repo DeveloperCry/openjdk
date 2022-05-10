@@ -193,7 +193,8 @@ class JDWP {
 
         /**
          * Returns reference types for all classes currently loaded by the 
-         * target VM.
+         * target VM. 
+         * See <a href="../jvmti.html#GetLoadedClasses">JVM TI GetLoadedClasses</a>.
          */
         static class AllClasses {
             static final int COMMAND = 3;
@@ -406,9 +407,9 @@ class JDWP {
          * <ul>
          * <li>All event requests are cancelled. 
          * <li>All threads suspended by the thread-level 
-         * <a href="#JDWP_ThreadReference_Resume">resume</a> command 
+         * <a href="#JDWP_ThreadReference_Suspend">suspend</a> command 
          * or the VM-level 
-         * <a href="#JDWP_VirtualMachine_Resume">resume</a> command 
+         * <a href="#JDWP_VirtualMachine_Suspend">suspend</a> command 
          * are resumed as many times as necessary for them to run. 
          * <li>Garbage collection is re-enabled in all cases where it was 
          * <a href="#JDWP_ObjectReference_DisableCollection">disabled</a> 
@@ -1170,14 +1171,17 @@ class JDWP {
             final boolean canRedefineClasses;
 
             /**
-             * Can the VM add methods when redefining 
-             * classes?
+             * Can the VM add methods when redefining classes? 
+             * <p>@Deprecated(since="15") A JVM TI based JDWP back-end 
+             * will never set this capability to true.
              */
             final boolean canAddMethod;
 
             /**
              * Can the VM redefine classes 
              * in ways that are normally restricted?
+             * <p>@Deprecated(since="15") A JVM TI based JDWP back-end 
+             * will never set this capability to true.
              */
             final boolean canUnrestrictedlyRedefineClasses;
 
@@ -1440,19 +1444,13 @@ class JDWP {
          * <a href="#JDWP_StackFrame_PopFrames">PopFrames</a> command can be used 
          * to pop frames with obsolete methods.
          * <p>
-         * Unless the canUnrestrictedlyRedefineClasses capability is present the following 
-         * redefinitions are restricted: 
-         * <ul>
-         * <li>changing the schema (the fields)</li>
-         * <li>changing the hierarchy (superclasses, interfaces)</li>
-         * <li>deleting a method</li>
-         * <li>changing class modifiers</li>
-         * <li>changing method modifiers</li>
-         * <li>changing the <code>NestHost</code> or <code>NestMembers</code> class attributes</li>
-         * </ul>
+         * Unless the canUnrestrictedlyRedefineClasses capability is present 
+         * the redefinition must follow the restrictions described in 
+         * <a href="../jvmti.html#RedefineClasses">JVM TI RedefineClasses</a>.
          * <p>
          * Requires canRedefineClasses capability - see 
          * <a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>. 
+         * <p>@Deprecated(since="15")  
          * In addition to the canRedefineClasses capability, the target VM must 
          * have the canAddMethod capability to add methods when redefining classes, 
          * or the canUnrestrictedlyRedefineClasses capability to redefine classes in ways 
@@ -1586,7 +1584,7 @@ class JDWP {
          * returned for each class.  
          * Generic signatures are described in the signature attribute 
          * section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Since JDWP version 1.5.
          */
         static class AllClassesWithGeneric {
@@ -1817,14 +1815,9 @@ class JDWP {
         private ReferenceType() {}  // hide constructor
 
         /**
-         * Returns the JNI signature of a reference type. 
-         * JNI signature formats are described in the 
-         * <a href="http://java.sun.com/products/jdk/1.2/docs/guide/jni/index.html">Java Native Inteface Specification</a>
-         * <p>
-         * For primitive classes 
-         * the returned signature is the signature of the corresponding primitive 
-         * type; for example, "I" is returned as the signature of the class 
-         * represented by java.lang.Integer.TYPE.
+         * Returns the type signature of a reference type. 
+         * Type signature formats are the same as specified in 
+         * <a href="../jvmti.html#GetClassSignature">JVM TI GetClassSignature</a>.
          */
         static class Signature {
             static final int COMMAND = 1;
@@ -1965,7 +1958,7 @@ class JDWP {
 
             /**
              * Modifier bits as defined in Chapter 4 of 
-             * <cite>The Java&trade; Virtual Machine Specification</cite>
+             * <cite>The Java Virtual Machine Specification</cite>
              */
             final int modBits;
 
@@ -2039,7 +2032,7 @@ class JDWP {
                  * which provide additional information on the  
                  * field declaration. Individual flag values are 
                  * defined in Chapter 4 of 
-                 * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+                 * <cite>The Java Virtual Machine Specification</cite>. 
                  * In addition, The <code>0xf0000000</code> bit identifies 
                  * the field as synthetic, if the synthetic attribute 
                  * <a href="#JDWP_VirtualMachine_Capabilities">capability</a> is available.
@@ -2150,7 +2143,7 @@ class JDWP {
                  * which provide additional information on the  
                  * method declaration. Individual flag values are 
                  * defined in Chapter 4 of 
-                 * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+                 * <cite>The Java Virtual Machine Specification</cite>. 
                  * In addition, The <code>0xf0000000</code> bit identifies 
                  * the method as synthetic, if the synthetic attribute 
                  * <a href="#JDWP_VirtualMachine_Capabilities">capability</a> is available.
@@ -2433,7 +2426,7 @@ class JDWP {
          * Returns the current status of the reference type. The status 
          * indicates the extent to which the reference type has been 
          * initialized, as described in section 2.1.6 of 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * If the class is linked the PREPARED and VERIFIED bits in the returned status bits 
          * will be set. If the class is initialized the INITIALIZED bit in the returned 
          * status bits will be set. If an error occured during initialization then the 
@@ -2655,7 +2648,7 @@ class JDWP {
          * generic signature if there is one.  
          * Generic signatures are described in the signature attribute 
          * section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Since JDWP version 1.5.
          */
         static class SignatureWithGeneric {
@@ -2724,7 +2717,7 @@ class JDWP {
          * Fields are returned in the order they occur in the class file.  
          * Generic signatures are described in the signature attribute 
          * section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Since JDWP version 1.5.
          */
         static class FieldsWithGeneric {
@@ -2785,7 +2778,7 @@ class JDWP {
                  * which provide additional information on the  
                  * field declaration. Individual flag values are 
                  * defined in Chapter 4 of 
-                 * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+                 * <cite>The Java Virtual Machine Specification</cite>. 
                  * In addition, The <code>0xf0000000</code> bit identifies 
                  * the field as synthetic, if the synthetic attribute 
                  * <a href="#JDWP_VirtualMachine_Capabilities">capability</a> is available.
@@ -2850,7 +2843,7 @@ class JDWP {
          * Methods are returned in the order they occur in the class file.  
          * Generic signatures are described in the signature attribute 
          * section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Since JDWP version 1.5.
          */
         static class MethodsWithGeneric {
@@ -2911,7 +2904,7 @@ class JDWP {
                  * which provide additional information on the  
                  * method declaration. Individual flag values are 
                  * defined in Chapter 4 of 
-                 * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+                 * <cite>The Java Virtual Machine Specification</cite>. 
                  * In addition, The <code>0xf0000000</code> bit identifies 
                  * the method as synthetic, if the synthetic attribute 
                  * <a href="#JDWP_VirtualMachine_Capabilities">capability</a> is available.
@@ -3097,7 +3090,7 @@ class JDWP {
         /**
          * Return the raw bytes of the constant pool in the format of the 
          * constant_pool item of the Class File Format in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * <p>Since JDWP version 1.6. Requires canGetConstantPool capability - see 
          * <a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>.
          * 
@@ -3137,7 +3130,7 @@ class JDWP {
              * Total number of constant pool entries plus one. This 
              * corresponds to the constant_pool_count item of the 
              * Class File Format in 
-             * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+             * <cite>The Java Virtual Machine Specification</cite>. 
              */
             final int count;
 
@@ -4107,7 +4100,7 @@ class JDWP {
 
         /**
          * Retrieve the method's bytecodes as defined in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Requires canGetBytecodes capability - see 
          * <a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>.
          */
@@ -4239,7 +4232,7 @@ class JDWP {
          * table. Also, synthetic variables may be present. 
          * Generic signatures are described in the signature attribute 
          * section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>. 
+         * <cite>The Java Virtual Machine Specification</cite>. 
          * Since JDWP version 1.5.
          */
         static class VariableTableWithGeneric {
@@ -5930,7 +5923,7 @@ class JDWP {
          * The method which will return early is referred to as the 
          * called method. The called method is the current method (as 
          * defined by the Frames section in 
-         * <cite>The Java&trade; Virtual Machine Specification</cite>) 
+         * <cite>The Java Virtual Machine Specification</cite>) 
          * for the specified thread at the time this command 
          * is received. 
          * <p>
@@ -6122,7 +6115,7 @@ class JDWP {
          * in this thread group. Threads and thread groups in child 
          * thread groups are not included. 
          * A thread is alive if it has been started and has not yet been stopped. 
-         * See <a href=../../../api/java/lang/ThreadGroup.html>java.lang.ThreadGroup </a>
+         * See <a href=../../api/java.base/java/lang/ThreadGroup.html>java.lang.ThreadGroup </a>
          * for information about active ThreadGroups.
          */
         static class Children {
@@ -6385,11 +6378,12 @@ class JDWP {
         private ClassLoaderReference() {}  // hide constructor
 
         /**
-         * Returns a list of all classes which this class loader has 
-         * been requested to load. This class loader is considered to be 
-         * an <i>initiating</i> class loader for each class in the returned 
-         * list. The list contains each 
-         * reference type defined by this loader and any types for which 
+         * Returns a list of all classes which this class loader can find 
+         * by name via <code>ClassLoader::loadClass</code>, 
+         * <code>Class::forName</code> and bytecode linkage. That is, 
+         * all classes for which this class loader has been recorded as an 
+         * <i>initiating</i> loader. The list contains each 
+         * reference type created by this loader and any types for which 
          * loading was delegated by this class loader to another class loader. 
          * <p>
          * The visible class list has useful properties with respect to 
@@ -6399,6 +6393,8 @@ class JDWP {
          * this class loader must be resolved to that single type. 
          * <p>
          * No ordering of the returned list is guaranteed. 
+         * <p>
+         * See <a href="../jvmti.html#GetClassLoaderClasses">JVM TI GetClassLoaderClasses</a>. 
          */
         static class VisibleClasses {
             static final int COMMAND = 1;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,14 +52,14 @@ public class InstalledCode {
     /**
      * @return the address of entity representing this installed code.
      */
-    public final long getAddress() {
+    public long getAddress() {
         return address;
     }
 
     /**
      * @return the address of the normal entry point of the installed code.
      */
-    public final long getEntryPoint() {
+    public long getEntryPoint() {
         return entryPoint;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -100,18 +100,11 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @throws XMLSecurityException
      */
     public X509Certificate getX509Certificate() throws XMLSecurityException {
-        byte certbytes[] = this.getCertificateBytes();
+        byte[] certbytes = this.getCertificateBytes();
         try (InputStream is = new ByteArrayInputStream(certbytes)) {
             CertificateFactory certFact =
                 CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
-            X509Certificate cert =
-                (X509Certificate) certFact.generateCertificate(is);
-
-            if (cert != null) {
-                return cert;
-            }
-
-            return null;
+            return (X509Certificate) certFact.generateCertificate(is);
         } catch (CertificateException | IOException ex) {
             throw new XMLSecurityException(ex);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,6 +51,11 @@ public class BasicToggleButtonUI extends BasicButtonUI {
     // ********************************
     //          Create PLAF
     // ********************************
+
+    /**
+     * Constructs a {@code BasicToggleButtonUI}.
+     */
+    public BasicToggleButtonUI() {}
 
     /**
      * Returns an instance of {@code BasicToggleButtonUI}.
@@ -119,7 +124,7 @@ public class BasicToggleButtonUI extends BasicButtonUI {
         }
 
         // Draw the Text
-        if(text != null && !text.equals("")) {
+        if (text != null && !text.isEmpty()) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
             if (v != null) {
                v.paint(g, textRect);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,7 +39,7 @@ import jdk.jshell.Key.VarKey;
  * and thus is thread-safe.
  *
  * @since 9
- * @jls 8.3: FieldDeclaration.
+ * @jls 8.3 Field Declarations
  */
 public class VarSnippet extends DeclarationSnippet {
 

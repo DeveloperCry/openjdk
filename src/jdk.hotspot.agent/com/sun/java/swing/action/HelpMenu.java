@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,7 +46,7 @@ public class HelpMenu extends AbstractAction
 
     public static final String VALUE_COMMAND = "help-menu-command";
     public static final String VALUE_NAME = "Help";
-    public static final Integer VALUE_MNEMONIC = new Integer(72);
+    public static final Integer VALUE_MNEMONIC = 72;
     public static final String VALUE_SHORT_DESCRIPTION = "Help operations";
     public static final String VALUE_LONG_DESCRIPTION = "Help operations";
 

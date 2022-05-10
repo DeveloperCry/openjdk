@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,7 +50,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * The main class to parse JavaBeans XML archive.
@@ -62,6 +62,7 @@ import jdk.internal.misc.SharedSecrets;
  * @see ElementHandler
  */
 public final class DocumentHandler extends DefaultHandler {
+    @SuppressWarnings("removal")
     private final AccessControlContext acc = AccessController.getContext();
     private final Map<String, Class<? extends ElementHandler>> handlers = new HashMap<>();
     private final Map<String, Object> environment = new HashMap<>();
@@ -198,8 +199,8 @@ public final class DocumentHandler extends DefaultHandler {
      * Indicates whether the variable with specified identifier is defined.
      *
      * @param id  the identifier
-     * @return @{code true} if the variable is defined;
-     *         @{code false} otherwise
+     * @return {@code true} if the variable is defined;
+     *         {@code false} otherwise
      */
     public boolean hasVariable(String id) {
         return this.environment.containsKey(id);
@@ -366,6 +367,7 @@ public final class DocumentHandler extends DefaultHandler {
      *
      * @param input  the input source to parse
      */
+    @SuppressWarnings("removal")
     public void parse(final InputSource input) {
         if ((this.acc == null) && (null != System.getSecurityManager())) {
             throw new SecurityException("AccessControlContext is not set");

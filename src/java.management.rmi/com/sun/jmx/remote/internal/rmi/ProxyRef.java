@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,7 +35,8 @@ import java.rmi.server.RemoteObject;
 import java.rmi.server.RemoteRef;
 
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation",
+                   "serial"}) // Externalizable class w/o no-arg c'tor
 public class ProxyRef implements RemoteRef {
     private static final long serialVersionUID = -6503061366316814723L;
 

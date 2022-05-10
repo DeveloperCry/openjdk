@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,12 +45,12 @@ abstract class SunFileWriter extends AudioFileWriter {
     // buffer size for temporary input streams
     protected static final int bisBufferSize = 4096;
 
-    final AudioFileFormat.Type types[];
+    final AudioFileFormat.Type[] types;
 
     /**
      * Constructs a new SunParser object.
      */
-    SunFileWriter(AudioFileFormat.Type types[]) {
+    SunFileWriter(AudioFileFormat.Type[] types) {
         this.types = types;
     }
 
@@ -151,7 +151,7 @@ abstract class SunFileWriter extends AudioFileWriter {
      * The class is usefull for use with SequenceInputStream to prevent
      * closing of the source input streams.
      */
-    final class NoCloseInputStream extends InputStream {
+    static final class NoCloseInputStream extends InputStream {
         private final InputStream in;
 
         NoCloseInputStream(InputStream in) {
@@ -164,12 +164,12 @@ abstract class SunFileWriter extends AudioFileWriter {
         }
 
         @Override
-        public int read(byte b[]) throws IOException {
+        public int read(byte[] b) throws IOException {
             return in.read(b);
         }
 
         @Override
-        public int read(byte b[], int off, int len) throws IOException {
+        public int read(byte[] b, int off, int len) throws IOException {
             return in.read(b, off, len);
         }
 

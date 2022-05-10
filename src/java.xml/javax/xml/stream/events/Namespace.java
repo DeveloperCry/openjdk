@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,16 +41,19 @@ public interface Namespace extends Attribute {
   /**
    * Gets the prefix, returns "" if this is a default
    * namespace declaration.
+   * @return the prefix
    */
   public String getPrefix();
 
   /**
    * Gets the uri bound to the prefix of this namespace
+   * @return the {@code NamespaceURI}
    */
   public String getNamespaceURI();
 
   /**
    * returns true if this attribute declares the default namespace
+   * @return true if this is default namespace, false otherwise
    */
   public boolean isDefaultNamespaceDeclaration();
 }

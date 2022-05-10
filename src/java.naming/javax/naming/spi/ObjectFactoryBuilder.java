@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,7 +66,7 @@ public interface ObjectFactoryBuilder {
       * @param environment Environment to use when creating the factory.
       *                 Can be null.
       * @return A non-null new instance of an ObjectFactory.
-      * @exception NamingException If an object factory cannot be created.
+      * @throws NamingException If an object factory cannot be created.
       *
       */
     public ObjectFactory createObjectFactory(Object obj,

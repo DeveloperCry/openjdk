@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -28,6 +28,9 @@ package com.sun.org.apache.xml.internal.security.utils;
  * tolerant manner that works across different applications servers. Do not
  * touch this unless you're a grizzled classloading guru veteran who is going to
  * verify any change on 6 different application servers.
+ *
+ * This class and methods in this class are package private. The class is
+ * duplicated to multiple packages.
  */
 final class ClassLoaderUtils {
 

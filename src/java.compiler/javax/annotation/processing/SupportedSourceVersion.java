@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,8 +48,7 @@ import javax.lang.model.SourceVersion;
 @Retention(RUNTIME)
 public @interface SupportedSourceVersion {
     /**
-     * Returns the latest supported source version.
-     * @return the latest supported source version
+     * {@return the latest supported source version}
      */
     SourceVersion value();
 }

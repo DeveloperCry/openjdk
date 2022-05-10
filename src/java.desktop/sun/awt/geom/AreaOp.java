@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -214,7 +214,7 @@ public abstract class AreaOp {
         int right = 0;
         int cur = 0;
         int next = 0;
-        double yrange[] = new double[2];
+        double[] yrange = new double[2];
         Vector<CurveLink> subcurves = new Vector<>();
         Vector<ChainEnd> chains = new Vector<>();
         Vector<CurveLink> links = new Vector<>();

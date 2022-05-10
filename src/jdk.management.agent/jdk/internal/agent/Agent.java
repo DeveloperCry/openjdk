@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -68,7 +68,7 @@ public class Agent {
     /**
      * Agent status collector strategy class
      */
-    private static abstract class StatusCollector {
+    private abstract static class StatusCollector {
         protected static final Map<String, String> DEFAULT_PROPS = new HashMap<>();
 
         static {
@@ -93,8 +93,8 @@ public class Agent {
 
         }
 
-        final protected StringBuilder sb = new StringBuilder();
-        final public String collect() {
+        protected final StringBuilder sb = new StringBuilder();
+        public final String collect() {
             Properties agentProps = VMSupport.getAgentProperties();
             String localConnAddr = (String)agentProps.get(LOCAL_CONNECTOR_ADDRESS_PROP);
             if (localConnAddr != null || jmxServer != null) {
@@ -169,21 +169,21 @@ public class Agent {
             return (T t) -> p.test(f.apply(t));
         }
 
-        abstract protected void addAgentStatus(boolean enabled);
-        abstract protected void appendConnectionsHeader();
-        abstract protected void appendConnectionsFooter();
-        abstract protected void addConnectionDetails(JMXServiceURL u);
-        abstract protected void appendConnectionHeader(boolean remote);
-        abstract protected void appendConnectionFooter(boolean remote);
-        abstract protected void appendConfigPropsHeader();
-        abstract protected void appendConfigPropsFooter();
-        abstract protected void addConfigProp(Map.Entry<?, ?> prop);
+        protected abstract void addAgentStatus(boolean enabled);
+        protected abstract void appendConnectionsHeader();
+        protected abstract void appendConnectionsFooter();
+        protected abstract void addConnectionDetails(JMXServiceURL u);
+        protected abstract void appendConnectionHeader(boolean remote);
+        protected abstract void appendConnectionFooter(boolean remote);
+        protected abstract void appendConfigPropsHeader();
+        protected abstract void appendConfigPropsFooter();
+        protected abstract void addConfigProp(Map.Entry<?, ?> prop);
     }
 
     /**
      * Free-text status collector strategy implementation
      */
-    final private static class TextStatusCollector extends StatusCollector {
+    private static final class TextStatusCollector extends StatusCollector {
 
         @Override
         protected void addAgentStatus(boolean enabled) {
@@ -265,7 +265,7 @@ public class Agent {
     // return empty property set
     private static Properties parseString(String args) {
         Properties argProps = new Properties();
-        if (args != null && !args.trim().equals("")) {
+        if (args != null && !args.trim().isEmpty()) {
             for (String option : args.split(",")) {
                 String s[] = option.split("=", 2);
                 String name = s[0].trim();
@@ -663,11 +663,7 @@ public class Agent {
         System.err.print(getText("agent.err.error") + ": " + keyText);
 
         if (params != null && params.length != 0) {
-           StringBuffer message = new StringBuffer(params[0]);
-           for (int i = 1; i < params.length; i++) {
-               message.append(" " + params[i]);
-           }
-           System.err.println(": " + message);
+           System.err.println(": " + String.join(" ", params));
         }
         e.printStackTrace();
         throw new RuntimeException(e);

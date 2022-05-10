@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,10 +30,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The top level representation of a documentation comment.
+ * The top-level representation of a documentation comment.
  *
- * <p>
- * first-sentence body block-tags
+ * <pre>
+ *    first-sentence body block-tags
+ * </pre>
  *
  * @since 1.8
  */

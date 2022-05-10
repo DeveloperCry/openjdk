@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 package sun.jvm.hotspot.gc.g1;
 
 import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
+import sun.jvm.hotspot.utilities.Observable;
+import sun.jvm.hotspot.utilities.Observer;
 
 import sun.jvm.hotspot.debugger.Address;
 import sun.jvm.hotspot.runtime.VM;
@@ -42,7 +42,7 @@ import sun.jvm.hotspot.types.TypeDataBase;
 public class HeapRegionSetBase extends VMObject {
 
     // uint _length
-    static private CIntegerField lengthField;
+    private static CIntegerField lengthField;
 
     static {
         VM.registerVMInitializedObserver(new Observer() {
@@ -52,7 +52,7 @@ public class HeapRegionSetBase extends VMObject {
             });
     }
 
-    static private synchronized void initialize(TypeDataBase db) {
+    private static synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("HeapRegionSetBase");
 
         lengthField = type.getCIntegerField("_length");

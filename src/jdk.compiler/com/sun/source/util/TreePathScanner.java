@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,6 +43,10 @@ import com.sun.source.tree.*;
  * @since 1.6
  */
 public class TreePathScanner<R, P> extends TreeScanner<R, P> {
+    /**
+     * Constructs a {@code TreePathScanner}.
+     */
+    public TreePathScanner() {}
 
     /**
      * Scans a tree from a position identified by a TreePath.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -157,6 +157,7 @@ public class ModelMBeanAttributeInfo
     static {
         try {
             GetPropertyAction act = new GetPropertyAction("jmx.serial.form");
+            @SuppressWarnings("removal")
             String form = AccessController.doPrivileged(act);
             compat = (form != null && form.equals("1.0"));
         } catch (Exception e) {
@@ -179,7 +180,7 @@ public class ModelMBeanAttributeInfo
          */
         private Descriptor attrDescriptor = validDescriptor(null);
 
-        private final static String currClass = "ModelMBeanAttributeInfo";
+        private static final String currClass = "ModelMBeanAttributeInfo";
 
         /**
          * Constructs a ModelMBeanAttributeInfo object with a default

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,7 +22,10 @@
  *
  *
  */
+
 package java.awt;
+
+import java.io.Serial;
 
 /**
  * The {@code GridBagConstraints} class specifies constraints
@@ -565,9 +568,10 @@ public class GridBagConstraints implements Cloneable, java.io.Serializable {
     // Where the baseline lands relative to the center of the component.
     transient int centerOffset;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = -1000070633030801713L;
 
     /**

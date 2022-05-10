@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -287,8 +287,8 @@ public class JCDiagnostic implements Diagnostic<JavaFileObject> {
                 //replace all nested FragmentKey with full-blown JCDiagnostic objects
                 return DiagnosticInfo.of(diagnosticInfo.type, diagnosticInfo.prefix, diagnosticInfo.code,
                         Stream.of(diagnosticInfo.args).map(o -> {
-                            return (o instanceof Fragment) ?
-                                    fragment((Fragment)o) : o;
+                            return (o instanceof Fragment frag) ?
+                                    fragment(frag) : o;
                         }).toArray());
             }
 
@@ -429,9 +429,9 @@ public class JCDiagnostic implements Diagnostic<JavaFileObject> {
         RECOVERABLE,
         NON_DEFERRABLE,
         COMPRESSED,
-        /** Print multiple errors for same source locations.
+        /** Flag for diagnostics that were reported through API methods.
          */
-        MULTIPLE,
+        API,
         /** Flag for not-supported-in-source-X errors.
          */
         SOURCE_LEVEL;
@@ -479,7 +479,7 @@ public class JCDiagnostic implements Diagnostic<JavaFileObject> {
      * created programmatically (by using the supplied factory method) or obtained through build-time
      * generated factory methods.
      */
-    public static abstract class DiagnosticInfo {
+    public abstract static class DiagnosticInfo {
 
         /** The diagnostic kind (i.e. error). */
         DiagnosticType type;

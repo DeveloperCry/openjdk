@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,7 @@ public final class VMFlag {
      */
     public final Object value;
 
+    @VMEntryPoint
     VMFlag(String name, String type, Object value) {
         this.name = name;
         this.type = type;

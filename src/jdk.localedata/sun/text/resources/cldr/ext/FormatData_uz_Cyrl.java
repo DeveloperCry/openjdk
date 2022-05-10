@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -157,6 +153,16 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "\u0422\u041e",
                "\u0422\u041a",
+               "\u044f\u0440\u0438\u043c \u0442\u0443\u043d",
+               "\u0442\u0443\u0448 \u043f\u0430\u0439\u0442\u0438",
+               "\u044d\u0440\u0442\u0430\u043b\u0430\u0431",
+               "",
+               "\u043a\u0443\u043d\u0434\u0443\u0437\u0438",
+               "",
+               "\u043a\u0435\u0447\u049b\u0443\u0440\u0443\u043d",
+               "",
+               "\u043a\u0435\u0447\u0430\u0441\u0438",
+               "",
             };
         final String[] metaValue_Eras = new String[] {
                "\u043c.\u0430.",
@@ -203,6 +209,8 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
                     "\u0609",
                     "\u221e",
                     "\u04b3\u0430\u049b\u0438\u049b\u0438\u0439\u00a0\u0441\u043e\u043d\u00a0\u044d\u043c\u0430\u0441",
+                    "",
+                    "",
                 }
             },
             { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
@@ -216,20 +224,9 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
             { "narrow.Eras", metaValue_Eras },
             { "abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "timezone.regionFormat.standard", "{0} \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442 \u0432\u0430\u049b\u0442\u0438" },
-            { "DefaultNumberingSystem", "arabext" },
             { "japanese.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "japanese.MonthNames", metaValue_MonthNames },
-            { "standalone.DayAbbreviations",
-                new String[] {
-                    "\u042f\u043a\u0448",
-                    "\u0414\u0443\u0448",
-                    "\u0421\u0435\u0448",
-                    "\u0427\u043e\u0440",
-                    "\u041f\u0430\u0439",
-                    "\u0416\u0443\u043c",
-                    "\u0428\u0430\u043d",
-                }
-            },
+            { "standalone.DayAbbreviations", metaValue_DayAbbreviations },
             { "roc.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "long.Eras",
                 new String[] {
@@ -237,6 +234,7 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
                     "\u043c\u0438\u043b\u043e\u0434\u0438\u0439",
                 }
             },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.MonthNames", metaValue_MonthNames },
@@ -262,6 +260,8 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "\u04b3\u0430\u049b\u0438\u049b\u0438\u0439\u00a0\u0441\u043e\u043d\u00a0\u044d\u043c\u0430\u0441",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -272,40 +272,45 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
             { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
             { "field.dayperiod", "\u041a\u0443\u043d \u0432\u0430\u049b\u0442\u0438" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "field.month", "\u041e\u0439" },
-            { "field.second", "\u0421\u043e\u043d\u0438\u044f" },
-            { "DayAbbreviations", metaValue_DayAbbreviations },
-            { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
+            { "arabext.NumberPatterns",
                 new String[] {
                     "#,##0.###",
                     "#,##0.00\u00a0\u00a4",
                     "#,##0%",
-                }
-            },
-            { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
-            { "japanese.narrow.AmPmMarkers", metaValue_AmPmMarkers },
-            { "buddhist.TimePatterns", metaValue_TimePatterns },
-            { "standalone.MonthAbbreviations",
-                new String[] {
-                    "\u042f\u043d\u0432",
-                    "\u0424\u0435\u0432",
-                    "\u041c\u0430\u0440",
-                    "\u0410\u043f\u0440",
-                    "\u041c\u0430\u0439",
-                    "\u0418\u044e\u043d",
-                    "\u0418\u044e\u043b",
-                    "\u0410\u0432\u0433",
-                    "\u0421\u0435\u043d",
-                    "\u041e\u043a\u0442",
-                    "\u041d\u043e\u044f",
-                    "\u0414\u0435\u043a",
                     "",
                 }
             },
+            { "field.second", "\u0421\u043e\u043d\u0438\u044f" },
+            { "DayAbbreviations", metaValue_DayAbbreviations },
+            { "DayNarrows", metaValue_DayNarrows },
+            { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
+            { "japanese.narrow.AmPmMarkers", metaValue_AmPmMarkers },
+            { "buddhist.TimePatterns", metaValue_TimePatterns },
+            { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "timezone.regionFormat", "{0} \u0432\u0430\u049b\u0442\u0438" },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0' '\u043c\u0438\u043d\u0433 other:0' '\u043c\u0438\u043d\u0433}",
+                    "{one:00' '\u043c\u0438\u043d\u0433 other:00' '\u043c\u0438\u043d\u0433}",
+                    "{one:000' '\u043c\u0438\u043d\u0433 other:000' '\u043c\u0438\u043d\u0433}",
+                    "{one:0' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d other:0' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d}",
+                    "{one:00' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d other:00' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d}",
+                    "{one:000' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d other:000' '\u043c\u0438\u043b\u043b\u0438\u043e\u043d}",
+                    "{one:0' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434 other:0' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434}",
+                    "{one:00' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434 other:00' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434}",
+                    "{one:000' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434 other:000' '\u043c\u0438\u043b\u043b\u0438\u0430\u0440\u0434}",
+                    "{one:0' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d other:0' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d}",
+                    "{one:00' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d other:00' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d}",
+                    "{one:000' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d other:000' '\u0442\u0440\u0438\u043b\u0438\u043e\u043d}",
+                }
+            },
             { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "standalone.QuarterNames", metaValue_QuarterNames },
@@ -343,6 +348,25 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
             { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0\u043c\u0438\u043d\u0433 other:0\u043c\u0438\u043d\u0433}",
+                    "{one:00\u043c\u0438\u043d\u0433 other:00\u043c\u0438\u043d\u0433}",
+                    "{one:000\u043c\u0438\u043d\u0433 other:000\u043c\u0438\u043d\u0433}",
+                    "{one:0\u043c\u043b\u043d other:0\u043c\u043b\u043d}",
+                    "{one:00\u043c\u043b\u043d other:00\u043c\u043b\u043d}",
+                    "{one:000\u043c\u043b\u043d other:000\u043c\u043b\u043d}",
+                    "{one:0\u043c\u043b\u0440\u0434 other:0\u043c\u043b\u0440\u0434}",
+                    "{one:00\u043c\u043b\u0440\u0434 other:00\u043c\u043b\u0440\u0434}",
+                    "{one:000\u043c\u043b\u0440\u0434 other:000\u043c\u043b\u0440\u0434}",
+                    "{one:0\u0442\u0440\u043b\u043d other:0\u0442\u0440\u043b\u043d}",
+                    "{one:00\u0442\u0440\u043b\u043d other:00\u0442\u0440\u043b\u043d}",
+                    "{one:000\u0442\u0440\u043b\u043d other:000\u0442\u0440\u043b\u043d}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "timezone.regionFormat.daylight", "{0} \u043a\u0443\u043d\u0434\u0443\u0437\u0433\u0438 \u0432\u0430\u049b\u0442\u0438" },
             { "DatePatterns",
@@ -356,33 +380,15 @@ public class FormatData_uz_Cyrl extends ListResourceBundle {
             { "buddhist.DayAbbreviations", metaValue_DayAbbreviations },
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
-            { "standalone.DayNames",
-                new String[] {
-                    "\u042f\u043a\u0448\u0430\u043d\u0431\u0430",
-                    "\u0414\u0443\u0448\u0430\u043d\u0431\u0430",
-                    "\u0421\u0435\u0448\u0430\u043d\u0431\u0430",
-                    "\u0427\u043e\u0440\u0448\u0430\u043d\u0431\u0430",
-                    "\u041f\u0430\u0439\u0448\u0430\u043d\u0431\u0430",
-                    "\u0416\u0443\u043c\u0430",
-                    "\u0428\u0430\u043d\u0431\u0430",
-                }
-            },
+            { "standalone.DayNames", metaValue_DayNames },
             { "field.hour", "\u0421\u043e\u0430\u0442" },
-            { "standalone.MonthNames",
+            { "standalone.MonthNames", metaValue_MonthNames },
+            { "latn.NumberPatterns",
                 new String[] {
-                    "\u042f\u043d\u0432\u0430\u0440",
-                    "\u0424\u0435\u0432\u0440\u0430\u043b",
-                    "\u041c\u0430\u0440\u0442",
-                    "\u0410\u043f\u0440\u0435\u043b",
-                    "\u041c\u0430\u0439",
-                    "\u0418\u044e\u043d",
-                    "\u0418\u044e\u043b",
-                    "\u0410\u0432\u0433\u0443\u0441\u0442",
-                    "\u0421\u0435\u043d\u0442\u044f\u0431\u0440",
-                    "\u041e\u043a\u0442\u044f\u0431\u0440",
-                    "\u041d\u043e\u044f\u0431\u0440",
-                    "\u0414\u0435\u043a\u0430\u0431\u0440",
-                    "",
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0%",
+                    "#,##0.00\u00a0\u00a4",
                 }
             },
             { "buddhist.DayNarrows", metaValue_DayNarrows },

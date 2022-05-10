@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 package sun.jvm.hotspot.gc.g1;
 
 import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
+import sun.jvm.hotspot.utilities.Observable;
+import sun.jvm.hotspot.utilities.Observer;
 
 import sun.jvm.hotspot.debugger.Address;
 import sun.jvm.hotspot.runtime.VM;
@@ -41,9 +41,7 @@ import sun.jvm.hotspot.types.TypeDataBase;
 
 public class HeapRegionManager extends VMObject {
     // G1HeapRegionTable _regions
-    static private long regionsFieldOffset;
-    // uint _committed_length
-    static private CIntegerField numCommittedField;
+    private static long regionsFieldOffset;
 
     static {
         VM.registerVMInitializedObserver(new Observer() {
@@ -53,11 +51,10 @@ public class HeapRegionManager extends VMObject {
             });
     }
 
-    static private synchronized void initialize(TypeDataBase db) {
+    private static synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("HeapRegionManager");
 
         regionsFieldOffset = type.getField("_regions").getOffset();
-        numCommittedField = type.getCIntegerField("_num_committed");
     }
 
     private G1HeapRegionTable regions() {
@@ -72,10 +69,6 @@ public class HeapRegionManager extends VMObject {
 
     public long length() {
         return regions().length();
-    }
-
-    public long committedLength() {
-        return numCommittedField.getValue(addr);
     }
 
     public Iterator<HeapRegion> heapRegionIterator() {

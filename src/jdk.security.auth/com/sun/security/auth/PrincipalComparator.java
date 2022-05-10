@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,6 +54,8 @@ public interface PrincipalComparator {
     /**
      * Check if the specified {@code Subject} is implied by
      * this object.
+     *
+     * @param  subject the subject to compare
      *
      * @return true if the specified {@code Subject} is implied by
      *          this object, or false otherwise.

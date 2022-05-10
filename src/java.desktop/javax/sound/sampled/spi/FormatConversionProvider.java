@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,6 +50,11 @@ import static javax.sound.sampled.AudioFormat.Encoding;
  * @since 1.3
  */
 public abstract class FormatConversionProvider {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected FormatConversionProvider() {}
 
     /**
      * Obtains the set of source format encodings from which format conversion

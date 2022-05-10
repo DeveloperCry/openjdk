@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1054,7 +1054,7 @@ import javax.swing.text.*;
         /**
          * Set the layout arrays to use for holding layout results
          */
-        public void setLayoutArrays(int offsets[], int spans[], int targetSpan) {
+        public void setLayoutArrays(int[] offsets, int[] spans, int targetSpan) {
             this.offsets = offsets;
             this.spans = spans;
             updatePercentagesAndAdjustmentWeights(targetSpan);
@@ -1691,7 +1691,7 @@ import javax.swing.text.*;
      * Default view of an html table cell.  This needs to be moved
      * somewhere else.
      */
-    class CellView extends BlockView {
+    static class CellView extends BlockView {
 
         /**
          * Constructs a TableCell for the given element.

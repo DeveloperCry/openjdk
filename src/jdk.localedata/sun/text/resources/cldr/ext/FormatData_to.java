@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -157,6 +153,16 @@ public class FormatData_to extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "hengihengi",
                "efiafi",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_Eras = new String[] {
                "KM",
@@ -174,6 +180,20 @@ public class FormatData_to extends ListResourceBundle {
                "3",
                "4",
             };
+        final String[] metaValue_buddhist_narrow_AmPmMarkers = new String[] {
+               "AM",
+               "PM",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+            };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
                "EEEE d MMMM y G",
                "d MMMM y G",
@@ -186,11 +206,13 @@ public class FormatData_to extends ListResourceBundle {
                "d MMM y GGGG",
                "d/M/yy G",
             };
-        final String[] metaValue_japanese_narrow_AmPmMarkers = new String[] {
-               "AM",
-               "PM",
-            };
         final String metaValue_calendarname_gregorian = "fakakelekolia";
+        final String[] metaValue_arabext_NumberPatterns = new String[] {
+               "#,##0.###",
+               "\u00a4\u00a0#,##0.00",
+               "#,##0%",
+               "",
+            };
         final String[] metaValue_brah_NumberElements = new String[] {
                ".",
                ",",
@@ -203,6 +225,8 @@ public class FormatData_to extends ListResourceBundle {
                "\u2030",
                "\u221e",
                "NaN",
+               "",
+               "",
             };
         final Object[][] data = new Object[][] {
             { "MonthNames", metaValue_MonthNames },
@@ -220,10 +244,13 @@ public class FormatData_to extends ListResourceBundle {
                     "\u0609",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
             { "AmPmMarkers", metaValue_AmPmMarkers },
+            { "osma.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "standalone.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.QuarterNames", metaValue_QuarterNames },
@@ -240,11 +267,15 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "mtei.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "roc.MonthNarrows", metaValue_MonthNarrows },
             { "calendarname.islamic-civil", "fakamohameti-sivile" },
-            { "islamic.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "islamic.narrow.AmPmMarkers", metaValue_buddhist_narrow_AmPmMarkers },
+            { "takr.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "mymr.NumberElements",
                 new String[] {
                     ".",
@@ -258,6 +289,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.TimePatterns", metaValue_TimePatterns },
@@ -275,8 +308,11 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "gonm.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "timezone.regionFormat.standard", "{0} Taimi totonu" },
             { "tamldec.NumberElements",
                 new String[] {
@@ -291,6 +327,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "calendarname.japanese", "fakasiapani" },
@@ -307,6 +345,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.MonthNames", metaValue_MonthNames },
@@ -325,6 +365,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "long.Eras",
@@ -333,6 +375,7 @@ public class FormatData_to extends ListResourceBundle {
                     "ta\u02bbu \u02bbo S\u012bs\u016b",
                 }
             },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "saur.NumberElements",
                 new String[] {
                     ".",
@@ -346,11 +389,14 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.MonthNames", metaValue_MonthNames },
+            { "cakm.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "DateTimePatterns",
                 new String[] {
                     "{1}, {0}",
@@ -372,6 +418,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "TF",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -389,6 +437,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "buddhist.DayNames", metaValue_DayNames },
@@ -396,6 +446,8 @@ public class FormatData_to extends ListResourceBundle {
             { "field.era", "kuonga" },
             { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
             { "field.dayperiod", "AM/PM" },
+            { "bali.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "lana.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
             { "cham.NumberElements",
                 new String[] {
@@ -410,8 +462,12 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
+            { "saur.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "arab.NumberElements",
                 new String[] {
                     "\u066b",
@@ -425,8 +481,11 @@ public class FormatData_to extends ListResourceBundle {
                     "\u0609",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "beng.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "shrd.NumberElements", metaValue_brah_NumberElements },
             { "takr.NumberElements", metaValue_brah_NumberElements },
             { "calendarname.roc", "fakalepupelika siaina" },
@@ -444,24 +503,23 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "roc.QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "sund.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "field.month", "m\u0101hina" },
+            { "arabext.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "osma.NumberElements", metaValue_brah_NumberElements },
             { "field.second", "sekoni" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "\u00a4\u00a0#,##0.00",
-                    "#,##0%",
-                }
-            },
+            { "vaii.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "calendarname.islamic", "fakamohameti" },
             { "gonm.NumberElements", metaValue_brah_NumberElements },
+            { "guru.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "knda.NumberElements",
                 new String[] {
                     ".",
@@ -475,6 +533,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "bali.NumberElements",
@@ -490,15 +550,37 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
-            { "japanese.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "japanese.narrow.AmPmMarkers", metaValue_buddhist_narrow_AmPmMarkers },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
+            { "sora.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "brah.NumberElements", metaValue_brah_NumberElements },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "timezone.regionFormat", "Taimi {0}" },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{other:0' 'afe}",
+                    "{other:0' 'mano}",
+                    "{other:0' 'kilu}",
+                    "{other:0' 'miliona}",
+                    "{other:00' 'miliona}",
+                    "{other:000' 'miliona}",
+                    "{other:0' 'piliona}",
+                    "{other:00' 'piliona}",
+                    "{other:000' 'piliona}",
+                    "{other:0' 'tiliona}",
+                    "{other:00' 'tiliona}",
+                    "{other:000' 'tiliona}",
+                }
+            },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
-            { "roc.narrow.AmPmMarkers", metaValue_japanese_narrow_AmPmMarkers },
+            { "roc.narrow.AmPmMarkers", metaValue_buddhist_narrow_AmPmMarkers },
             { "standalone.QuarterNames",
                 new String[] {
                     "kuata 1",
@@ -520,12 +602,17 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.MonthNarrows", metaValue_MonthNarrows },
+            { "tibt.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "khmr.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "islamic.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.DayAbbreviations", metaValue_DayAbbreviations },
             { "standalone.DayNarrows", metaValue_DayNarrows },
+            { "orya.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "mymrshan.NumberElements",
                 new String[] {
                     ".",
@@ -539,6 +626,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
@@ -555,6 +644,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "java.NumberElements",
@@ -570,6 +661,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "TimePatterns", metaValue_TimePatterns },
@@ -586,8 +679,11 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "gujr.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "fullwide.NumberElements",
                 new String[] {
                     ".",
@@ -601,9 +697,13 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "islamic.DayNarrows", metaValue_DayNarrows },
+            { "limb.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "hanidec.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "khmr.NumberElements",
                 new String[] {
                     ".",
@@ -617,10 +717,20 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "field.zone", "taimi fakavahe" },
             { "japanese.QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "arab.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0%",
+                    "",
+                }
+            },
             { "laoo.NumberElements",
                 new String[] {
                     ".",
@@ -634,6 +744,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "sund.NumberElements",
@@ -649,8 +761,11 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "telu.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "thai.NumberElements",
                 new String[] {
                     ".",
@@ -664,9 +779,13 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "buddhist.narrow.AmPmMarkers", metaValue_buddhist_narrow_AmPmMarkers },
             { "Eras", metaValue_Eras },
+            { "hanidec.NumberElements", metaValue_brah_NumberElements },
             { "kali.NumberElements",
                 new String[] {
                     ".",
@@ -680,10 +799,15 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "roc.DayNames", metaValue_DayNames },
+            { "lepc.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "islamic.QuarterNames", metaValue_QuarterNames },
+            { "mymrshan.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "nkoo.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "mong.NumberElements",
                 new String[] {
                     ".",
@@ -697,14 +821,23 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "lanatham.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "java.time.islamic.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "field.weekday", "\u02bbaho \u02bbo e uike" },
+            { "brah.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "java.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "thai.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.DayAbbreviations", metaValue_DayAbbreviations },
+            { "fullwide.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "japanese.QuarterNames", metaValue_QuarterNames },
             { "buddhist.QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "mong.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "tamldec.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "telu.NumberElements",
                 new String[] {
                     ".",
@@ -718,8 +851,11 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
+            { "mymr.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "nkoo.NumberElements",
                 new String[] {
                     ".",
@@ -733,9 +869,12 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "cakm.NumberElements", metaValue_brah_NumberElements },
+            { "olck.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "tibt.NumberElements",
                 new String[] {
                     ".",
@@ -749,9 +888,12 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.DayNames", metaValue_DayNames },
+            { "knda.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "japanese.DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNames", metaValue_DayNames },
             { "lanatham.NumberElements",
@@ -767,11 +909,15 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.MonthNames", metaValue_MonthNames },
             { "sora.NumberElements", metaValue_brah_NumberElements },
+            { "laoo.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "talu.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "field.week", "uike" },
             { "gujr.NumberElements",
                 new String[] {
@@ -786,6 +932,8 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "buddhist.MonthNarrows", metaValue_MonthNarrows },
@@ -804,9 +952,12 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "roc.DayNarrows", metaValue_DayNarrows },
+            { "shrd.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "orya.NumberElements",
                 new String[] {
                     ".",
@@ -820,11 +971,33 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "mlym.NumberPatterns", metaValue_arabext_NumberPatterns },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{other:0a}",
+                    "{other:0m}",
+                    "{other:0k}",
+                    "{other:0M}",
+                    "{other:00M}",
+                    "{other:000M}",
+                    "{other:0P}",
+                    "{other:00P}",
+                    "{other:000P}",
+                    "{other:0T}",
+                    "{other:00T}",
+                    "{other:000T}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "timezone.regionFormat.daylight", "{0} Taimi liliu" },
             { "DatePatterns",
@@ -836,6 +1009,7 @@ public class FormatData_to extends ListResourceBundle {
                 }
             },
             { "buddhist.DayAbbreviations", metaValue_DayAbbreviations },
+            { "cham.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
@@ -853,15 +1027,27 @@ public class FormatData_to extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "calendarname.buddhist", "fakaputa" },
+            { "kali.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "standalone.MonthNames", metaValue_MonthNames },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "\u00a4\u00a0#,##0.00",
+                    "#,##0%",
+                    "\u00a4\u00a0#,##0.00",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "japanese.DayNarrows", metaValue_DayNarrows },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterAbbreviations },
+            { "deva.NumberPatterns", metaValue_arabext_NumberPatterns },
             { "calendarname.gregory", metaValue_calendarname_gregorian },
         };
         return data;

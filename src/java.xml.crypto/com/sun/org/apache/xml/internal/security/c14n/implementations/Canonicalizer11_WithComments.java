@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -36,7 +36,4 @@ public class Canonicalizer11_WithComments extends Canonicalizer20010315 {
         return Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS;
     }
 
-    public final boolean engineGetIncludeComments() {
-        return true;
-    }
 }

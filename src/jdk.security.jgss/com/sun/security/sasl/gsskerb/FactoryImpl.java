@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,11 +32,11 @@ import java.util.Map;
 import javax.security.auth.callback.CallbackHandler;
 
 /**
-  * Client/server factory for GSSAPI (Kerberos V5) SASL client/server mechs.
-  * See GssKrb5Client/GssKrb5Server for input requirements.
-  *
-  * @author Rosanna Lee
-  */
+ * Client/server factory for GSSAPI (Kerberos V5) SASL client/server mechs.
+ * See GssKrb5Client/GssKrb5Server for input requirements.
+ *
+ * @author Rosanna Lee
+ */
 public final class FactoryImpl implements SaslClientFactory, SaslServerFactory {
     private static final String[] myMechs = {
         "GSSAPI"};

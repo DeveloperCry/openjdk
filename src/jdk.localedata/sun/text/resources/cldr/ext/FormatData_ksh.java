@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -157,10 +153,30 @@ public class FormatData_ksh extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "Uhr v\u00f6rmiddaachs",
                "Uhr nommendaachs",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_narrow_AmPmMarkers = new String[] {
                "v.M.",
                "n.M.",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] metaValue_TimePatterns = new String[] {
                "HH:mm:ss zzzz",
@@ -195,7 +211,6 @@ public class FormatData_ksh extends ListResourceBundle {
             { "java.time.japanese.DatePatterns", metaValue_java_time_japanese_DatePatterns },
             { "standalone.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.QuarterNames", metaValue_QuarterNames },
-            { "roc.MonthNarrows", metaValue_MonthNarrows },
             { "calendarname.islamic-civil", "w\u00e4ltlesche islaamesche Kal\u00e4nder" },
             { "japanese.TimePatterns", metaValue_TimePatterns },
             { "narrow.Eras",
@@ -217,6 +232,7 @@ public class FormatData_ksh extends ListResourceBundle {
                     "noh Krestos",
                 }
             },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.MonthNames", metaValue_MonthNames },
@@ -233,7 +249,9 @@ public class FormatData_ksh extends ListResourceBundle {
                     "\u00d710^",
                     "\u2030",
                     "\u221e",
-                    "\u00a4\u00a4\u00a4",
+                    "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -244,6 +262,7 @@ public class FormatData_ksh extends ListResourceBundle {
             { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
             { "field.dayperiod", "Daachteil" },
             { "standalone.MonthNarrows", metaValue_MonthNarrows },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "calendarname.roc", "rotschineesesche Kal\u00e4nder" },
             { "islamic.DatePatterns", metaValue_japanese_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_QuarterAbbreviations },
@@ -251,13 +270,6 @@ public class FormatData_ksh extends ListResourceBundle {
             { "field.second", "Sekond" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "#,##0.00\u00a0\u00a4",
-                    "#,##0\u00a0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_japanese_DatePatterns },
             { "calendarname.islamic", "i\u00dflaamesche Kal\u00e4nder" },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
@@ -279,16 +291,32 @@ public class FormatData_ksh extends ListResourceBundle {
                 }
             },
             { "timezone.regionFormat", "Zick vun {0}" },
-            { "roc.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{zero:0' 'Dousend one:0' 'Dousend other:0' 'Dousend}",
+                    "{zero:00' 'Dousend one:00' 'Dousend other:00' 'Dousend}",
+                    "{zero:000' 'Dousend one:000' 'Dousend other:000' 'Dousend}",
+                    "{zero:0' 'Milljuhne one:0' 'Million other:0' 'Milljuhne}",
+                    "{zero:00' 'Milljuhne one:00' 'Milljuhne other:00' 'Millionen}",
+                    "{zero:000' 'Milljuhne one:000' 'Milljuhne other:000' 'Millionen}",
+                    "{zero:0' 'Milljard one:0' 'Milliarde other:0' 'Milljarde}",
+                    "{zero:00' 'Milljarde one:00' 'Milljarde other:00' 'Milliarden}",
+                    "{zero:000' 'Milljarde one:000' 'Milliarde other:000' 'Milliarden}",
+                    "{zero:0' 'Billjuhn one:0' 'Billjuhn other:0' 'Billjuhn}",
+                    "{zero:00' 'Billjuhn one:00' 'Billion other:00' 'Billionen}",
+                    "{zero:000' 'Billjuhn one:000' 'Billion other:000' 'Billionen}",
+                }
+            },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "standalone.QuarterNames", metaValue_QuarterNames },
-            { "japanese.MonthNarrows", metaValue_MonthNarrows },
             { "islamic.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "roc.DayAbbreviations", metaValue_DayAbbreviations },
             { "standalone.DayNarrows", metaValue_DayNarrows },
             { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
             { "TimePatterns", metaValue_TimePatterns },
-            { "islamic.DayNarrows", metaValue_DayNarrows },
             { "field.zone", "Zickzohn" },
             { "japanese.QuarterAbbreviations", metaValue_QuarterAbbreviations },
             { "buddhist.narrow.AmPmMarkers", metaValue_narrow_AmPmMarkers },
@@ -329,7 +357,6 @@ public class FormatData_ksh extends ListResourceBundle {
             },
             { "roc.MonthNames", metaValue_MonthNames },
             { "field.week", "Woch" },
-            { "buddhist.MonthNarrows", metaValue_MonthNarrows },
             { "buddhist.QuarterNames", metaValue_QuarterNames },
             { "islamic.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "roc.DayNarrows", metaValue_DayNarrows },
@@ -341,6 +368,25 @@ public class FormatData_ksh extends ListResourceBundle {
                     "d. MMMM y G",
                     "d. MMM. y G",
                     "d. M. y GGGGG",
+                }
+            },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{zero:0\u00a0tsd one:0\u00a0tsd other:0\u00a0tsd}",
+                    "{zero:00\u00a0tsd one:00\u00a0tsd other:00\u00a0tsd}",
+                    "{zero:000\u00a0tsd one:000\u00a0tsd other:000\u00a0tsd}",
+                    "{zero:0\u00a0Mio one:0\u00a0Mio other:0\u00a0Mio}",
+                    "{zero:00\u00a0Mio one:00\u00a0Mio other:00\u00a0Mio}",
+                    "{zero:000\u00a0Mio one:000\u00a0Mio other:000\u00a0Mio}",
+                    "{zero:0\u00a0Mrd one:0\u00a0Mrd other:0\u00a0Mrd}",
+                    "{zero:00\u00a0Mrd one:00\u00a0Mrd other:00\u00a0Mrd}",
+                    "{zero:000\u00a0Mrd one:000\u00a0Mrd other:000\u00a0Mrd}",
+                    "{zero:0\u00a0Bio one:0\u00a0Bio other:0\u00a0Bio}",
+                    "{zero:00\u00a0Bio one:00\u00a0Bio other:00\u00a0Bio}",
+                    "{zero:000\u00a0Bio one:000\u00a0Bio other:000\u00a0Bio}",
                 }
             },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
@@ -357,11 +403,18 @@ public class FormatData_ksh extends ListResourceBundle {
             { "islamic.TimePatterns", metaValue_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "zero:n = 0;one:n = 1" },
             { "field.hour", "Schtund" },
             { "calendarname.buddhist", "buddistesche Kal\u00e4nder" },
             { "standalone.MonthNames", metaValue_MonthNames },
-            { "buddhist.DayNarrows", metaValue_DayNarrows },
-            { "japanese.DayNarrows", metaValue_DayNarrows },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0\u00a0%",
+                    "",
+                }
+            },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterAbbreviations },

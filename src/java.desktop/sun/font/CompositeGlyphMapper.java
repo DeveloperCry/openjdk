@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -53,7 +53,7 @@ public class CompositeGlyphMapper extends CharToGlyphMapper {
 
 
     CompositeFont font;
-    CharToGlyphMapper slotMappers[];
+    CharToGlyphMapper[] slotMappers;
     int[][] glyphMaps;
     private boolean hasExcludes;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,6 +36,9 @@ package javax.xml.stream;
 public class FactoryConfigurationError extends Error {
     private static final long serialVersionUID = -2994412584589975744L;
 
+  /**
+   * The nested exception.
+   */
   Exception nested;
 
   /**

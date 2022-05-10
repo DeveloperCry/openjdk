@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -32,7 +32,6 @@ import com.sun.org.apache.bcel.internal.classfile.JavaClass;
  * Since JavaClass has no equals() method, the name of the class is
  * used for comparison.
  *
- * @version $Id: ClassSet.java 1749603 2016-06-21 20:50:19Z ggregory $
  * @see ClassStack
  */
 public class ClassSet {

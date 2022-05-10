@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -83,12 +83,12 @@ public class LivenessAnalysis {
 
     // HashSet of Oops acting as a bit mask indicating which ones have
     // already been traversed
-    Set/*<Oop>*/ visitedOops = new HashSet/*<Oop>*/();
+    Set<Oop> visitedOops = new HashSet<>();
 
       // IdentityHashMap of LivenessElements acting as a bit mask
       // indicating which roots have already been traversed
-    Map/*<LivenessElement, LivenessElement>*/ visitedRoots =
-      new IdentityHashMap/*<LivenessElement, LivenessElement>*/();
+    Map<LivenessPathElement, LivenessPathElement> visitedRoots =
+      new IdentityHashMap<>();
 
     visitedOops.add(target);
 

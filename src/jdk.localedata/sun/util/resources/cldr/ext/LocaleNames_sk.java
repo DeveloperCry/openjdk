@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -252,7 +248,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "MF", "Sv\u00e4t\u00fd Martin (fr.)" },
             { "MG", "Madagaskar" },
             { "MH", "Marshallove ostrovy" },
-            { "MK", "Maced\u00f3nsko" },
+            { "MK", "Severn\u00e9 Maced\u00f3nsko" },
             { "ML", "Mali" },
             { "MM", "Mjanmarsko" },
             { "MN", "Mongolsko" },
@@ -322,7 +318,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "SV", "Salv\u00e1dor" },
             { "SX", "Sv\u00e4t\u00fd Martin (hol.)" },
             { "SY", "S\u00fdria" },
-            { "SZ", "Svazijsko" },
+            { "SZ", "Eswatini" },
             { "TA", "Tristan da Cunha" },
             { "TC", "Turks a Caicos" },
             { "TD", "\u010cad" },
@@ -356,6 +352,8 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "VU", "Vanuatu" },
             { "WF", "Wallis a Futuna" },
             { "WS", "Samoa" },
+            { "XA", "falo\u0161n\u00e1 diakritika" },
+            { "XB", "obr\u00e1tenie sprava do\u013eava" },
             { "XK", "Kosovo" },
             { "YE", "Jemen" },
             { "YT", "Mayotte" },
@@ -474,13 +472,13 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "my", "barm\u010dina" },
             { "na", "nauru\u0161tina" },
             { "nb", "n\u00f3r\u010dina (bokmal)" },
-            { "nd", "severn\u00e1 ndebel\u010dina" },
+            { "nd", "ndebel\u010dina (severn\u00e1)" },
             { "ne", "nep\u00e1l\u010dina" },
             { "ng", "ndonga" },
             { "nl", "holand\u010dina" },
             { "nn", "n\u00f3r\u010dina (nynorsk)" },
             { "no", "n\u00f3r\u010dina" },
-            { "nr", "ju\u017en\u00e1 ndebel\u010dina" },
+            { "nr", "ndebel\u010dina (ju\u017en\u00e1)" },
             { "nv", "navaho" },
             { "ny", "\u0148and\u017ea" },
             { "oc", "okcit\u00e1n\u010dina" },
@@ -502,7 +500,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "sa", "sanskrit" },
             { "sc", "sard\u00edn\u010dina" },
             { "sd", "sindh\u010dina" },
-            { "se", "severn\u00e1 saam\u010dina" },
+            { "se", "saam\u010dina (severn\u00e1)" },
             { "sg", "sango" },
             { "sh", "srbochorv\u00e1t\u010dina" },
             { "si", "sinhal\u010dina" },
@@ -514,7 +512,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "sq", "alb\u00e1n\u010dina" },
             { "sr", "srb\u010dina" },
             { "ss", "svazij\u010dina" },
-            { "st", "ju\u017en\u00e1 soth\u010dina" },
+            { "st", "soth\u010dina (ju\u017en\u00e1)" },
             { "su", "sund\u010dina" },
             { "sv", "\u0161v\u00e9d\u010dina" },
             { "sw", "swahil\u010dina" },
@@ -562,7 +560,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "arc", "aramej\u010dina" },
             { "arn", "mapudungun" },
             { "arp", "arapa\u017e\u0161tina" },
-            { "ars", "arab\u010dina \u2013 nad\u017ed" },
+            { "ars", "arab\u010dina (nad\u017edsk\u00e1)" },
             { "arw", "arawa\u010dtina" },
             { "asa", "asu" },
             { "ast", "ast\u00far\u010dina" },
@@ -594,6 +592,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "car", "karib\u010dina" },
             { "cay", "kajug\u010dina" },
             { "cch", "atsam" },
+            { "ccp", "\u010dakma" },
             { "ceb", "cebu\u00e1n\u010dina" },
             { "cgg", "kiga" },
             { "chb", "\u010dib\u010da" },
@@ -761,7 +760,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "nog", "nogaj\u010dina" },
             { "non", "star\u00e1 n\u00f3r\u010dina" },
             { "nqo", "n\u2019ko" },
-            { "nso", "severn\u00e1 soth\u010dina" },
+            { "nso", "soth\u010dina (severn\u00e1)" },
             { "nus", "nuer" },
             { "nwc", "klasick\u00e1 nev\u00e1r\u010dina" },
             { "nym", "\u0148amwezi" },
@@ -809,10 +808,10 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "shn", "\u0161an\u010dina" },
             { "shu", "\u010dadsk\u00e1 arab\u010dina" },
             { "sid", "sidamo" },
-            { "sma", "ju\u017en\u00e1 saam\u010dina" },
-            { "smj", "lulsk\u00e1 saam\u010dina" },
-            { "smn", "inarijsk\u00e1 saam\u010dina" },
-            { "sms", "skoltsk\u00e1 saam\u010dina" },
+            { "sma", "saam\u010dina (ju\u017en\u00e1)" },
+            { "smj", "saam\u010dina (lulsk\u00e1)" },
+            { "smn", "saam\u010dina (inarijsk\u00e1)" },
+            { "sms", "saam\u010dina (skoltsk\u00e1)" },
             { "snk", "soninke" },
             { "sog", "sogdij\u010dina" },
             { "srn", "surinam\u010dina" },
@@ -842,7 +841,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "tvl", "tuval\u010dina" },
             { "twq", "tasawaq" },
             { "tyv", "tuvian\u010dina" },
-            { "tzm", "stredomarock\u00e1 tuareg\u010dina" },
+            { "tzm", "tamazight (stredomarock\u00fd)" },
             { "udm", "udmurt\u010dina" },
             { "uga", "ugarit\u010dina" },
             { "umb", "umbundu" },
@@ -865,11 +864,12 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "zap", "zapot\u00e9\u010dtina" },
             { "zbl", "syst\u00e9m Bliss" },
             { "zen", "zenaga" },
-            { "zgh", "tuareg\u010dina (\u0161tandardn\u00e1 marock\u00e1)" },
+            { "zgh", "tuareg\u010dina (marock\u00e1 \u0161tandardn\u00e1)" },
             { "zun", "zuni\u0161tina" },
             { "zxx", "bez jazykov\u00e9ho obsahu" },
             { "zza", "zaza" },
             { "Arab", "arabsk\u00e9" },
+            { "Aran", "nastaliq" },
             { "Armn", "arm\u00e9nske" },
             { "Bali", "balijsk\u00fd" },
             { "Beng", "beng\u00e1lske" },
@@ -906,9 +906,12 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "Maya", "maysk\u00e9 hieroglyfy" },
             { "Mlym", "malaj\u00e1lamske" },
             { "Mong", "mongolsk\u00e9" },
+            { "Mtei", "mejtej majek (manipursk\u00e9)" },
             { "Mymr", "barmsk\u00e9" },
+            { "Olck", "sant\u00e1lske (ol chiki)" },
             { "Orya", "ur\u00edjske" },
             { "Osma", "osmansk\u00fd" },
+            { "Qaag", "zawgyi" },
             { "Runr", "Runov\u00e9 p\u00edsmo" },
             { "Sinh", "sinh\u00e1lske" },
             { "Taml", "tamilsk\u00e9" },
@@ -922,7 +925,6 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "Zxxx", "bez z\u00e1pisu" },
             { "Zyyy", "v\u0161eobecn\u00e9" },
             { "Zzzz", "nezn\u00e1me p\u00edsmo" },
-            { "root", "kore\u0148" },
             { "de_AT", "nem\u010dina (rak\u00faska)" },
             { "de_CH", "nem\u010dina (\u0161vaj\u010diarska spisovn\u00e1)" },
             { "en_AU", "angli\u010dtina (austr\u00e1lska)" },
@@ -931,6 +933,7 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "en_US", "angli\u010dtina (americk\u00e1)" },
             { "es_ES", "\u0161paniel\u010dina (eur\u00f3pska)" },
             { "es_MX", "\u0161paniel\u010dina (mexick\u00e1)" },
+            { "fa_AF", "dar\u00edj\u010dina" },
             { "fr_CA", "franc\u00faz\u0161tina (kanadsk\u00e1)" },
             { "fr_CH", "franc\u00faz\u0161tina (\u0161vaj\u010diarska)" },
             { "nl_BE", "fl\u00e1m\u010dina" },
@@ -948,8 +951,8 @@ public class LocaleNames_sk extends OpenListResourceBundle {
             { "key.lb", "\u0161t\u00fdl koncov riadka" },
             { "key.ms", "mern\u00e1 s\u00fastava" },
             { "key.nu", "\u010d\u00edsla" },
-            { "key.tz", "\u010casov\u00e9 p\u00e1smo" },
-            { "key.va", "Variant miestneho nastavenia" },
+            { "key.tz", "\u010dasov\u00e9 p\u00e1smo" },
+            { "key.va", "variant miestneho nastavenia" },
             { "nds_NL", "doln\u00e1 sa\u0161tina" },
             { "zh_Hans", "\u010d\u00edn\u0161tina (zjednodu\u0161en\u00e1)" },
             { "zh_Hant", "\u010d\u00edn\u0161tina (tradi\u010dn\u00e1)" },

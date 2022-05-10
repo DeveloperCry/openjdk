@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -68,7 +68,7 @@ public interface XMLEventReader extends Iterator<Object> {
    *
    * @return the next XMLEvent
    * @see XMLEvent
-   * @throws XMLStreamException
+   * @throws XMLStreamException if an error occurs
    */
   public XMLEvent peek() throws XMLStreamException;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,6 +49,7 @@ public class Attribute implements Serializable   {
     /**
      * @serial Attribute value
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private Object value= null;
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -27,13 +27,12 @@ import java.io.IOException;
 /**
  * JSR - Jump to subroutine
  *
- * @version $Id: JSR.java 1749603 2016-06-21 20:50:19Z ggregory $
  */
 public class JSR extends JsrInstruction implements VariableLengthInstruction {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     JSR() {
     }

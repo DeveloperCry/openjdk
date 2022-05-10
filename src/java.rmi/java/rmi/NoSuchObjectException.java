@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 1998, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,14 +35,12 @@ package java.rmi;
  * A <code>NoSuchObjectException</code> is also thrown by the method
  * <code>java.rmi.server.RemoteObject.toStub</code> and by the
  * <code>unexportObject</code> methods of
- * <code>java.rmi.server.UnicastRemoteObject</code> and
- * <code>java.rmi.activation.Activatable</code> and
+ * <code>java.rmi.server.UnicastRemoteObject</code>.
  *
  * @author  Ann Wollrath
  * @since   1.1
  * @see     java.rmi.server.RemoteObject#toStub(Remote)
  * @see     java.rmi.server.UnicastRemoteObject#unexportObject(Remote,boolean)
- * @see     java.rmi.activation.Activatable#unexportObject(Remote,boolean)
  */
 public class NoSuchObjectException extends RemoteException {
 

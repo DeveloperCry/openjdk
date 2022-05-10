@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,8 +44,8 @@ package java.sql;
  *     Connection con = ds.createConnectionBuilder()
  *                       .user("rafa")
  *                       .password("tennis")
- *                       .setShardingKey(shardingKey)
- *                       .setSuperShardingKey(superShardingKey)
+ *                       .shardingKey(shardingKey)
+ *                       .superShardingKey(superShardingKey)
  *                       .build();
  * }</pre>
  *

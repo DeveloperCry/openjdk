@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -102,7 +102,7 @@ public final class ModelByteBuffer {
         }
 
         @Override
-        public int read(byte b[], int off, int len) throws IOException {
+        public int read(byte[] b, int off, int len) throws IOException {
             if (len > left)
                 len = (int)left;
             if (left == 0)
@@ -201,11 +201,7 @@ public final class ModelByteBuffer {
     public void writeTo(OutputStream out) throws IOException {
         if (root.file != null && root.buffer == null) {
             try (InputStream is = getInputStream()) {
-                byte[] buff = new byte[1024];
-                int ret;
-                while ((ret = is.read(buff)) != -1) {
-                    out.write(buff, 0, ret);
-                }
+                is.transferTo(out);
             }
         } else
             out.write(array(), (int) arrayOffset(), (int) capacity());

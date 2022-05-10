@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -53,7 +53,6 @@ public final class MidiInDeviceProvider extends AbstractMidiDeviceProvider {
      * Required public no-arg constructor.
      */
     public MidiInDeviceProvider() {
-        if (Printer.trace) Printer.trace("MidiInDeviceProvider: constructor");
     }
 
     // implementation of abstract methods in AbstractMidiDeviceProvider
@@ -77,11 +76,9 @@ public final class MidiInDeviceProvider extends AbstractMidiDeviceProvider {
     @Override
     int getNumDevices() {
         if (!enabled) {
-            if (Printer.debug)Printer.debug("MidiInDevice not enabled, returning 0 devices");
             return 0;
         }
         int numDevices = nGetNumDevices();
-        if (Printer.debug)Printer.debug("MidiInDeviceProvider.getNumDevices(): devices: " + numDevices);
         return numDevices;
     }
 

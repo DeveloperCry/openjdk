@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,4 +45,5 @@ public interface JVMDebugger extends Debugger {
   public void putHeapConst(long heapOopSize, long klassPtrSize,
                            long narrowKlassBase, int narrowKlassShift,
                            long narrowOopBase, int narrowOopShift);
+  public Address newAddress(long value);
 }

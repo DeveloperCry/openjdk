@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2007, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,7 +55,7 @@ public class RepaintArea {
 
     private static final int RECT_COUNT = UPDATE + 1;
 
-    private Rectangle paintRects[] = new Rectangle[RECT_COUNT];
+    private Rectangle[] paintRects = new Rectangle[RECT_COUNT];
 
 
     /**

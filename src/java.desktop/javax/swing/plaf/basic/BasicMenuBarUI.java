@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -70,6 +70,11 @@ public class BasicMenuBarUI extends MenuBarUI  {
      */
     protected ChangeListener        changeListener;
     private Handler handler;
+
+    /**
+     * Constructs a {@code BasicMenuBarUI}.
+     */
+    public BasicMenuBarUI() {}
 
     /**
      * Returns a new instance of {@code BasicMenuBarUI}.
@@ -269,8 +274,8 @@ public class BasicMenuBarUI extends MenuBarUI  {
             // TAKE_FOCUS
             JMenuBar menuBar = (JMenuBar)e.getSource();
             MenuSelectionManager defaultManager = MenuSelectionManager.defaultManager();
-            MenuElement me[];
-            MenuElement subElements[];
+            MenuElement[] me;
+            MenuElement[] subElements;
             JMenu menu = menuBar.getMenu(0);
             if (menu!=null) {
                     me = new MenuElement[3];

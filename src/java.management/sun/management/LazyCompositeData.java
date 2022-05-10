@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,6 +46,7 @@ import javax.management.openmbean.TabularType;
 public abstract class LazyCompositeData
         implements CompositeData, Serializable {
 
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private CompositeData compositeData;
 
     // Implementation of the CompositeData interface

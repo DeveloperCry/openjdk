@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.regex.*;
 import sun.awt.shell.ShellFolder;
 import sun.swing.*;
-import sun.swing.SwingUtilities2;
 
 /**
  * Basic L&amp;F implementation of a FileChooser.
@@ -757,6 +756,12 @@ public class BasicFileChooserUI extends FileChooserUI {
         // its functionality has been moved into Handler. If you need to add
         // new functionality add it to the Handler, but make sure this
         // class calls into the Handler.
+
+        /**
+         * Constructs a {@code SelectionListener}.
+         */
+        protected SelectionListener() {}
+
         /** {@inheritDoc} */
         public void valueChanged(ListSelectionEvent e) {
             getHandler().valueChanged(e);
@@ -1198,7 +1203,7 @@ public class BasicFileChooserUI extends FileChooserUI {
     /* A file filter which accepts file patterns containing
      * the special wildcards *? on Windows and *?[] on Unix.
      */
-    class GlobFilter extends FileFilter {
+    static class GlobFilter extends FileFilter {
         Pattern pattern;
         String globPattern;
 
@@ -1325,6 +1330,11 @@ public class BasicFileChooserUI extends FileChooserUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class CancelSelectionAction extends AbstractAction {
+        /**
+         * Constructs a {@code CancelSelectionAction}.
+         */
+        protected CancelSelectionAction() {}
+
         /** {@inheritDoc} */
         public void actionPerformed(ActionEvent e) {
             getFileChooser().cancelSelection();
@@ -1336,6 +1346,11 @@ public class BasicFileChooserUI extends FileChooserUI {
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
     protected class UpdateAction extends AbstractAction {
+        /**
+         * Constructs an {@code UpdateAction}.
+         */
+        protected UpdateAction() {}
+
         /** {@inheritDoc} */
         public void actionPerformed(ActionEvent e) {
             JFileChooser fc = getFileChooser();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,7 @@ import sun.security.jgss.GSSUtil;
 class GSSLibStub {
 
     private Oid mech;
-    private long pMech;
+    private long pMech; // Warning: used by NativeUtil.c
 
     /**
      * Initialization routine to dynamically load function pointers.

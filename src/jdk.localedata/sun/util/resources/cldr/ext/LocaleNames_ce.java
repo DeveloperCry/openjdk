@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -294,7 +290,6 @@ public class LocaleNames_ce extends OpenListResourceBundle {
             { "FR", "\u0424\u0440\u0430\u043d\u0446\u0438" },
             { "fr", "\u0444\u0440\u0430\u043d\u0446\u0443\u0437\u0438\u0439\u043d" },
             { "fy", "\u043c\u0430\u043b\u0445\u0431\u0443\u0437\u0435\u043d-\u0444\u0440\u0438\u0437\u0438\u0439\u043d" },
-            { "root", "\u043e\u0440\u0430\u043c\u0430\u043d \u043c\u043e\u0442\u0442" },
             { "GA", "\u0413\u0430\u0431\u043e\u043d" },
             { "ga", "\u0438\u0440\u043b\u0430\u043d\u0434\u0445\u043e\u0439\u043d" },
             { "GB", "\u0419\u043e\u043a\u043a\u0445\u0430 \u0411\u0440\u0438\u0442\u0430\u043d\u0438" },
@@ -464,7 +459,6 @@ public class LocaleNames_ce extends OpenListResourceBundle {
             { "mh", "\u043c\u0430\u0440\u0448\u0430\u043b\u043b\u0438\u0439\u043d" },
             { "ale", "\u0430\u043b\u0435\u0443\u0442\u0438\u0439\u043d" },
             { "mi", "\u043c\u0430\u043e\u0440\u0438" },
-            { "MK", "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0438" },
             { "mk", "\u043c\u0430\u043a\u0435\u0434\u043e\u043d\u0445\u043e\u0439\u043d" },
             { "ML", "\u041c\u0430\u043b\u0438" },
             { "ml", "\u043c\u0430\u043b\u0430\u044f\u043b\u0430\u043c" },

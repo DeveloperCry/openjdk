@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,6 +56,11 @@ package java.awt.dnd;
  */
 public abstract class DragSourceAdapter
     implements DragSourceListener, DragSourceMotionListener {
+
+    /**
+     * Constructs a {@code DragSourceAdapter}.
+     */
+    protected DragSourceAdapter() {}
 
     /**
      * Called as the cursor's hotspot enters a platform-dependent drop site.

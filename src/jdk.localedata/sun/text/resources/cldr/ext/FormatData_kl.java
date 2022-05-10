@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,37 +67,37 @@ public class FormatData_kl extends ListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final String[] metaValue_MonthNames = new String[] {
-               "januari",
-               "februari",
-               "martsi",
-               "aprili",
-               "maji",
-               "juni",
-               "juli",
-               "augustusi",
-               "septemberi",
-               "oktoberi",
-               "novemberi",
-               "decemberi",
+               "januaarip",
+               "februaarip",
+               "marsip",
+               "apriilip",
+               "maajip",
+               "juunip",
+               "juulip",
+               "aggustip",
+               "septembarip",
+               "oktobarip",
+               "novembarip",
+               "decembarip",
                "",
             };
         final String[] metaValue_MonthAbbreviations = new String[] {
                "jan",
-               "feb",
+               "febr",
                "mar",
                "apr",
                "maj",
                "jun",
                "jul",
                "aug",
-               "sep",
+               "sept",
                "okt",
                "nov",
                "dec",
                "",
             };
         final String[] metaValue_DayNames = new String[] {
-               "sabaat",
+               "sapaat",
                "ataasinngorneq",
                "marlunngorneq",
                "pingasunngorneq",
@@ -110,7 +106,7 @@ public class FormatData_kl extends ListResourceBundle {
                "arfininngorneq",
             };
         final String[] metaValue_DayAbbreviations = new String[] {
-               "sab",
+               "sap",
                "ata",
                "mar",
                "pin",
@@ -127,20 +123,38 @@ public class FormatData_kl extends ListResourceBundle {
         final Object[][] data = new Object[][] {
             { "MonthNames", metaValue_MonthNames },
             { "roc.DayAbbreviations", metaValue_DayAbbreviations },
+            { "arab.NumberElements",
+                new String[] {
+                    "\u066b",
+                    "\u066c",
+                    "\u061b",
+                    "\u066a\u061c",
+                    "\u0660",
+                    "#",
+                    "\u061c-",
+                    "\u0627\u0633",
+                    "\u0609",
+                    "\u221e",
+                    "NaN",
+                    "",
+                    "",
+                }
+            },
             { "TimePatterns", metaValue_TimePatterns },
             { "japanese.DayNames", metaValue_DayNames },
             { "japanese.DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNames", metaValue_DayNames },
             { "roc.MonthNames", metaValue_MonthNames },
             { "japanese.TimePatterns", metaValue_TimePatterns },
-            { "DayAbbreviations", metaValue_DayAbbreviations },
-            { "NumberPatterns",
+            { "arab.NumberPatterns",
                 new String[] {
                     "#,##0.###",
-                    "\u00a4#,##0.00;\u00a4-#,##0.00",
-                    "#,##0\u00a0%",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0%",
+                    "",
                 }
             },
+            { "DayAbbreviations", metaValue_DayAbbreviations },
             { "japanese.MonthNames", metaValue_MonthNames },
             { "roc.DayNames", metaValue_DayNames },
             { "standalone.DayAbbreviations", metaValue_DayAbbreviations },
@@ -152,6 +166,7 @@ public class FormatData_kl extends ListResourceBundle {
             { "buddhist.MonthNames", metaValue_MonthNames },
             { "MonthAbbreviations", metaValue_MonthAbbreviations },
             { "standalone.DayNames", metaValue_DayNames },
+            { "PluralRules", "one:n = 1" },
             { "latn.NumberElements",
                 new String[] {
                     ",",
@@ -165,14 +180,40 @@ public class FormatData_kl extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.DayNames", metaValue_DayNames },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
-            { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "islamic.DayAbbreviations", metaValue_DayAbbreviations },
+            { "standalone.MonthNames",
+                new String[] {
+                    "januaari",
+                    "februaari",
+                    "marsi",
+                    "apriili",
+                    "maaji",
+                    "juuni",
+                    "juuli",
+                    "aggusti",
+                    "septembari",
+                    "oktobari",
+                    "novembari",
+                    "decembari",
+                    "",
+                }
+            },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "\u00a4#,##0.00;\u00a4-#,##0.00",
+                    "#,##0\u00a0%",
+                    "",
+                }
+            },
             { "roc.TimePatterns", metaValue_TimePatterns },
         };
         return data;

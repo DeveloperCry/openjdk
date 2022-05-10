@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -229,6 +225,7 @@ public class CurrencyNames_th extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MTL", "MTL" },
             { "MTP", "MTP" },
             { "MUR", "MUR" },
@@ -289,7 +286,7 @@ public class CurrencyNames_th extends OpenListResourceBundle {
             { "SVC", "SVC" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
-            { "THB", "THB" },
+            { "THB", "\u0e3f" },
             { "TJR", "TJR" },
             { "TJS", "TJS" },
             { "TMM", "TMM" },
@@ -313,6 +310,7 @@ public class CurrencyNames_th extends OpenListResourceBundle {
             { "UZS", "UZS" },
             { "VEB", "VEB" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VNN", "VNN" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -604,6 +602,7 @@ public class CurrencyNames_th extends OpenListResourceBundle {
             { "uzs", "\u0e0b\u0e2d\u0e21\u0e2d\u0e38\u0e0b\u0e40\u0e1a\u0e01\u0e34\u0e2a\u0e16\u0e32\u0e19" },
             { "veb", "\u0e42\u0e1a\u0e25\u0e34\u0e27\u0e32\u0e23\u0e4c\u0e40\u0e27\u0e40\u0e19\u0e0b\u0e38\u0e40\u0e2d\u0e25\u0e32 (1871\u20132008)" },
             { "vef", "\u0e42\u0e1a\u0e25\u0e34\u0e27\u0e32\u0e23\u0e4c\u0e40\u0e27\u0e40\u0e19\u0e0b\u0e38\u0e40\u0e2d\u0e25\u0e32" },
+            { "ves", "\u0e42\u0e1a\u0e25\u0e35\u0e27\u0e32\u0e23\u0e4c\u0e40\u0e27\u0e40\u0e19\u0e0b\u0e38\u0e40\u0e2d\u0e25\u0e32" },
             { "vnd", "\u0e14\u0e2d\u0e07\u0e40\u0e27\u0e35\u0e22\u0e14\u0e19\u0e32\u0e21" },
             { "vnn", "\u0e14\u0e2d\u0e07\u0e40\u0e27\u0e35\u0e22\u0e14\u0e19\u0e32\u0e21 (1978\u20131985)" },
             { "vuv", "\u0e27\u0e32\u0e15\u0e39\u0e27\u0e32\u0e19\u0e39\u0e2d\u0e32\u0e15\u0e39" },
@@ -628,7 +627,7 @@ public class CurrencyNames_th extends OpenListResourceBundle {
             { "xsu", "\u0e0b\u0e39\u0e40\u0e01\u0e23" },
             { "xts", "\u0e23\u0e2b\u0e31\u0e2a\u0e17\u0e14\u0e2a\u0e2d\u0e1a\u0e2a\u0e01\u0e38\u0e25\u0e40\u0e07\u0e34\u0e19" },
             { "xua", "\u0e2b\u0e19\u0e48\u0e27\u0e22\u0e1a\u0e31\u0e0d\u0e0a\u0e35 \u0e40\u0e2d\u0e14\u0e35\u0e1a\u0e35" },
-            { "xxx", "\u0e2a\u0e01\u0e38\u0e25\u0e40\u0e07\u0e34\u0e19\u0e17\u0e35\u0e48\u0e44\u0e21\u0e48\u0e23\u0e39\u0e49\u0e08\u0e31\u0e01" },
+            { "xxx", "\u0e44\u0e21\u0e48\u0e17\u0e23\u0e32\u0e1a\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e01\u0e38\u0e25\u0e40\u0e07\u0e34\u0e19" },
             { "ydd", "\u0e14\u0e35\u0e19\u0e32\u0e23\u0e4c\u0e40\u0e22\u0e40\u0e21\u0e19" },
             { "yer", "\u0e40\u0e23\u0e35\u0e22\u0e25\u0e40\u0e22\u0e40\u0e21\u0e19" },
             { "yud", "\u0e2e\u0e32\u0e23\u0e4c\u0e14\u0e14\u0e35\u0e19\u0e32\u0e23\u0e4c\u0e22\u0e39\u0e42\u0e01\u0e2a\u0e25\u0e32\u0e40\u0e27\u0e35\u0e22" },

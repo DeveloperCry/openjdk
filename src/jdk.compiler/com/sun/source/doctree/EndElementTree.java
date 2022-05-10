@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,8 +30,9 @@ import javax.lang.model.element.Name;
 /**
  * A tree node for the end of an HTML element.
  *
- * <p>
- * &lt;/ name &gt;
+ * <pre>
+ *    &lt;/ name &gt;
+ * </pre>
  *
  * @since 1.8
  */

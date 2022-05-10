@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,10 +22,12 @@
  *
  *
  */
+
 package java.awt;
 
 import java.beans.ConstructorProperties;
 import java.io.InputStream;
+import java.io.Serial;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedExceptionAction;
@@ -119,7 +121,7 @@ public class Cursor implements java.io.Serializable {
       * method should be used instead.
       */
     @Deprecated
-    protected static Cursor predefined[] = new Cursor[14];
+    protected static Cursor[] predefined = new Cursor[14];
 
     /**
      * This field is a private replacement for 'predefined' array.
@@ -173,9 +175,10 @@ public class Cursor implements java.io.Serializable {
     private static final String DOT_HOTSPOT_SUFFIX = ".HotSpot";
     private static final String DOT_NAME_SUFFIX = ".Name";
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = 8028237497568985504L;
 
     private static final PlatformLogger log = PlatformLogger.getLogger("java.awt.Cursor");
@@ -292,10 +295,7 @@ public class Cursor implements java.io.Serializable {
         Cursor cursor = systemCustomCursors.get(name);
 
         if (cursor == null) {
-            synchronized(systemCustomCursors) {
-                if (systemCustomCursorProperties == null)
-                    loadSystemCustomCursorProperties();
-            }
+            loadSystemCustomCursorProperties();
 
             String prefix = CURSOR_DOT_PREFIX + name;
             String key    = prefix + DOT_FILE_SUFFIX;
@@ -332,6 +332,7 @@ public class Cursor implements java.io.Serializable {
             }
             final Toolkit toolkit = Toolkit.getDefaultToolkit();
             final String file = RESOURCE_PREFIX + fileName;
+            @SuppressWarnings("removal")
             final InputStream in = AccessController.doPrivileged(
                     (PrivilegedAction<InputStream>) () -> {
                         return Cursor.class.getResourceAsStream(file);
@@ -427,8 +428,12 @@ public class Cursor implements java.io.Serializable {
     /*
      * load the cursor.properties file
      */
+    @SuppressWarnings("removal")
     private static void loadSystemCustomCursorProperties() throws AWTException {
-        synchronized(systemCustomCursors) {
+        synchronized (systemCustomCursors) {
+            if (systemCustomCursorProperties != null) {
+                return;
+            }
             systemCustomCursorProperties = new Properties();
 
             try {

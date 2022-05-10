@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,29 +66,29 @@ import sun.util.resources.TimeZoneNamesBundle;
 public class TimeZoneNames_en_LR extends TimeZoneNamesBundle {
     @Override
     protected final Object[][] getContents() {
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+            };
         final String[] Africa_Central = new String[] {
                "Central Africa Time",
                "CAT",
-               "Central African Summer Time",
-               "CAST",
-               "Central Africa Time",
-               "CAT",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] Africa_Eastern = new String[] {
                "East Africa Time",
                "EAT",
-               "Eastern African Summer Time",
-               "EAST",
-               "Eastern Africa Time",
-               "EAT",
-            };
-        final String[] Africa_Southern = new String[] {
-               "South Africa Standard Time",
-               "SAST",
-               "South Africa Summer Time",
-               "SAST",
-               "South Africa Time",
-               "SAT",
+               "",
+               "",
+               "",
+               "",
             };
         final String[] Africa_Western = new String[] {
                "West Africa Standard Time",
@@ -102,133 +98,53 @@ public class TimeZoneNames_en_LR extends TimeZoneNamesBundle {
                "West Africa Time",
                "WAT",
             };
+        final String[] Africa_Southern = new String[] {
+               "South Africa Standard Time",
+               "SAST",
+               "",
+               "",
+               "",
+               "",
+            };
         final Object[][] data = new Object[][] {
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Nairobi", Africa_Eastern },
-            { "Africa/Libreville", Africa_Western },
-            { "Africa/Lusaka", Africa_Central },
-            { "Africa/Gaborone", Africa_Central },
-            { "Africa/Maputo", Africa_Central },
-            { "Africa/Windhoek", Africa_Central },
-            { "Africa/Mbabane", Africa_Southern },
-            { "Africa/Mogadishu", Africa_Eastern },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Harare", Africa_Central },
-            { "Africa/Douala", Africa_Western },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Asmera", Africa_Eastern },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Kampala", Africa_Eastern },
-            { "Africa/Sao_Tome", Africa_Western },
-            { "Africa/Khartoum", Africa_Central },
-            { "Africa/Malabo", Africa_Western },
-            { "Africa/Johannesburg", Africa_Southern },
-            { "Africa/Ndjamena", Africa_Western },
-            { "Africa/Bujumbura", Africa_Central },
-            { "Africa/Bangui", Africa_Western },
+            { "UTC", EMPTY_ZONE },
+            { "CAT", Africa_Central },
+            { "EAT", Africa_Eastern },
+            { "Africa/Juba", Africa_Central },
             { "Africa/Lagos", Africa_Western },
-            { "Africa/Brazzaville", Africa_Western },
-            { "Africa/Luanda", Africa_Western },
-            { "Africa/Porto-Novo", Africa_Western },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Juba", Africa_Eastern },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Dar_es_Salaam", Africa_Eastern },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Africa/Maseru", Africa_Southern },
-            { "Africa/Kinshasa", Africa_Western },
-            { "Africa/Addis_Ababa", Africa_Eastern },
-            { "Africa/Lubumbashi", Africa_Central },
-            { "Africa/Djibouti", Africa_Eastern },
+            { "Africa/Asmera", Africa_Eastern },
+            { "Africa/Bangui", Africa_Western },
+            { "Africa/Douala", Africa_Western },
+            { "Africa/Harare", Africa_Central },
             { "Africa/Kigali", Africa_Central },
-            { "Indian/Antananarivo", Africa_Eastern },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "Africa/Luanda", Africa_Western },
+            { "Africa/Lusaka", Africa_Central },
+            { "Africa/Malabo", Africa_Western },
+            { "Africa/Maputo", Africa_Central },
+            { "Africa/Maseru", Africa_Southern },
             { "Africa/Niamey", Africa_Western },
+            { "Indian/Comoro", Africa_Eastern },
+            { "Africa/Kampala", Africa_Eastern },
+            { "Africa/Mbabane", Africa_Southern },
+            { "Africa/Nairobi", Africa_Eastern },
             { "Indian/Mayotte", Africa_Eastern },
             { "Africa/Blantyre", Africa_Central },
-            { "Indian/Comoro", Africa_Eastern },
+            { "Africa/Djibouti", Africa_Eastern },
+            { "Africa/Gaborone", Africa_Central },
+            { "Africa/Khartoum", Africa_Central },
+            { "Africa/Kinshasa", Africa_Western },
+            { "Africa/Ndjamena", Africa_Western },
+            { "Africa/Windhoek", Africa_Central },
+            { "Africa/Bujumbura", Africa_Central },
+            { "Africa/Mogadishu", Africa_Eastern },
+            { "Africa/Libreville", Africa_Western },
+            { "Africa/Lubumbashi", Africa_Central },
+            { "Africa/Porto-Novo", Africa_Western },
+            { "Africa/Addis_Ababa", Africa_Eastern },
+            { "Africa/Brazzaville", Africa_Western },
+            { "Africa/Johannesburg", Africa_Southern },
+            { "Indian/Antananarivo", Africa_Eastern },
+            { "Africa/Dar_es_Salaam", Africa_Eastern },
         };
         return data;
     }

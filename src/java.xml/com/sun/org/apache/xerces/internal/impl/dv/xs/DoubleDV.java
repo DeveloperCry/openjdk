@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -123,8 +123,7 @@ public class DoubleDV extends TypeValidator {
             if (value == 0d) {
                 return 0;
             }
-            long v = Double.doubleToLongBits(value);
-            return (int) (v ^ (v >>> 32));
+            return Double.hashCode(value);
         }
 
         // NOTE: 0.0 is equal but not identical to -0.0

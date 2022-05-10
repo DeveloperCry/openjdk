@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,12 +44,18 @@ package java.awt.event;
  *
  * @see ComponentEvent
  * @see ComponentListener
- * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
+ * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
  *
  * @author Carl Quinn
  * @since 1.1
  */
 public abstract class ComponentAdapter implements ComponentListener {
+
+    /**
+     * Constructs a {@code ComponentAdapter}.
+     */
+    protected ComponentAdapter() {}
+
     /**
      * Invoked when the component's size changes.
      */

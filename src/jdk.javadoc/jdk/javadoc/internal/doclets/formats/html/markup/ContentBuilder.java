@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import jdk.javadoc.internal.doclets.toolkit.Content;
 
@@ -43,33 +44,35 @@ public class ContentBuilder extends Content {
 
     public ContentBuilder(Content... contents) {
         for (Content c : contents) {
-            addContent(c);
+            add(c);
         }
     }
 
     @Override
-    public void addContent(Content content) {
-        nullCheck(content);
+    public ContentBuilder add(Content content) {
+        Objects.requireNonNull(content);
         ensureMutableContents();
-        if (content instanceof ContentBuilder) {
-            contents.addAll(((ContentBuilder) content).contents);
+        if (content instanceof ContentBuilder cb) {
+            contents.addAll(cb.contents);
         } else
             contents.add(content);
+        return this;
     }
 
     @Override
-    public void addContent(CharSequence text) {
-        if (text.length() == 0)
-            return;
-        ensureMutableContents();
-        Content c = contents.isEmpty() ? null : contents.get(contents.size() - 1);
-        StringContent sc;
-        if (c != null && c instanceof StringContent) {
-            sc = (StringContent) c;
-        } else {
-            contents.add(sc = new StringContent());
+    public ContentBuilder add(CharSequence text) {
+        if (text.length() > 0) {
+            ensureMutableContents();
+            Content c = contents.isEmpty() ? null : contents.get(contents.size() - 1);
+            TextBuilder tb;
+            if (c instanceof TextBuilder tbi) {
+                tb = tbi;
+            } else {
+                contents.add(tb = new TextBuilder());
+            }
+            tb.add(text);
         }
-        sc.addContent(text);
+        return this;
     }
 
     @Override
@@ -87,6 +90,23 @@ public class ContentBuilder extends Content {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implSpec
+     * A content builder is valid if any of its content is; thus, it is
+     * valid to be added to an HtmlTree, which checks the validity of
+     * each content in this builder.
+     */
+    @Override
+    public boolean isValid() {
+        for (Content content: contents) {
+            if (content.isValid())
+                return true;
+        }
+        return false;
     }
 
     @Override

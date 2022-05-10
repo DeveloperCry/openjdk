@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
 package jdk.jfr.internal;
 
 import java.util.HashMap;
@@ -24,17 +49,18 @@ public final class OldObjectSample {
     private static final String OLD_OBJECT_CUTOFF = EVENT_NAME + "#" + Cutoff.NAME;
     private static final String OLD_OBJECT_ENABLED = EVENT_NAME + "#" + Enabled.NAME;
 
-    // Emit if old object is enabled in recoding with cutoff for that recording
+    // Emit if old object is enabled in recording with cutoff for that recording
     public static void emit(PlatformRecording recording) {
         if (isEnabled(recording)) {
             long nanos = CutoffSetting.parseValueSafe(recording.getSettings().get(OLD_OBJECT_CUTOFF));
             long ticks = Utils.nanosToTicks(nanos);
-            JVM.getJVM().emitOldObjectSamples(ticks, WhiteBox.getWriteAllObjectSamples());
+            emit(ticks);
         }
     }
 
+
     // Emit if old object is enabled for at least one recording, and use the largest
-    // cutoff for an enabled recoding
+    // cutoff for an enabled recording
     public static void emit(List<PlatformRecording> recordings, Boolean pathToGcRoots) {
         boolean enabled = false;
         long cutoffNanos = Boolean.TRUE.equals(pathToGcRoots) ? Long.MAX_VALUE : 0L;
@@ -49,8 +75,14 @@ public final class OldObjectSample {
         }
         if (enabled) {
             long ticks = Utils.nanosToTicks(cutoffNanos);
-            JVM.getJVM().emitOldObjectSamples(ticks, WhiteBox.getWriteAllObjectSamples());
+            emit(ticks);
         }
+    }
+
+    private static void emit(long ticks) {
+        boolean emitAll = WhiteBox.getWriteAllObjectSamples();
+        boolean skipBFS = WhiteBox.getSkipBFS();
+        JVM.getJVM().emitOldObjectSamples(ticks, emitAll, skipBFS);
     }
 
     public static void updateSettingPathToGcRoots(Map<String, String> s, Boolean pathToGcRoots) {

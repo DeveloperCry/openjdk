@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -68,7 +68,7 @@ class ClassLoadingImpl implements ClassLoadingMXBean {
 
         setVerboseClass(value);
     }
-    native static void setVerboseClass(boolean value);
+    static native void setVerboseClass(boolean value);
 
     public ObjectName getObjectName() {
         return Util.newObjectName(ManagementFactory.CLASS_LOADING_MXBEAN_NAME);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -354,6 +354,11 @@ public class LdapLoginModule implements LoginModule {
     private Matcher filterMatcher = null;
     private Hashtable<String, Object> ldapEnvironment;
     private SearchControls constraints = null;
+
+    /**
+     * Creates an {@code LdapLoginModule}.
+     */
+    public LdapLoginModule() {}
 
     /**
      * Initialize this {@code LoginModule}.

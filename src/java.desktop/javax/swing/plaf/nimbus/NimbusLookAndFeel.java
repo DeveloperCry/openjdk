@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -352,6 +352,7 @@ public class NimbusLookAndFeel extends SynthLookAndFeel {
     /**
      * Simple utility method that reads system keys.
      */
+    @SuppressWarnings("removal")
     private String getSystemProperty(String key) {
         return AccessController.doPrivileged(new GetPropertyAction(key));
     }
@@ -494,7 +495,7 @@ public class NimbusLookAndFeel extends SynthLookAndFeel {
     /**
      * Simple Symbolic Link style UIDefalts Property
      */
-    private class LinkProperty implements UIDefaults.ActiveValue, UIResource{
+    private static class LinkProperty implements UIDefaults.ActiveValue, UIResource{
         private String dstPropName;
 
         private LinkProperty(String dstPropName) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -662,7 +662,7 @@ public class ProxyGraphics2D extends Graphics2D implements PrinterGraphics {
      * @see         java.awt.Graphics#drawPolygon(int[], int[], int)
      * @since       1.1
      */
-    public void drawPolyline(int xPoints[], int yPoints[],
+    public void drawPolyline(int[] xPoints, int[] yPoints,
                              int nPoints) {
         mGraphics.drawPolyline(xPoints, yPoints, nPoints);
     }
@@ -687,7 +687,7 @@ public class ProxyGraphics2D extends Graphics2D implements PrinterGraphics {
      * @see          java.awt.Graphics#drawPolyline
      * @since        1.0
      */
-    public void drawPolygon(int xPoints[], int yPoints[],
+    public void drawPolygon(int[] xPoints, int[] yPoints,
                             int nPoints) {
         mGraphics.drawPolygon(xPoints, yPoints, nPoints);
     }
@@ -713,7 +713,7 @@ public class ProxyGraphics2D extends Graphics2D implements PrinterGraphics {
      * @see          java.awt.Graphics#drawPolygon(int[], int[], int)
      * @since        1.0
      */
-    public void fillPolygon(int xPoints[], int yPoints[],
+    public void fillPolygon(int[] xPoints, int[] yPoints,
                             int nPoints) {
         mGraphics.fillPolygon(xPoints, yPoints, nPoints);
     }
@@ -1264,7 +1264,7 @@ public class ProxyGraphics2D extends Graphics2D implements PrinterGraphics {
     /**
      * Empty finalizer as no clean up needed here.
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     public void finalize() {
     }
 

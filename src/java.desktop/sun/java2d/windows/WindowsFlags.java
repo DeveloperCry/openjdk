@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -134,8 +134,8 @@ public class WindowsFlags {
                 propString.equals("t") ||
                 propString.equals("True") ||
                 propString.equals("T") ||
-                propString.equals("")) // having the prop name alone
-            {                          // is equivalent to true
+                propString.isEmpty()) // having the prop name alone
+            {                         // is equivalent to true
                 returnVal = true;
             } else if (propString.equals("false") ||
                        propString.equals("f") ||
@@ -176,6 +176,7 @@ public class WindowsFlags {
         return (propString != null) ? true : false;
     }
 
+    @SuppressWarnings("removal")
     private static void initJavaFlags() {
         java.security.AccessController.doPrivileged(
             new java.security.PrivilegedAction<Object>()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,12 @@ import java.awt.geom.Point2D;
  * @since 1.6
  */
 public abstract class LayoutPath {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected LayoutPath() {}
+
     /**
      * Convert a point in user space to a location relative to the
      * path. The location is chosen so as to minimize the distance

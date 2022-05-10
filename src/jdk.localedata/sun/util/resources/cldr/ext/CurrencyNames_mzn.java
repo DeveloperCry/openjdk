@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -341,7 +337,8 @@ public class CurrencyNames_mzn extends OpenListResourceBundle {
             { "usd", "\u0622\u0645\u0631\u06cc\u06a9\u0627\u06cc \u0650\u062f\u0648\u0644\u0627\u0631" },
             { "uyu", "\u0627\u0631\u0648\u06af\u0648\u0626\u0647\u200c\u06cc \u0650\u067e\u0632\u0648" },
             { "uzs", "\u0627\u0632\u0628\u06a9\u0633\u062a\u0648\u0646 \u0650\u0633\u0627\u0645" },
-            { "vef", "\u0648\u0646\u0632\u0648\u0626\u0644\u0627\u06cc\u0650 \u0628\u0648\u0644\u06cc\u0648\u0627\u0631" },
+            { "vef", "\u0648\u0646\u0632\u0648\u0626\u0644\u0627\u06cc\u0650 \u0628\u0648\u0644\u06cc\u0648\u0627\u0631 (2008\u20132018)" },
+            { "ves", "\u0648\u0646\u0632\u0648\u0626\u0644\u0627\u06cc\u0650 \u0628\u0648\u0644\u06cc\u0648\u0627\u0631" },
             { "vnd", "\u0648\u06cc\u062a\u0646\u0627\u0645 \u0650\u062f\u0646\u06af" },
             { "xaf", "\u0645\u06cc\u0648\u0646\u06cc \u0622\u0641\u0631\u06cc\u0642\u0627\u06cc \u0650\u0633\u06cc\u200c\u0627\u0641\u200c\u0627\u06cc \u0641\u0631\u0627\u0646\u06a9" },
             { "xcd", "\u0634\u0631\u0642\u06cc \u06a9\u0627\u0631\u0627\u06cc\u06cc\u0628 \u0650\u062f\u0648\u0644\u0627\u0631" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,12 +32,11 @@ public enum GCName {
   PSMarkSweep ("PSMarkSweep"),
   ParallelScavenge ("ParallelScavenge"),
   DefNew ("DefNew"),
-  ParNew ("ParNew"),
   G1New ("G1New"),
-  ConcurrentMarkSweep ("ConcurrentMarkSweep"),
   G1Old ("G1Old"),
   G1Full ("G1Full"),
   Z ("Z"),
+  Shenandoah ("Shenandoah"),
   NA ("N/A"),
   GCNameEndSentinel ("GCNameEndSentinel");
 

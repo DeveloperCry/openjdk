@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -90,6 +86,7 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "mwl", "mirandesiskt" },
             { "Zsym", "tekin" },
             { "Zsye", "emoji" },
+            { "ccp", "khakma" },
             { "tem", "timne" },
             { "teo", "teso" },
             { "rap", "rapanui" },
@@ -208,7 +205,6 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "FO", "F\u00f8royar" },
             { "Taml", metaValue_ta },
             { "FR", "Frakland" },
-            { "root", "root" },
             { "GA", "Gabon" },
             { "GB", "St\u00f3rabretland" },
             { "pcm", "nigeriskt pidgin" },
@@ -313,7 +309,7 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "Marshalloyggjar" },
             { "ale", "aleut" },
-            { "MK", "Maked\u00f3nia" },
+            { "MK", "Nor\u00f0ur Maked\u00f3nia" },
             { "ML", "Mali" },
             { "MM", "Myanmar (Burma)" },
             { "MN", "Mongolia" },
@@ -419,7 +415,7 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "SV", "El Salvador" },
             { "SX", "Sint Maarten" },
             { "SY", "S\u00fdria" },
-            { "SZ", "Svasiland" },
+            { "SZ", "Esvatini" },
             { "TA", "Tristan da Cunha" },
             { "asa", "asu" },
             { "type.ms.ussystem", "m\u00e1tingareind (USA)" },
@@ -484,7 +480,9 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "wae", "walser" },
             { "WS", "Samoa" },
             { "wal", "wolaytta" },
+            { "XA", "\u00f3ekta t\u00f3nalag" },
             { "war", "waray" },
+            { "XB", "\u00f3ekta\u00f0ur BIDI tekstur" },
             { "awa", "awadhi" },
             { "061", "Polynesia" },
             { "XK", "Kosovo" },
@@ -887,6 +885,7 @@ public class LocaleNames_fo extends OpenListResourceBundle {
             { "type.nu.tamldec", "tamilsk t\u00f8l" },
             { "krc", "karachay-balkar" },
             { "inh", "inguish" },
+            { "fa_AF", "dari" },
             { "krl", "karelskt" },
             { "efi", "efik" },
             { "key.nu", "t\u00f8l" },

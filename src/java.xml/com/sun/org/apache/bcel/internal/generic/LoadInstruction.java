@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,13 +25,12 @@ package com.sun.org.apache.bcel.internal.generic;
  * Denotes an unparameterized instruction to load a value from a local
  * variable, e.g. ILOAD.
  *
- * @version $Id: LoadInstruction.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public abstract class LoadInstruction extends LocalVariableInstruction implements PushInstruction {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      * tag and length are defined in readInstruction and initFromFile, respectively.
      */
     LoadInstruction(final short canon_tag, final short c_tag) {

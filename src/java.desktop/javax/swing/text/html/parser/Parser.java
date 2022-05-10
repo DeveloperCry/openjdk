@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -75,15 +75,16 @@ import java.net.URL;
  * @author Arthur van Hoff
  * @author Sunita Mani
  */
+@SuppressWarnings("doclint:missing")
 public
 class Parser implements DTDConstants {
 
-    private char text[] = new char[1024];
+    private char[] text = new char[1024];
     private int textpos = 0;
     private TagElement last;
     private boolean space;
 
-    private char str[] = new char[128];
+    private char[] str = new char[128];
     private int strpos = 0;
 
     /**
@@ -273,7 +274,7 @@ class Parser implements DTDConstants {
      *
      * @param text  the section text
      */
-    protected void handleText(char text[]) {
+    protected void handleText(char[] text) {
     }
 
     /**
@@ -281,7 +282,7 @@ class Parser implements DTDConstants {
      *
      * @param text  the title text
      */
-    protected void handleTitle(char text[]) {
+    protected void handleTitle(char[] text) {
         // default behavior is to call handleText. Subclasses
         // can override if necessary.
         handleText(text);
@@ -292,7 +293,7 @@ class Parser implements DTDConstants {
      *
      * @param text  the comment being handled
      */
-    protected void handleComment(char text[]) {
+    protected void handleComment(char[] text) {
     }
 
     /**
@@ -386,7 +387,7 @@ class Parser implements DTDConstants {
             if (!ignoreSpace) {
                 // enlarge buffer if needed
                 if (textpos + 1 > text.length) {
-                    char newtext[] = new char[text.length + 200];
+                    char[] newtext = new char[text.length + 200];
                     System.arraycopy(text, 0, newtext, 0, text.length);
                     text = newtext;
                 }
@@ -399,7 +400,7 @@ class Parser implements DTDConstants {
             }
             space = false;
         }
-        char newtext[] = new char[textpos];
+        char[] newtext = new char[textpos];
         System.arraycopy(text, 0, newtext, 0, textpos);
         // Handles cases of bad html where the title tag
         // was getting lost when we did error recovery.
@@ -837,7 +838,7 @@ class Parser implements DTDConstants {
      */
     void addString(int c) {
         if (strpos  == str.length) {
-            char newstr[] = new char[str.length + 128];
+            char[] newstr = new char[str.length + 128];
             System.arraycopy(str, 0, newstr, 0, str.length);
             str = newstr;
         }
@@ -848,21 +849,21 @@ class Parser implements DTDConstants {
      * Get the string that's been accumulated.
      */
     String getString(int pos) {
-        char newStr[] = new char[strpos - pos];
+        char[] newStr = new char[strpos - pos];
         System.arraycopy(str, pos, newStr, 0, strpos - pos);
         strpos = pos;
         return new String(newStr);
     }
 
     char[] getChars(int pos) {
-        char newStr[] = new char[strpos - pos];
+        char[] newStr = new char[strpos - pos];
         System.arraycopy(str, pos, newStr, 0, strpos - pos);
         strpos = pos;
         return newStr;
     }
 
     char[] getChars(int pos, int endPos) {
-        char newStr[] = new char[endPos - pos];
+        char[] newStr = new char[endPos - pos];
         System.arraycopy(str, pos, newStr, 0, endPos - pos);
         // REMIND: it's not clear whether this version should set strpos or not
         // strpos = pos;
@@ -1034,18 +1035,18 @@ class Parser implements DTDConstants {
                         ch = readCh();
                         break;
                 }
-                char data[] = mapNumericReference(n);
+                char[] data = mapNumericReference(n);
                 return data;
             }
             addString('#');
             if (!parseIdentifier(false)) {
                 error("ident.expected");
                 strpos = pos;
-                char data[] = {'&', '#'};
+                char[] data = {'&', '#'};
                 return data;
             }
         } else if (!parseIdentifier(false)) {
-            char data[] = {'&'};
+            char[] data = {'&'};
             return data;
         }
 
@@ -1095,7 +1096,7 @@ class Parser implements DTDConstants {
             /* given that there is not a match restore the entity reference */
             String str = "&" + nm + (semicolon ? ";" : "");
 
-            char b[] = new char[str.length()];
+            char[] b = new char[str.length()];
             str.getChars(0, b.length, b, 0);
             return b;
         }
@@ -1251,9 +1252,9 @@ class Parser implements DTDConstants {
                 break;
 
               case '&':
-                char data[] = parseEntityReference();
+                char[] data = parseEntityReference();
                 if (textpos + data.length > text.length) {
-                    char newtext[] = new char[Math.max(textpos + data.length + 128, text.length * 2)];
+                    char[] newtext = new char[Math.max(textpos + data.length + 128, text.length * 2)];
                     System.arraycopy(text, 0, newtext, 0, text.length);
                     text = newtext;
                 }
@@ -1285,7 +1286,7 @@ class Parser implements DTDConstants {
 
             // output character
             if (textpos == text.length) {
-                char newtext[] = new char[text.length + 128];
+                char[] newtext = new char[text.length + 128];
                 System.arraycopy(text, 0, newtext, 0, text.length);
                 text = newtext;
             }
@@ -1395,7 +1396,7 @@ class Parser implements DTDConstants {
                     break;
                 }
 
-                char data[] = parseEntityReference();
+                char[] data = parseEntityReference();
                 for (int i = 0 ; i < data.length ; i++) {
                     c = data[i];
                     addString((lower && (c >= 'A') && (c <= 'Z')) ? 'a' + c - 'A' : c);
@@ -1506,7 +1507,7 @@ class Parser implements DTDConstants {
                         }
                     }
                 } else {
-                    char str[] = {(char)ch};
+                    char[] str = {(char)ch};
                     error("invalid.tagchar", new String(str), elem.getName());
                     ch = readCh();
                     continue;
@@ -1526,7 +1527,7 @@ class Parser implements DTDConstants {
                 error("attvalerr");
                 return;
             } else {
-                char str[] = {(char)ch};
+                char[] str = {(char)ch};
                 error("invalid.tagchar", new String(str), elem.getName());
                 if (!strict) {
                     ch = readCh();
@@ -1674,7 +1675,7 @@ class Parser implements DTDConstants {
                             // before parsing and sending the
                             // comment
                             if (textpos != 0) {
-                                char newtext[] = new char[textpos];
+                                char[] newtext = new char[textpos];
                                 System.arraycopy(text, 0, newtext, 0, textpos);
                                 handleText(newtext);
                                 lastBlockStartPos = currentBlockStartPos;
@@ -2224,9 +2225,9 @@ class Parser implements DTDConstants {
                             space = false;
                         }
                     }
-                    char data[] = parseEntityReference();
+                    char[] data = parseEntityReference();
                     if (textpos + data.length + 1 > text.length) {
-                        char newtext[] = new char[Math.max(textpos + data.length + 128, text.length * 2)];
+                        char[] newtext = new char[Math.max(textpos + data.length + 128, text.length * 2)];
                         System.arraycopy(text, 0, newtext, 0, text.length);
                         text = newtext;
                     }
@@ -2306,7 +2307,7 @@ class Parser implements DTDConstants {
 
             // enlarge buffer if needed
             if (textpos + 2 > text.length) {
-                char newtext[] = new char[text.length + 128];
+                char[] newtext = new char[text.length + 128];
                 System.arraycopy(text, 0, newtext, 0, text.length);
                 text = newtext;
             }
@@ -2412,7 +2413,7 @@ class Parser implements DTDConstants {
      * this reason the initial size is 1 and when the body is encountered the
      * size is adjusted to 256.
      */
-    private char buf[] = new char[1];
+    private char[] buf = new char[1];
     private int pos;
     private int len;
     /*

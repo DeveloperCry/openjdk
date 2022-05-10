@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,34 +67,64 @@ public class LocaleNames_sr_Latn_BA extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final Object[][] data = new Object[][] {
+            { "001", "svijet" },
+            { "003", "Sjevernoameri\u010dki kontinent" },
+            { "015", "Sjeverna Afrika" },
+            { "019", "Sjeverna i Ju\u017ena Amerika" },
+            { "021", "Sjeverna Amerika" },
+            { "154", "Sjeverna Evropa" },
+            { "AC", "ostrvo Asension" },
             { "BY", "Bjelorusija" },
+            { "CC", "Kokosova (Kiling) ostrva" },
             { "CG", "Kongo" },
+            { "CP", "ostrvo Kliperton" },
             { "CV", "Kabo Verde" },
             { "CZ", "\u010ce\u0161ka Republika" },
             { "DE", "Njema\u010dka" },
+            { "GS", "Ju\u017ena D\u017eord\u017eija i Ju\u017ena Sendvi\u010dka ostrva" },
+            { "GU", "Gvam" },
+            { "HK", "Hongkong (SAO Kine)" },
+            { "HM", "ostrvo Herd i ostrva Makdonald" },
             { "KN", "Sveti Kits i Nevis" },
+            { "KP", "Sjeverna Koreja" },
+            { "MK", "Sjeverna Makedonija" },
             { "MO", "SAR Makao" },
+            { "MP", "Sjeverna Marijanska ostrva" },
+            { "NF", "ostrvo Norfok" },
+            { "NU", "Nijue" },
             { "PM", "Sveti Pjer i Mikelon" },
+            { "PS", "palestinske teritorije" },
             { "RE", "Reunion" },
-            { "UM", "Manja udaljena ostrva SAD" },
+            { "UM", "Spoljna ostrva SAD" },
             { "VC", "Sveti Vinsent i Grenadini" },
             { "VG", "Britanska Djevi\u010danska Ostrva" },
             { "VI", "Ameri\u010dka Djevi\u010danska Ostrva" },
             { "be", "bjeloruski" },
             { "bm", "bamanankan" },
             { "bn", "bangla" },
+            { "de", "njema\u010dki" },
             { "ht", "hai\u0107anski kreolski" },
             { "lo", "lao\u0161ki" },
+            { "nd", "sjeverni ndebele" },
+            { "se", "sjeverni sami" },
             { "si", "sinhalski" },
             { "xh", "isikosa" },
             { "zu", "isizulu" },
             { "arn", "mapudungun" },
-            { "gsw", "\u0161vajcarski nema\u010dki" },
+            { "gsw", "njema\u010dki (\u0160vajcarska)" },
+            { "lrc", "sjeverni luri" },
             { "moh", "mohok" },
+            { "nds", "niskonjema\u010dki" },
             { "nqo", "n\u2019ko" },
             { "shi", "ju\u017eni \u0161ilha" },
             { "tzm", "centralnoatlaski tama\u0161ek" },
             { "zgh", "standardni marokanski tama\u0161ek" },
+            { "key.co", "redoslijed sortiranja" },
+            { "key.ms", "sistem mjernih jedinica" },
+            { "type.nu.mymr", "mjanmarske cifre" },
+            { "type.co.ducet", "podrazumijevani Unicode redoslijed sortiranja" },
+            { "type.co.search", "pretraga op\u0161te namjene" },
+            { "type.co.standard", "standardni redoslijed sortiranja" },
         };
         return data;
     }

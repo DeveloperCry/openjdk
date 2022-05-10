@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -189,7 +189,7 @@ public class MaximizableInternalFrame extends JInternalFrame {
     }
 
 
-    private class FixedMenuBarLayout extends BoxLayout {
+    private static class FixedMenuBarLayout extends BoxLayout {
         public FixedMenuBarLayout(Container target, int axis) {
             super(target, axis);
         }

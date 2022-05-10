@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -183,12 +179,12 @@ public class CurrencyNames_kea extends OpenListResourceBundle {
             { "djf", "Franku di Djibuti" },
             { "dkk", "Kuroa dinamarkeza" },
             { "dzd", "Dinar arjelinu" },
-            { "egp", "Libra ejipsiu" },
+            { "egp", "Libra ej\u00edpsiu" },
             { "ern", "Nafka di Eritreia" },
-            { "etb", "Bir etiopi" },
-            { "eur", "Euro" },
-            { "gbp", "Libra britaniku" },
-            { "ghc", "Sedi di Gana" },
+            { "etb", "Bir eti\u00f3piku" },
+            { "eur", "euro" },
+            { "gbp", "Libra brit\u00e1niku" },
+            { "ghc", "Sedi di Gana (1979\u20132007)" },
             { "gmd", "Dalasi" },
             { "gns", "Sili" },
             { "hkd", "Dola di Ong Kong" },
@@ -200,7 +196,7 @@ public class CurrencyNames_kea extends OpenListResourceBundle {
             { "krw", "Won sul-koreanu" },
             { "lrd", "Dola liberianu" },
             { "lsl", "Loti di Lezotu" },
-            { "lyd", "Dinar libiu" },
+            { "lyd", "Dinar l\u00edbiu" },
             { "mad", "Diren marokinu" },
             { "mga", "Ariari di Madagaskar" },
             { "mro", "Ougia (1973\u20132017)" },
@@ -218,19 +214,19 @@ public class CurrencyNames_kea extends OpenListResourceBundle {
             { "sar", "Rial saudita" },
             { "scr", "Rupia di Seixelis" },
             { "sdg", "Libra sudanes" },
-            { "sdp", "Libra sudanes antigu" },
+            { "sdp", "Libra sudanes antigu (1957\u20131998)" },
             { "sek", "Kuroa sueku" },
             { "shp", "Libra di Santa Ilena" },
             { "sll", "Leone di Sera Leoa" },
             { "sos", "Xelin somalianu" },
-            { "std", "Dobra di S\u00e3u Tume i Pr\u00ednsipi (1977\u20132017)" },
-            { "stn", "Dobra di S\u00e3u Tume i Pr\u00ednsipi" },
+            { "std", "Dobra di San Tume i Pr\u00ednsipi (1977\u20132017)" },
+            { "stn", "Dobra di San Tume i Pr\u00ednsipi" },
             { "szl", "Lilanjeni" },
             { "thb", "Baht tailandes" },
             { "tnd", "Dinar tunizianu" },
             { "try", "Lira turku" },
             { "twd", "Dola Novu di Taiwan" },
-            { "tzs", "Xelin di Tanzania" },
+            { "tzs", "Xelin di Tanz\u00e1nia" },
             { "ugx", "Xelin ugandensi" },
             { "usd", "Dola merkanu" },
             { "xaf", "Franku CFA (BEAC)" },
@@ -239,7 +235,7 @@ public class CurrencyNames_kea extends OpenListResourceBundle {
             { "zar", "Rand sulafrikanu" },
             { "zmk", "Kuaxa zambianu (1968\u20132012)" },
             { "zmw", "Kuaxa zambianu" },
-            { "zwd", "Dola di Zimbabue" },
+            { "zwd", "Dola di Zimbabue (1980\u20132008)" },
         };
         return data;
     }

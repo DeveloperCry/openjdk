@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,16 +49,15 @@ public class JIS_X_0208_MS932 extends Charset
     }
 
     public CharsetDecoder newDecoder() {
-        initb2c();
-        return new  DoubleByte.Decoder_DBCSONLY(this, b2c, b2cSB, 0x21, 0x7e, false);
+        return new DoubleByte.Decoder_DBCSONLY(this, DecodeHolder.b2c, DecodeHolder.b2cSB, 0x21, 0x7e, false);
     }
 
     public CharsetEncoder newEncoder() {
-        initc2b();
-        return new DoubleByte.Encoder_DBCSONLY(this, new byte[]{ (byte)0x21, (byte)0x29 }, c2b, c2bIndex, false);
+        return new DoubleByte.Encoder_DBCSONLY(this, new byte[]{ (byte)0x21, (byte)0x29 }, EncodeHolder.c2b, EncodeHolder.c2bIndex, false);
     }
 
-    
+    static class DecodeHolder {
+        
     static final String b2cSBStr =
         "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" + 
         "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" + 
@@ -1254,16 +1253,10 @@ public class JIS_X_0208_MS932 extends Charset
             null,
         };
 
-    static char[][] b2c = new char[b2cStr.length][];
-    static char[] b2cSB;
-    private static volatile boolean b2cInitialized = false;
+        static final char[][] b2c = new char[b2cStr.length][];
+        static final char[] b2cSB;
 
-    static void initb2c() {
-        if (b2cInitialized)
-            return;
-        synchronized (b2c) {
-            if (b2cInitialized)
-                return;
+        static {
             for (int i = 0; i < b2cStr.length; i++) {
                 if (b2cStr[i] == null)
                     b2c[i] = DoubleByte.B2C_UNMAPPABLE;
@@ -1271,20 +1264,14 @@ public class JIS_X_0208_MS932 extends Charset
                     b2c[i] = b2cStr[i].toCharArray();
             }
             b2cSB = b2cSBStr.toCharArray();
-            b2cInitialized = true;
         }
     }
 
-    static char[] c2b = new char[0x6300];
-    static char[] c2bIndex = new char[0x100];
-    private static volatile boolean c2bInitialized = false;
+    static class EncodeHolder {
+        static final char[] c2b = new char[0x6300];
+        static final char[] c2bIndex = new char[0x100];
 
-    static void initc2b() {
-        if (c2bInitialized)
-            return;
-        synchronized (c2b) {
-            if (c2bInitialized)
-                return;
+        static {
             String b2cNR =
         "\u224C\uFFE2\u225D\u22A5\u2265\u221A\u2269\u222B" + 
         "\u2D70\u2252\u2D71\u2261\u2D77\u2220\u2D7A\u2235" + 
@@ -1294,10 +1281,10 @@ public class JIS_X_0208_MS932 extends Charset
         "\u2124\u00B8\u2126\u00B7\u2131\u00AF\u2263\u00AB" + 
         "\u2264\u00BB\u2574\u3094\u264C\u00B5" ;
 
-            DoubleByte.Encoder.initC2B(b2cStr, b2cSBStr, b2cNR, c2bNR,
+            DoubleByte.Encoder.initC2B(DecodeHolder.b2cStr, DecodeHolder.b2cSBStr,
+                                       b2cNR, c2bNR,
                                        0x21, 0x7e,
                                        c2b, c2bIndex);
-            c2bInitialized = true;
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,28 +25,34 @@
 
 package jdk.javadoc.internal.doclets.toolkit.builders;
 
-import java.text.MessageFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.ElementFilter;
+import javax.tools.Diagnostic;
 
 import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
-import com.sun.source.doctree.DocTree.Kind;
-import jdk.javadoc.internal.doclets.toolkit.AnnotationTypeWriter;
+import jdk.javadoc.internal.doclets.toolkit.BaseConfiguration;
 import jdk.javadoc.internal.doclets.toolkit.ClassWriter;
 import jdk.javadoc.internal.doclets.toolkit.Content;
 import jdk.javadoc.internal.doclets.toolkit.MemberSummaryWriter;
 import jdk.javadoc.internal.doclets.toolkit.WriterFactory;
 import jdk.javadoc.internal.doclets.toolkit.util.CommentHelper;
 import jdk.javadoc.internal.doclets.toolkit.util.DocFinder;
+import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 import jdk.javadoc.internal.doclets.toolkit.util.VisibleMemberTable;
-import jdk.javadoc.internal.doclets.toolkit.CommentUtils;
 
 import static jdk.javadoc.internal.doclets.toolkit.util.VisibleMemberTable.Kind.*;
 
@@ -60,9 +66,6 @@ import static jdk.javadoc.internal.doclets.toolkit.util.VisibleMemberTable.Kind.
  *  If you write code that depends on this, you do so at your own risk.
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
- *
- * @author Jamie Ho
- * @author Bhavesh Patel (Modified)
  */
 public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
 
@@ -87,7 +90,7 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
     private MemberSummaryBuilder(Context context, TypeElement typeElement) {
         super(context, typeElement);
         memberSummaryWriters = new EnumMap<>(VisibleMemberTable.Kind.class);
-        comparator = utils.makeIndexUseComparator();
+        comparator = utils.comparators.makeIndexElementComparator();
         pHelper = new PropertyHelper(this);
     }
 
@@ -103,13 +106,15 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
             ClassWriter classWriter, Context context) {
         MemberSummaryBuilder builder = new MemberSummaryBuilder(context, classWriter.getTypeElement()) {
             @Override
-            public void build(Content contentTree) {
-                buildPropertiesSummary(contentTree);
-                buildNestedClassesSummary(contentTree);
-                buildEnumConstantsSummary(contentTree);
-                buildFieldsSummary(contentTree);
-                buildConstructorsSummary(contentTree);
-                buildMethodsSummary(contentTree);
+            public void build(Content summariesList) {
+                buildPropertiesSummary(summariesList);
+                buildNestedClassesSummary(summariesList);
+                buildEnumConstantsSummary(summariesList);
+                buildAnnotationTypeRequiredMemberSummary(summariesList);
+                buildAnnotationTypeOptionalMemberSummary(summariesList);
+                buildFieldsSummary(summariesList);
+                buildConstructorsSummary(summariesList);
+                buildMethodsSummary(summariesList);
             }
 
             @Override
@@ -121,40 +126,6 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
         for (VisibleMemberTable.Kind kind : VisibleMemberTable.Kind.values()) {
             MemberSummaryWriter msw = builder.getVisibleMemberTable().hasVisibleMembers(kind)
                     ? wf.getMemberSummaryWriter(classWriter, kind)
-                    : null;
-            builder.memberSummaryWriters.put(kind, msw);
-        }
-        return builder;
-    }
-
-    /**
-     * Construct a new MemberSummaryBuilder for an annotation type.
-     *
-     * @param annotationTypeWriter the writer for the class whose members are
-     *                             being summarized.
-     * @param context       the build context.
-     * @return              the instance
-     */
-    public static MemberSummaryBuilder getInstance(
-            AnnotationTypeWriter annotationTypeWriter, Context context) {
-        MemberSummaryBuilder builder = new MemberSummaryBuilder(context,
-                annotationTypeWriter.getAnnotationTypeElement()) {
-            @Override
-            public void build(Content contentTree) {
-                buildAnnotationTypeFieldsSummary(contentTree);
-                buildAnnotationTypeRequiredMemberSummary(contentTree);
-                buildAnnotationTypeOptionalMemberSummary(contentTree);
-            }
-
-            @Override
-            public boolean hasMembersToDocument() {
-                return !utils.getAnnotationMembers(typeElement).isEmpty();
-            }
-        };
-        WriterFactory wf = context.configuration.getWriterFactory();
-        for (VisibleMemberTable.Kind kind : VisibleMemberTable.Kind.values()) {
-            MemberSummaryWriter msw = builder.getVisibleMemberTable().hasVisibleMembers(kind)
-                    ? wf.getMemberSummaryWriter(annotationTypeWriter, kind)
                     : null;
             builder.memberSummaryWriters.put(kind, msw);
         }
@@ -200,102 +171,83 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
     }
 
     /**
-     * Returns true if there are members of the given kind, false otherwise.
-     * @param kind
-     * @return true if there are members of the given kind, false otherwise
-     */
-    public boolean hasMembers(VisibleMemberTable.Kind kind) {
-        return !getVisibleMembers(kind).isEmpty();
-    }
-
-    /**
-     * Build the summary for the enum constants.
+     * Builds the summary for any optional members of an annotation type.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the list of summaries to which the summary will be added
      */
-    protected void buildEnumConstantsSummary(Content memberSummaryTree) {
-        MemberSummaryWriter writer = memberSummaryWriters.get(ENUM_CONSTANTS);
-        addSummary(writer, ENUM_CONSTANTS, false, memberSummaryTree);
-    }
-
-    /**
-     * Build the summary for fields.
-     *
-     * @param memberSummaryTree the content tree to which the documentation will be added
-     */
-    protected void buildAnnotationTypeFieldsSummary(Content memberSummaryTree) {
-        MemberSummaryWriter writer = memberSummaryWriters.get(ANNOTATION_TYPE_FIELDS);
-        addSummary(writer, ANNOTATION_TYPE_FIELDS, false, memberSummaryTree);
-    }
-
-    /**
-     * Build the summary for the optional members.
-     *
-     * @param memberSummaryTree the content tree to which the documentation will be added
-     */
-    protected void buildAnnotationTypeOptionalMemberSummary(Content memberSummaryTree) {
+    protected void buildAnnotationTypeOptionalMemberSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(ANNOTATION_TYPE_MEMBER_OPTIONAL);
-        addSummary(writer, ANNOTATION_TYPE_MEMBER_OPTIONAL, false, memberSummaryTree);
+        addSummary(writer, ANNOTATION_TYPE_MEMBER_OPTIONAL, false, summariesList);
     }
 
     /**
-     * Build the summary for the optional members.
+     * Builds the summary for any required members of an annotation type.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the list of summaries to which the summary will be added
      */
-    protected void buildAnnotationTypeRequiredMemberSummary(Content memberSummaryTree) {
+    protected void buildAnnotationTypeRequiredMemberSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(ANNOTATION_TYPE_MEMBER_REQUIRED);
-        addSummary(writer, ANNOTATION_TYPE_MEMBER_REQUIRED, false, memberSummaryTree);
+        addSummary(writer, ANNOTATION_TYPE_MEMBER_REQUIRED, false, summariesList);
     }
 
     /**
-     * Build the summary for the fields.
+     * Builds the summary for any enum constants of an enum type.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the list of summaries to which the summary will be added
      */
-    protected void buildFieldsSummary(Content memberSummaryTree) {
+    protected void buildEnumConstantsSummary(Content summariesList) {
+        MemberSummaryWriter writer = memberSummaryWriters.get(ENUM_CONSTANTS);
+        addSummary(writer, ENUM_CONSTANTS, false, summariesList);
+    }
+
+    /**
+     * Builds the summary for any fields.
+     *
+     * @param summariesList the list of summaries to which the summary will be added
+     */
+    protected void buildFieldsSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(FIELDS);
-        addSummary(writer, FIELDS, true, memberSummaryTree);
+        addSummary(writer, FIELDS, true, summariesList);
     }
 
     /**
-     * Build the summary for the fields.
+     * Builds the summary for any properties.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the list of summaries to which the summary will be added
      */
-    protected void buildPropertiesSummary(Content memberSummaryTree) {
+    protected void buildPropertiesSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(PROPERTIES);
-        addSummary(writer, PROPERTIES, true, memberSummaryTree);
+        addSummary(writer, PROPERTIES, true, summariesList);
     }
 
     /**
-     * Build the summary for the nested classes.
+     * Builds the summary for any nested classes.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the list of summaries to which the summary will be added
      */
-    protected void buildNestedClassesSummary(Content memberSummaryTree) {
-        MemberSummaryWriter writer = memberSummaryWriters.get(INNER_CLASSES);
-        addSummary(writer, INNER_CLASSES, true, memberSummaryTree);
+    protected void buildNestedClassesSummary(Content summariesList) {
+        MemberSummaryWriter writer = memberSummaryWriters.get(NESTED_CLASSES);
+        addSummary(writer, NESTED_CLASSES, true, summariesList);
     }
 
     /**
-     * Build the method summary.
+     * Builds the summary for any methods.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the content tree to which the documentation will be added
      */
-    protected void buildMethodsSummary(Content memberSummaryTree) {
+    protected void buildMethodsSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(METHODS);
-        addSummary(writer, METHODS, true, memberSummaryTree);
+        addSummary(writer, METHODS, true, summariesList);
     }
 
     /**
-     * Build the constructor summary.
+     * Builds the summary for any constructors.
      *
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param summariesList the content tree to which the documentation will be added
      */
-    protected void buildConstructorsSummary(Content memberSummaryTree) {
+    protected void buildConstructorsSummary(Content summariesList) {
         MemberSummaryWriter writer = memberSummaryWriters.get(CONSTRUCTORS);
-        addSummary(writer, CONSTRUCTORS, false, memberSummaryTree);
+        addSummary(writer, CONSTRUCTORS, false, summariesList);
     }
 
     /**
@@ -311,21 +263,18 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
         if (!members.isEmpty()) {
             for (Element member : members) {
                 final Element property = pHelper.getPropertyElement(member);
-                if (property != null) {
-                    processProperty(member, property);
+                if (property != null && member instanceof ExecutableElement ee) {
+                    configuration.cmtUtils.updatePropertyMethodComment(ee, property);
                 }
                 List<? extends DocTree> firstSentenceTags = utils.getFirstSentenceTrees(member);
                 if (utils.isExecutableElement(member) && firstSentenceTags.isEmpty()) {
-                    //Inherit comments from overriden or implemented method if
+                    //Inherit comments from overridden or implemented method if
                     //necessary.
                     DocFinder.Output inheritedDoc =
                             DocFinder.search(configuration,
-                                    new DocFinder.Input(utils, (ExecutableElement) member));
+                                    new DocFinder.Input(utils, member));
                     if (inheritedDoc.holder != null
                             && !utils.getFirstSentenceTrees(inheritedDoc.holder).isEmpty()) {
-                        // let the comment helper know of the overridden element
-                        CommentHelper ch = utils.getCommentHelper(member);
-                        ch.setOverrideElement(inheritedDoc.holder);
                         firstSentenceTags = utils.getFirstSentenceTrees(inheritedDoc.holder);
                     }
                 }
@@ -333,106 +282,6 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
             }
             summaryTreeList.add(writer.getSummaryTableTree(typeElement));
         }
-    }
-
-    /**
-     * Process the property method, property setter and/or property getter
-     * comment text so that it contains the documentation from
-     * the property field. The method adds the leading sentence,
-     * copied documentation including the defaultValue tag and
-     * the see tags if the appropriate property getter and setter are
-     * available.
-     *
-     * @param member the member which is to be augmented.
-     * @param property the original property documentation.
-     */
-    private void processProperty(Element member,
-                                 Element property) {
-        CommentUtils cmtutils = configuration.cmtUtils;
-        final boolean isSetter = isSetter(member);
-        final boolean isGetter = isGetter(member);
-
-        List<DocTree> fullBody = new ArrayList<>();
-        List<DocTree> blockTags = new ArrayList<>();
-        if (isGetter || isSetter) {
-            //add "[GS]ets the value of the property PROPERTY_NAME."
-            if (isSetter) {
-                String text = MessageFormat.format(
-                        configuration.getText("doclet.PropertySetterWithName"),
-                        utils.propertyName((ExecutableElement)member));
-                fullBody.addAll(cmtutils.makeFirstSentenceTree(text));
-            }
-            if (isGetter) {
-                String text = MessageFormat.format(
-                        configuration.getText("doclet.PropertyGetterWithName"),
-                        utils.propertyName((ExecutableElement) member));
-                fullBody.addAll(cmtutils.makeFirstSentenceTree(text));
-            }
-            List<? extends DocTree> propertyTags = utils.getBlockTags(property, "propertyDescription");
-            if (propertyTags.isEmpty()) {
-                List<? extends DocTree> comment = utils.getFullBody(property);
-                blockTags.addAll(cmtutils.makePropertyDescriptionTree(comment));
-            }
-        } else {
-            fullBody.addAll(utils.getFullBody(property));
-        }
-
-        // copy certain tags
-        List<? extends DocTree> tags = utils.getBlockTags(property, Kind.SINCE);
-        blockTags.addAll(tags);
-
-        List<? extends DocTree> bTags = utils.getBlockTags(property, Kind.UNKNOWN_BLOCK_TAG);
-        CommentHelper ch = utils.getCommentHelper(property);
-        for (DocTree dt : bTags) {
-            String tagName = ch.getTagName(dt);
-            if ( "defaultValue".equals(tagName)) {
-                blockTags.add(dt);
-            }
-        }
-
-        //add @see tags
-        if (!isGetter && !isSetter) {
-            ExecutableElement getter = pHelper.getGetterForProperty((ExecutableElement)member);
-            ExecutableElement setter = pHelper.getSetterForProperty((ExecutableElement)member);
-
-            if (null != getter) {
-                StringBuilder sb = new StringBuilder("#");
-                sb.append(utils.getSimpleName(getter)).append("()");
-                blockTags.add(cmtutils.makeSeeTree(sb.toString(), getter));
-            }
-
-            if (null != setter) {
-                VariableElement param = setter.getParameters().get(0);
-                StringBuilder sb = new StringBuilder("#");
-                sb.append(utils.getSimpleName(setter));
-                if (!utils.isTypeVariable(param.asType())) {
-                    sb.append("(").append(utils.getTypeSignature(param.asType(), false, true)).append(")");
-                }
-                blockTags.add(cmtutils.makeSeeTree(sb.toString(), setter));
-            }
-        }
-        cmtutils.setDocCommentTree(member, fullBody, blockTags, utils);
-    }
-
-    /**
-     * Test whether the method is a getter.
-     * @param element property method documentation. Needs to be either property
-     * method, property getter, or property setter.
-     * @return true if the given documentation belongs to a getter.
-     */
-    private boolean isGetter(Element element) {
-        final String pedName = element.getSimpleName().toString();
-        return pedName.startsWith("get") || pedName.startsWith("is");
-    }
-
-    /**
-     * Test whether the method is a setter.
-     * @param element property method documentation. Needs to be either property
-     * method, property getter, or property setter.
-     * @return true if the given documentation belongs to a setter.
-     */
-    private boolean isSetter(Element element) {
-        return element.getSimpleName().toString().startsWith("set");
     }
 
     /**
@@ -454,18 +303,22 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
             if (inheritedClass == typeElement) {
                 continue;
             }
+            if (utils.hasHiddenTag(inheritedClass)) {
+                continue;
+            }
 
-            List<Element> members = inheritedMembersFromMap.stream()
+            List<? extends Element> members = inheritedMembersFromMap.stream()
                     .filter(e -> utils.getEnclosingTypeElement(e) == inheritedClass)
-                    .collect(Collectors.toList());
+                    .toList();
+
             if (!members.isEmpty()) {
                 SortedSet<Element> inheritedMembers = new TreeSet<>(comparator);
                 inheritedMembers.addAll(members);
                 Content inheritedTree = writer.getInheritedSummaryHeader(inheritedClass);
                 Content linksTree = writer.getInheritedSummaryLinksTree();
                 addSummaryFootNote(inheritedClass, inheritedMembers, linksTree, writer);
-                inheritedTree.addContent(linksTree);
-                summaryTreeList.add(writer.getMemberTree(inheritedTree));
+                inheritedTree.add(linksTree);
+                summaryTreeList.add(inheritedTree);
             }
         }
     }
@@ -473,7 +326,7 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
     private void addSummaryFootNote(TypeElement inheritedClass, SortedSet<Element> inheritedMembers,
                                     Content linksTree, MemberSummaryWriter writer) {
         for (Element member : inheritedMembers) {
-            TypeElement t = (utils.isPackagePrivate(inheritedClass) && !utils.isLinkable(inheritedClass))
+            TypeElement t = utils.isUndocumentedEnclosure(inheritedClass)
                     ? typeElement : inheritedClass;
             writer.addInheritedMemberSummary(t, member, inheritedMembers.first() == member,
                     inheritedMembers.last() == member, linksTree);
@@ -481,24 +334,26 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
     }
 
     /**
-     * Add the summary for the documentation.
+     * Adds the summary for the documentation.
      *
-     * @param writer the writer for this member summary.
-     * @param kind the kind of members to document.
-     * @param showInheritedSummary true if inherited summary should be documented
-     * @param memberSummaryTree the content tree to which the documentation will be added
+     * @param writer               the writer for this member summary
+     * @param kind                 the kind of members to document
+     * @param showInheritedSummary true if a summary of any inherited elements should be documented
+     * @param summariesList        the list of summaries to which the summary will be added
      */
     private void addSummary(MemberSummaryWriter writer,
-            VisibleMemberTable.Kind kind, boolean showInheritedSummary,
-            Content memberSummaryTree) {
+                            VisibleMemberTable.Kind kind,
+                            boolean showInheritedSummary,
+                            Content summariesList)
+    {
         LinkedList<Content> summaryTreeList = new LinkedList<>();
         buildSummary(writer, kind, summaryTreeList);
         if (showInheritedSummary)
             buildInheritedSummary(writer, kind, summaryTreeList);
         if (!summaryTreeList.isEmpty()) {
-            Content memberTree = writer.getMemberSummaryHeader(typeElement, memberSummaryTree);
-            summaryTreeList.stream().forEach(memberTree::addContent);
-            writer.addMemberTree(memberSummaryTree, memberTree);
+            Content memberTree = writer.getMemberSummaryHeader(typeElement, summariesList);
+            summaryTreeList.forEach(memberTree::add);
+            writer.addSummary(summariesList, memberTree);
         }
     }
 
@@ -508,6 +363,19 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
         return out;
     }
 
+    /**
+     * A utility class to manage the property-related methods that should be
+     * synthesized or updated.
+     *
+     * A property may comprise a field (that is typically private, if present),
+     * a {@code fooProperty()} method (which is the defining characteristic for
+     * a property), a {@code getFoo()} method and/or a {@code setFoo(Foo foo)} method.
+     *
+     * Either the field (if present) or the {@code fooProperty()} method should have a
+     * comment. If there is no field, or no comment on the field, the description for
+     * the property will be derived from the description of the {@code fooProperty()}
+     * method. If any method does not have a comment, one will be provided.
+     */
     static class PropertyHelper {
 
         private final Map<Element, Element> classPropertiesMap = new HashMap<>();
@@ -535,23 +403,32 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
                                         VariableElement field,
                                         ExecutableElement getter,
                                         ExecutableElement setter) {
-            if (field == null || builder.utils.getDocCommentTree(field) == null) {
-                addToPropertiesMap(propertyMethod, propertyMethod);
-                addToPropertiesMap(getter, propertyMethod);
-                addToPropertiesMap(setter, propertyMethod);
-            } else {
-                addToPropertiesMap(propertyMethod, field);
-                addToPropertiesMap(getter, field);
-                addToPropertiesMap(setter, field);
+            // determine the preferred element from which to derive the property description
+            Element e = field == null || !builder.utils.hasDocCommentTree(field)
+                    ? propertyMethod : field;
+
+            if (e == field && builder.utils.hasDocCommentTree(propertyMethod)) {
+                BaseConfiguration configuration = builder.configuration;
+                configuration.getReporter().print(Diagnostic.Kind.WARNING,
+                        propertyMethod, configuration.getDocResources().getText("doclet.duplicate.comment.for.property"));
             }
+
+            addToPropertiesMap(propertyMethod, e);
+            addToPropertiesMap(getter, e);
+            addToPropertiesMap(setter, e);
         }
 
         private void addToPropertiesMap(Element propertyMethod,
                                         Element commentSource) {
-            if (null == propertyMethod || null == commentSource) {
+            Objects.requireNonNull(commentSource);
+            if (propertyMethod == null) {
                 return;
             }
-            DocCommentTree docTree = builder.utils.getDocCommentTree(propertyMethod);
+
+            Utils utils = builder.utils;
+            DocCommentTree docTree = utils.hasDocCommentTree(propertyMethod)
+                    ? utils.getDocCommentTree(propertyMethod)
+                    : null;
 
             /* The second condition is required for the property buckets. In
              * this case the comment is at the property method (not at the field)
@@ -563,30 +440,12 @@ public abstract class MemberSummaryBuilder extends AbstractMemberBuilder {
         }
 
         /**
-         * Returns the property field documentation belonging to the given member.
+         * Returns the element for the property documentation belonging to the given member.
          * @param element the member for which the property documentation is needed.
-         * @return the property field documentation, null if there is none.
+         * @return the element for the property documentation, null if there is none.
          */
         public Element getPropertyElement(Element element) {
             return classPropertiesMap.get(element);
-        }
-
-        /**
-         * Returns the getter documentation belonging to the given property method.
-         * @param propertyMethod the method for which the getter is needed.
-         * @return the getter documentation, null if there is none.
-         */
-        public ExecutableElement getGetterForProperty(ExecutableElement propertyMethod) {
-            return builder.getVisibleMemberTable().getPropertyGetter(propertyMethod);
-        }
-
-        /**
-         * Returns the setter documentation belonging to the given property method.
-         * @param propertyMethod the method for which the setter is needed.
-         * @return the setter documentation, null if there is none.
-         */
-        public ExecutableElement getSetterForProperty(ExecutableElement propertyMethod) {
-            return builder.getVisibleMemberTable().getPropertySetter(propertyMethod);
         }
     }
 }

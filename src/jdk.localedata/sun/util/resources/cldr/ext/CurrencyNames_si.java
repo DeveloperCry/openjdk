@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -98,6 +94,7 @@ public class CurrencyNames_si extends OpenListResourceBundle {
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "COP", "COP" },
             { "CRC", "CRC" },
             { "CUC", "CUC" },
@@ -152,6 +149,7 @@ public class CurrencyNames_si extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -187,6 +185,7 @@ public class CurrencyNames_si extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "\u0e3f" },
@@ -202,6 +201,7 @@ public class CurrencyNames_si extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "XOF", "\u0dc3\u0dd2\u0dc6\u0dca\u0d91" },
@@ -357,7 +357,8 @@ public class CurrencyNames_si extends OpenListResourceBundle {
             { "usd", "\u0d87\u0db8\u0dbb\u0dd2\u0d9a\u0dcf\u0db1\u0dd4 \u0da9\u0ddc\u0dbd\u0dbb\u0dca" },
             { "uyu", "\u0d8b\u0dbb\u0dd4\u0d9c\u0dd4\u0dc0\u0dda \u0db4\u0dd9\u0dc3\u0ddd" },
             { "uzs", "\u0d8b\u0dc3\u0dca\u0db6\u0dd9\u0d9a\u0dd2\u0dc3\u0dca\u0dae\u0dcf\u0db1 \u0dc3\u0db8\u0dca" },
-            { "vef", "\u0dc0\u0dd9\u0db1\u0dd2\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dcf\u0db1\u0dd4 \u0db6\u0ddc\u0dbd\u0dd2\u0dc0\u0dbb\u0dca" },
+            { "vef", "\u0dc0\u0dd9\u0db1\u0dd2\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dcf\u0db1\u0dd4 \u0db6\u0ddc\u0dbd\u0dd2\u0dc0\u0dbb\u0dca (2008\u20132018)" },
+            { "ves", "\u0dc0\u0dd9\u0db1\u0dd2\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dcf\u0db1\u0dd4 \u0db6\u0ddc\u0dbd\u0dd2\u0dc0\u0dbb\u0dca" },
             { "vnd", "\u0dc0\u0dd2\u0dba\u0da7\u0dca\u0db1\u0dcf\u0db8 \u0da9\u0ddc\u0db1\u0dca" },
             { "vuv", "\u0dc0\u0db1\u0dd4\u0dc0\u0dcf\u0da7\u0dd4 \u0dc0\u0dcf\u0da7\u0dd4" },
             { "wst", "\u0dc3\u0dd0\u0db8\u0ddd\u0dc0\u0dcf \u0da7\u0dcf\u0dbd\u0dcf" },

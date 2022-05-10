@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,11 +22,13 @@
  *
  *
  */
+
 package java.awt;
 
 import java.awt.peer.TextAreaPeer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,8 +43,8 @@ import javax.accessibility.AccessibleStateSet;
  * <p>
  * The following image shows the appearance of a text area:
  * <p>
- * <img src="doc-files/TextArea-1.gif" alt="A TextArea showing the word 'Hello!'"
- * style="float:center; margin: 7px 10px;">
+ * <img src="doc-files/TextArea-1.gif" alt="A TextArea showing the word
+ * 'Hello!'" style="margin: 7px 10px;">
  * <p>
  * This text area could be created by the following line of code:
  *
@@ -125,9 +127,10 @@ public class TextArea extends TextComponent {
      */
     private static Set<AWTKeyStroke> forwardTraversalKeys, backwardTraversalKeys;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+     @Serial
      private static final long serialVersionUID = 3692302836626095722L;
 
     /**
@@ -649,11 +652,16 @@ public class TextArea extends TextComponent {
 
     /**
      * Read the ObjectInputStream.
-     * @exception HeadlessException if
-     * {@code GraphicsEnvironment.isHeadless()} returns
-     * {@code true}
+     *
+     * @param  s the {@code ObjectInputStream} to read
+     * @throws ClassNotFoundException if the class of a serialized object could
+     *         not be found
+     * @throws IOException if an I/O error occurs
+     * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}
+     *         returns {@code true}
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
+    @Serial
     private void readObject(ObjectInputStream s)
       throws ClassNotFoundException, IOException, HeadlessException
     {
@@ -714,10 +722,16 @@ public class TextArea extends TextComponent {
      */
     protected class AccessibleAWTTextArea extends AccessibleAWTTextComponent
     {
-        /*
-         * JDK 1.3 serialVersionUID
+        /**
+         * Use serialVersionUID from JDK 1.3 for interoperability.
          */
+        @Serial
         private static final long serialVersionUID = 3472827823632144419L;
+
+        /**
+         * Constructs an {@code AccessibleAWTTextArea}.
+         */
+        protected AccessibleAWTTextArea() {}
 
         /**
          * Gets the state set of this object.

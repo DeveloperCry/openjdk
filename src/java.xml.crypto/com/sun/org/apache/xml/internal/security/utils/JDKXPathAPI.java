@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
 /**
  * An implementation for XPath evaluation that uses the JDK API.
  */
-public class JDKXPathAPI implements XPathAPI {
+class JDKXPathAPI implements XPathAPI {
 
     private XPathFactory xpf;
 

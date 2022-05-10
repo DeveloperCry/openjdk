@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -180,7 +180,7 @@ public class TIFFYCbCrDecompressor extends TIFFDecompressor {
         super.setOffset(offset);
     }
 
-    public void setByteCount(int byteCount) {
+    public void setByteCount(int byteCount) throws IOException {
         if(decompressor != null) {
             decompressor.setByteCount(byteCount);
         }

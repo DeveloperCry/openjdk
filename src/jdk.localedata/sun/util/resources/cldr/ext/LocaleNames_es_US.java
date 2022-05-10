@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -79,31 +75,30 @@ public class LocaleNames_es_US extends OpenListResourceBundle {
             { "034", "Asia meridional" },
             { "035", "Sudeste asi\u00e1tico" },
             { "039", "Europa meridional" },
-            { "057", "Regi\u00f3n de Micronesia" },
             { "145", "Asia occidental" },
             { "151", "Europa oriental" },
             { "154", "Europa septentrional" },
             { "155", "Europa occidental" },
             { "AC", "Isla de la Ascensi\u00f3n" },
+            { "BA", "Bosnia y Herzegovina" },
             { "CI", "C\u00f4te d\u2019Ivoire" },
-            { "EZ", "zona euro" },
             { "GG", "Guernsey" },
             { "QO", "Territorios alejados de Ocean\u00eda" },
-            { "TL", "Timor-Leste" },
+            { "TA", "Trist\u00e1n de Acu\u00f1a" },
             { "UM", "Islas menores alejadas de EE. UU." },
-            { "VI", "Islas V\u00edrgenes de EE. UU." },
+            { "eu", "euskera" },
             { "gu", "gurayat\u00ed" },
+            { "ht", "criollo haitiano" },
+            { "lo", "lao" },
             { "nr", "ndebele meridional" },
             { "rm", "romanche" },
-            { "rn", "kiroundi" },
             { "ss", "siswati" },
             { "st", "sesotho meridional" },
             { "tn", "setchwana" },
-            { "wo", "wolof" },
             { "ace", "acehn\u00e9s" },
             { "alt", "alt\u00e1i meridional" },
             { "arp", "arapaho" },
-            { "bas", "basa" },
+            { "ars", "\u00e1rabe najdi" },
             { "bax", "bamun" },
             { "bho", "bhojpuri" },
             { "bla", "siksika" },
@@ -111,29 +106,28 @@ public class LocaleNames_es_US extends OpenListResourceBundle {
             { "dum", "neerland\u00e9s medieval" },
             { "enm", "ingl\u00e9s medieval" },
             { "frm", "franc\u00e9s medieval" },
+            { "gan", "gan (China)" },
             { "gmh", "alem\u00e1n de la alta edad media" },
             { "grc", "griego antiguo" },
-            { "hak", "hak" },
+            { "hil", "hiligain\u00f3n" },
+            { "hsn", "xiang (China)" },
+            { "inh", "ingusetio" },
             { "kbd", "kabardiano" },
+            { "krc", "karachay-balkar" },
+            { "lou", "creole de Luisiana" },
             { "lus", "lushai" },
             { "mga", "irland\u00e9s medieval" },
-            { "nan", "nan" },
             { "nso", "sotho septentrional" },
-            { "pcm", "pcm" },
             { "shu", "\u00e1rabe chadiano" },
             { "sma", "sami meridional" },
             { "syr", "siriaco" },
             { "tet", "tet\u00fan" },
-            { "wuu", "wuu" },
-            { "Hanb", "hanb" },
-            { "Mlym", "malay\u00e1lam" },
+            { "tyv", "tuviniano" },
+            { "xal", "kalmyk" },
+            { "Hrkt", "silabarios del japon\u00e9s" },
+            { "Zzzz", "letra desconocida" },
             { "sw_CD", "swahili del Congo" },
             { "type.nu.gujr", "d\u00edgitos en gujarati" },
-            { "type.nu.knda", "n\u00fameros en kannada" },
-            { "type.nu.laoo", "n\u00fameros en lao" },
-            { "type.co.ducet", "orden de clasificaci\u00f3n de Unicode predeterminado" },
-            { "type.lb.normal", "salto de l\u00ednea normal" },
-            { "type.ms.uksystem", "sistema imperial" },
         };
         return data;
     }

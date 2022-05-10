@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,7 +51,7 @@ import sun.rmi.server.UnicastServerRef;
  *
  * @author Ann Wollrath
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"removal","deprecation"})
 public abstract class Transport {
 
     /** "transport" package log level */

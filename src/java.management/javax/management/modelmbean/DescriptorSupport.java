@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -119,16 +119,8 @@ public class DescriptorSupport
     private static final ObjectStreamField[] serialPersistentFields;
     private static final String serialForm;
     static {
-        String form = null;
-        boolean compat = false;
-        try {
-            GetPropertyAction act = new GetPropertyAction("jmx.serial.form");
-            form = AccessController.doPrivileged(act);
-            compat = "1.0".equals(form);  // form may be null
-        } catch (Exception e) {
-            // OK: No compat with 1.0
-        }
-        serialForm = form;
+        serialForm = getForm();
+        boolean compat = "1.0".equals(serialForm);  // serialForm may be null
         if (compat) {
             serialPersistentFields = oldSerialPersistentFields;
             serialVersionUID = oldSerialVersionUID;
@@ -137,6 +129,19 @@ public class DescriptorSupport
             serialVersionUID = newSerialVersionUID;
         }
     }
+
+    @SuppressWarnings("removal")
+    private static String getForm() {
+        String form = null;
+        try {
+            GetPropertyAction act = new GetPropertyAction("jmx.serial.form");
+            return  AccessController.doPrivileged(act);
+        } catch (Exception e) {
+            // OK: No compat with 1.0
+            return null;
+        }
+    }
+
     //
     // END Serialization compatibility stuff
 
@@ -443,7 +448,7 @@ public class DescriptorSupport
         init(null);
 
         for (int i=0; i < fields.length; i++) {
-            if ((fields[i] == null) || (fields[i].equals(""))) {
+            if ((fields[i] == null) || (fields[i].isEmpty())) {
                 continue;
             }
             int eq_separator = fields[i].indexOf('=');
@@ -467,7 +472,7 @@ public class DescriptorSupport
                 fieldValue = fields[i].substring(eq_separator+1);
             }
 
-            if (fieldName.equals("")) {
+            if (fieldName.isEmpty()) {
                 if (MODELMBEAN_LOGGER.isLoggable(Level.TRACE)) {
                     MODELMBEAN_LOGGER.log(Level.TRACE,
                             "Descriptor(String... fields) " +
@@ -500,7 +505,7 @@ public class DescriptorSupport
     public synchronized Object getFieldValue(String fieldName)
             throws RuntimeOperationsException {
 
-        if ((fieldName == null) || (fieldName.equals(""))) {
+        if ((fieldName == null) || (fieldName.isEmpty())) {
             if (MODELMBEAN_LOGGER.isLoggable(Level.TRACE)) {
                 MODELMBEAN_LOGGER.log(Level.TRACE,
                         "Illegal arguments: null field name");
@@ -522,7 +527,7 @@ public class DescriptorSupport
             throws RuntimeOperationsException {
 
         // field name cannot be null or empty
-        if ((fieldName == null) || (fieldName.equals(""))) {
+        if ((fieldName == null) || (fieldName.isEmpty())) {
             if (MODELMBEAN_LOGGER.isLoggable(Level.TRACE)) {
                 MODELMBEAN_LOGGER.log(Level.TRACE,
                         "Illegal arguments: null or empty field name");
@@ -664,7 +669,7 @@ public class DescriptorSupport
                 responseFields[i++] = value;
         } else {
             for (i=0; i < fieldNames.length; i++) {
-                if ((fieldNames[i] == null) || (fieldNames[i].equals(""))) {
+                if ((fieldNames[i] == null) || (fieldNames[i].isEmpty())) {
                     responseFields[i] = null;
                 } else {
                     responseFields[i] = getFieldValue(fieldNames[i]);
@@ -700,7 +705,7 @@ public class DescriptorSupport
         }
 
         for (int i=0; i < fieldNames.length; i++) {
-            if (( fieldNames[i] == null) || (fieldNames[i].equals(""))) {
+            if (( fieldNames[i] == null) || (fieldNames[i].isEmpty())) {
                 if (MODELMBEAN_LOGGER.isLoggable(Level.TRACE)) {
                     MODELMBEAN_LOGGER.log(Level.TRACE,
                             "Null field name encountered at element " + i);
@@ -733,7 +738,7 @@ public class DescriptorSupport
     }
 
     public synchronized void removeField(String fieldName) {
-        if ((fieldName == null) || (fieldName.equals(""))) {
+        if ((fieldName == null) || (fieldName.isEmpty())) {
             return;
         }
 
@@ -862,7 +867,7 @@ public class DescriptorSupport
         String thisDescType = (String)(getFieldValue("descriptorType"));
 
         if ((thisName == null) || (thisDescType == null) ||
-            (thisName.equals("")) || (thisDescType.equals(""))) {
+            (thisName.isEmpty()) || (thisDescType.isEmpty())) {
             return false;
         }
 
@@ -912,7 +917,7 @@ public class DescriptorSupport
 
 
     private boolean validateField(String fldName, Object fldValue) {
-        if ((fldName == null) || (fldName.equals("")))
+        if ((fldName == null) || (fldName.isEmpty()))
             return false;
         String SfldValue = "";
         boolean isAString = false;
@@ -931,7 +936,7 @@ public class DescriptorSupport
             fldName.equalsIgnoreCase("Class")) {
             if (fldValue == null || !isAString)
                 return false;
-            if (nameOrDescriptorType && SfldValue.equals(""))
+            if (nameOrDescriptorType && SfldValue.isEmpty())
                 return false;
             return true;
         } else if (fldName.equalsIgnoreCase("visibility")) {

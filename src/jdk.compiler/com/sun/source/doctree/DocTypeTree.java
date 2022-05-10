@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,8 +28,11 @@ package com.sun.source.doctree;
 /**
  * A tree node for a {@code doctype} declaration.
  *
- * <p>
- * &lt;!doctype text&gt;
+ * <pre>
+ *    &lt;!doctype text&gt;
+ * </pre>
+ *
+ * For HTML5 documents, the correct form is {@code <!doctype html>}.
  *
  * @since 10
  */

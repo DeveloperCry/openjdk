@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,7 +44,7 @@ public class BasicEnumType extends BasicIntType implements EnumType {
     String getName()  { return name; }
     long   getValue() { return value; }
   }
-  private List/*<Enum>*/ enums;
+  private List<Enum> enums;
 
   /** Underlying type of enum must be an integer type (or as yet
       unresolved) */
@@ -70,7 +70,7 @@ public class BasicEnumType extends BasicIntType implements EnumType {
 
   public void addEnum(String name, long val) {
     if (enums == null) {
-      enums = new ArrayList();
+      enums = new ArrayList<>();
     }
     enums.add(new Enum(name, val));
   }

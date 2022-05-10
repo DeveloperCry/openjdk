@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,11 @@ import static javax.sound.sampled.AudioFileFormat.Type;
  * @since 1.3
  */
 public abstract class AudioFileWriter {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected AudioFileWriter() {}
 
     /**
      * Obtains the file types for which file writing support is provided by this

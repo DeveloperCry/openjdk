@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -326,6 +326,7 @@ public class Enter extends JCTree.Visitor {
             JCPackageDecl pd = tree.getPackage();
             if (pd != null) {
                 tree.packge = pd.packge = syms.enterPackage(tree.modle, TreeInfo.fullName(pd.pid));
+                setPackageSymbols.scan(pd);
                 if (   pd.annotations.nonEmpty()
                     || pkginfoOpt == PkgInfo.ALWAYS
                     || tree.docComments != null) {
@@ -375,10 +376,11 @@ public class Enter extends JCTree.Visitor {
                 Name name = names.package_info;
                 ClassSymbol c = syms.enterClass(tree.modle, name, tree.packge);
                 c.flatname = names.fromString(tree.packge + "." + name);
-                c.sourcefile = tree.sourcefile;
+                c.classfile = c.sourcefile = tree.sourcefile;
             c.completer = Completer.NULL_COMPLETER;
                 c.members_field = WriteableScope.create(c);
                 tree.packge.package_info = c;
+                tree.packge.sourcefile = tree.sourcefile;
             }
             classEnter(tree.defs, topEnv);
             if (addEnv) {
@@ -388,6 +390,31 @@ public class Enter extends JCTree.Visitor {
         log.useSource(prev);
         result = null;
     }
+        //where:
+        //set package Symbols to the package expression:
+        private final TreeScanner setPackageSymbols = new TreeScanner() {
+            Symbol currentPackage;
+
+            @Override
+            public void visitIdent(JCIdent tree) {
+                tree.sym = currentPackage;
+                tree.type = currentPackage.type;
+            }
+
+            @Override
+            public void visitSelect(JCFieldAccess tree) {
+                tree.sym = currentPackage;
+                tree.type = currentPackage.type;
+                currentPackage = currentPackage.owner;
+                super.visitSelect(tree);
+            }
+
+            @Override
+            public void visitPackageDef(JCPackageDecl tree) {
+                currentPackage = tree.packge;
+                scan(tree.pid);
+            }
+        };
 
     @Override
     public void visitClassDef(JCClassDecl tree) {
@@ -468,7 +495,7 @@ public class Enter extends JCTree.Visitor {
         // Fill out class fields.
         c.completer = Completer.NULL_COMPLETER; // do not allow the initial completer linger on.
         c.flags_field = chk.checkFlags(tree.pos(), tree.mods.flags, c, tree);
-        c.sourcefile = env.toplevel.sourcefile;
+        c.classfile = c.sourcefile = env.toplevel.sourcefile;
         c.members_field = WriteableScope.create(c);
         c.clearAnnotationMetadata();
 
@@ -497,7 +524,7 @@ public class Enter extends JCTree.Visitor {
 
         // Add non-local class to uncompleted, to make sure it will be
         // completed later.
-        if (!c.isLocal() && uncompleted != null) uncompleted.append(c);
+        if (!c.isDirectlyOrIndirectlyLocal() && uncompleted != null) uncompleted.append(c);
 //      System.err.println("entering " + c.fullname + " in " + c.owner);//DEBUG
 
         // Recursively enter all member classes.
@@ -609,4 +636,29 @@ public class Enter extends JCTree.Visitor {
     public void newRound() {
         typeEnvs.clear();
     }
+
+    public void unenter(JCCompilationUnit topLevel, JCTree tree) {
+        new UnenterScanner(topLevel.modle).scan(tree);
+    }
+        class UnenterScanner extends TreeScanner {
+            private final ModuleSymbol msym;
+
+            public UnenterScanner(ModuleSymbol msym) {
+                this.msym = msym;
+            }
+
+            @Override
+            public void visitClassDef(JCClassDecl tree) {
+                ClassSymbol csym = tree.sym;
+                //if something went wrong during method applicability check
+                //it is possible that nested expressions inside argument expression
+                //are left unchecked - in such cases there's nothing to clean up.
+                if (csym == null) return;
+                typeEnvs.remove(csym);
+                chk.removeCompiled(csym);
+                chk.clearLocalClassNameIndexes(csym);
+                syms.removeClass(msym, csym.flatname);
+                super.visitClassDef(tree);
+            }
+        }
 }

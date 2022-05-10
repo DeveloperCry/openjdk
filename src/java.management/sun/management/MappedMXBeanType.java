@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -609,6 +609,7 @@ public abstract class MappedMXBeanType {
         Method fromMethod = null;
         Method toMethod = null;
 
+        @SuppressWarnings("removal")
         CompositeDataMXBeanType(Class<?> c) throws OpenDataException {
             this.javaClass = c;
             this.mappedTypeClass = COMPOSITE_DATA_CLASS;
@@ -663,7 +664,7 @@ public abstract class MappedMXBeanType {
                         continue;
                     }
 
-                    if (rest.equals("") ||
+                    if (rest.isEmpty() ||
                         method.getParameterTypes().length > 0 ||
                         type == void.class ||
                         rest.equals("Class")) {

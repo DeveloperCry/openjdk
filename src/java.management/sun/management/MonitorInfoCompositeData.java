@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ import javax.management.openmbean.OpenType;
  * construction of a CompositeData use in the local case.
  */
 public class MonitorInfoCompositeData extends LazyCompositeData {
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private final MonitorInfo lock;
 
     private MonitorInfoCompositeData(MonitorInfo mi) {

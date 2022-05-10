@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,20 +27,20 @@ package jdk.javadoc.internal.doclets.toolkit.util.links;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import jdk.javadoc.internal.doclets.toolkit.BaseConfiguration;
 import jdk.javadoc.internal.doclets.toolkit.Content;
+import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 
 /**
- * Encapsulates information about a link.
+ *  Encapsulates information about a link.
  *
  *  <p><b>This is NOT part of any supported API.
  *  If you write code that depends on this, you do so at your own risk.
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
- *
- * @author Jamie Ho
  */
 public abstract class LinkInfo {
 
@@ -67,35 +67,9 @@ public abstract class LinkInfo {
     public boolean isVarArg = false;
 
     /**
-     * Set this to true to indicate that you are linking to a type parameter.
-     */
-    public boolean isTypeBound = false;
-
-    /**
-     * Whether the document element is in a Java 5 declaration
-     * location or not.
-     */
-    public boolean isJava5DeclarationLocation = true;
-
-    /**
      * The label for the link.
      */
     public Content label;
-
-    /**
-     * True if the link should be strong.
-     */
-    public boolean isStrong = false;
-
-    /**
-     * True if we should include the type in the link label.  False otherwise.
-     */
-    public boolean includeTypeInClassLinkLabel = true;
-
-    /**
-     * True if we should include the type as separate link.  False otherwise.
-     */
-    public boolean includeTypeAsSepLink = false;
 
     /**
      * True if we should exclude the type bounds for the type parameter.
@@ -108,31 +82,39 @@ public abstract class LinkInfo {
     public boolean excludeTypeParameterLinks = false;
 
     /**
-     * True if we should print the type bounds, but not link them.
-     */
-    public boolean excludeTypeBoundsLinks = false;
-
-    /**
      * By default, the link can be to the page it's already on.  However,
      * there are cases where we don't want this (e.g. heading of class page).
      */
     public boolean linkToSelf = true;
 
     /**
-     * Return an empty instance of a content object.
+     * True iff the preview flags should be skipped for this link.
+     */
+    public boolean skipPreview;
+
+    /**
+     * Returns an empty instance of a content object.
      *
      * @return an empty instance of a content object.
      */
     protected abstract Content newContent();
 
     /**
-     * Return true if this link is linkable and false if we can't link to the
+     * Returns true if this link is linkable and false if we can't link to the
      * desired place.
      *
      * @return true if this link is linkable and false if we can't link to the
      * desired place.
      */
     public abstract boolean isLinkable();
+
+    /**
+     * Returns true if links to declared types should include links to the
+     * type parameters.
+     *
+     * @return true if type parameter links should be included
+     */
+    public abstract boolean includeTypeParameterLinks();
 
     /**
      * Return the label for this class link.
@@ -145,11 +127,15 @@ public abstract class LinkInfo {
             return label;
         } else if (isLinkable()) {
             Content tlabel = newContent();
-            tlabel.addContent(configuration.utils.getSimpleName(typeElement));
+            Utils utils = configuration.utils;
+            tlabel.add(type instanceof DeclaredType dt && utils.isGenericType(dt.getEnclosingType())
+                    // If enclosing type is rendered as separate links only use own class name
+                    ? typeElement.getSimpleName().toString()
+                    : configuration.utils.getSimpleName(typeElement));
             return tlabel;
         } else {
             Content tlabel = newContent();
-            tlabel.addContent(configuration.getClassName(typeElement));
+            tlabel.add(configuration.getClassName(typeElement));
             return tlabel;
         }
     }
@@ -160,15 +146,9 @@ public abstract class LinkInfo {
                 ", executableElement=" + executableElement +
                 ", type=" + type +
                 ", isVarArg=" + isVarArg +
-                ", isTypeBound=" + isTypeBound +
-                ", isJava5DeclarationLocation=" + isJava5DeclarationLocation +
                 ", label=" + label +
-                ", isStrong=" + isStrong +
-                ", includeTypeInClassLinkLabel=" + includeTypeInClassLinkLabel +
-                ", includeTypeAsSepLink=" + includeTypeAsSepLink +
                 ", excludeTypeBounds=" + excludeTypeBounds +
                 ", excludeTypeParameterLinks=" + excludeTypeParameterLinks +
-                ", excludeTypeBoundsLinks=" + excludeTypeBoundsLinks +
                 ", linkToSelf=" + linkToSelf + '}';
     }
 }

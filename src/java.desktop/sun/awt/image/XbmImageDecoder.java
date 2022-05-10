@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,7 +44,7 @@ import java.awt.image.*;
  * @author James Gosling
  */
 public class XbmImageDecoder extends ImageDecoder {
-    private static byte XbmColormap[] = {(byte) 255, (byte) 255, (byte) 255,
+    private static byte[] XbmColormap = {(byte) 255, (byte) 255, (byte) 255,
                                          0, 0, 0};
     private static int XbmHints = (ImageConsumer.TOPDOWNLEFTRIGHT |
                                    ImageConsumer.COMPLETESCANLINES |
@@ -72,7 +72,7 @@ public class XbmImageDecoder extends ImageDecoder {
      * produce an image from the stream.
      */
     public void produceImage() throws IOException, ImageFormatException {
-        char nm[] = new char[80];
+        char[] nm = new char[80];
         int c;
         int i = 0;
         int state = 0;
@@ -81,7 +81,7 @@ public class XbmImageDecoder extends ImageDecoder {
         int x = 0;
         int y = 0;
         boolean start = true;
-        byte raster[] = null;
+        byte[] raster = null;
         IndexColorModel model = null;
         while (!aborted && (c = input.read()) != -1) {
             if ('a' <= c && c <= 'z' ||

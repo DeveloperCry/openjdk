@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -83,6 +79,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "Tagb", "Tagbanwa" },
             { "Zsye", "Emoji" },
             { "%%NJIVA", "Gniva/Njiva t\u00e1jsz\u00f3l\u00e1s" },
+            { "ccp", "csakma" },
             { "egy", "\u00f3egyiptomi" },
             { "raj", "radzsaszt\u00e1ni" },
             { "Phag", "Phags-pa" },
@@ -124,6 +121,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "kum", "kum\u00fck" },
             { "BE", "Belgium" },
             { "gmh", "k\u00f6z\u00e9p fels\u0151 n\u00e9met" },
+            { "Sogo", "\u00d3szogd" },
             { "BF", "Burkina Faso" },
             { "BG", "Bulg\u00e1ria" },
             { "BH", "Bahrein" },
@@ -150,9 +148,9 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "CA", "Kanada" },
             { "CC", "K\u00f3kusz (Keeling)-szigetek" },
             { "mzn", "m\u00e1zander\u00e1ni" },
-            { "CD", "Kong\u00f3 - Kinshasa" },
+            { "CD", "Kong\u00f3 \u2013 Kinshasa" },
             { "CF", "K\u00f6z\u00e9p-afrikai K\u00f6zt\u00e1rsas\u00e1g" },
-            { "CG", "Kong\u00f3 - Brazzaville" },
+            { "CG", "Kong\u00f3 \u2013 Brazzaville" },
             { "CH", "Sv\u00e1jc" },
             { "CI", "Elef\u00e1ntcsontpart" },
             { "CK", "Cook-szigetek" },
@@ -170,6 +168,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "CY", "Ciprus" },
             { "CZ", "Csehorsz\u00e1g" },
             { "eka", "ekadzsuk" },
+            { "Sogd", "Szogd" },
             { "DE", "N\u00e9metorsz\u00e1g" },
             { "goh", "\u00f3fels\u0151 n\u00e9met" },
             { "ace", "achin\u00e9z" },
@@ -228,12 +227,11 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "FK", "Falkland-szigetek" },
             { "FM", "Mikron\u00e9zia" },
             { "key.va", "F\u00f6ldrajzi helyvari\u00e1ns" },
-            { "FO", "Fer\u00f6er-szigetek" },
+            { "FO", "Fer\u00f6er szigetek" },
             { "Taml", "Tamil" },
             { "FR", "Franciaorsz\u00e1g" },
             { "tkl", "tokelaui" },
             { "grb", "greb\u00f3" },
-            { "root", "\u0151si" },
             { "type.ca.indian", "Indiai nemzeti napt\u00e1r" },
             { "grc", "\u00f3g\u00f6r\u00f6g" },
             { "GA", "Gabon" },
@@ -311,6 +309,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "tog", "nyugati nyasza" },
             { "type.nu.knda", "Kannada sz\u00e1mjegyek" },
             { "Kali", "Kajah li" },
+            { "Sidd", "Sziddham" },
             { "de_CH", "sv\u00e1jci feln\u00e9met" },
             { "type.co.phonetic", "Fonetikus rendez\u00e9si sorrend" },
             { "type.ca.buddhist", "Buddhista napt\u00e1r" },
@@ -370,9 +369,9 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "ale", "aleut" },
             { "Thai", "Thai" },
             { "type.nu.vaii", "Vai sz\u00e1mjegyek" },
-            { "MK", "Maced\u00f3nia" },
+            { "MK", "\u00c9szak-Maced\u00f3nia" },
             { "ML", "Mali" },
-            { "MM", "Mianmar (Burma)" },
+            { "MM", "Mianmar" },
             { "MN", "Mong\u00f3lia" },
             { "new", "nevari" },
             { "MO", "Maka\u00f3 KKT" },
@@ -437,7 +436,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "PM", "Saint-Pierre \u00e9s Miquelon" },
             { "PN", "Pitcairn-szigetek" },
             { "PR", "Puerto Rico" },
-            { "PS", "Palesztin Ter\u00fclet" },
+            { "PS", "Palesztin Auton\u00f3mia" },
             { "Bali", "Balin\u00e9z" },
             { "PT", "Portug\u00e1lia" },
             { "PW", "Palau" },
@@ -498,7 +497,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "SO", "Szom\u00e1lia" },
             { "arn", "mapucse" },
             { "arp", "arapaho" },
-            { "type.nu.taml", "Tamil hagyom\u00e1nyos sz\u00e1mok" },
+            { "type.nu.taml", "Hagyom\u00e1nyos tamil sz\u00e1mjegyek" },
             { "SR", "Suriname" },
             { "SS", "D\u00e9l-Szud\u00e1n" },
             { "ST", "S\u00e3o Tom\u00e9 \u00e9s Pr\u00edncipe" },
@@ -517,6 +516,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "TC", "Turks- \u00e9s Caicos-szigetek" },
             { "yav", "jangben" },
             { "TD", "Cs\u00e1d" },
+            { "Qaag", "Zawgyi" },
             { "TF", "Francia D\u00e9li Ter\u00fcletek" },
             { "TG", "Togo" },
             { "TH", "Thaif\u00f6ld" },
@@ -570,7 +570,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "VE", "Venezuela" },
             { "VG", "Brit Virgin-szigetek" },
             { "VI", "Amerikai Virgin-szigetek" },
-            { "VN", "Vietnam" },
+            { "VN", "Vietn\u00e1m" },
             { "VU", "Vanuatu" },
             { "nog", "nogaj" },
             { "rwk", "rwo" },
@@ -590,7 +590,9 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "WS", "Szamoa" },
             { "wal", "valamo" },
             { "was", "vas\u00f3" },
+            { "XA", "Pszeudo-nyelvj\u00e1r\u00e1sok" },
             { "war", "vara\u00f3" },
+            { "XB", "Pszeudo-k\u00e9tir\u00e1ny\u00fa" },
             { "awa", "aw\u00e1di" },
             { "061", "Polin\u00e9zia" },
             { "XK", "Koszov\u00f3" },
@@ -638,6 +640,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "dav", "taita" },
             { "Maya", "Maja hieroglif\u00e1k" },
             { "lrc", "\u00e9szaki luri" },
+            { "type.co.emoji", "Emodzsi rendez\u00e9si sorrend" },
             { "Copt", "Kopt" },
             { "nwc", "klasszikus newari" },
             { "udm", "udmurt" },
@@ -686,6 +689,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "scn", "szic\u00edliai" },
             { "aa", "afar" },
             { "ab", "abh\u00e1z" },
+            { "Aran", "Nasztalik" },
             { "ae", "aveszt\u00e1n" },
             { "af", "afrikaans" },
             { "ak", "akan" },
@@ -763,7 +767,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "type.co.big5han", "Hagyom\u00e1nyos k\u00ednai sorrend - Big5" },
             { "es", "spanyol" },
             { "et", "\u00e9szt" },
-            { "Hanb", "Hanb" },
+            { "Hanb", "Han bopomof\u00f3val" },
             { "eu", "baszk" },
             { "Buhd", "Buhid" },
             { "Hang", "Hangul" },
@@ -1070,7 +1074,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "Sylo", "Sylheti nag\u00e1ri" },
             { "ve", "venda" },
             { "type.ca.roc", "K\u00ednai k\u00f6zt\u00e1rsas\u00e1gi napt\u00e1r" },
-            { "vi", "vietnami" },
+            { "vi", "vietn\u00e1mi" },
             { "kho", "kotan\u00e9z" },
             { "khq", "kojra-cs\u00edni" },
             { "key.hc", "\u00d3raform\u00e1tum (12 \u2013 24)" },
@@ -1089,7 +1093,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "Xsux", "\u00c9k\u00edr\u00e1sos sum\u00e9ro-akk\u00e1d" },
             { "wo", "volof" },
             { "zgh", "marokk\u00f3i tamazight" },
-            { "ar_001", "modern szab\u00e1nyos arab" },
+            { "ar_001", "modern szabv\u00e1nyos arab" },
             { "Cans", "Egyes\u00edtett kanadai \u0151slakos jelek" },
             { "%%FONXSAMP", "Fonxsamp" },
             { "gay", "gajo" },
@@ -1178,6 +1182,7 @@ public class LocaleNames_hu extends OpenListResourceBundle {
             { "type.nu.tamldec", "Tamil sz\u00e1mjegyek" },
             { "krc", "karacs\u00e1j-balk\u00e1r" },
             { "inh", "ingus" },
+            { "fa_AF", "dari" },
             { "krl", "karelai" },
             { "efi", "efik" },
             { "key.nu", "Sz\u00e1mok" },

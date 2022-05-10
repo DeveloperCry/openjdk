@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,6 +26,8 @@
 package jdk.internal.net.http;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLParameters;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -54,16 +56,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -113,6 +114,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
             namePrefix = "HttpClient-" + clientID + "-Worker-";
         }
 
+        @SuppressWarnings("removal")
         @Override
         public Thread newThread(Runnable r) {
             String name = namePrefix + nextId.getAndIncrement();
@@ -133,7 +135,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
      * is the SelectorManager thread. If the current thread is not
      * the selector manager thread the given task is executed inline.
      */
-    final static class DelegatingExecutor implements Executor {
+    static final class DelegatingExecutor implements Executor {
         private final BooleanSupplier isInSelectorThread;
         private final Executor delegate;
         DelegatingExecutor(BooleanSupplier isInSelectorThread, Executor delegate) {
@@ -153,12 +155,25 @@ final class HttpClientImpl extends HttpClient implements Trackable {
                 command.run();
             }
         }
+
+        @SuppressWarnings("removal")
+        private void shutdown() {
+            if (delegate instanceof ExecutorService service) {
+                PrivilegedAction<?> action = () -> {
+                    service.shutdown();
+                    return null;
+                };
+                AccessController.doPrivileged(action, null,
+                        new RuntimePermission("modifyThread"));
+            }
+        }
+
     }
 
     private final CookieHandler cookieHandler;
     private final Duration connectTimeout;
     private final Redirect followRedirects;
-    private final Optional<ProxySelector> userProxySelector;
+    private final ProxySelector userProxySelector;
     private final ProxySelector proxySelector;
     private final Authenticator authenticator;
     private final Version version;
@@ -211,7 +226,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
     //    from the map. This should also take care of push promises.
     // 2. For WebSocket the count is increased when creating a
     //    DetachedConnectionChannel for the socket, and decreased
-    //    when the the channel is closed.
+    //    when the channel is closed.
     //    In addition, the HttpClient facade is passed to the WebSocket builder,
     //    (instead of the client implementation delegate).
     // 3. For HTTP/1.1 the count is incremented before starting to parse the body
@@ -265,7 +280,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
             try {
                 sslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException ex) {
-                throw new InternalError(ex);
+                throw new UncheckedIOException(new IOException(ex));
             }
         } else {
             sslContext = builder.sslContext;
@@ -284,12 +299,12 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         connectTimeout = builder.connectTimeout;
         followRedirects = builder.followRedirects == null ?
                 Redirect.NEVER : builder.followRedirects;
-        this.userProxySelector = Optional.ofNullable(builder.proxy);
-        this.proxySelector = userProxySelector
+        this.userProxySelector = builder.proxy;
+        this.proxySelector = Optional.ofNullable(userProxySelector)
                 .orElseGet(HttpClientImpl::getDefaultProxySelector);
         if (debug.on())
             debug.log("proxySelector is %s (user-supplied=%s)",
-                      this.proxySelector, userProxySelector.isPresent());
+                      this.proxySelector, userProxySelector != null);
         authenticator = builder.authenticator;
         if (builder.version == null) {
             version = HttpClient.Version.HTTP_2;
@@ -308,7 +323,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
             selmgr = new SelectorManager(this);
         } catch (IOException e) {
             // unlikely
-            throw new InternalError(e);
+            throw new UncheckedIOException(e);
         }
         selmgr.setDaemon(true);
         filters = new FilterFactory();
@@ -329,25 +344,16 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         connections.stop();
         // Clears HTTP/2 cache and close its connections.
         client2.stop();
+        // shutdown the executor if needed
+        if (isDefaultExecutor) delegatingExecutor.shutdown();
     }
 
     private static SSLParameters getDefaultParams(SSLContext ctx) {
-        SSLParameters params = ctx.getSupportedSSLParameters();
-        String[] protocols = params.getProtocols();
-        boolean found13 = false;
-        for (String proto : protocols) {
-            if (proto.equals("TLSv1.3")) {
-                found13 = true;
-                break;
-            }
-        }
-        if (found13)
-            params.setProtocols(new String[] {"TLSv1.3", "TLSv1.2"});
-        else
-            params.setProtocols(new String[] {"TLSv1.2"});
+        SSLParameters params = ctx.getDefaultSSLParameters();
         return params;
     }
 
+    @SuppressWarnings("removal")
     private static ProxySelector getDefaultProxySelector() {
         PrivilegedAction<ProxySelector> action = ProxySelector::getDefault;
         return AccessController.doPrivileged(action);
@@ -430,7 +436,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         return pendingOperationCount.get();
     }
 
-    final static class HttpClientTracker implements Tracker {
+    static final class HttpClientTracker implements Tracker {
         final AtomicLong httpCount;
         final AtomicLong http2Count;
         final AtomicLong websocketCount;
@@ -536,6 +542,10 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         throws IOException, InterruptedException
     {
         CompletableFuture<HttpResponse<T>> cf = null;
+
+        // if the thread is already interrupted no need to go further.
+        // cf.get() would throw anyway.
+        if (Thread.interrupted()) throw new InterruptedException();
         try {
             cf = sendAsync(req, responseHandler, null, null);
             return cf.get();
@@ -561,6 +571,15 @@ final class HttpClientImpl extends HttpClient implements Trackable {
                 ConnectException ce = new ConnectException(msg);
                 ce.initCause(throwable);
                 throw ce;
+            } else if (throwable instanceof SSLHandshakeException) {
+                // special case for SSLHandshakeException
+                SSLHandshakeException he = new SSLHandshakeException(msg);
+                he.initCause(throwable);
+                throw he;
+            } else if (throwable instanceof SSLException) {
+                // any other SSLException is wrapped in a plain
+                // SSLException
+                throw new SSLException(msg, throwable);
             } else if (throwable instanceof IOException) {
                 throw new IOException(msg, throwable);
             } else {
@@ -586,6 +605,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         return sendAsync(userRequest, responseHandler, pushPromiseHandler, delegatingExecutor.delegate);
     }
 
+    @SuppressWarnings("removal")
     private <T> CompletableFuture<HttpResponse<T>>
     sendAsync(HttpRequest userRequest,
               BodyHandler<T> responseHandler,
@@ -650,7 +670,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
     }
 
     // Main loop for this client's selector
-    private final static class SelectorManager extends Thread {
+    private static final class SelectorManager extends Thread {
 
         // For testing purposes we have an internal System property that
         // can control the frequency at which the selector manager will wake
@@ -987,7 +1007,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         private final SelectableChannel chan;
         private final Selector selector;
         private final Set<AsyncEvent> pending;
-        private final static Logger debug =
+        private static final Logger debug =
                 Utils.getDebugLogger("SelectorAttachment"::toString, Utils.DEBUG);
         private int interestOps;
 
@@ -1138,7 +1158,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
 
     @Override
     public Optional<ProxySelector> proxy() {
-        return this.userProxySelector;
+        return Optional.ofNullable(userProxySelector);
     }
 
     // Return the effective proxy that this client uses.
@@ -1184,7 +1204,7 @@ final class HttpClientImpl extends HttpClient implements Trackable {
         filters.addFilter(f);
     }
 
-    final LinkedList<HeaderFilter> filterChain() {
+    final List<HeaderFilter> filterChain() {
         return filters.getFilterChain();
     }
 
@@ -1268,6 +1288,14 @@ final class HttpClientImpl extends HttpClient implements Trackable {
     int getReceiveBufferSize() {
         return Utils.getIntegerNetProperty(
                 "jdk.httpclient.receiveBufferSize",
+                0 // only set the size if > 0
+        );
+    }
+
+    // used for testing
+    int getSendBufferSize() {
+        return Utils.getIntegerNetProperty(
+                "jdk.httpclient.sendBufferSize",
                 0 // only set the size if > 0
         );
     }

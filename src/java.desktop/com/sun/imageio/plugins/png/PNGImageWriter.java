@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,15 +28,16 @@ package com.sun.imageio.plugins.png;
 import java.awt.Rectangle;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
+
 import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageTypeSpecifier;
@@ -46,6 +47,9 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.ImageOutputStreamImpl;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 final class CRC {
 
@@ -143,7 +147,7 @@ final class ChunkStream extends ImageOutputStreamImpl {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     protected void finalize() throws Throwable {
         // Empty finalizer (for improved performance; no need to call
         // super.finalize() in this case)
@@ -280,7 +284,7 @@ final class IDATOutputStream extends ImageOutputStreamImpl {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     protected void finalize() throws Throwable {
         // Empty finalizer (for improved performance; no need to call
         // super.finalize() in this case)
@@ -513,6 +517,9 @@ public final class PNGImageWriter extends ImageWriter {
     private void write_iCCP() throws IOException {
         if (metadata.iCCP_present) {
             ChunkStream cs = new ChunkStream(PNGImageReader.iCCP_TYPE, stream);
+            if (metadata.iCCP_profileName.length() > 79) {
+                throw new IIOException("iCCP profile name is longer than 79");
+            }
             cs.writeBytes(metadata.iCCP_profileName);
             cs.writeByte(0); // null terminator
 
@@ -701,6 +708,9 @@ public final class PNGImageWriter extends ImageWriter {
         if (metadata.sPLT_present) {
             ChunkStream cs = new ChunkStream(PNGImageReader.sPLT_TYPE, stream);
 
+            if (metadata.sPLT_paletteName.length() > 79) {
+                throw new IIOException("sPLT palette name is longer than 79");
+            }
             cs.writeBytes(metadata.sPLT_paletteName);
             cs.writeByte(0); // null terminator
 
@@ -748,6 +758,9 @@ public final class PNGImageWriter extends ImageWriter {
         while (keywordIter.hasNext()) {
             ChunkStream cs = new ChunkStream(PNGImageReader.tEXt_TYPE, stream);
             String keyword = keywordIter.next();
+            if (keyword.length() > 79) {
+                throw new IIOException("tEXt keyword is longer than 79");
+            }
             cs.writeBytes(keyword);
             cs.writeByte(0);
 
@@ -777,7 +790,11 @@ public final class PNGImageWriter extends ImageWriter {
         while (keywordIter.hasNext()) {
             ChunkStream cs = new ChunkStream(PNGImageReader.iTXt_TYPE, stream);
 
-            cs.writeBytes(keywordIter.next());
+            String keyword = keywordIter.next();
+            if (keyword.length() > 79) {
+                throw new IIOException("iTXt keyword is longer than 79");
+            }
+            cs.writeBytes(keyword);
             cs.writeByte(0);
 
             Boolean compressed = flagIter.next();
@@ -788,15 +805,14 @@ public final class PNGImageWriter extends ImageWriter {
             cs.writeBytes(languageIter.next());
             cs.writeByte(0);
 
-
-            cs.write(translatedKeywordIter.next().getBytes("UTF8"));
+            cs.write(translatedKeywordIter.next().getBytes(UTF_8));
             cs.writeByte(0);
 
             String text = textIter.next();
             if (compressed) {
-                cs.write(deflate(text.getBytes("UTF8")));
+                cs.write(deflate(text.getBytes(UTF_8)));
             } else {
-                cs.write(text.getBytes("UTF8"));
+                cs.write(text.getBytes(UTF_8));
             }
             cs.finish();
         }
@@ -810,6 +826,9 @@ public final class PNGImageWriter extends ImageWriter {
         while (keywordIter.hasNext()) {
             ChunkStream cs = new ChunkStream(PNGImageReader.zTXt_TYPE, stream);
             String keyword = keywordIter.next();
+            if (keyword.length() > 79) {
+                throw new IIOException("zTXt keyword is longer than 79");
+            }
             cs.writeBytes(keyword);
             cs.writeByte(0);
 
@@ -817,7 +836,7 @@ public final class PNGImageWriter extends ImageWriter {
             cs.writeByte(compressionMethod);
 
             String text = textIter.next();
-            cs.write(deflate(text.getBytes("ISO-8859-1")));
+            cs.write(deflate(text.getBytes(ISO_8859_1)));
             cs.finish();
         }
     }

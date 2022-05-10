@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -58,7 +58,7 @@ public class UnknownElementException extends UnknownEntityException {
      * @param p an additional parameter, may be {@code null}
      */
     public UnknownElementException(Element e, Object p) {
-        super("Unknown element: " + e);
+        super("Unknown element: \"" + e + "\"");
         element = e;
         this.parameter = p;
     }

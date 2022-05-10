@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -146,6 +146,7 @@ class FactoryFinder {
      * @param overrideDefaultParser True to allow overriding the system-default
      * parser.
      */
+    @SuppressWarnings("removal")
     static <T> T newInstance(Class<T> type, String className, ClassLoader cl,
                              boolean doFallback)
         throws TransformerFactoryConfigurationError
@@ -264,6 +265,7 @@ class FactoryFinder {
      *
      * @return instance of provider class if found or null
      */
+    @SuppressWarnings("removal")
     private static <T> T findServiceProvider(final Class<T> type)
         throws TransformerFactoryConfigurationError
     {

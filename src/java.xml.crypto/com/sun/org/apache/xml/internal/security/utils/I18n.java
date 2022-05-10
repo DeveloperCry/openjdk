@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * The Internationalization (I18N) pack.
  *
  */
-public class I18n {
+public final class I18n {
 
     /** Field NOT_INITIALIZED_MSG */
     public static final String NOT_INITIALIZED_MSG =
@@ -111,7 +111,7 @@ public class I18n {
      */
     public static String getExceptionMessage(String msgID, Exception originalException) {
         try {
-            Object exArgs[] = { originalException.getMessage() };
+            Object[] exArgs = { originalException.getMessage() };
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {
             if (com.sun.org.apache.xml.internal.security.Init.isInitialized()) {
@@ -133,7 +133,7 @@ public class I18n {
      * @param exArgs
      * @return message translated
      */
-    public static String getExceptionMessage(String msgID, Object exArgs[]) {
+    public static String getExceptionMessage(String msgID, Object[] exArgs) {
         try {
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {

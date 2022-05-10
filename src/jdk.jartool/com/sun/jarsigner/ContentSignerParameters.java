@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,7 +36,7 @@ import java.util.zip.ZipFile;
  * @author Vincent Ryan
  * @deprecated This class has been deprecated.
  */
-@Deprecated(since="9")
+@Deprecated(since="9", forRemoval=true)
 public interface ContentSignerParameters {
 
     /**

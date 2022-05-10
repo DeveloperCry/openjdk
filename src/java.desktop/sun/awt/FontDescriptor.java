@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,14 +22,17 @@
  *
  *
  */
+
 package sun.awt;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.nio.charset.StandardCharsets;
+
+import static java.nio.charset.StandardCharsets.UTF_16BE;
+import static java.nio.charset.StandardCharsets.UTF_16LE;
 
 public class FontDescriptor implements Cloneable {
 
@@ -109,15 +112,15 @@ public class FontDescriptor implements Cloneable {
     public boolean useUnicode() {
         if (useUnicode && unicodeEncoder == null) {
             try {
-                this.unicodeEncoder = isLE?
-                    StandardCharsets.UTF_16LE.newEncoder():
-                    StandardCharsets.UTF_16BE.newEncoder();
+                this.unicodeEncoder = isLE ? UTF_16LE.newEncoder():
+                                             UTF_16BE.newEncoder();
             } catch (IllegalArgumentException x) {}
         }
         return useUnicode;
     }
     static boolean isLE;
     static {
+        @SuppressWarnings("removal")
         String enc = java.security.AccessController.doPrivileged(
            new sun.security.action.GetPropertyAction("sun.io.unicode.encoding",
                                                           "UnicodeBig"));

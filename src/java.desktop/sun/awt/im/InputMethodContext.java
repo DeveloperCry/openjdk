@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -72,6 +72,7 @@ public class InputMethodContext
     static {
         // check whether we should use below-the-spot input
         // get property from command line
+        @SuppressWarnings("removal")
         String inputStyle = AccessController.doPrivileged
                 (new GetPropertyAction("java.awt.im.style", null));
         // get property from awt.properties file

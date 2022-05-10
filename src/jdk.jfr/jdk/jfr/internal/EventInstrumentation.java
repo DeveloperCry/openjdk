@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,7 +64,11 @@ public final class EventInstrumentation {
         private String settingDescriptor;
         final String fieldName;
         final int index;
-        // Used when instantiating Setting
+
+        // The settingControl is passed to EventHandler where it is
+        // used to check enablement before calling commit
+        // Methods on settingControl must never be invoked
+        // directly by JFR, instead use jdk.jfr.internal.Control
         SettingControl settingControl;
 
         public SettingInfo(String fieldName, int index) {
@@ -74,7 +78,7 @@ public final class EventInstrumentation {
     }
 
     static final class FieldInfo {
-        private final static Type STRING = Type.getType(String.class);
+        private static final Type STRING = Type.getType(String.class);
         final String fieldName;
         final String fieldDescriptor;
         final String internalClassName;
@@ -191,9 +195,8 @@ public final class EventInstrumentation {
                     if (values != null && values.size() == 2) {
                         Object key = values.get(0);
                         Object value = values.get(1);
-                        if (key instanceof String && value != null) {
+                        if (key instanceof String keyName && value != null) {
                             if (type == value.getClass()) {
-                                String keyName = (String) key;
                                 if ("value".equals(keyName)) {
                                    return (T) value;
                                 }
@@ -210,6 +213,7 @@ public final class EventInstrumentation {
         Set<String> methodSet = new HashSet<>();
         List<SettingInfo> settingInfos = new ArrayList<>();
         String settingDescriptor = Type.getType(SettingDefinition.class).getDescriptor();
+        String nameDescriptor = Type.getType(Name.class).getDescriptor();
         for (MethodNode m : classNode.methods) {
             if (m.visibleAnnotations != null) {
                 for (AnnotationNode an : m.visibleAnnotations) {
@@ -217,6 +221,15 @@ public final class EventInstrumentation {
                     // stage. We would need to check that the parameter
                     // is an instance of SettingControl.
                     if (settingDescriptor.equals(an.desc)) {
+                        String name = m.name;
+                        for (AnnotationNode nameCandidate : m.visibleAnnotations) {
+                            if (nameDescriptor.equals(nameCandidate.desc)) {
+                                List<Object> values = nameCandidate.values;
+                                if (values.size() == 1 && values.get(0) instanceof String s) {
+                                    name = Utils.validJavaIdentifier(s, name);
+                                }
+                            }
+                        }
                         Type returnType = Type.getReturnType(m.desc);
                         if (returnType.equals(Type.getType(Boolean.TYPE))) {
                             Type[] args = Type.getArgumentTypes(m.desc);
@@ -320,7 +333,7 @@ public final class EventInstrumentation {
         return result;
     }
 
-    public byte[] builUninstrumented() {
+    public byte[] buildUninstrumented() {
         makeUninstrumented();
         return toByteArray();
     }
@@ -363,74 +376,72 @@ public final class EventInstrumentation {
             methodVisitor.visitMaxs(0, 0);
         });
 
-        // MyEvent#commit() - Java event writer
         updateMethod(METHOD_COMMIT, methodVisitor -> {
-                // if (!isEnable()) {
-                // return;
-                // }
-                methodVisitor.visitCode();
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, getInternalClassName(), METHOD_IS_ENABLED.getName(), METHOD_IS_ENABLED.getDescriptor(), false);
-                Label l0 = new Label();
-                methodVisitor.visitJumpInsn(Opcodes.IFNE, l0);
-                methodVisitor.visitInsn(Opcodes.RETURN);
-                methodVisitor.visitLabel(l0);
-                methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                // if (startTime == 0) {
-                // startTime = EventWriter.timestamp();
-                // } else {
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_START_TIME, "J");
-                methodVisitor.visitInsn(Opcodes.LCONST_0);
-                methodVisitor.visitInsn(Opcodes.LCMP);
-                Label durationalEvent = new Label();
-                methodVisitor.visitJumpInsn(Opcodes.IFNE, durationalEvent);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, TYPE_EVENT_HANDLER.getInternalName(), METHOD_TIME_STAMP.getName(),
-                        METHOD_TIME_STAMP.getDescriptor(), false);
-                methodVisitor.visitFieldInsn(Opcodes.PUTFIELD, getInternalClassName(), FIELD_START_TIME, "J");
-                Label commit = new Label();
-                methodVisitor.visitJumpInsn(Opcodes.GOTO, commit);
-                // if (duration == 0) {
-                // duration = EventWriter.timestamp() - startTime;
-                // }
-                // }
-                methodVisitor.visitLabel(durationalEvent);
-                methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_DURATION, "J");
-                methodVisitor.visitInsn(Opcodes.LCONST_0);
-                methodVisitor.visitInsn(Opcodes.LCMP);
-                methodVisitor.visitJumpInsn(Opcodes.IFNE, commit);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, TYPE_EVENT_HANDLER.getInternalName(), METHOD_TIME_STAMP.getName(), METHOD_TIME_STAMP.getDescriptor(), false);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_START_TIME, "J");
-                methodVisitor.visitInsn(Opcodes.LSUB);
-                methodVisitor.visitFieldInsn(Opcodes.PUTFIELD, getInternalClassName(), FIELD_DURATION, "J");
-                methodVisitor.visitLabel(commit);
-                // if (shouldCommit()) {
-                methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, getInternalClassName(), METHOD_EVENT_SHOULD_COMMIT.getName(), METHOD_EVENT_SHOULD_COMMIT.getDescriptor(), false);
-                Label end = new Label();
-                // eventHandler.write(...);
-                // }
-                methodVisitor.visitJumpInsn(Opcodes.IFEQ, end);
-                getEventHandler(methodVisitor);
+            // if (!isEnable()) {
+            // return;
+            // }
+            methodVisitor.visitCode();
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, getInternalClassName(), METHOD_IS_ENABLED.getName(), METHOD_IS_ENABLED.getDescriptor(), false);
+            Label l0 = new Label();
+            methodVisitor.visitJumpInsn(Opcodes.IFNE, l0);
+            methodVisitor.visitInsn(Opcodes.RETURN);
+            methodVisitor.visitLabel(l0);
+            methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            // if (startTime == 0) {
+            // startTime = EventWriter.timestamp();
+            // } else {
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_START_TIME, "J");
+            methodVisitor.visitInsn(Opcodes.LCONST_0);
+            methodVisitor.visitInsn(Opcodes.LCMP);
+            Label durationalEvent = new Label();
+            methodVisitor.visitJumpInsn(Opcodes.IFNE, durationalEvent);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, TYPE_EVENT_HANDLER.getInternalName(), METHOD_TIME_STAMP.getName(), METHOD_TIME_STAMP.getDescriptor(), false);
+            methodVisitor.visitFieldInsn(Opcodes.PUTFIELD, getInternalClassName(), FIELD_START_TIME, "J");
+            Label commit = new Label();
+            methodVisitor.visitJumpInsn(Opcodes.GOTO, commit);
+            // if (duration == 0) {
+            // duration = EventWriter.timestamp() - startTime;
+            // }
+            // }
+            methodVisitor.visitLabel(durationalEvent);
+            methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_DURATION, "J");
+            methodVisitor.visitInsn(Opcodes.LCONST_0);
+            methodVisitor.visitInsn(Opcodes.LCMP);
+            methodVisitor.visitJumpInsn(Opcodes.IFNE, commit);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, TYPE_EVENT_HANDLER.getInternalName(), METHOD_TIME_STAMP.getName(), METHOD_TIME_STAMP.getDescriptor(), false);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitFieldInsn(Opcodes.GETFIELD, getInternalClassName(), FIELD_START_TIME, "J");
+            methodVisitor.visitInsn(Opcodes.LSUB);
+            methodVisitor.visitFieldInsn(Opcodes.PUTFIELD, getInternalClassName(), FIELD_DURATION, "J");
+            methodVisitor.visitLabel(commit);
+            // if (shouldCommit()) {
+            methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, getInternalClassName(), METHOD_EVENT_SHOULD_COMMIT.getName(), METHOD_EVENT_SHOULD_COMMIT.getDescriptor(), false);
+            Label end = new Label();
+            // eventHandler.write(...);
+            // }
+            methodVisitor.visitJumpInsn(Opcodes.IFEQ, end);
+            getEventHandler(methodVisitor);
 
-                methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, eventHandlerXInternalName);
-                for (FieldInfo fi : fieldInfos) {
-                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                    methodVisitor.visitFieldInsn(Opcodes.GETFIELD, fi.internalClassName, fi.fieldName, fi.fieldDescriptor);
-                }
+            methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, eventHandlerXInternalName);
+            for (FieldInfo fi : fieldInfos) {
+                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+                methodVisitor.visitFieldInsn(Opcodes.GETFIELD, fi.internalClassName, fi.fieldName, fi.fieldDescriptor);
+            }
 
-                methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, eventHandlerXInternalName, writeMethod.getName(), writeMethod.getDescriptor(), false);
-                methodVisitor.visitLabel(end);
-                methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                methodVisitor.visitInsn(Opcodes.RETURN);
-                methodVisitor.visitEnd();
-            });
+            methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, eventHandlerXInternalName, writeMethod.getName(), writeMethod.getDescriptor(), false);
+            methodVisitor.visitLabel(end);
+            methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            methodVisitor.visitInsn(Opcodes.RETURN);
+            methodVisitor.visitEnd();
+        });
 
         // MyEvent#shouldCommit()
         updateMethod(METHOD_EVENT_SHOULD_COMMIT, methodVisitor -> {
@@ -468,6 +479,7 @@ public final class EventInstrumentation {
             methodVisitor.visitInsn(Opcodes.IRETURN);
         });
     }
+
 
     private void getEventHandler(MethodVisitor methodVisitor) {
         if (untypedEventHandler) {

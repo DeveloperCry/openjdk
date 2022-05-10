@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -350,9 +350,9 @@ public interface MidiDevice extends AutoCloseable {
         }
 
         /**
-         * Provides a string representation of the device information.
+         * Returns a string representation of the info object.
          *
-         * @return a description of the info object
+         * @return a string representation of the info object
          */
         @Override
         public final String toString() {

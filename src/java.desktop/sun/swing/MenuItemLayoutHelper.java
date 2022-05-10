@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -256,7 +256,7 @@ public class MenuItemLayoutHelper {
         }
 
         // accRect
-        if (!accText.equals("")) {
+        if (!accText.isEmpty()) {
             accSize.width = SwingUtilities2.stringWidth(mi, accFm, accText);
             accSize.height = accFm.getHeight();
         }
@@ -264,7 +264,7 @@ public class MenuItemLayoutHelper {
         // textRect
         if (text == null) {
             text = "";
-        } else if (!text.equals("")) {
+        } else if (!text.isEmpty()) {
             if (htmlView != null) {
                 // Text is HTML
                 textSize.width =
@@ -378,10 +378,10 @@ public class MenuItemLayoutHelper {
         if (miParent != null) {
             value = miParent.getClientProperty(propertyName);
         }
-        if ((value == null) || !(value instanceof Integer)) {
-            value = 0;
+        if (value instanceof Integer intValue) {
+            return intValue;
         }
-        return (Integer) value;
+        return 0;
     }
 
     public static boolean isColumnLayout(boolean isLeftToRight,

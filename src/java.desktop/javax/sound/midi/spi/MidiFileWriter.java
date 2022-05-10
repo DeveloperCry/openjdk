@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,11 @@ import javax.sound.midi.Sequence;
  * @since 1.3
  */
 public abstract class MidiFileWriter {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected MidiFileWriter() {}
 
     /**
      * Obtains the set of MIDI file types for which file writing support is

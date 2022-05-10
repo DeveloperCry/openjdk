@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ package java.awt;
  * @author Michael Martak
  * @since 1.4
  */
+@SuppressWarnings("doclint:missing")
 public class BufferCapabilities implements Cloneable {
 
     private ImageCapabilities frontCaps;
@@ -154,7 +155,7 @@ public class BufferCapabilities implements Cloneable {
         private static int I_PRIOR = 2;
         private static int I_COPIED = 3;
 
-        private static final String NAMES[] =
+        private static final String[] NAMES =
             { "undefined", "background", "prior", "copied" };
 
         /**

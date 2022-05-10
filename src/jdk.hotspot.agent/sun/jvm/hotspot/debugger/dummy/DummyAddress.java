@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,8 +56,7 @@ class DummyAddress implements Address {
   }
 
   public int hashCode() {
-    // FIXME: suggestions on a better hash code?
-    return (int) addr;
+    return Long.hashCode(addr);
   }
 
   public String toString() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -86,7 +82,6 @@ public class LocaleNames_ccp extends OpenListResourceBundle {
         final String metaValue_ta = "\ud804\udd16\ud804\udd1f\ud804\udd28\ud804\udd23\ud804\udd34";
         final String metaValue_te = "\ud804\udd16\ud804\udd2c\ud804\udd23\ud804\udd2c\ud804\udd09\ud804\udd2a";
         final String metaValue_th = "\ud804\udd17\ud804\udd2d";
-        final String metaValue_ccp = "\ud804\udd0c\ud804\udd0b\ud804\udd34\ud804\udd1f\ud804\udd33\ud804\udd26";
         final String metaValue_peo = "\ud804\udd1b\ud804\udd2a\ud804\udd22\ud804\udd2e\ud804\udd1a\ud804\udd34 \ud804\udd1c\ud804\udd22\ud804\udd34\ud804\udd25\ud804\udd28";
         final String metaValue_syr = "\ud804\udd25\ud804\udd28\ud804\udd22\ud804\udd28\ud804\udd20\ud804\udd07\ud804\udd34";
         final String metaValue_vai = "\ud804\udd1e\ud804\udd2d";
@@ -99,7 +94,7 @@ public class LocaleNames_ccp extends OpenListResourceBundle {
             { "mwr", "\ud804\udd1f\ud804\udd22\ud804\udd2e\ud804\udd20\ud804\udd22\ud804\udd28" },
             { "Tagb", "\ud804\udd11\ud804\udd09\ud804\udd2e\ud804\udd24\ud804\udd1a" },
             { "Zsye", "\ud804\udd03\ud804\udd28\ud804\udd1f\ud804\udd2e\ud804\udd0e\ud804\udd28" },
-            { "ccp", metaValue_ccp },
+            { "ccp", "\ud804\udd0c\ud804\udd0b\ud804\udd34\ud804\udd1f\ud804\udd33\ud804\udd26" },
             { "egy", "\ud804\udd1b\ud804\udd2a\ud804\udd22\ud804\udd28\ud804\udd1a\ud804\udd29 \ud804\udd1f\ud804\udd28\ud804\udd25\ud804\udd27\ud804\udd22\ud804\udd29\ud804\udd20\ud804\udd27" },
             { "raj", "\ud804\udd22\ud804\udd0e\ud804\udd34\ud804\udd25\ud804\udd33\ud804\udd26\ud804\udd1a\ud804\udd28" },
             { "Phag", "\ud804\udd1c\ud804\udd27\ud804\udd09\ud804\udd34\ud804\udd25\ud804\udd27-\ud804\udd1b" },
@@ -247,7 +242,6 @@ public class LocaleNames_ccp extends OpenListResourceBundle {
             { "FR", "\ud804\udd1c\ud804\udd33\ud804\udd22\ud804\udd1a\ud804\udd34\ud804\udd25\ud804\udd34" },
             { "tkl", metaValue_TK },
             { "grb", "\ud804\udd09\ud804\udd33\ud804\udd22\ud804\udd2c\ud804\udd1d\ud804\udd2e" },
-            { "root", "\ud804\udd25\ud804\udd28\ud804\udd20\ud804\udd2e\ud804\udd22\ud804\udd34" },
             { "type.ca.indian", "\ud804\udd1e\ud804\udd22\ud804\udd27\ud804\udd18\ud804\udd27\ud804\udd22\ud804\udd34 \ud804\udd0e\ud804\udd16\ud804\udd29\ud804\udd20\ud804\udd27 \ud804\udd1d\ud804\udd27\ud804\udd22\ud804\udd34\ud804\udd25\ud804\udd27\ud804\udd1b\ud804\udd27\ud804\udd1a\ud804\udd34\ud804\udd0f\ud804\udd29" },
             { "grc", "\ud804\udd1b\ud804\udd2a\ud804\udd22\ud804\udd2e\ud804\udd1a\ud804\udd34 \ud804\udd09\ud804\udd33\ud804\udd22\ud804\udd29\ud804\udd07\ud804\udd34" },
             { "GA", "\ud804\udd09\ud804\udd33\ud804\udd20\ud804\udd1d\ud804\udd27\ud804\udd1a\ud804\udd34" },
@@ -488,7 +482,6 @@ public class LocaleNames_ccp extends OpenListResourceBundle {
             { "type.lb.strict", "\ud804\udd11\ud804\udd2d\ud804\udd11\ud804\udd34 \ud804\udd23\ud804\udd2d\ud804\udd1a\ud804\udd34 \ud804\udd1c\ud804\udd22\ud804\udd27\ud804\udd09\ud804\udd27\ud804\udd22\ud804\udd34 \ud804\udd1a\ud804\udd28\ud804\udd20\ud804\udd2e\ud804\udd1f\ud804\udd34" },
             { "017", "\ud804\udd1f\ud804\udd27\ud804\udd16\ud804\udd34\ud804\udd19\ud804\udd33\ud804\udd20\ud804\udd27 \ud804\udd03\ud804\udd1c\ud804\udd33\ud804\udd22\ud804\udd28\ud804\udd07" },
             { "SI", "\ud804\udd25\ud804\udd33\ud804\udd23\ud804\udd2e\ud804\udd1e\ud804\udd1a\ud804\udd28\ud804\udd20" },
-            { "018", "\ud804\udd18\ud804\udd27\ud804\udd09\ud804\udd28\ud804\udd1a\ud804\udd34 \ud804\udd03\ud804\udd1c\ud804\udd33\ud804\udd22\ud804\udd28\ud804\udd07 \ud804\udd0e\ud804\udd09" },
             { "SJ", "\ud804\udd25\ud804\udd23\ud804\udd34\ud804\udd1d\ud804\udd22\ud804\udd34\ud804\udd13\ud804\udd34 \ud804\udd03\ud804\udd2e \ud804\udd0e\ud804\udd1a\ud804\udd34 \ud804\udd1f\ud804\udd2c\ud804\udd20\ud804\udd2c\ud804\udd1a\ud804\udd34" },
             { "019", "\ud804\udd03\ud804\udd1f\ud804\udd2c\ud804\udd22\ud804\udd28\ud804\udd07\ud804\udd25\ud804\udd34" },
             { "SK", "\ud804\udd25\ud804\udd33\ud804\udd23\ud804\udd2e\ud804\udd1e\ud804\udd07\ud804\udd28\ud804\udd20" },
@@ -997,9 +990,9 @@ public class LocaleNames_ccp extends OpenListResourceBundle {
             { "dyo", "\ud804\udd0e\ud804\udd27\ud804\udd23-\ud804\udd1c\ud804\udd27\ud804\udd1a\ud804\udd29" },
             { "type.nu.jpan", "\ud804\udd0e\ud804\udd1b\ud804\udd1a\ud804\udd28 \ud804\udd1a\ud804\udd18" },
             { "tr", "\ud804\udd16\ud804\udd2a\ud804\udd22\ud804\udd34\ud804\udd07\ud804\udd29" },
-            { "Cakm", metaValue_ccp },
             { "ts", "\ud804\udd25\ud804\udd27\ud804\udd0b\ud804\udd34\ud804\udd09" },
             { "swb", "\ud804\udd07\ud804\udd27\ud804\udd1f\ud804\udd2e\ud804\udd22\ud804\udd28\ud804\udd20\ud804\udd1a\ud804\udd34" },
+            { "Cakm", "\ud804\udd0c\ud804\udd07\ud804\udd34\ud804\udd1f" },
             { "tt", "\ud804\udd16\ud804\udd16\ud804\udd22\ud804\udd34" },
             { "dyu", "\ud804\udd13\ud804\udd28\ud804\udd03\ud804\udd2a\ud804\udd23" },
             { "tw", "\ud804\udd11\ud804\udd2e\ud804\udd20\ud804\udd2d" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -67,7 +67,7 @@ public abstract class ErrorFrame extends Http2Frame {
         }
 
         if (code > LAST_ERROR) {
-            return "Error: " + Integer.toString(code);
+            return "Error: " + code;
         } else {
             return errorStrings[code];
         }

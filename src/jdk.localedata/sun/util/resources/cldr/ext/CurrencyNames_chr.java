@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -98,6 +94,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "COP", "COP" },
             { "CRC", "CRC" },
             { "CUC", "CUC" },
@@ -151,6 +148,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -186,6 +184,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -202,6 +201,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
@@ -217,7 +217,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "aud", "\u13a1\u13b3\u13d7\u13dc \u13a0\u13d5\u13b3" },
             { "awg", "\u13a0\u13b7\u13c6 \u13a0\u13d5\u13b3" },
             { "azn", "\u13a0\u13cf\u13b5\u13c6\u13cc\u13c2 \u13a0\u13d5\u13b3" },
-            { "bam", "\u13c9\u13cf\u13c2\u13a0 \u13a0\u13b4 \u13b2\u13e4\u13aa\u13eb \u13a6\u13c1\u13df\u13f4\u13cd\u13d4\u13c5 \u13a0\u13d5\u13b3" },
+            { "bam", "\u13c9\u13cf\u13c2\u13a0-\u13b2\u13e4\u13aa\u13eb \u13a6\u13c1\u13df\u13f4\u13cd\u13d4\u13c5 \u13a0\u13d5\u13b3" },
             { "bbd", "\u13c6\u13c7\u13d9\u13cd \u13a0\u13d5\u13b3" },
             { "bdt", "\u13c6\u13c2\u13a6\u13b5\u13d5\u13cd \u13a0\u13d5\u13b3" },
             { "bgn", "\u13ca\u13b5\u13a8\u13b5\u13a0 \u13a0\u13d5\u13b3" },
@@ -288,7 +288,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "kzt", "\u13a7\u13ce\u13a7\u13cd\u13d5\u13c2 \u13a0\u13d5\u13b3" },
             { "lak", "\u13b3\u13a3 \u13a0\u13d5\u13b3" },
             { "lbp", "\u13b4\u13c6\u13be\u13c2 \u13a0\u13d5\u13b3" },
-            { "lkr", "\u13cd\u13b5\u13b3\u13c2\u13a7 \u13a0\u13d5\u13b3" },
+            { "lkr", "\u13cd\u13b5 \u13b3\u13c2\u13a7 \u13a0\u13d5\u13b3" },
             { "lrd", "\u13b3\u13c8\u13b5\u13ef \u13a0\u13d5\u13b3" },
             { "lyd", "\u13b5\u13c8\u13ef \u13a0\u13d5\u13b3" },
             { "mad", "\u13bc\u13b6\u13aa \u13a0\u13d5\u13b3" },
@@ -298,8 +298,8 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "mmk", "\u13b9\u13ef\u13b9\u13b5 \u13a0\u13d5\u13b3" },
             { "mnt", "\u13b9\u13c2\u13aa\u13b5\u13a0 \u13a0\u13d5\u13b3" },
             { "mop", "\u13b9\u13a7\u13a3 \u13a0\u13d5\u13b3" },
-            { "mro", "\u13bc\u13b5\u13cf\u13a5\u13cd \u13a0\u13d5\u13b3 (1973\u20132017)" },
-            { "mru", "\u13bc\u13b5\u13cf\u13a5\u13cd \u13a0\u13d5\u13b3" },
+            { "mro", "\u13b9\u13c8\u13d4\u13c2\u13a0 \u13a0\u13d5\u13b3 (1973\u20132017)" },
+            { "mru", "\u13b9\u13c8\u13d4\u13c2\u13a0 \u13a0\u13d5\u13b3" },
             { "mur", "\u13b9\u13d8\u13a2\u13ef \u13a0\u13d5\u13b3" },
             { "mvr", "\u13b9\u13b5\u13d7\u13eb\u13cd \u13a0\u13d5\u13b3" },
             { "mwk", "\u13b9\u13b3\u13eb \u13a0\u13d5\u13b3" },
@@ -337,7 +337,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "srd", "\u13d2\u13b5\u13be\u13bb \u13a0\u13d5\u13b3" },
             { "ssp", "\u13e7\u13a6\u13be\u13ee \u13d1\u13d5\u13c2 \u13a0\u13d5\u13b3" },
             { "std", "\u13cc\u13a3\u13d9\u13ba \u13a0\u13b4 \u13c8\u13c2\u13cf\u13c7 \u13a0\u13d5\u13b3 (1977\u20132017)" },
-            { "stn", "\u13cc\u13a3\u13d9\u13ba \u13a0\u13b4 \u13c8\u13c2\u13cf\u13c7 \u13a0\u13d5\u13b3" },
+            { "stn", "\u13cc\u13a3\u13d9\u13ba & \u13c8\u13c2\u13cf\u13c7 \u13a0\u13d5\u13b3" },
             { "syp", "\u13cf\u13b5\u13a0 \u13a0\u13d5\u13b3" },
             { "szl", "\u13cd\u13e9\u13cf \u13a0\u13d5\u13b3" },
             { "thb", "\u13d4\u13ef\u13b4\u13c2 \u13a0\u13d5\u13b3" },
@@ -346,7 +346,7 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "tnd", "\u13da\u13c2\u13cf\u13cd\u13a0 \u13a0\u13d5\u13b3" },
             { "top", "\u13d4\u13c2\u13aa \u13a0\u13d5\u13b3" },
             { "try", "\u13ac\u13c3 \u13a0\u13d5\u13b3" },
-            { "ttd", "\u13df\u13c2\u13d5\u13d7 \u13a0\u13b4 \u13d9\u13c6\u13aa \u13a0\u13d5\u13b3" },
+            { "ttd", "\u13df\u13c2\u13d5\u13d7 & \u13d9\u13c6\u13aa \u13a0\u13d5\u13b3" },
             { "twd", "\u13a2\u13e4 \u13d4\u13a2\u13e9\u13c2 \u13a0\u13d5\u13b3" },
             { "tzs", "\u13d6\u13c2\u13cf\u13c2\u13ef \u13a0\u13d5\u13b3" },
             { "uah", "\u13f3\u13a7\u13b4\u13c2 \u13a0\u13d5\u13b3" },
@@ -354,7 +354,8 @@ public class CurrencyNames_chr extends OpenListResourceBundle {
             { "usd", "US \u13a0\u13d5\u13b3" },
             { "uyu", "\u13f3\u13b7\u13c7 \u13a0\u13d5\u13b3" },
             { "uzs", "\u13a4\u13cd\u13c7\u13a9\u13cd\u13d6\u13c2 \u13a0\u13d5\u13b3" },
-            { "vef", "\u13ea\u13c1\u13d1\u13ea\u13b3 \u13a0\u13d5\u13b3" },
+            { "vef", "\u13ea\u13c1\u13d1\u13ea \u13a0\u13d5\u13b3 (2008\u20132018)" },
+            { "ves", "\u13ea\u13c1\u13d1\u13ea \u13a0\u13d5\u13b3" },
             { "vnd", "\u13eb\u13a1\u13d8\u13be\u13bb\u13cd \u13a0\u13d5\u13b3" },
             { "vuv", "\u13e9\u13c2\u13a4\u13e9\u13da \u13a0\u13d5\u13b3" },
             { "wst", "\u13cc\u13bc\u13a0 \u13a0\u13d5\u13b3" },

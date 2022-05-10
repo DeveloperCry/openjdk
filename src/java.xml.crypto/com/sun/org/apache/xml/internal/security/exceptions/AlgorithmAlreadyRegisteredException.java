@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -51,7 +51,7 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
      * @param msgID
      * @param exArgs
      */
-    public AlgorithmAlreadyRegisteredException(String msgID, Object exArgs[]) {
+    public AlgorithmAlreadyRegisteredException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -78,7 +78,7 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
      * @param exArgs
      */
     public AlgorithmAlreadyRegisteredException(
-        Exception originalException, String msgID, Object exArgs[]
+        Exception originalException, String msgID, Object[] exArgs
     ) {
         super(originalException, msgID, exArgs);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -77,8 +73,18 @@ public class FormatData_es_PA extends ListResourceBundle {
                "4.\u00ba trimestre",
             };
         final String[] metaValue_AmPmMarkers = new String[] {
-               "a. m.",
-               "p. m.",
+               "a.\u00a0m.",
+               "p.\u00a0m.",
+               "",
+               "mediod\u00eda",
+               "de la madrugada",
+               "de la ma\u00f1ana",
+               "",
+               "",
+               "de la tarde",
+               "",
+               "de la noche",
+               "",
             };
         final String[] metaValue_TimePatterns = new String[] {
                "h:mm:ss a zzzz",
@@ -87,19 +93,20 @@ public class FormatData_es_PA extends ListResourceBundle {
                "h:mm a",
             };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
-               "G y MMMM d, EEEE",
-               "G y MMMM d",
+               "",
+               "",
                "MM/dd/y G",
                "MM/dd/yy GGGGG",
             };
         final String[] metaValue_buddhist_DatePatterns = new String[] {
-               "GGGG y MMMM d, EEEE",
-               "GGGG y MMMM d",
+               "",
+               "",
                "MM/dd/y GGGG",
                "MM/dd/yy G",
             };
         final Object[][] data = new Object[][] {
             { "japanese.AmPmMarkers", metaValue_AmPmMarkers },
+            { "islamic.AmPmMarkers", metaValue_AmPmMarkers },
             { "AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.japanese.DatePatterns",
                 new String[] {
@@ -121,6 +128,7 @@ public class FormatData_es_PA extends ListResourceBundle {
             { "buddhist.QuarterNames", metaValue_QuarterNames },
             { "buddhist.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "islamic.QuarterNames", metaValue_QuarterNames },
+            { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "islamic.abbreviated.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
@@ -134,6 +142,7 @@ public class FormatData_es_PA extends ListResourceBundle {
                 }
             },
             { "islamic.TimePatterns", metaValue_TimePatterns },
+            { "narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "japanese.DatePatterns",
                 new String[] {
                     "EEEE, d 'de' MMMM 'de' y GGGG",
@@ -144,7 +153,6 @@ public class FormatData_es_PA extends ListResourceBundle {
             },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "buddhist.AmPmMarkers", metaValue_AmPmMarkers },
-            { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "QuarterNames", metaValue_QuarterNames },
             { "roc.TimePatterns", metaValue_TimePatterns },
             { "QuarterAbbreviations", metaValue_QuarterNames },

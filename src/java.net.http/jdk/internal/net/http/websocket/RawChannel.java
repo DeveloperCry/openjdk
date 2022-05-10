@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ public interface RawChannel extends Closeable {
     interface Provider {
 
         RawChannel rawChannel() throws IOException;
+        void closeRawChannel() throws IOException;
     }
 
     interface RawEvent {

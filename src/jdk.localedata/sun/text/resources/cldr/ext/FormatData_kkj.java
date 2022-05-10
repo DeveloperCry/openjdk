@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -81,7 +77,7 @@ public class FormatData_kkj extends ListResourceBundle {
                "f\u025b",
                "njapi",
                "nyukul",
-               "11",
+               "M11",
                "\u0253ul\u0253us\u025b",
                "",
             };
@@ -103,9 +99,9 @@ public class FormatData_kkj extends ListResourceBundle {
                "va",
                "ms",
             };
-        final String[] metaValue_TimePatterns = new String[] {
-               "HH:mm:ss zzzz",
-               "HH:mm:ss z",
+        final String[] metaValue_buddhist_TimePatterns = new String[] {
+               "",
+               "",
                "HH:mm:ss",
                "HH:mm",
             };
@@ -126,7 +122,14 @@ public class FormatData_kkj extends ListResourceBundle {
             { "roc.DayAbbreviations", metaValue_DayNames },
             { "standalone.DayNarrows", metaValue_DayNarrows },
             { "java.time.japanese.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
-            { "TimePatterns", metaValue_TimePatterns },
+            { "TimePatterns",
+                new String[] {
+                    "HH:mm:ss zzzz",
+                    "HH:mm:ss z",
+                    "HH:mm:ss",
+                    "HH:mm",
+                }
+            },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "islamic.DayNarrows", metaValue_DayNarrows },
             { "japanese.DayNames", metaValue_DayNames },
@@ -134,7 +137,7 @@ public class FormatData_kkj extends ListResourceBundle {
             { "DayNames", metaValue_DayNames },
             { "buddhist.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.MonthNames", metaValue_MonthNames },
-            { "japanese.TimePatterns", metaValue_TimePatterns },
+            { "japanese.TimePatterns", metaValue_buddhist_TimePatterns },
             { "DayAbbreviations", metaValue_DayNames },
             { "DayNarrows", metaValue_DayNarrows },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
@@ -155,9 +158,8 @@ public class FormatData_kkj extends ListResourceBundle {
                     "dd/MM y",
                 }
             },
-            { "buddhist.MonthAbbreviations", metaValue_MonthNames },
             { "buddhist.DayAbbreviations", metaValue_DayNames },
-            { "islamic.TimePatterns", metaValue_TimePatterns },
+            { "islamic.TimePatterns", metaValue_buddhist_TimePatterns },
             { "MonthAbbreviations", metaValue_MonthNames },
             { "buddhist.MonthNames", metaValue_MonthNames },
             { "standalone.DayNames", metaValue_DayNames },
@@ -169,6 +171,7 @@ public class FormatData_kkj extends ListResourceBundle {
                     "{1} {0}",
                 }
             },
+            { "PluralRules", "one:n = 1" },
             { "latn.NumberElements",
                 new String[] {
                     ",",
@@ -182,18 +185,28 @@ public class FormatData_kkj extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "japanese.DatePatterns", metaValue_buddhist_DatePatterns },
             { "japanese.MonthAbbreviations", metaValue_MonthNames },
             { "buddhist.DayNames", metaValue_DayNames },
-            { "buddhist.TimePatterns", metaValue_TimePatterns },
+            { "buddhist.TimePatterns", metaValue_buddhist_TimePatterns },
             { "standalone.MonthNames", metaValue_MonthNames },
             { "standalone.MonthAbbreviations", metaValue_MonthNames },
             { "islamic.DayAbbreviations", metaValue_DayNames },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "\u00a4\u00a0#,##0.00",
+                    "#,##0%",
+                    "",
+                }
+            },
             { "buddhist.DayNarrows", metaValue_DayNarrows },
             { "japanese.DayNarrows", metaValue_DayNarrows },
-            { "roc.TimePatterns", metaValue_TimePatterns },
+            { "roc.TimePatterns", metaValue_buddhist_TimePatterns },
         };
         return data;
     }

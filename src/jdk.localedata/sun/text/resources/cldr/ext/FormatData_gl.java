@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -157,6 +153,16 @@ public class FormatData_gl extends ListResourceBundle {
         final String[] metaValue_AmPmMarkers = new String[] {
                "a.m.",
                "p.m.",
+               "da noite",
+               "",
+               "da madrugada",
+               "da ma\u00f1\u00e1",
+               "do mediod\u00eda",
+               "",
+               "da tarde",
+               "",
+               "da noite",
+               "",
             };
         final String[] metaValue_Eras = new String[] {
                "a.C.",
@@ -175,7 +181,7 @@ public class FormatData_gl extends ListResourceBundle {
                "4",
             };
         final String[] metaValue_java_time_buddhist_DatePatterns = new String[] {
-               "cccc, d 'de' MMMM 'de' Y G",
+               "EEEE, d 'de' MMMM 'de' Y G",
                "d 'de' MMMM 'de' y G",
                "d 'de' MMM 'de' y G",
                "dd/MM/y GGGGG",
@@ -223,6 +229,7 @@ public class FormatData_gl extends ListResourceBundle {
                     "despois de Cristo",
                 }
             },
+            { "roc.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "islamic.DayNames", metaValue_DayNames },
             { "buddhist.MonthAbbreviations", metaValue_MonthAbbreviations },
             { "buddhist.MonthNames", metaValue_MonthNames },
@@ -248,6 +255,8 @@ public class FormatData_gl extends ListResourceBundle {
                     "\u2030",
                     "\u221e",
                     "NaN",
+                    "",
+                    "",
                 }
             },
             { "MonthNarrows", metaValue_MonthNarrows },
@@ -274,6 +283,7 @@ public class FormatData_gl extends ListResourceBundle {
                     "",
                 }
             },
+            { "japanese.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "calendarname.roc", "calendario Minguo" },
             { "islamic.DatePatterns", metaValue_buddhist_DatePatterns },
             { "roc.QuarterAbbreviations", metaValue_QuarterAbbreviations },
@@ -281,15 +291,9 @@ public class FormatData_gl extends ListResourceBundle {
             { "field.second", "segundo" },
             { "DayAbbreviations", metaValue_DayAbbreviations },
             { "DayNarrows", metaValue_DayNarrows },
-            { "NumberPatterns",
-                new String[] {
-                    "#,##0.###",
-                    "#,##0.00\u00a0\u00a4",
-                    "#,##0\u00a0%",
-                }
-            },
             { "roc.DatePatterns", metaValue_buddhist_DatePatterns },
             { "calendarname.islamic", "calendario isl\u00e1mico" },
+            { "DayPeriodRules", "midnight:00:00;night1:21:00-24:00;morning2:06:00-12:00;afternoon1:12:00-13:00;morning1:00:00-06:00;evening1:13:00-21:00" },
             { "japanese.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "buddhist.TimePatterns", metaValue_TimePatterns },
             { "standalone.MonthAbbreviations",
@@ -310,6 +314,25 @@ public class FormatData_gl extends ListResourceBundle {
                 }
             },
             { "timezone.regionFormat", "Horario de: {0}" },
+            { "long.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0 other:0}",
+                    "{one:0 other:0}",
+                    "{one:0 other:0}",
+                    "{one:0' 'mill\u00f3n other:0' 'mill\u00f3ns}",
+                    "{one:00' 'mill\u00f3ns other:00' 'mill\u00f3ns}",
+                    "{one:000' 'mill\u00f3ns other:000' 'mill\u00f3ns}",
+                    "{one:0000' 'mill\u00f3ns other:0000' 'mill\u00f3ns}",
+                    "{one:00000' 'mill\u00f3ns other:00000' 'mill\u00f3ns}",
+                    "{one:000000' 'mill\u00f3ns other:000000' 'mill\u00f3ns}",
+                    "{one:0' 'bill\u00f3n other:0' 'bill\u00f3ns}",
+                    "{one:00' 'bill\u00f3ns other:00' 'bill\u00f3ns}",
+                    "{one:000' 'bill\u00f3ns other:000' 'bill\u00f3ns}",
+                }
+            },
             { "roc.narrow.AmPmMarkers", metaValue_AmPmMarkers },
             { "buddhist.QuarterNarrows", metaValue_buddhist_QuarterNarrows },
             { "standalone.QuarterNames", metaValue_QuarterNames },
@@ -357,13 +380,32 @@ public class FormatData_gl extends ListResourceBundle {
             { "roc.AmPmMarkers", metaValue_AmPmMarkers },
             { "java.time.roc.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
             { "java.time.buddhist.DatePatterns", metaValue_java_time_buddhist_DatePatterns },
+            { "short.CompactNumberPatterns",
+                new String[] {
+                    "",
+                    "",
+                    "",
+                    "{one:0 other:0}",
+                    "{one:0 other:0}",
+                    "{one:0 other:0}",
+                    "{one:0\u00a0M other:0\u00a0M}",
+                    "{one:00\u00a0M other:00\u00a0M}",
+                    "{one:000\u00a0M other:000\u00a0M}",
+                    "{one:0000\u00a0M other:0000\u00a0M}",
+                    "{one:00000\u00a0M other:00000\u00a0M}",
+                    "{one:000000\u00a0M other:000000\u00a0M}",
+                    "{one:0\u00a0B other:0\u00a0B}",
+                    "{one:00\u00a0B other:00\u00a0B}",
+                    "{one:000\u00a0B other:000\u00a0B}",
+                }
+            },
             { "calendarname.gregorian", metaValue_calendarname_gregorian },
             { "timezone.regionFormat.daylight", "Horario de ver\u00e1n de: {0}" },
             { "DatePatterns",
                 new String[] {
                     "EEEE, d 'de' MMMM 'de' y",
                     "d 'de' MMMM 'de' y",
-                    "dd/MM/y",
+                    "d 'de' MMM 'de' y",
                     "dd/MM/yy",
                 }
             },
@@ -381,6 +423,7 @@ public class FormatData_gl extends ListResourceBundle {
                     "S\u00e1bado",
                 }
             },
+            { "PluralRules", "one:i = 1 and v = 0" },
             { "field.hour", "hora" },
             { "calendarname.buddhist", "calendario budista" },
             { "standalone.MonthNames",
@@ -398,6 +441,14 @@ public class FormatData_gl extends ListResourceBundle {
                     "Novembro",
                     "Decembro",
                     "",
+                }
+            },
+            { "latn.NumberPatterns",
+                new String[] {
+                    "#,##0.###",
+                    "#,##0.00\u00a0\u00a4",
+                    "#,##0\u00a0%",
+                    "#,##0.00\u00a0\u00a4",
                 }
             },
             { "buddhist.DayNarrows", metaValue_DayNarrows },

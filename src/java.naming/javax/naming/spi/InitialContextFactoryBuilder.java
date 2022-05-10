@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,7 +63,7 @@ public interface InitialContextFactoryBuilder {
       * @param environment Environment used in creating an initial
       *                 context implementation. Can be null.
       * @return A non-null initial context factory.
-      * @exception NamingException If an initial context factory could not be created.
+      * @throws NamingException If an initial context factory could not be created.
       */
     public InitialContextFactory
         createInitialContextFactory(Hashtable<?,?> environment)

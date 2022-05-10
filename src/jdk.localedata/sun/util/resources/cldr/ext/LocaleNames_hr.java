@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -81,6 +77,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "Tagb", "tagbanwa pismo" },
             { "Zsye", "emotikoni" },
             { "%%NJIVA", "Gniva/Njiva dijalekt" },
+            { "ccp", "chakma" },
             { "egy", "staroegipatski" },
             { "raj", "rajasthani" },
             { "Phag", "phags-pa pismo" },
@@ -233,7 +230,6 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "Kpel", "kpelle pismo" },
             { "tkl", "tokelaunski" },
             { "grb", "grebo" },
-            { "root", "korijenski" },
             { "type.ca.indian", "indijski nacionalni kalendar" },
             { "grc", "starogr\u010dki" },
             { "GA", "Gabon" },
@@ -373,7 +369,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "ale", "aleutski" },
             { "Thai", "tajsko pismo" },
             { "type.nu.vaii", "Vai znamenke" },
-            { "MK", "Makedonija" },
+            { "MK", "Sjeverna Makedonija" },
             { "ML", "Mali" },
             { "MM", "Mjanmar (Burma)" },
             { "MN", "Mongolija" },
@@ -437,7 +433,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "PK", "Pakistan" },
             { "PL", "Poljska" },
             { "ewo", "ewondo" },
-            { "PM", "Sveti Petar i Mikelon" },
+            { "PM", "Saint-Pierre-et-Miquelon" },
             { "PN", "Otoci Pitcairn" },
             { "PR", "Portoriko" },
             { "PS", "Palestinsko podru\u010dje" },
@@ -514,7 +510,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "SX", "Sint Maarten" },
             { "SY", "Sirija" },
             { "yao", "yao" },
-            { "SZ", "Svazi" },
+            { "SZ", "Esvatini" },
             { "arw", "arava\u010dki" },
             { "yap", "japski" },
             { "TA", "Tristan da Cunha" },
@@ -524,6 +520,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "TC", "Otoci Turks i Caicos" },
             { "yav", "yangben" },
             { "TD", "\u010cad" },
+            { "Qaag", "zawgyi" },
             { "TF", "Francuski ju\u017eni i antarkti\u010dki teritoriji" },
             { "TG", "Togo" },
             { "TH", "Tajland" },
@@ -599,7 +596,9 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "Bass", "bassa vah pismo" },
             { "wal", "walamo" },
             { "was", "washo" },
+            { "XA", "pseudo naglasci" },
             { "war", "waray" },
+            { "XB", "pseudo bidi" },
             { "awa", "awadhi" },
             { "061", "Polinezija" },
             { "%%KSCOR", "standardna ortografija" },
@@ -696,6 +695,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "scn", "sicilijski" },
             { "aa", "afarski" },
             { "ab", "abhaski" },
+            { "Aran", "nastaliq" },
             { "ae", "avesti\u010dki" },
             { "af", "afrikaans" },
             { "ak", "akanski" },
@@ -969,8 +969,8 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "key.ca", "kalendar" },
             { "Laoo", "laosko pismo" },
             { "mgo", "meta\u2019" },
-            { "type.hc.h23", "24-satni format (0-23)" },
-            { "type.hc.h24", "24-satni format (1-24)" },
+            { "type.hc.h23", "24-satni format (0 \u2013 23)" },
+            { "type.hc.h24", "24-satni format (1 \u2013 24)" },
             { "ssy", metaValue_ssy },
             { "type.nu.mymr", "mijanmarske znamenke" },
             { "qu", "ke\u010duanski" },
@@ -979,8 +979,8 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "Lana", "lanna pismo" },
             { "kde", "makonde" },
             { "Ethi", "etiopsko pismo" },
-            { "type.hc.h12", "12-satni format (1-12)" },
-            { "type.hc.h11", "12-satni format (0-11)" },
+            { "type.hc.h12", "12-satni format (0 \u2013 12)" },
+            { "type.hc.h11", "12-satni format (0 \u2013 11)" },
             { "rm", "retoromanski" },
             { "rn", "rundi" },
             { "key.cu", "valuta" },
@@ -1189,6 +1189,7 @@ public class LocaleNames_hr extends OpenListResourceBundle {
             { "type.nu.tamldec", "tamilske znamenke" },
             { "krc", "karachay-balkar" },
             { "inh", "ingu\u0161etski" },
+            { "fa_AF", "dari" },
             { "krl", "karelijski" },
             { "efi", "efik" },
             { "key.nu", "brojevi" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -330,14 +330,15 @@ public abstract class FloatControl extends Control {
     }
 
     /**
-     * Provides a string representation of the control.
+     * Returns a string representation of the float control.
      *
-     * @return a string description
+     * @return a string representation of the float control
      */
     @Override
     public String toString() {
-        return new String(getType() + " with current value: " + getValue() + " " + units +
-                          " (range: " + minimum + " - " + maximum + ")");
+        return String.format("%s with current value: %s %s (range: %s - %s)",
+                             super.toString(), getValue(), getUnits(),
+                             getMinimum(), getMaximum());
     }
 
     /**

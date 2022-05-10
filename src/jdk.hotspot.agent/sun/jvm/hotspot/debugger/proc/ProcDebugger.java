@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,11 +52,10 @@ public interface ProcDebugger extends JVMDebugger {
   public ProcOopHandle readCompOopHandle(long address) throws DebuggerException;
   public long[]       getThreadIntegerRegisterSet(int tid) throws DebuggerException;
   public long         getAddressValue(Address addr) throws DebuggerException;
-  public Address      newAddress(long value) throws DebuggerException;
 
   // for ProcCDebugger, ProcCFrame and SharedObject
-  public List          getThreadList() throws DebuggerException;
-  public List          getLoadObjectList() throws DebuggerException;
+  public List<ThreadProxy> getThreadList() throws DebuggerException;
+  public List<LoadObject> getLoadObjectList() throws DebuggerException;
   public CFrame        topFrameForThread(ThreadProxy thread) throws DebuggerException;
   public ClosestSymbol lookup(long address) throws DebuggerException;
   public String        demangle(String name);

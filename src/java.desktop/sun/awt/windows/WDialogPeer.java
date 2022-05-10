@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,13 +22,21 @@
  *
  *
  */
+
 package sun.awt.windows;
 
-import java.awt.*;
-import java.awt.peer.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.SystemColor;
+import java.awt.Window;
+import java.awt.peer.DialogPeer;
 
-import sun.awt.*;
-import sun.awt.im.*;
+import sun.awt.AWTAccessor;
+import sun.awt.im.InputMethodManager;
+
+import static sun.java2d.SunGraphicsEnvironment.toUserSpace;
 
 final class WDialogPeer extends WWindowPeer implements DialogPeer {
     // Toolkit & peer internals
@@ -110,9 +118,9 @@ final class WDialogPeer extends WWindowPeer implements DialogPeer {
     public Dimension getMinimumSize() {
         if (((Dialog)target).isUndecorated()) {
             return super.getMinimumSize();
-        } else {
-            return new Dimension(getSysMinWidth(), getSysMinHeight());
         }
+        return toUserSpace(getGraphicsConfiguration(),
+                           getSysMinWidth(), getSysMinHeight());
     }
 
     @Override

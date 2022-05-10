@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -142,4 +142,9 @@ public class VoiceStatus {
      * @see #active
      */
     public int volume = 0;
+
+    /**
+     * Constructs a {@code VoiceStatus}.
+     */
+    public VoiceStatus() {}
 }

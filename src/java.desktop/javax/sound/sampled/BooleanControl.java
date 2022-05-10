@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -119,13 +119,14 @@ public abstract class BooleanControl extends Control {
     }
 
     /**
-     * Provides a string representation of the control.
+     * Returns a string representation of the boolean control.
      *
-     * @return a string representation of the control
+     * @return a string representation of the boolean control
      */
     @Override
     public String toString() {
-        return new String(super.toString() + " with current value: " + getStateLabel(getValue()));
+        return String.format("%s with current value: %s", super.toString(),
+                             getStateLabel(getValue()));
     }
 
     /**

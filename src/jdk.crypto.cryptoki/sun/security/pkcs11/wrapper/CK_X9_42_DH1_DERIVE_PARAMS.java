@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /* Copyright  (c) 2002 Graz University of Technology. All rights reserved.
@@ -70,7 +70,7 @@ public class CK_X9_42_DH1_DERIVE_PARAMS {
     /**
      * <B>PKCS#11:</B>
      * <PRE>
-    *   CK_X9_42_DH_KDF_TYPE kdf;
+     *   CK_X9_42_DH_KDF_TYPE kdf;
      * </PRE>
      */
     public long kdf;

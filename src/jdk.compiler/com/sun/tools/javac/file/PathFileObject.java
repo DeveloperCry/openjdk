@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -288,6 +288,11 @@ public abstract class PathFileObject implements JavaFileObject {
             return userPath.toString();
         }
 
+        @Override @DefinedBy(Api.COMPILER)
+        public String getShortName() {
+            return userPath.getFileName().toString();
+        }
+
         @Override
         public String inferBinaryName(Iterable<? extends Path> paths) {
             Path absPath = path.toAbsolutePath();
@@ -527,7 +532,7 @@ public abstract class PathFileObject implements JavaFileObject {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof PathFileObject && path.equals(((PathFileObject) other).path));
+        return (other instanceof PathFileObject pathFileObject && path.equals(pathFileObject.path));
     }
 
     @Override

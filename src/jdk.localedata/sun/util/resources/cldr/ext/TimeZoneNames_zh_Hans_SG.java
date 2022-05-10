@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,14 +66,6 @@ import sun.util.resources.TimeZoneNamesBundle;
 public class TimeZoneNames_zh_Hans_SG extends TimeZoneNamesBundle {
     @Override
     protected final Object[][] getContents() {
-        final String[] Singapore = new String[] {
-               "\u65b0\u52a0\u5761\u6807\u51c6\u65f6\u95f4",
-               "SGT",
-               "",
-               "",
-               "",
-               "",
-            };
         final String[] Malaysia = new String[] {
                "\u9a6c\u6765\u897f\u4e9a\u65f6\u95f4",
                "MYT",
@@ -86,101 +74,28 @@ public class TimeZoneNames_zh_Hans_SG extends TimeZoneNamesBundle {
                "",
                "",
             };
+        final String[] Singapore = new String[] {
+               "\u65b0\u52a0\u5761\u6807\u51c6\u65f6\u95f4",
+               "SGT",
+               "",
+               "",
+               "",
+               "",
+            };
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
+            };
         final Object[][] data = new Object[][] {
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.America/Scoresbysund", "\u65af\u8003\u65af\u4f2f\u677e\u5fb7" },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Asia/Singapore", Singapore },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "UTC", EMPTY_ZONE },
             { "Asia/Kuching", Malaysia },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "Asia/Singapore", Singapore },
             { "Asia/Kuala_Lumpur", Malaysia },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "timezone.excity.America/Scoresbysund", "\u65af\u8003\u65af\u4f2f\u677e\u5fb7" },
         };
         return data;
     }

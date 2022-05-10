@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -74,6 +70,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
         final String metaValue_km = "kmer";
         final String metaValue_kn = "kannada";
         final String metaValue_te = "tel\u00fag\u00fa";
+        final String metaValue_cop = "kopt\u00edska";
         final Object[][] data = new Object[][] {
             { "ksh", "k\u00f6ln\u00edska" },
             { "mwl", "mirandes\u00edska" },
@@ -81,6 +78,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "cch", "atsam" },
             { "mwr", "marvar\u00ed" },
             { "Zsye", "emoji-t\u00e1kn" },
+            { "ccp", "tsjakma" },
             { "egy", "fornegypska" },
             { "raj", "rajastan\u00ed" },
             { "tem", "t\u00edmne" },
@@ -95,7 +93,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "nl_BE", "fl\u00e6mska" },
             { "AF", "Afganistan" },
             { "AG", "Ant\u00edgva og Barb\u00fada" },
-            { "type.ca.ethiopic", "E\u00fe\u00ed\u00f3p\u00edskt dagatal" },
+            { "type.ca.ethiopic", "E\u00fe\u00ed\u00f3p\u00edskt t\u00edmatal" },
             { "AI", "Angvilla" },
             { "key.tz", "T\u00edmabelti" },
             { "AL", "Alban\u00eda" },
@@ -137,7 +135,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "BW", "Botsvana" },
             { "BY", "Hv\u00edta-R\u00fassland" },
             { "BZ", "Bel\u00eds" },
-            { "type.ca.persian", "Persneskt dagatal" },
+            { "type.ca.persian", "Persneskt t\u00edmatal" },
             { "type.nu.hebr", "Hebreskir t\u00f6lustafir" },
             { "CA", "Kanada" },
             { "CC", "K\u00f3koseyjar (Keeling)" },
@@ -146,7 +144,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "CF", "Mi\u00f0-Afr\u00edkul\u00fd\u00f0veldi\u00f0" },
             { "CG", "Kong\u00f3-Brazzaville" },
             { "CH", "Sviss" },
-            { "CI", "C\u00f4te d\u2019Ivoire" },
+            { "CI", "F\u00edlabeinsstr\u00f6ndin" },
             { "CK", "Cooks-eyjar" },
             { "CL", "S\u00edle" },
             { "CM", "Kamer\u00fan" },
@@ -172,6 +170,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "ach", "acoli" },
             { "gon", "gond\u00ed" },
             { "Brai", "blindraletur" },
+            { "Brah", "brahm\u00edska" },
             { "DM", "D\u00f3min\u00edka" },
             { "type.nu.armnlow", "Armenskar l\u00e1gstafat\u00f6lur" },
             { "DO", "D\u00f3min\u00edska l\u00fd\u00f0veldi\u00f0" },
@@ -206,7 +205,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "ET", "E\u00fe\u00ed\u00f3p\u00eda" },
             { "EU", "Evr\u00f3pusambandi\u00f0" },
             { "elx", "elam\u00edt" },
-            { "type.ca.gregorian", "Gregor\u00edskt dagatal" },
+            { "type.ca.gregorian", "Gregor\u00edskt t\u00edmatal" },
             { "EZ", "Evrusv\u00e6\u00f0i\u00f0" },
             { "chy", "sjeyen" },
             { "type.nu.gujr", "Gujarati-t\u00f6lur" },
@@ -221,7 +220,6 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "FR", "Frakkland" },
             { "tkl", "t\u00f3kel\u00e1ska" },
             { "grb", "gerb\u00f3" },
-            { "root", "r\u00f3t" },
             { "type.ca.indian", "indverskt dagatal" },
             { "grc", "forngr\u00edska" },
             { "GA", "Gabon" },
@@ -282,7 +280,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "type.nu.thai", "T\u00e6lenskar t\u00f6lur" },
             { "type.nu.beng", "Bengalskar t\u00f6lur" },
             { "JE", "Jersey" },
-            { "type.ca.islamic", "\u00cdslamskt dagatal" },
+            { "type.ca.islamic", "\u00cdslamskt t\u00edmatal" },
             { "JM", "Jama\u00edka" },
             { "Beng", "bengalskt" },
             { "JO", "J\u00f3rdan\u00eda" },
@@ -293,7 +291,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "type.nu.knda", "Kannada-t\u00f6lur" },
             { "de_CH", "svissnesk h\u00e1\u00fe\u00fdska" },
             { "type.co.phonetic", "Hlj\u00f3\u00f0fr\u00e6\u00f0ileg r\u00f6\u00f0" },
-            { "type.ca.buddhist", "B\u00fadd\u00edskt dagatal" },
+            { "type.ca.buddhist", "B\u00fadd\u00edskt t\u00edmatal" },
             { "KE", "Ken\u00eda" },
             { "419", "R\u00f3manska Amer\u00edka" },
             { "KG", "Kirgistan" },
@@ -320,7 +318,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "LI", "Liechtenstein" },
             { "LK", "Sr\u00ed Lanka" },
             { "akk", "akkad\u00edska" },
-            { "cop", "kopt\u00edska" },
+            { "cop", metaValue_cop },
             { "LR", "L\u00edber\u00eda" },
             { "LS", "Les\u00f3t\u00f3" },
             { "LT", "Lith\u00e1en" },
@@ -337,14 +335,14 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "MC", "M\u00f3nak\u00f3" },
             { "MD", "Mold\u00f3va" },
             { "ME", "Svartfjallaland" },
-            { "MF", "St. Martin" },
+            { "MF", "Saint-Martin" },
             { "lam", "lamba" },
             { "MG", "Madagaskar" },
             { "MH", "Marshalleyjar" },
             { "ale", "ale\u00faska" },
             { "Thai", "ta\u00edlenskt" },
             { "type.nu.vaii", "Vai-t\u00f6lustafir" },
-            { "MK", "Maked\u00f3n\u00eda" },
+            { "MK", "Nor\u00f0ur-Maked\u00f3n\u00eda" },
             { "ML", "Mal\u00ed" },
             { "MM", "Mjanmar (B\u00farma)" },
             { "MN", "Mong\u00f3l\u00eda" },
@@ -361,12 +359,12 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "MV", "Mald\u00edveyjar" },
             { "MW", "Malav\u00ed" },
             { "MX", "Mex\u00edk\u00f3" },
-            { "type.ca.japanese", "Japanskt dagatal" },
+            { "type.ca.japanese", "Japanskt t\u00edmatal" },
             { "MY", "Malas\u00eda" },
             { "MZ", "M\u00f3samb\u00edk" },
             { "NA", "Namib\u00eda" },
             { "202", "Afr\u00edka sunnan Sahara" },
-            { "type.ca.hebrew", "Hebreskt dagatal" },
+            { "type.ca.hebrew", "Hebreskt t\u00edmatal" },
             { "type.co.dictionary", "Or\u00f0ab\u00f3karr\u00f6\u00f0" },
             { "NC", "N\u00fdja-Kaled\u00f3n\u00eda" },
             { "NE", "N\u00edger" },
@@ -387,7 +385,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "ang", "fornenska" },
             { "OM", "\u00d3man" },
             { "anp", "ang\u00edka" },
-            { "crs", "Seselwa kre\u00f3lsk franska" },
+            { "crs", "seychelles-kre\u00f3lska" },
             { "PA", "Panama" },
             { "type.ca.islamic-civil", "\u00cdslamskt borgaradagatal" },
             { "csb", "kas\u00fab\u00edska" },
@@ -403,6 +401,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "PN", "Pitcairn-eyjar" },
             { "PR", "P\u00faert\u00f3 R\u00edk\u00f3" },
             { "PS", "Heimastj\u00f3rnarsv\u00e6\u00f0i Palest\u00ednumanna" },
+            { "Bali", "balines\u00edska" },
             { "PT", "Port\u00fagal" },
             { "PW", "Pal\u00e1" },
             { "nia", "n\u00edas" },
@@ -429,6 +428,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "RW", "R\u00faanda" },
             { "SA", "S\u00e1di-Arab\u00eda" },
             { "pon", "ponpeiska" },
+            { "Mand", "manda\u00edska" },
             { "SB", "Sal\u00f3monseyjar" },
             { "twq", "tasawaq" },
             { "011", "Vestur-Afr\u00edka" },
@@ -459,7 +459,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "SS", "Su\u00f0ur-S\u00fadan" },
             { "ST", "Sa\u00f3 T\u00f3me og Prins\u00edpe" },
             { "SV", "El Salvador" },
-            { "SX", "Sankti Martin" },
+            { "SX", "Sint Maarten" },
             { "SY", "S\u00fdrland" },
             { "yao", "ja\u00f3" },
             { "SZ", "Svas\u00edland" },
@@ -475,7 +475,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "TF", "Fr\u00f6nsku su\u00f0l\u00e6gu landsv\u00e6\u00f0in" },
             { "TG", "T\u00f3g\u00f3" },
             { "TH", "Ta\u00edland" },
-            { "TJ", "Tadsjikistan" },
+            { "TJ", "Tads\u00edkistan" },
             { "029", "Kar\u00edbahafi\u00f0" },
             { "TK", "T\u00f3kel\u00e1" },
             { "TL", "T\u00edmor-Leste" },
@@ -496,7 +496,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "rup", "ar\u00famenska" },
             { "030", "Austur-As\u00eda" },
             { "tyv", "t\u00fav\u00ednska" },
-            { "sw_CD", "Kong\u00f3-svah\u00edl\u00ed" },
+            { "sw_CD", "kong\u00f3svah\u00edl\u00ed" },
             { "034", "Su\u00f0ur-As\u00eda" },
             { "hai", "ha\u00edda" },
             { "035", "Su\u00f0austur-As\u00eda" },
@@ -539,13 +539,16 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "WS", "Sam\u00f3a" },
             { "wal", "volayatta" },
             { "was", "vasj\u00f3" },
+            { "XA", "gervihreimur" },
             { "war", "vara\u00ed" },
+            { "XB", "gervista\u00f0ur" },
             { "awa", "avad\u00ed" },
             { "061", "P\u00f3l\u00fdnes\u00eda" },
             { "XK", "K\u00f3s\u00f3v\u00f3" },
             { "Gujr", metaValue_gu },
             { "Zxxx", "\u00f3skrifa\u00f0" },
             { "wbp", "varlpiri" },
+            { "Batk", "batak\u00edska" },
             { "YE", "Jemen" },
             { "nqo", "n\u2019ko" },
             { "type.co.standard", "St\u00f6\u00f0lu\u00f0 r\u00f6\u00f0un" },
@@ -561,7 +564,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "ZW", "Simbabve" },
             { "ZZ", "\u00d3\u00feekkt sv\u00e6\u00f0i" },
             { "type.ms.metric", "Metrakerfi" },
-            { "type.ca.iso8601", "ISO-8601 dagatal" },
+            { "type.ca.iso8601", "ISO-8601 t\u00edmatal" },
             { "lol", "mong\u00f3" },
             { "nso", "nor\u00f0urs\u00f3t\u00f3" },
             { "type.nu.telu", "Tel\u00fag\u00fa-t\u00f6lur" },
@@ -578,6 +581,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "dar", "dargva" },
             { "dav", "ta\u00edta" },
             { "lrc", "nor\u00f0url\u00far\u00ed" },
+            { "Copt", metaValue_cop },
             { "nwc", "klass\u00edsk nevar\u00edska" },
             { "udm", "\u00fadm\u00fart" },
             { "Khmr", metaValue_km },
@@ -648,6 +652,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "Mymr", "mjanmarskt" },
             { "type.nu.laoo", "Lao-t\u00f6lur" },
             { "seh", "sena" },
+            { "Nkoo", "n-k\u00f3" },
             { "sel", "selk\u00fap" },
             { "ca", "katal\u00f3nska" },
             { "ses", "ko\u00edrabor\u00f3-senn\u00ed" },
@@ -674,7 +679,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "es_419", "r\u00f3m\u00f6nsk-amer\u00edsk sp\u00e6nska" },
             { "dz", "dsongka" },
             { "bez", "bena" },
-            { "type.ca.chinese", "K\u00ednverskt dagatal" },
+            { "type.ca.chinese", "K\u00ednversk t\u00edmatal" },
             { "dje", "zarma" },
             { "type.nu.grek", "Gr\u00edskir t\u00f6lustafir" },
             { "ee", "ewe" },
@@ -702,7 +707,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "fj", "f\u00eddjeyska" },
             { "fon", "f\u00f3n" },
             { "bgn", "vesturbalots\u00ed" },
-            { "yue", "kantoneska" },
+            { "yue", "kant\u00f3nska" },
             { "fo", "f\u00e6reyska" },
             { "type.m0.bgn", "US BGN umritun" },
             { "umb", "\u00famb\u00fand\u00fa" },
@@ -711,7 +716,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "fy", "vesturfr\u00edsneska" },
             { "ga", "\u00edrska" },
             { "gd", "skosk gel\u00edska" },
-            { "gl", "gal\u00edanska" },
+            { "gl", "galis\u00edska" },
             { "gn", "gvaran\u00ed" },
             { "bho", "bojp\u00far\u00ed" },
             { "und", "\u00f3\u00feekkt tungum\u00e1l" },
@@ -731,7 +736,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "hy", "armenska" },
             { "hz", "herer\u00f3" },
             { "frc", "cajun-franska" },
-            { "ia", "al\u00fej\u00f3\u00f0atunga" },
+            { "ia", "interlingua" },
             { "Jamo", "jamo" },
             { "id", "ind\u00f3nes\u00edska" },
             { "type.nu.tibt", "T\u00edbeskir t\u00f6lustafir" },
@@ -802,7 +807,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "mr", "marat\u00ed" },
             { "ms", "mala\u00edska" },
             { "mt", "maltneska" },
-            { "my", "burmneska" },
+            { "my", "b\u00farmneska" },
             { "Armn", "armenskt" },
             { "mdf", "moksa" },
             { "dsb", "l\u00e1gsorbneska" },
@@ -819,7 +824,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "nr", "su\u00f0urndebele" },
             { "nv", "navah\u00f3" },
             { "kaa", "karakalpak" },
-            { "ny", "njanja; s\u00edsjeva; sjeva" },
+            { "ny", "n\u00fdanja" },
             { "kac", "kas\u00edn" },
             { "kab", "kab\u00edle" },
             { "oc", "oks\u00edtan\u00edska" },
@@ -842,7 +847,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "pi", "pal\u00ed" },
             { "pl", "p\u00f3lska" },
             { "dum", "mi\u00f0hollenska" },
-            { "type.ca.dangi", "Dangi dagatal" },
+            { "type.ca.dangi", "Dangi t\u00edmatal" },
             { "ps", "past\u00fa" },
             { "pt", "port\u00fagalska" },
             { "mga", "mi\u00f0\u00edrska" },
@@ -852,7 +857,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "mgh", "makhuwa-meetto" },
             { "key.cf", "Gjaldmi\u00f0ilssni\u00f0" },
             { "bra", "bra\u00ed" },
-            { "key.ca", "Dagatal" },
+            { "key.ca", "T\u00edmatal" },
             { "Laoo", "lao" },
             { "mgo", "meta\u2019" },
             { "type.hc.h23", "24 t\u00edma kerfi (0\u201323)" },
@@ -901,6 +906,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "ss", "svat\u00ed" },
             { "type.cf.account", "B\u00f3khaldsgjaldmi\u00f0ill" },
             { "st", "su\u00f0urs\u00f3t\u00f3" },
+            { "Java", "javanes\u00edska" },
             { "su", "s\u00fandanska" },
             { "sv", "s\u00e6nska" },
             { "sw", "svah\u00edl\u00ed" },
@@ -949,7 +955,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "kha", "kas\u00ed" },
             { "nds_NL", "l\u00e1gsaxneska" },
             { "ve", "venda" },
-            { "type.ca.roc", "Minguo dagatal" },
+            { "type.ca.roc", "Minguo t\u00edmatal" },
             { "vi", "v\u00edetnamska" },
             { "kho", "kotaska" },
             { "khq", "koyra chiini" },
@@ -962,6 +968,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "gag", "gag\u00e1s" },
             { "syr", "s\u00fdrlenska" },
             { "Grek", "gr\u00edskt" },
+            { "gan", "gan" },
             { "wo", "volof" },
             { "zgh", "sta\u00f0la\u00f0 marokk\u00f3skt tamazight" },
             { "ar_001", "st\u00f6\u00f0lu\u00f0 n\u00fat\u00edmaarab\u00edska" },
@@ -1004,6 +1011,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "kok", "konkan\u00ed" },
             { "kos", "kosraska" },
             { "zh_Hant", "k\u00ednverska (hef\u00f0bundin)" },
+            { "Sund", "sundanes\u00edska" },
             { "kpe", "kpelle" },
             { "type.nu.khmr", "Kmer\u00edskar t\u00f6lur" },
             { "ilo", "\u00edlok\u00f3" },
@@ -1019,6 +1027,7 @@ public class LocaleNames_is extends OpenListResourceBundle {
             { "type.nu.tamldec", "Tam\u00edlskar t\u00f6lur" },
             { "krc", "karasa\u00edbalkar" },
             { "inh", "ing\u00fas" },
+            { "fa_AF", "dar\u00ed" },
             { "krl", "kar\u00e9lska" },
             { "efi", "ef\u00edk" },
             { "key.nu", "T\u00f6lur" },

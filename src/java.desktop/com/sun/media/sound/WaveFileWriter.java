@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -215,7 +215,7 @@ public final class WaveFileWriter extends SunFileWriter {
         int bytesRead = 0;
         int bytesWritten = 0;
         InputStream fileStream = getFileStream(waveFileFormat, in);
-        byte buffer[] = new byte[bisBufferSize];
+        byte[] buffer = new byte[bisBufferSize];
         int maxLength = waveFileFormat.getByteLength();
 
         while( (bytesRead = fileStream.read( buffer )) >= 0 ) {

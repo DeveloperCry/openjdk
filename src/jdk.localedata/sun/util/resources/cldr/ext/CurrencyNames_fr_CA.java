@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -75,9 +71,8 @@ public class CurrencyNames_fr_CA extends OpenListResourceBundle {
             { "AUD", "$\u00a0AU" },
             { "BMD", "BMD" },
             { "BND", "BND" },
-            { "BSD", "BSD" },
             { "BZD", "BZD" },
-            { "CAD", "$" },
+            { "CAD", "$\u00a0CA" },
             { "CLP", "CLP" },
             { "CNY", "CN\u00a5" },
             { "COP", "COP" },
@@ -101,15 +96,23 @@ public class CurrencyNames_fr_CA extends OpenListResourceBundle {
             { "USD", "$\u00a0US" },
             { "UYU", "UYU" },
             { "VND", "VND" },
+            { "WST", "WST" },
             { "XAF", "XAF" },
             { "XOF", "XOF" },
             { "XPF", "XPF" },
-            { "fkp", "livre des \u00celes Malouines" },
+            { "azn", "manat azerba\u00efdjanais" },
+            { "cve", "escudo cap-verdien" },
             { "irr", "rial iranien" },
+            { "lak", "kip laotien" },
             { "omr", "rial omanais" },
+            { "pen", "nouveau sol p\u00e9ruvien" },
+            { "pgk", "kina papou-n\u00e9o-guin\u00e9en" },
+            { "qar", "riyal du Qatar" },
             { "sar", "rial saoudien" },
+            { "srd", "dollar du Suriname" },
             { "top", "pa\u2019anga" },
-            { "ttd", "dollar de Trinit\u00e9-et-Tobago" },
+            { "vuv", "vatu" },
+            { "wst", "tala" },
             { "xxx", "Devise inconnue" },
             { "yer", "rial y\u00e9m\u00e9nite" },
         };

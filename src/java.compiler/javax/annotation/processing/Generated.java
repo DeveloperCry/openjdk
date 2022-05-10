@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * It can also be used to differentiate user written code from generated code in
  * a single file.
  *
- * <h3>Examples:</h3>
+ * <h2>Examples:</h2>
  * <pre>
  *   &#064;Generated("com.example.Generator")
  * </pre>

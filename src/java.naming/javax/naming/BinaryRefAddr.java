@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -121,8 +121,7 @@ public class BinaryRefAddr extends RefAddr {
       * @return true if the object is equal; false otherwise.
       */
     public boolean equals(Object obj) {
-        if ((obj != null) && (obj instanceof BinaryRefAddr)) {
-            BinaryRefAddr target = (BinaryRefAddr)obj;
+        if (obj instanceof BinaryRefAddr target) {
             if (addrType.compareTo(target.addrType) == 0) {
                 if (buf == null && target.buf == null)
                     return true;

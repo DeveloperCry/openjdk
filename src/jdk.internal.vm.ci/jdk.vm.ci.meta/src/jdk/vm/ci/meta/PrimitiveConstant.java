@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,10 @@ public class PrimitiveConstant implements JavaConstant, SerializableConstant {
         this.kind = kind;
 
         assert kind.isPrimitive() || kind == JavaKind.Illegal;
+    }
+
+    static PrimitiveConstant forTypeChar(char kind, long i) {
+        return JavaConstant.forIntegerKind(JavaKind.fromPrimitiveOrVoidTypeChar(kind), i);
     }
 
     @Override

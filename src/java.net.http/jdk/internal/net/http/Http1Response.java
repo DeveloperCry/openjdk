@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,7 @@ import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 import jdk.internal.net.http.ResponseContent.BodyParser;
 import jdk.internal.net.http.ResponseContent.UnknownLengthBodyParser;
+import jdk.internal.net.http.ResponseSubscribers.TrustedSubscriber;
 import jdk.internal.net.http.common.Log;
 import jdk.internal.net.http.common.Logger;
 import jdk.internal.net.http.common.MinimalFuture;
@@ -70,14 +71,14 @@ class Http1Response<T> {
     private volatile EOFException eof;
     private volatile BodyParser bodyParser;
     // max number of bytes of (fixed length) body to ignore on redirect
-    private final static int MAX_IGNORE = 1024;
+    private static final int MAX_IGNORE = 1024;
 
     // Revisit: can we get rid of this?
     static enum State {INITIAL, READING_HEADERS, READING_BODY, DONE}
     private volatile State readProgress = State.INITIAL;
 
     final Logger debug = Utils.getDebugLogger(this::dbgString, Utils.DEBUG);
-    final static AtomicLong responseCount = new AtomicLong();
+    static final AtomicLong responseCount = new AtomicLong();
     final long id = responseCount.incrementAndGet();
     private Http1HeaderParser hd;
 
@@ -113,7 +114,7 @@ class Http1Response<T> {
     }
 
     // The ClientRefCountTracker is used to track the state
-    // of a pending operation. Altough there usually is a single
+    // of a pending operation. Although there usually is a single
     // point where the operation starts, it may terminate at
     // different places.
     private final class ClientRefCountTracker {
@@ -263,7 +264,16 @@ class Http1Response<T> {
             connection.close();
             return MinimalFuture.completedFuture(null); // not treating as error
         } else {
-            return readBody(discarding(), true, executor);
+            return readBody(discarding(), !request.isWebSocket(), executor);
+        }
+    }
+
+    // Used for those response codes that have no body associated
+    public void nullBody(HttpResponse<T> resp, Throwable t) {
+        if (t != null) connection.close();
+        else {
+            return2Cache = !request.isWebSocket();
+            onFinished();
         }
     }
 
@@ -284,13 +294,18 @@ class Http1Response<T> {
      * subscribed.
      * @param <U> The type of response.
      */
-    final static class Http1BodySubscriber<U> implements HttpResponse.BodySubscriber<U> {
+    static final class Http1BodySubscriber<U> implements TrustedSubscriber<U> {
         final HttpResponse.BodySubscriber<U> userSubscriber;
         final AtomicBoolean completed = new AtomicBoolean();
         volatile Throwable withError;
         volatile boolean subscribed;
         Http1BodySubscriber(HttpResponse.BodySubscriber<U> userSubscriber) {
             this.userSubscriber = userSubscriber;
+        }
+
+        @Override
+        public boolean needsExecutor() {
+            return TrustedSubscriber.needsExecutor(userSubscriber);
         }
 
         // propagate the error to the user subscriber, even if not
@@ -347,6 +362,7 @@ class Http1Response<T> {
         public CompletionStage<U> getBody() {
             return userSubscriber.getBody();
         }
+
         @Override
         public void onSubscribe(Flow.Subscription subscription) {
             if (!subscribed) {
@@ -378,6 +394,14 @@ class Http1Response<T> {
     public <U> CompletableFuture<U> readBody(HttpResponse.BodySubscriber<U> p,
                                          boolean return2Cache,
                                          Executor executor) {
+        if (debug.on()) {
+            debug.log("readBody: return2Cache: " + return2Cache);
+            if (request.isWebSocket() && return2Cache && connection != null) {
+                debug.log("websocket connection will be returned to cache: "
+                        + connection.getClass() + "/" + connection );
+            }
+        }
+        assert !return2Cache || !request.isWebSocket();
         this.return2Cache = return2Cache;
         final Http1BodySubscriber<U> subscriber = new Http1BodySubscriber<>(p);
 
@@ -466,18 +490,12 @@ class Http1Response<T> {
                 connection.client().unreference();
             }
         });
-        try {
-            p.getBody().whenComplete((U u, Throwable t) -> {
-                if (t == null)
-                    cf.complete(u);
-                else
-                    cf.completeExceptionally(t);
-            });
-        } catch (Throwable t) {
+
+        ResponseSubscribers.getBodyAsync(executor, p, cf, (t) -> {
             cf.completeExceptionally(t);
             asyncReceiver.setRetryOnError(false);
             asyncReceiver.onReadError(t);
-        }
+        });
 
         return cf.whenComplete((s,t) -> {
             if (t != null) {
@@ -558,15 +576,16 @@ class Http1Response<T> {
     }
 
     Receiver<?> receiver(State state) {
-        switch(state) {
-            case READING_HEADERS: return headersReader;
-            case READING_BODY: return bodyReader;
-            default: return null;
-        }
+        return switch (state) {
+            case READING_HEADERS    -> headersReader;
+            case READING_BODY       -> bodyReader;
+
+            default -> null;
+        };
 
     }
 
-    static abstract class Receiver<T>
+    abstract static class Receiver<T>
             implements Http1AsyncReceiver.Http1AsyncDelegate {
         abstract void start(T parser);
         abstract CompletableFuture<State> completion();
@@ -809,7 +828,7 @@ class Http1Response<T> {
 
         @Override
         public String toString() {
-            return super.toString() + "/parser=" + String.valueOf(parser);
+            return super.toString() + "/parser=" + parser;
         }
     }
 }

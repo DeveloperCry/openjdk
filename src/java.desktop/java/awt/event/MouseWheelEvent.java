@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,7 @@
 package java.awt.event;
 
 import java.awt.Component;
-
+import java.io.Serial;
 import java.lang.annotation.Native;
 
 /**
@@ -153,10 +153,10 @@ public class MouseWheelEvent extends MouseEvent {
      */
     double preciseWheelRotation;
 
-    /*
-     * serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.6 for interoperability.
      */
-
+    @Serial
     private static final long serialVersionUID = 6459879390515399677L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,6 @@ import sun.jvm.hotspot.oops.*;
 import sun.jvm.hotspot.utilities.SystemDictionaryHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -106,7 +105,7 @@ public class FinalizerInfo extends Tool {
             OopField nextField =
                 (OopField) k.findField("next", "Ljava/lang/ref/Reference;");
 
-            HashMap map = new HashMap();
+            HashMap<Klass, ObjectHistogramElement> map = new HashMap<>();
             for (;;) {
                 Oop referent = referentField.getValue(head);
 
@@ -114,7 +113,7 @@ public class FinalizerInfo extends Tool {
                 if (!map.containsKey(klass)) {
                     map.put(klass, new ObjectHistogramElement(klass));
                 }
-                ((ObjectHistogramElement)map.get(klass)).updateWith(referent);
+                map.get(klass).updateWith(referent);
 
                 Oop next = nextField.getValue(head);
                 if (next == null || next.equals(head)) break;
@@ -124,13 +123,9 @@ public class FinalizerInfo extends Tool {
             /*
              * Sort results - decending order by total size
              */
-            ArrayList list = new ArrayList();
+            ArrayList<ObjectHistogramElement> list = new ArrayList<>();
             list.addAll(map.values());
-            Collections.sort(list, new Comparator() {
-              public int compare(Object o1, Object o2) {
-                  return ((ObjectHistogramElement)o1).compare((ObjectHistogramElement)o2);
-              }
-            });
+            list.sort(ObjectHistogramElement::compare);
 
             /*
              * Print summary of objects in queue

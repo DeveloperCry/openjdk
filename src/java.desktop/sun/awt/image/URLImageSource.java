@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ public class URLImageSource extends InputStreamImageSource {
     int actualPort;
 
     public URLImageSource(URL u) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             try {
@@ -78,6 +79,7 @@ public class URLImageSource extends InputStreamImageSource {
         // need to check for the real host/port.
         if (actualHost != null) {
             try {
+                @SuppressWarnings("removal")
                 SecurityManager security = System.getSecurityManager();
                 if (security != null) {
                     security.checkConnect(actualHost, actualPort, context);

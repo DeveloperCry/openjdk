@@ -80,7 +80,16 @@ final class TextPanePainter extends AbstractRegionPainter {
         }
     }
         
-
+    protected Object[] getExtendedCacheKeys(JComponent c) {
+        Object[] extendedCacheKeys = null;
+        switch(state) {
+            case BACKGROUND_ENABLED:
+                extendedCacheKeys = new Object[] {
+                     getComponentColor(c, "background", color2, 0.0f, 0.0f, 0)};
+                break;
+        }
+        return extendedCacheKeys;
+    }
 
     @Override
     protected final PaintContext getPaintContext() {
@@ -96,7 +105,7 @@ final class TextPanePainter extends AbstractRegionPainter {
 
     private void paintBackgroundEnabled(Graphics2D g) {
         rect = decodeRect1();
-        g.setPaint(color2);
+        g.setPaint((Color)componentColors[0]);
         g.fill(rect);
 
     }

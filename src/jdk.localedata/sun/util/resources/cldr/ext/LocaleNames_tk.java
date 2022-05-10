@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,7 +67,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final Object[][] data = new Object[][] {
-            { "001", "Dun\u00fd\u00e4" },
+            { "001", "D\u00fcn\u00fd\u00e4" },
             { "002", "Afrika" },
             { "003", "Demirgazyk Amerika" },
             { "005", "G\u00fcnorta Amerika" },
@@ -94,12 +90,13 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "057", "Mikronezi\u00fda sebti" },
             { "061", "Polinezi\u00fda" },
             { "142", "Azi\u00fda" },
-            { "143", "Orta Azi\u00fda" },
+            { "143", "Merkezi Azi\u00fda" },
             { "145", "G\u00fcnbatar Azi\u00fda" },
             { "150", "\u00ddewropa" },
             { "151", "G\u00fcndogar \u00ddewropa" },
             { "154", "Demirgazyk \u00ddewropa" },
             { "155", "G\u00fcnbatar \u00ddewropa" },
+            { "202", "Saharadan a\u015fakdaky Afrika" },
             { "419", "Latyn Amerikasy" },
             { "AC", "Be\u00fdgeli\u015f adasy" },
             { "AD", "Andorra" },
@@ -119,7 +116,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "AX", "Aland adalary" },
             { "AZ", "Azerba\u00fdjan" },
             { "BA", "Bosni\u00fda we Gersegowina" },
-            { "BB", "Barbadow" },
+            { "BB", "Barbados" },
             { "BD", "Banglade\u015f" },
             { "BE", "Belgi\u00fda" },
             { "BF", "Burkina-Faso" },
@@ -131,7 +128,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "BM", "Bermuda" },
             { "BN", "Brune\u00fd" },
             { "BO", "Boliwi\u00fda" },
-            { "BQ", "Karib Niderlandy" },
+            { "BQ", "Karib Niderlandlary" },
             { "BR", "Brazili\u00fda" },
             { "BS", "Bagama adalary" },
             { "BT", "Butan" },
@@ -142,7 +139,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "CA", "Kanada" },
             { "CC", "Kokos (Kiling) adalary" },
             { "CD", "Kongo - Kin\u015fasa" },
-            { "CF", "Orta Afrika Respublikasy" },
+            { "CF", "Merkezi Afrika Respublikasy" },
             { "CG", "Kongo - Brazzawil" },
             { "CH", "\u015ewe\u00fdsari\u00fda" },
             { "CI", "Kot-d\u2019Iwuar" },
@@ -175,8 +172,8 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "ES", "Ispani\u00fda" },
             { "ET", "Efiopi\u00fda" },
             { "EU", "\u00ddewropa Bilele\u015figi" },
-            { "EZ", "\u00ddewro sebti" },
-            { "FI", "Finlandi\u00fda" },
+            { "EZ", "\u00ddewro sebiti" },
+            { "FI", "Finl\u00fdandi\u00fda" },
             { "FJ", "Fiji" },
             { "FK", "Folklend adalary" },
             { "FM", "Mikronezi\u00fda" },
@@ -213,7 +210,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "IL", "Ysra\u00fdyl" },
             { "IM", "Men adasy" },
             { "IN", "Hindistan" },
-            { "IO", "Britani\u00fdany\u0148 Hint okeanyndaky territori\u00fdalary" },
+            { "IO", "Britani\u00fdany\u0148 Hindi okeanyndaky territori\u00fdalary" },
             { "IQ", "Yrak" },
             { "IR", "E\u00fdran" },
             { "IS", "Islandi\u00fda" },
@@ -226,7 +223,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "KG", "Gyrgyzystan" },
             { "KH", "Kamboja" },
             { "KI", "Kiribati" },
-            { "KM", "Komor Adalary" },
+            { "KM", "Komor adalary" },
             { "KN", "Sent-Kits we Newis" },
             { "KP", "Demirgazyk Kore\u00fda" },
             { "KR", "G\u00fcnorta Kore\u00fda" },
@@ -247,15 +244,15 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "MA", "Marokko" },
             { "MC", "Monako" },
             { "MD", "Moldowa" },
-            { "ME", "Montenegro" },
+            { "ME", "\u00c7ernogori\u00fda" },
             { "MF", "Sen-Marten" },
             { "MG", "Madagaskar" },
             { "MH", "Mar\u015fall adalary" },
-            { "MK", "Makedoni\u00fda" },
+            { "MK", "Demirgazyk Makedoni\u00fda" },
             { "ML", "Mali" },
-            { "MM", "M\u00fdanma (Burma)" },
+            { "MM", "M\u00fdanma (Birma)" },
             { "MN", "Mongoli\u00fda" },
-            { "MO", "Makau AAS Hyta\u00fd" },
+            { "MO", "Makao AAS Hyta\u00fd" },
             { "MP", "Demirgazyk Mariana adalary" },
             { "MQ", "Martinika" },
             { "MR", "Mawritani\u00fda" },
@@ -273,7 +270,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "NF", "Norfolk adasy" },
             { "NG", "Nigeri\u00fda" },
             { "NI", "Nikaragua" },
-            { "NL", "Niderlandi\u00fda" },
+            { "NL", "Niderlandlar" },
             { "NO", "Norwegi\u00fda" },
             { "NP", "Nepal" },
             { "NR", "Nauru" },
@@ -303,7 +300,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "RW", "Ruanda" },
             { "SA", "Saud Arabystany" },
             { "SB", "Solomon adalary" },
-            { "SC", "Se\u00fd\u015fel Adalary" },
+            { "SC", "Se\u00fd\u015fel adalary" },
             { "SD", "Sudan" },
             { "SE", "\u015ewesi\u00fda" },
             { "SG", "Singapur" },
@@ -321,7 +318,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "SV", "Salwador" },
             { "SX", "Sint-Marten" },
             { "SY", "Siri\u00fda" },
-            { "SZ", "Swazilend" },
+            { "SZ", "Eswatini" },
             { "TA", "Tristan-da-Kun\u00fda" },
             { "TC", "Terks we Ka\u00fdkos adalary" },
             { "TD", "\u00c7ad" },
@@ -355,6 +352,8 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "VU", "Wanuatu" },
             { "WF", "Uollis we Futuna" },
             { "WS", "Samoa" },
+            { "XA", "psewdo-\u015fiweler" },
+            { "XB", "psewdo-bidi" },
             { "XK", "Kosowo" },
             { "YE", "\u00ddemen" },
             { "YT", "Ma\u00fdotta" },
@@ -381,7 +380,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "bn", "bengal dili" },
             { "bo", "tibet dili" },
             { "br", "breton dili" },
-            { "bs", "bo\u015fnak dili" },
+            { "bs", "bosni\u00fda dili" },
             { "ca", "katalan dili" },
             { "ce", "\u00e7e\u00e7en dili" },
             { "ch", "\u00e7amorro" },
@@ -453,7 +452,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "ln", "lingala dili" },
             { "lo", "laos dili" },
             { "lt", "litwa dili" },
-            { "lu", "luba-Katanga dili" },
+            { "lu", "luba-katanga dili" },
             { "lv", "laty\u015f dili" },
             { "mg", "malagasi\u00fd dili" },
             { "mh", "mar\u015fall dili" },
@@ -503,7 +502,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "sq", "alban dili" },
             { "sr", "serb dili" },
             { "ss", "swati dili" },
-            { "st", "g\u00fcnorta Soto dili" },
+            { "st", "g\u00fcnorta soto dili" },
             { "su", "sundan dili" },
             { "sv", "\u015fwed dili" },
             { "sw", "suahili dili" },
@@ -556,6 +555,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "brx", "bodo dili" },
             { "bug", "bugi\u00fd dili" },
             { "byn", "blin dili" },
+            { "ccp", "\u00e7akma dili" },
             { "ceb", "sebuan dili" },
             { "cgg", "kiga" },
             { "chk", "\u00e7uuk dili" },
@@ -572,7 +572,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "dje", "zarma dili" },
             { "dsb", "a\u015faky lu\u017eits dili" },
             { "dua", "duala dili" },
-            { "dyo", "\u00fdola-Fonyi dili" },
+            { "dyo", "\u00fdola-fon\u00fdi dili" },
             { "dzg", "daza dili" },
             { "ebu", "embu dili" },
             { "efi", "efik dili" },
@@ -610,7 +610,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "kea", "kabuwerdianu dili" },
             { "kfo", "koro dili" },
             { "kha", "khasi dili" },
-            { "khq", "ko\u00fdra-\u00c7ini dili" },
+            { "khq", "ko\u00fdra-\u00e7ini dili" },
             { "kkj", "kako dili" },
             { "kln", "kalenjin dili" },
             { "kmb", "kimbundu dili" },
@@ -643,7 +643,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "men", "mende dili" },
             { "mer", "meru dili" },
             { "mfe", "moris\u00fden dili" },
-            { "mgh", "makua-Mitto dili" },
+            { "mgh", "makuwa-mito dili" },
             { "mgo", "meta dili" },
             { "mic", "mikmak dili" },
             { "min", "minangkabau dili" },
@@ -658,6 +658,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "mzn", "mazanderan dili" },
             { "nap", "neapolitan dili" },
             { "naq", "nama dili" },
+            { "nds", "a\u015faky nemes dili" },
             { "new", "newari dili" },
             { "nia", "nias dili" },
             { "niu", "niue dili" },
@@ -672,13 +673,13 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "pam", "kapampangan dili" },
             { "pap", "pap\u00fdamento dili" },
             { "pau", "palau dili" },
-            { "pcm", "nigeri\u00fd-pijin dili" },
+            { "pcm", "nigeri\u00fda-pijin dili" },
             { "prg", "prussi\u00fda dili" },
             { "quc", "ki\u00e7e dili" },
             { "rap", "rapanu\u00fd dili" },
             { "rar", "kuk dili" },
             { "rof", "rombo dili" },
-            { "rup", "aromun dili" },
+            { "rup", "arumyn dili" },
             { "rwk", "rwa dili" },
             { "sad", "sandawe dili" },
             { "sah", "\u00fdakut dili" },
@@ -689,7 +690,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "scn", "sisili\u00fda dili" },
             { "sco", "\u015fotland dili" },
             { "seh", "sena dili" },
-            { "ses", "ko\u00fdraboro-Senni dili" },
+            { "ses", "ko\u00fdraboro-senni dili" },
             { "shi", "tahelhit dili" },
             { "shn", "\u015fan dili" },
             { "sma", "g\u00fcnorta saam dili" },
@@ -713,7 +714,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "tvl", "tuwalu dili" },
             { "twq", "tasawak dili" },
             { "tyv", "tuwa dili" },
-            { "tzm", "orta-Atlas tamazight dili" },
+            { "tzm", "orta-atlas tamazight dili" },
             { "udm", "udmurt dili" },
             { "umb", "umbundu dili" },
             { "und", "n\u00e4belli dil" },
@@ -775,17 +776,16 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "Zxxx", "\u00ddazuwsyz" },
             { "Zyyy", "Umumy" },
             { "Zzzz", "N\u00e4belli elipbi\u00fd" },
-            { "root", "k\u00f6k" },
-            { "de_CH", "nemes dili (Daglyk \u015ewe\u00fdsari\u00fda)" },
+            { "de_CH", "\u00fdokarky nemes dili (\u015ewe\u00fdsari\u00fda)" },
             { "en_GB", "i\u0148lis dili (Be\u00fdik Britani\u00fda)" },
             { "en_US", "i\u0148lis dili (Amerika)" },
             { "es_ES", "ispan dili (\u00ddewropa)" },
+            { "fa_AF", "dari dili" },
             { "nl_BE", "flamand dili" },
             { "pt_PT", "portugal dili (\u00ddewropa)" },
             { "ro_MD", "moldaw dili" },
             { "sw_CD", "kongo suahili dili" },
             { "ar_001", "h\u00e4zirki zaman standart arap dili" },
-            { "es_419", "ispan dili (G\u00fcnorta Amerika)" },
             { "key.ca", "Senenama" },
             { "key.cf", "Pul birligini\u0148 formaty" },
             { "key.co", "Tertip rejesi" },
@@ -833,7 +833,7 @@ public class LocaleNames_tk extends OpenListResourceBundle {
             { "type.co.search", "Umumy maksatly g\u00f6zleg" },
             { "type.lb.normal", "Setirden setire ge\u00e7i\u015fi\u0148 adaty stili" },
             { "type.lb.strict", "Setirden setire ge\u00e7i\u015fi\u0148 berk stili" },
-            { "type.ms.metric", "Metriki ulgam" },
+            { "type.ms.metric", "Metrik ulgam" },
             { "type.ca.chinese", "Hyta\u00fd senenamasy" },
             { "type.ca.islamic", "Hijri-kamary senenamasy" },
             { "type.ca.iso8601", "ISO-8601 senenamasy" },

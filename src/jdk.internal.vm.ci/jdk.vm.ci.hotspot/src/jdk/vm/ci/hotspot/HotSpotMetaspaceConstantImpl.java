@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,18 +29,18 @@ import jdk.vm.ci.meta.VMConstant;
 
 final class HotSpotMetaspaceConstantImpl implements HotSpotMetaspaceConstant, VMConstant {
 
-    static HotSpotMetaspaceConstantImpl forMetaspaceObject(MetaspaceWrapperObject metaspaceObject, boolean compressed) {
+    static HotSpotMetaspaceConstantImpl forMetaspaceObject(MetaspaceObject metaspaceObject, boolean compressed) {
         return new HotSpotMetaspaceConstantImpl(metaspaceObject, compressed);
     }
 
-    static MetaspaceWrapperObject getMetaspaceObject(Constant constant) {
+    static MetaspaceObject getMetaspaceObject(Constant constant) {
         return ((HotSpotMetaspaceConstantImpl) constant).metaspaceObject;
     }
 
-    private final MetaspaceWrapperObject metaspaceObject;
+    private final MetaspaceObject metaspaceObject;
     private final boolean compressed;
 
-    private HotSpotMetaspaceConstantImpl(MetaspaceWrapperObject metaspaceObject, boolean compressed) {
+    private HotSpotMetaspaceConstantImpl(MetaspaceObject metaspaceObject, boolean compressed) {
         this.metaspaceObject = metaspaceObject;
         this.compressed = compressed;
     }

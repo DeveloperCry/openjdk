@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -101,6 +97,7 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "CNY", "CNY" },
             { "COP", "COP" },
             { "CRC", "CRC" },
@@ -215,6 +212,7 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "XCD", "XCD" },
@@ -242,14 +240,16 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "awg", "Arubanski florin" },
             { "azm", "Azerbejd\u017eanski manat (1993\u20132006)" },
             { "azn", "Azerbejd\u017eanski manat" },
-            { "bad", "Bosansko-Hercegova\u010dki dinar" },
+            { "bad", "Bosanskohercegova\u010dki dinar" },
             { "bam", "Bosanskohercegova\u010dka konvertibilna marka" },
+            { "ban", "Bosanskohercegova\u010dki novi dinar" },
             { "bbd", "Barbadoski dolar" },
             { "bdt", "Banglade\u0161ka taka" },
             { "bec", "Belgijski frank (konvertibilni)" },
             { "bef", "Belgijski franak" },
             { "bel", "Belgijski frank (finansijski)" },
             { "bgl", "Bugarski tvrdi lev" },
+            { "bgm", "Bugarski socijalisti\u010dki lev" },
             { "bgn", "Bugarski lev" },
             { "bgo", "Bugarski lev (1879\u20131952)" },
             { "bhd", "Bahreinski dinar" },
@@ -280,11 +280,14 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "che", "WIR Evro" },
             { "chf", "\u0160vicarski franak" },
             { "chw", "WIR franak" },
+            { "cle", "\u010cileanski eskudo" },
             { "clf", "\u010cileanski unidades de fomento" },
             { "clp", "\u010cileanski pezos" },
             { "cnh", "Kineski juan (izvanteritorijalni)" },
+            { "cnx", "Dolar kineske narodne banke" },
             { "cny", "Kineski juan" },
             { "cop", "Kolumbijski pezos" },
+            { "cou", "Kolumbijski Unidade real de valor" },
             { "crc", "Kostarikanski kolon" },
             { "csd", "Srpski dinar (2002\u20132006)" },
             { "csk", "\u010cehoslova\u010dka tvrda koruna" },
@@ -374,6 +377,8 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "lyd", "Libijski dinar" },
             { "mad", "Marokanski dirham" },
             { "maf", "Marokanski franak" },
+            { "mcf", "Monegaska\u0161ki franak" },
+            { "mdc", "Moldavski kupon" },
             { "mdl", "Moldavski lej" },
             { "mga", "Malaga\u0161ki arijari" },
             { "mgf", "Malagasijski franak" },
@@ -472,7 +477,8 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "uyu", "Urugvajski pezos" },
             { "uzs", "Uzbekistanski som" },
             { "veb", "Venecuelanski bolivar (1871\u20132008)" },
-            { "vef", "Venecuelanski bolivar" },
+            { "vef", "venecuelanski bolivar (2008\u20132018)" },
+            { "ves", "Venecuelanski bolivar" },
             { "vnd", "Vijetnamski dong" },
             { "vnn", "Vijetnamski dong (1978\u20131985)" },
             { "vuv", "Vanuatski vatu" },
@@ -501,6 +507,7 @@ public class CurrencyNames_bs extends OpenListResourceBundle {
             { "yud", "Jugoslovenski tvrdi dinar" },
             { "yum", "Jugoslovenski novi dinar" },
             { "yun", "Jugoslovenski konvertibilni dinar" },
+            { "yur", "Jugoslovenski reformirani dinar" },
             { "zal", "Ju\u017enoafri\u010dki rand (finansijski)" },
             { "zar", "Ju\u017enoafri\u010dki rand" },
             { "zmk", "Zambijska kva\u010da (1968\u20132012)" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,7 +46,7 @@ public class ViewMenu extends AbstractAction
 
     public static final String VALUE_COMMAND = "view-menu-command";
     public static final String VALUE_NAME = "View";
-    public static final Integer VALUE_MNEMONIC = new Integer(86);
+    public static final Integer VALUE_MNEMONIC = 86;
     public static final String VALUE_SHORT_DESCRIPTION = "View operations";
     public static final String VALUE_LONG_DESCRIPTION = "View operations";
 

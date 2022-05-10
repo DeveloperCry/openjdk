@@ -7,6 +7,7 @@ public final class javadocformatter extends java.util.ListResourceBundle {
             { "CAP_Returns", "Returns:" },
             { "CAP_Thrown_Exceptions", "Thrown Exceptions:" },
             { "CAP_TypeParameters", "Type Parameters:" },
+            { "Inline_Returns", "Returns {0}." },
         };
     }
 }

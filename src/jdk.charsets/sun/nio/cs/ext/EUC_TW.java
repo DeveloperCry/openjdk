@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -144,6 +144,19 @@ public class EUC_TW extends Charset implements HistoricallyNamedCharset
 
         static boolean isLegalDB(int b) {
            return b >= b1Min && b <= b1Max;
+        }
+
+        public static char decodeSingleOrReplace(int b1, int b2, int p, char replace) {
+            if (b1 < b1Min || b1 > b1Max || b2 < b2Min || b2 > b2Max)
+                return replace;
+            int index = (b1 - b1Min) * dbSegSize + b2 - b2Min;
+            char c = b2c[p].charAt(index);
+            if (c == UNMAPPABLE_DECODING)
+                return replace;
+            if ((b2cIsSupp[index] & (1 << p)) == 0) {
+                return c;
+            }
+            return replace;
         }
 
         static char[] decode(int b1, int b2, int p, char[] c1, char[] c2)

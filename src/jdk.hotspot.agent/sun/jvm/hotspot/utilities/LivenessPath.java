@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,7 +38,7 @@ import sun.jvm.hotspot.oops.*;
 
 public class LivenessPath {
   LivenessPath() {
-    stack = new Stack();
+    stack = new Stack<>();
   }
 
   /** Number of elements in the path */
@@ -104,5 +104,5 @@ public class LivenessPath {
   //---------------------------------------------------------------------------
   // Internals only below this point
   //
-  private Stack stack;
+  private Stack<LivenessPathElement> stack;
 }

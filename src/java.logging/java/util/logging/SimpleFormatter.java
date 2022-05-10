@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,9 +38,8 @@ import jdk.internal.logger.SurrogateLogger;
  * <p>
  * <a id="formatting">
  * <b>Configuration:</b></a>
- * The {@code SimpleFormatter} is initialized with the
- * <a href="../Formatter.html#syntax">format string</a>
- * specified in the {@code java.util.logging.SimpleFormatter.format}
+ * The {@code SimpleFormatter} is initialized with the format string
+ * specified in the {@systemProperty java.util.logging.SimpleFormatter.format}
  * property to {@linkplain #format(LogRecord) format} the log messages.
  * This property can be defined
  * in the {@linkplain LogManager#getProperty logging properties}
@@ -67,10 +66,14 @@ public class SimpleFormatter extends Formatter {
         SurrogateLogger.getSimpleFormat(SimpleFormatter::getLoggingProperty);
 
     /**
+     * Create a {@code SimpleFormatter}.
+     */
+    public SimpleFormatter() {}
+
+    /**
      * Format the given LogRecord.
      * <p>
-     * The formatting can be customized by specifying the
-     * <a href="../Formatter.html#syntax">format string</a>
+     * The formatting can be customized by specifying the format string
      * in the <a href="#formatting">
      * {@code java.util.logging.SimpleFormatter.format}</a> property.
      * The given {@code LogRecord} will be formatted as if by calling:
@@ -116,7 +119,7 @@ public class SimpleFormatter extends Formatter {
      *     <p>This prints 2 lines where the first line includes
      *     the timestamp ({@code 1$}) and the source ({@code 2$});
      *     the second line includes the log level ({@code 4$}) and
-     *     the log message ({@code 5$}) followed with the throwable
+     *     the log message ({@code 5$}) followed by the throwable
      *     and its backtrace ({@code 6$}), if any:
      *     <pre>
      *     Tue Mar 22 13:11:31 PDT 2011 MyClass fatal

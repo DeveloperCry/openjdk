@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -71,11 +67,19 @@ public class CurrencyNames_es_MX extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
         final Object[][] data = new Object[][] {
+            { "MRO", "MRU" },
+            { "MRU", "UM" },
             { "MXN", "$" },
-            { "cnh", "CNH" },
-            { "ern", "nakfa" },
+            { "bdt", "taka banglades\u00ed" },
+            { "btn", "ngultrum butan\u00e9s" },
+            { "kgs", "som kirgu\u00eds" },
+            { "khr", "riel camboyano" },
+            { "lak", "kip laosiano" },
+            { "mvr", "rupia de Maldivas" },
             { "stn", "dobra santotomense" },
             { "thb", "baht tailand\u00e9s" },
+            { "vnd", "dong vietnamita" },
+            { "zmw", "kwacha zambiano" },
         };
         return data;
     }

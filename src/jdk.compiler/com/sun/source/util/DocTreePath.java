@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,11 +29,12 @@ import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
  * A path of tree nodes, typically used to represent the sequence of ancestor
- * nodes of a tree node up to the top level DocCommentTree node.
+ * nodes of a tree node up to the top-level {@code DocCommentTree} node.
  *
  * @since 1.8
  */
@@ -52,7 +53,7 @@ public class DocTreePath implements Iterable<DocTree> {
 
     /**
      * Returns a documentation tree path for a tree node within a subtree
-     * identified by a DocTreePath object, or {@code null} if the node is not found.
+     * identified by a {@code DocTreePath} object, or {@code null} if the node is not found.
      * @param path a path identifying a node within a doc comment tree
      * @param target a node to be located within the given node
      * @return a path identifying the target node
@@ -63,6 +64,7 @@ public class DocTreePath implements Iterable<DocTree> {
 
         class Result extends Error {
             static final long serialVersionUID = -5942088234594905625L;
+            @SuppressWarnings("serial") // Type of field is not Serializable
             DocTreePath path;
             Result(DocTreePath path) {
                 this.path = path;
@@ -92,10 +94,10 @@ public class DocTreePath implements Iterable<DocTree> {
     }
 
     /**
-     * Creates a DocTreePath for a root node.
+     * Creates a {@code DocTreePath} for a root node.
      *
-     * @param treePath the TreePath from which the root node was created.
-     * @param t the DocCommentTree to create the path for.
+     * @param treePath the {@code TreePath} from which the root node was created
+     * @param t the {@code DocCommentTree} to create the path for
      */
     public DocTreePath(TreePath treePath, DocCommentTree t) {
         this.treePath = treePath;
@@ -105,7 +107,7 @@ public class DocTreePath implements Iterable<DocTree> {
     }
 
     /**
-     * Creates a DocTreePath for a child node.
+     * Creates a {@code DocTreePath} for a child node.
      * @param p the parent node
      * @param t the child node
      */
@@ -121,16 +123,16 @@ public class DocTreePath implements Iterable<DocTree> {
     }
 
     /**
-     * Returns the TreePath associated with this path.
-     * @return the TreePath for this DocTreePath
+     * Returns the {@code TreePath} associated with this path.
+     * @return the {@code TreePath} for this {@code DocTreePath}
      */
     public TreePath getTreePath() {
         return treePath;
     }
 
     /**
-     * Returns the DocCommentTree associated with this path.
-     * @return the DocCommentTree for this DocTreePath
+     * Returns the {@code DocCommentTree} associated with this path.
+     * @return the {@code DocCommentTree} for this {@code DocTreePath}
      */
     public DocCommentTree getDocComment() {
         return docComment;
@@ -138,7 +140,7 @@ public class DocTreePath implements Iterable<DocTree> {
 
     /**
      * Returns the leaf node for this path.
-     * @return the DocTree for this DocTreePath
+     * @return the {@code DocTree} for this {@code DocTreePath}
      */
     public DocTree getLeaf() {
         return leaf;
@@ -146,7 +148,7 @@ public class DocTreePath implements Iterable<DocTree> {
 
     /**
      * Returns the path for the enclosing node, or {@code null} if there is no enclosing node.
-     * @return DocTreePath of parent
+     * @return {@code DocTreePath} of parent
      */
     public DocTreePath getParentPath() {
         return parent;
@@ -154,7 +156,7 @@ public class DocTreePath implements Iterable<DocTree> {
 
     @Override
     public Iterator<DocTree> iterator() {
-        return new Iterator<DocTree>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return next != null;
@@ -162,6 +164,9 @@ public class DocTreePath implements Iterable<DocTree> {
 
             @Override
             public DocTree next() {
+                if (next == null) {
+                    throw new NoSuchElementException();
+                }
                 DocTree t = next.leaf;
                 next = next.parent;
                 return t;

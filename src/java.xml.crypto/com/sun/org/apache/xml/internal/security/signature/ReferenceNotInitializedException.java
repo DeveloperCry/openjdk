@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -61,7 +61,7 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
      * @param msgID
      * @param exArgs
      */
-    public ReferenceNotInitializedException(String msgID, Object exArgs[]) {
+    public ReferenceNotInitializedException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -87,7 +87,7 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
      * @param msgID
      * @param exArgs
      */
-    public ReferenceNotInitializedException(Exception originalException, String msgID, Object exArgs[]) {
+    public ReferenceNotInitializedException(Exception originalException, String msgID, Object[] exArgs) {
         super(originalException, msgID, exArgs);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -97,9 +93,11 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "BYN", "BYN" },
             { "BYR", "BYR" },
             { "BZD", "BZD" },
+            { "CAD", "CAD" },
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "CNY", "CNY" },
             { "COP", "COP" },
             { "CRC", "CRC" },
@@ -163,6 +161,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -200,6 +199,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "\u0e3f" },
@@ -214,8 +214,10 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "UAH", "UAH" },
             { "UGX", "UGX" },
             { "UYU", "UYU" },
+            { "UYW", "UYW" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "XAF", "XAF" },
@@ -230,7 +232,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "afn", "afgani" },
             { "all", "lek" },
             { "amd", "dram" },
-            { "ang", "flor\u00edn de las Antillas Neerlandesas" },
+            { "ang", "flor\u00edn antillano" },
             { "aoa", "kuanza" },
             { "aok", "kwanza angole\u00f1o (1977\u20131990)" },
             { "aon", "nuevo kwanza angole\u00f1o (1990\u20132000)" },
@@ -254,7 +256,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "bgn", "lev b\u00falgaro" },
             { "bhd", "dinar bahrein\u00ed" },
             { "bif", "franco burund\u00e9s" },
-            { "bmd", "d\u00f3lar de Bermudas" },
+            { "bmd", "d\u00f3lar bermude\u00f1o" },
             { "bnd", "d\u00f3lar bruneano" },
             { "bob", "boliviano" },
             { "bop", "peso boliviano" },
@@ -383,7 +385,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "mtp", "libra maltesa" },
             { "mur", "rupia mauriciana" },
             { "mvr", "rufiya" },
-            { "mwk", "kwacha malau\u00ed" },
+            { "mwk", "kuacha malau\u00ed" },
             { "mxn", "peso mexicano" },
             { "mxp", "peso de plata mexicano (1861\u20131992)" },
             { "mxv", "unidad de inversi\u00f3n (UDI) mexicana" },
@@ -394,7 +396,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "nad", "d\u00f3lar namibio" },
             { "ngn", "naira" },
             { "nic", "c\u00f3rdoba nicarag\u00fcense (1988\u20131991)" },
-            { "nio", "c\u00f3rdoba nicarag\u00fcense" },
+            { "nio", "c\u00f3rdoba oro" },
             { "nlg", "flor\u00edn neerland\u00e9s" },
             { "nok", "corona noruega" },
             { "npr", "rupia nepal\u00ed" },
@@ -464,9 +466,11 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "uyi", "peso uruguayo en unidades indexadas" },
             { "uyp", "peso uruguayo (1975\u20131993)" },
             { "uyu", "peso uruguayo" },
+            { "uyw", "unidad previsional uruguayo" },
             { "uzs", "sum" },
             { "veb", "bol\u00edvar venezolano (1871\u20132008)" },
-            { "vef", "bol\u00edvar venezolano" },
+            { "vef", "bol\u00edvar venezolano (2008\u20132018)" },
+            { "ves", "bol\u00edvar venezolano" },
             { "vnd", "dong" },
             { "vuv", "vatu" },
             { "wst", "tala" },
@@ -497,7 +501,7 @@ public class CurrencyNames_es extends OpenListResourceBundle {
             { "zal", "rand sudafricano (financiero)" },
             { "zar", "rand" },
             { "zmk", "kwacha zambiano (1968\u20132012)" },
-            { "zmw", "kwacha zambiano" },
+            { "zmw", "kuacha zambiano" },
             { "zrn", "nuevo zaire zaire\u00f1o" },
             { "zrz", "zaire zaire\u00f1o" },
             { "zwd", "d\u00f3lar de Zimbabue" },

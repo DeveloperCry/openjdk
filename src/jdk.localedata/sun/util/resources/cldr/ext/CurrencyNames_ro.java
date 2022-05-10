@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -165,6 +161,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -202,6 +199,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -219,6 +217,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -229,9 +228,9 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "adp", "peset\u0103 andorran\u0103" },
             { "aed", "dirham din Emiratele Arabe Unite" },
             { "afn", "afgani afgan" },
-            { "all", "leka albanez\u0103" },
+            { "all", "lek" },
             { "amd", "dram armenesc" },
-            { "ang", "gulden din Antilele Olandeze" },
+            { "ang", "gulden neerlandez antilez" },
             { "aoa", "kwanza angolez\u0103" },
             { "arp", "peso argentinian (1983\u20131985)" },
             { "ars", "peso argentinian" },
@@ -241,22 +240,22 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "azm", "manat azer (1993\u20132006)" },
             { "azn", "manat azer" },
             { "bad", "dinar Bosnia-Her\u021begovina (1992\u20131994)" },
-            { "bam", "marc\u0103 convertibil\u0103 din Bosnia \u0219i Her\u021begovina" },
+            { "bam", "marc\u0103 convertibil\u0103" },
             { "bbd", "dolar din Barbados" },
             { "bdt", "taka din Bangladesh" },
             { "bec", "franc belgian (convertibil)" },
             { "bef", "franc belgian" },
             { "bel", "franc belgian (financiar)" },
-            { "bgn", "leva bulg\u0103reasc\u0103" },
+            { "bgn", "leva" },
             { "bhd", "dinar din Bahrain" },
             { "bif", "franc burundez" },
             { "bmd", "dolar din Bermuda" },
             { "bnd", "dolar din Brunei" },
-            { "bob", "boliviano bolivian" },
+            { "bob", "boliviano" },
             { "bop", "peso bolivian" },
             { "bov", "mvdol bolivian" },
             { "bre", "cruzeiro brazilian (1990\u20131993)" },
-            { "brl", "real brazilian" },
+            { "brl", "real" },
             { "brr", "cruzeiro brazilian (1993\u20131994)" },
             { "bsd", "dolar din Bahamas" },
             { "btn", "ngultrum din Bhutan" },
@@ -272,7 +271,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "cnh", "yuan chinezesc (offshore)" },
             { "cny", "yuan chinezesc" },
             { "cop", "peso columbian" },
-            { "crc", "colon costarican" },
+            { "crc", "col\u00f3n costarican" },
             { "csd", "dinar Serbia \u0219i Muntenegru (2002\u20132006)" },
             { "cuc", "peso cubanez convertibil" },
             { "cup", "peso cubanez" },
@@ -312,9 +311,9 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "hkd", "dolar din Hong Kong" },
             { "hnl", "lempira hondurian\u0103" },
             { "hrd", "dinar croat" },
-            { "hrk", "kuna croat\u0103" },
+            { "hrk", "kuna" },
             { "htg", "gourde din Haiti" },
-            { "huf", "forint maghiar" },
+            { "huf", "forint" },
             { "idr", "rupie indonezian\u0103" },
             { "iep", "lir\u0103 irlandez\u0103" },
             { "ilp", "lir\u0103 israelian\u0103" },
@@ -353,7 +352,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "mdl", "leu moldovenesc" },
             { "mga", "ariary malga\u0219" },
             { "mgf", "franc Madagascar" },
-            { "mkd", "dinar macedonean" },
+            { "mkd", "denar" },
             { "mlf", "franc Mali" },
             { "mmk", "kyat din Myanmar" },
             { "mnt", "tugrik mongol" },
@@ -373,7 +372,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "nad", "dolar namibian" },
             { "ngn", "naira nigerian\u0103" },
             { "nic", "cordoba nicaraguan\u0103 (1988\u20131991)" },
-            { "nio", "cordoba nicaraguan\u0103" },
+            { "nio", "c\u00f3rdoba oro" },
             { "nlg", "gulden olandez" },
             { "nok", "coroan\u0103 norvegian\u0103" },
             { "npr", "rupie nepalez\u0103" },
@@ -381,14 +380,14 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "omr", "rial omanez" },
             { "pab", "balboa panamez\u0103" },
             { "pei", "inti peruvian" },
-            { "pen", "sol peruvian" },
+            { "pen", "sol" },
             { "pes", "sol peruvian (1863\u20131965)" },
             { "pgk", "kina din Papua-Noua Guinee" },
             { "php", "peso filipinez" },
             { "pkr", "rupie pakistanez\u0103" },
-            { "pln", "zlot polonez" },
+            { "pln", "zlot" },
             { "plz", "zlot polonez (1950\u20131995)" },
-            { "pyg", "guarani paraguayan" },
+            { "pyg", "guarani" },
             { "qar", "rial qatarian" },
             { "rhd", "dolar rhodesian" },
             { "rol", "leu rom\u00e2nesc (1952\u20132006)" },
@@ -427,10 +426,10 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "top", "pa\u2019anga tongan\u0103" },
             { "trl", "lir\u0103 turceasc\u0103 (1922\u20132005)" },
             { "try", "lir\u0103 turceasc\u0103" },
-            { "ttd", "dolar din Trinidad-Tobago" },
+            { "ttd", "dolar din Trinidad \u0219i Tobago" },
             { "twd", "dolar nou din Taiwan" },
             { "tzs", "\u0219iling tanzanian" },
-            { "uah", "hryvna ucrainean\u0103" },
+            { "uah", "grivn\u0103" },
             { "uak", "carboav\u0103 ucrainean\u0103" },
             { "ugs", "\u0219iling ugandez (1966\u20131987)" },
             { "ugx", "\u0219iling ugandez" },
@@ -441,7 +440,8 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "uyu", "peso uruguayan" },
             { "uzs", "sum Uzbekistan" },
             { "veb", "bolivar Venezuela (1871\u20132008)" },
-            { "vef", "bolivar venezuelean" },
+            { "vef", "bolivar venezuelean (2008\u20132018)" },
+            { "ves", "bol\u00edvar soberano" },
             { "vnd", "dong vietnamez" },
             { "vuv", "vatu din Vanuatu" },
             { "wst", "tala samoan\u0103" },
@@ -452,7 +452,7 @@ public class CurrencyNames_ro extends OpenListResourceBundle {
             { "xbb", "unitate monetar\u0103 european\u0103" },
             { "xbc", "unitate de cont european\u0103 (XBC)" },
             { "xbd", "unitate de cont european\u0103 (XBD)" },
-            { "xcd", "dolar din Caraibele de Est" },
+            { "xcd", "dolar est-caraib" },
             { "xdr", "drepturi speciale de tragere" },
             { "xeu", "unitate de moned\u0103 european\u0103" },
             { "xfo", "franc francez de aur" },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -355,7 +355,7 @@ public class MBeanServerFactory {
      * caller's permissions do not include or imply <code>{@link
      * MBeanServerPermission}("findMBeanServer")</code>.
      */
-    public synchronized static
+    public static synchronized
             ArrayList<MBeanServer> findMBeanServer(String agentId) {
 
         checkPermission("findMBeanServer");
@@ -407,6 +407,7 @@ public class MBeanServerFactory {
 
     private static void checkPermission(String action)
     throws SecurityException {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             Permission perm = new MBeanServerPermission(action);
@@ -477,6 +478,7 @@ public class MBeanServerFactory {
         try {
             GetPropertyAction act =
                     new GetPropertyAction(JMX_INITIAL_BUILDER);
+            @SuppressWarnings("removal")
             String builderClassName = AccessController.doPrivileged(act);
 
             try {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,6 +49,11 @@ package java.awt.event;
  */
 public abstract class HierarchyBoundsAdapter implements HierarchyBoundsListener
 {
+    /**
+     * Constructs a {@code HierarchyBoundsAdapter}.
+     */
+    protected HierarchyBoundsAdapter() {}
+
     /**
      * Called when an ancestor of the source is moved.
      */

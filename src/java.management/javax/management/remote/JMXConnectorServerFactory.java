@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -128,7 +128,7 @@ import javax.management.remote.JMXConnectorFactory.ConnectorFactory;
  * <code>MalformedURLException</code> if there is none.  An
  * implementation may choose to find providers by other means.  For
  * example, it may support <a
- * href="{@docRoot}/java/util/ServiceLoader.html#developing-service-providers">service providers</a>,
+ * href="{@docRoot}/java.base/java/util/ServiceLoader.html#developing-service-providers">service providers</a>,
  * where the service interface is <code>JMXConnectorServerProvider</code>.</p>
  *
  * <p>Every implementation must support the RMI connector protocol with

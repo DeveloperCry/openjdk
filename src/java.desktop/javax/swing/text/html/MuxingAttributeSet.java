@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -76,7 +76,7 @@ class MuxingAttributeSet implements AttributeSet, Serializable {
     protected synchronized void insertAttributeSetAt(AttributeSet as,
                                                      int index) {
         int numAttrs = attrs.length;
-        AttributeSet newAttrs[] = new AttributeSet[numAttrs + 1];
+        AttributeSet[] newAttrs = new AttributeSet[numAttrs + 1];
         if (index < numAttrs) {
             if (index > 0) {
                 System.arraycopy(attrs, 0, newAttrs, 0, index);

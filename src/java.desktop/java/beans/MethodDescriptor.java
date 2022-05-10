@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,7 +46,7 @@ public class MethodDescriptor extends FeatureDescriptor {
 
     private List<WeakReference<Class<?>>> params;
 
-    private ParameterDescriptor parameterDescriptors[];
+    private ParameterDescriptor[] parameterDescriptors;
 
     /**
      * Constructs a {@code MethodDescriptor} from a
@@ -69,7 +69,7 @@ public class MethodDescriptor extends FeatureDescriptor {
      *                          method's parameters.
      */
     public MethodDescriptor(Method method,
-                ParameterDescriptor parameterDescriptors[]) {
+                ParameterDescriptor[] parameterDescriptors) {
         setName(method.getName());
         setMethod(method);
         this.parameterDescriptors = (parameterDescriptors != null)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,6 @@
 package javax.management.openmbean;
 
 
-// java import
-//
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -44,7 +42,6 @@ import javax.management.Descriptor;
 import javax.management.DescriptorRead;
 import javax.management.ImmutableDescriptor;
 import javax.management.MBeanAttributeInfo;
-import com.sun.jmx.remote.util.EnvHelp;
 import sun.reflect.misc.MethodUtil;
 import sun.reflect.misc.ReflectUtil;
 
@@ -64,27 +61,32 @@ public class OpenMBeanAttributeInfoSupport
     /**
      * @serial The open mbean attribute's <i>open type</i>
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private OpenType<?> openType;
 
     /**
      * @serial The open mbean attribute's default value
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private final Object defaultValue;
 
     /**
      * @serial The open mbean attribute's legal values. This {@link
      * Set} is unmodifiable
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private final Set<?> legalValues;  // to be constructed unmodifiable
 
     /**
      * @serial The open mbean attribute's min value
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private final Comparable<?> minValue;
 
     /**
      * @serial The open mbean attribute's max value
      */
+    @SuppressWarnings("serial") // Conditionally serializable
     private final Comparable<?> maxValue;
 
 
@@ -456,11 +458,11 @@ public class OpenMBeanAttributeInfoSupport
             throw new IllegalArgumentException("OpenType cannot be null");
 
         if (info.getName() == null ||
-                info.getName().trim().equals(""))
+                info.getName().trim().isEmpty())
             throw new IllegalArgumentException("Name cannot be null or empty");
 
         if (info.getDescription() == null ||
-                info.getDescription().trim().equals(""))
+                info.getDescription().trim().isEmpty())
             throw new IllegalArgumentException("Description cannot be null or empty");
 
         // Check and initialize defaultValue
@@ -621,7 +623,7 @@ public class OpenMBeanAttributeInfoSupport
             final String msg =
                 "Cannot convert descriptor field " + name + "  to " +
                 openType.getTypeName();
-            throw EnvHelp.initCause(new IllegalArgumentException(msg), e);
+            throw new IllegalArgumentException(msg, e);
         }
     }
 

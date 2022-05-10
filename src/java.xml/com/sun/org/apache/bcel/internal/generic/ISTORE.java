@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -25,13 +25,12 @@ package com.sun.org.apache.bcel.internal.generic;
  * ISTORE - Store int from stack into local variable
  * <PRE>Stack: ..., value -&gt; ... </PRE>
  *
- * @version $Id: ISTORE.java 1747278 2016-06-07 17:28:43Z britter $
  */
 public class ISTORE extends StoreInstruction {
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     ISTORE() {
         super(com.sun.org.apache.bcel.internal.Const.ISTORE, com.sun.org.apache.bcel.internal.Const.ISTORE_0);

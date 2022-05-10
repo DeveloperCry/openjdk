@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -62,7 +62,7 @@ public class Module implements Comparable<Module> {
 
     @Override
     public boolean equals(Object o) {
-        return (o instanceof Module) && name.equals(((Module)o).name);
+        return (o instanceof Module module) && name.equals(module.name);
     }
 
     @Override

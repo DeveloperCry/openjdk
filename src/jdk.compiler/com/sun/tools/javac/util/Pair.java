@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,10 +49,9 @@ public class Pair<A, B> {
     }
 
     public boolean equals(Object other) {
-        return
-            other instanceof Pair<?,?> &&
-            Objects.equals(fst, ((Pair<?,?>)other).fst) &&
-            Objects.equals(snd, ((Pair<?,?>)other).snd);
+        return other instanceof Pair<?,?> pair &&
+            Objects.equals(fst, pair.fst) &&
+            Objects.equals(snd, pair.snd);
     }
 
     public int hashCode() {

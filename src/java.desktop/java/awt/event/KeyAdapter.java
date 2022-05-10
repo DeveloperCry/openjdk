@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,11 +46,17 @@ package java.awt.event;
  *
  * @see KeyEvent
  * @see KeyListener
- * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html">Tutorial: Writing a Key Listener</a>
+ * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html">Tutorial: Writing a Key Listener</a>
  *
  * @since 1.1
  */
 public abstract class KeyAdapter implements KeyListener {
+
+    /**
+     * Constructs a {@code KeyAdapter}.
+     */
+    protected KeyAdapter() {}
+
     /**
      * Invoked when a key has been typed.
      * This event occurs when a key press is followed by a key release.

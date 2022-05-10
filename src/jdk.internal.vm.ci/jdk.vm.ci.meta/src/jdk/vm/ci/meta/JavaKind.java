@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -473,7 +473,7 @@ public enum JavaKind {
             case Long:
                 return 64;
             default:
-                throw new IllegalArgumentException("illegal call to bits on " + this);
+                throw new IllegalArgumentException("illegal call to getBitCount() on " + this);
         }
     }
 }

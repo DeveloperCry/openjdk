@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -103,6 +103,7 @@ public class SingleEntryRegistry extends RegistryImpl {
     }
 
     private final String name;
+    @SuppressWarnings("serial") // Type of field is not Serializable
     private final Remote object;
 
     private static final long serialVersionUID = -4897238949499730950L;

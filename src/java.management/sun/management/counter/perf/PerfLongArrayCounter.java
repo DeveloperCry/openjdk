@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,8 @@ import java.nio.ReadOnlyBufferException;
 public class PerfLongArrayCounter extends AbstractCounter
        implements LongArrayCounter {
 
+
+    @SuppressWarnings("serial") // Value indirectly copied as a long[] in writeReplace
     LongBuffer lb;
 
     PerfLongArrayCounter(String name, Units u, Variability v,

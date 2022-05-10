@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,6 +39,7 @@ import jdk.internal.misc.InnocuousThread;
  * @since    1.2
  */
 
+@SuppressWarnings("removal")
 class GC {
 
     private GC() { }            /* To prevent instantiation */

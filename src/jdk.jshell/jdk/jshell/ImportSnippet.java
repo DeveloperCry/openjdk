@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,7 +36,7 @@ import jdk.jshell.Key.ImportKey;
  * and thus is thread-safe.
  *
  * @since 9
- * @jls 8.3: importDeclaration.
+ * @jls 7.5 Import Declarations
  */
 public class ImportSnippet extends PersistentSnippet {
 

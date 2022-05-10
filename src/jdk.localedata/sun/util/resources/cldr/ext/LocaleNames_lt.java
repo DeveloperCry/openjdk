@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -118,6 +114,7 @@ public class LocaleNames_lt extends OpenListResourceBundle {
             { "Zsye", "jaustukai" },
             { "%%NJIVA", "Gniva / Njiva tarm\u0117" },
             { "xmf", "megrel\u0173" },
+            { "ccp", "\u010cakma" },
             { "egy", "senov\u0117s egiptie\u010di\u0173" },
             { "raj", "Rad\u017eastano" },
             { "Phag", "pagsa pa" },
@@ -278,7 +275,6 @@ public class LocaleNames_lt extends OpenListResourceBundle {
             { "pcd", "pikard\u0173" },
             { "tkl", metaValue_TK },
             { "grb", "grebo" },
-            { "root", "r\u016bt" },
             { "type.ca.indian", "nacionalinis ind\u0173 kalendorius" },
             { "rgn", "ital\u0173 kalbos Romanijos tarm\u0117" },
             { "grc", "senov\u0117s graik\u0173" },
@@ -434,7 +430,7 @@ public class LocaleNames_lt extends OpenListResourceBundle {
             { "Thai", metaValue_th },
             { "MH", "Mar\u0161alo Salos" },
             { "ale", "aleut\u0173" },
-            { "MK", "Makedonija" },
+            { "MK", "\u0160iaur\u0117s Makedonija" },
             { "ML", "Malis" },
             { "MM", "Mianmaras (Birma)" },
             { "MN", "Mongolija" },
@@ -594,7 +590,7 @@ public class LocaleNames_lt extends OpenListResourceBundle {
             { "ary", "Maroko arab\u0173" },
             { "yap", "japez\u0173" },
             { "rtm", "rotuman\u0173" },
-            { "TA", "Tristanas da Kunja" },
+            { "TA", "Tristano da Kunjos" },
             { "asa", "asu" },
             { "type.ms.ussystem", "amerikieti\u0161ka mat\u0173 sistema" },
             { "021", "\u0160iaurin\u0117 Amerika" },
@@ -682,7 +678,9 @@ public class LocaleNames_lt extends OpenListResourceBundle {
             { "type.nu.mtei", "Meetei Mayek skaitmenys" },
             { "wal", "valamo" },
             { "was", "Va\u0161o" },
+            { "XA", "pseudo A" },
             { "war", "varai" },
+            { "XB", "pseudo B" },
             { "awa", "avadhi" },
             { "061", "Polinezija" },
             { "XK", "Kosovas" },

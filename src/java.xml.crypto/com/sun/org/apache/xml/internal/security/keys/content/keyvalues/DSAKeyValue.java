@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /**
@@ -90,7 +90,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
             this.addBigIntegerElement(params.getG(), Constants._TAG_G);
             this.addBigIntegerElement(((DSAPublicKey) key).getY(), Constants._TAG_Y);
         } else {
-            Object exArgs[] = { Constants._TAG_DSAKEYVALUE, key.getClass().getName() };
+            Object[] exArgs = { Constants._TAG_DSAKEYVALUE, key.getClass().getName() };
 
             throw new IllegalArgumentException(I18n.translate("KeyValue.IllegalArgument", exArgs));
         }
@@ -115,12 +115,9 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
                     )
                 );
             KeyFactory dsaFactory = KeyFactory.getInstance("DSA");
-            PublicKey pk = dsaFactory.generatePublic(pkspec);
 
-            return pk;
-        } catch (NoSuchAlgorithmException ex) {
-            throw new XMLSecurityException(ex);
-        } catch (InvalidKeySpecException ex) {
+            return dsaFactory.generatePublic(pkspec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             throw new XMLSecurityException(ex);
         }
     }

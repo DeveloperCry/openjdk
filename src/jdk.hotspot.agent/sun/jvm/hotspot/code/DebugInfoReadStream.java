@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,7 +34,7 @@ import sun.jvm.hotspot.oops.Method;
 public class DebugInfoReadStream extends CompressedReadStream {
   private NMethod code;
   private int InvocationEntryBCI;
-  private List objectPool; // ArrayList<ObjectValue>
+  private List<ObjectValue> objectPool;
 
   public DebugInfoReadStream(NMethod code, int offset) {
     super(code.scopesDataBegin(), offset);
@@ -43,7 +43,7 @@ public class DebugInfoReadStream extends CompressedReadStream {
     this.objectPool = null;
   }
 
-  public DebugInfoReadStream(NMethod code, int offset, List objectPool) {
+  public DebugInfoReadStream(NMethod code, int offset, List<ObjectValue> objectPool) {
     super(code.scopesDataBegin(), offset);
     InvocationEntryBCI = VM.getVM().getInvocationEntryBCI();
     this.code = code;

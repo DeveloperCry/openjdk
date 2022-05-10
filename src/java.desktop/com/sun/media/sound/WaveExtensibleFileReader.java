@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -91,7 +91,7 @@ public final class WaveExtensibleFileReader extends SunFileReader {
 
         @Override
         public int hashCode() {
-            return (int) i1;
+            return Long.hashCode(i1);
         }
 
         @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,9 +33,7 @@ package javax.lang.model.element;
  */
 public interface QualifiedNameable extends Element {
     /**
-     * Returns the fully qualified name of an element.
-     *
-     * @return the fully qualified name of an element
+     * {@return the fully qualified name of an element}
      */
     Name getQualifiedName();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -85,6 +85,7 @@ public class LinkException extends NamingException {
       * @see #getLinkResolvedObj
       * @see #setLinkResolvedObj
       */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     protected Object linkResolvedObj;
 
     /**

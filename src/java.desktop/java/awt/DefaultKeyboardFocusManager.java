@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,6 +22,7 @@
  *
  *
  */
+
 package java.awt;
 
 import java.awt.event.FocusEvent;
@@ -29,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.LightweightPeer;
+import java.io.Serial;
 import java.lang.ref.WeakReference;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -49,10 +51,10 @@ import sun.util.logging.PlatformLogger;
  * Container's FocusTraversalPolicy.
  * <p>
  * Please see
- * <a href="http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html">
+ * <a href="https://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html">
  * How to Use the Focus Subsystem</a>,
  * a section in <em>The Java Tutorial</em>, and the
- * <a href="../../java/awt/doc-files/FocusSpec.html">Focus Specification</a>
+ * <a href="doc-files/FocusSpec.html">Focus Specification</a>
  * for more information.
  *
  * @author David Mendenhall
@@ -81,6 +83,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
     private static boolean fxAppThreadIsDispatchThread;
 
     static {
+        initStatic();
+    }
+
+    @SuppressWarnings("removal")
+    private static void initStatic() {
         AWTAccessor.setDefaultKeyboardFocusManagerAccessor(
             new AWTAccessor.DefaultKeyboardFocusManagerAccessor() {
                 public void consumeNextKeyTyped(DefaultKeyboardFocusManager dkfm, KeyEvent e) {
@@ -95,6 +102,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
             }
         });
     }
+
+    /**
+     * Constructs a {@code DefaultKeyboardFocusManager}.
+     */
+    public DefaultKeyboardFocusManager() {}
 
     private static class TypeAheadMarker {
         long after;
@@ -222,9 +234,10 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
     private static class DefaultKeyboardFocusManagerSentEvent
         extends SentEvent
     {
-        /*
-         * serialVersionUID
+        /**
+         * Use serialVersionUID from JDK 1.6 for interoperability.
          */
+        @Serial
         private static final long serialVersionUID = -2924743257508701758L;
 
         public DefaultKeyboardFocusManagerSentEvent(AWTEvent nested,
@@ -874,11 +887,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
         boolean stopPostProcessing = false;
         java.util.List<KeyEventPostProcessor> processors = getKeyEventPostProcessors();
         if (processors != null) {
-            for (java.util.Iterator<KeyEventPostProcessor> iter = processors.iterator();
-                 !stopPostProcessing && iter.hasNext(); )
-            {
-                stopPostProcessing = iter.next().
-                            postProcessKeyEvent(e);
+            for (KeyEventPostProcessor processor : processors) {
+                stopPostProcessing = processor.postProcessKeyEvent(e);
+                if (stopPostProcessing) {
+                    break;
+                }
             }
         }
         if (!stopPostProcessing) {
@@ -966,9 +979,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
             focusLog.finest(">>> Markers dump, time: {0}", System.currentTimeMillis());
             synchronized (this) {
                 if (typeAheadMarkers.size() != 0) {
-                    Iterator<TypeAheadMarker> iter = typeAheadMarkers.iterator();
-                    while (iter.hasNext()) {
-                        TypeAheadMarker marker = iter.next();
+                    for (TypeAheadMarker marker : typeAheadMarkers) {
                         focusLog.finest("    {0}", marker);
                     }
                 }
@@ -1067,8 +1078,8 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
      * @since 1.5
      */
     private boolean hasMarker(Component comp) {
-        for (Iterator<TypeAheadMarker> iter = typeAheadMarkers.iterator(); iter.hasNext(); ) {
-            if (iter.next().untilFocused == comp) {
+        for (TypeAheadMarker typeAheadMarker : typeAheadMarkers) {
+            if (typeAheadMarker.untilFocused == comp) {
                 return true;
             }
         }
@@ -1126,15 +1137,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
 
         java.util.List<KeyEventDispatcher> dispatchers = getKeyEventDispatchers();
         if (dispatchers != null) {
-            for (java.util.Iterator<KeyEventDispatcher> iter = dispatchers.iterator();
-                 iter.hasNext(); )
-             {
-                 if (iter.next().
-                     dispatchKeyEvent(ke))
-                 {
-                     return true;
-                 }
-             }
+            for (KeyEventDispatcher dispatcher : dispatchers) {
+                if (dispatcher.dispatchKeyEvent(ke)) {
+                    return true;
+                }
+            }
         }
         return dispatchKeyEvent(ke);
     }

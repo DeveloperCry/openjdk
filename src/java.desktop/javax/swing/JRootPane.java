@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,18 +24,13 @@
  */
 package javax.swing;
 
-import java.applet.Applet;
 import java.awt.*;
-import java.awt.event.*;
 import java.beans.*;
 import java.security.AccessController;
 import javax.accessibility.*;
 import javax.swing.plaf.RootPaneUI;
-import java.util.Vector;
 import java.io.Serializable;
-import javax.swing.border.*;
 
-import sun.awt.AWTAccessor;
 import sun.security.action.GetBooleanAction;
 
 
@@ -44,7 +39,7 @@ import sun.security.action.GetBooleanAction;
  * <code>JFrame</code>, <code>JDialog</code>, <code>JWindow</code>,
  * <code>JApplet</code>, and <code>JInternalFrame</code>.
  * For task-oriented information on functionality provided by root panes
- * see <a href="http://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html">How to Use Root Panes</a>,
+ * see <a href="https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html">How to Use Root Panes</a>,
  * a section in <em>The Java Tutorial</em>.
  *
  * <p>
@@ -71,15 +66,11 @@ import sun.security.action.GetBooleanAction;
  * a given component.
  * </blockquote>
  *
- * <table class="borderless" style="float:right">
- * <caption>Example</caption>
- * <tr>
- * <td style="text-align:center">
- * <img src="doc-files/JRootPane-2.gif"
- * alt="The following text describes this graphic." HEIGHT=386 WIDTH=349>
- * </td>
- * </tr>
- * </table>
+ * <div style="float:right;text-align:center;font-weight:bold">
+ *   <p>Example:
+ *   <p><img src="doc-files/JRootPane-2.gif"
+ *      alt="the following text describes this graphic." height=386 width=349>
+ * </div>
  * The diagram at right shows the structure of a <code>JRootPane</code>.
  * A <code>JRootpane</code> is made up of a <code>glassPane</code>,
  * an optional <code>menuBar</code>, and a <code>contentPane</code>.
@@ -182,7 +173,7 @@ import sun.security.action.GetBooleanAction;
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
- * of all JavaBeans&trade;
+ * of all JavaBeans
  * has been added to the <code>java.beans</code> package.
  * Please see {@link java.beans.XMLEncoder}.
  *
@@ -212,13 +203,19 @@ public class JRootPane extends JComponent implements Accessible {
      * Whether or not we should dump the stack when true double buffering
      * is disabled. Default is false.
      */
-    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
+    @SuppressWarnings("removal")
+    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING
+            = AccessController.doPrivileged(new GetBooleanAction(
+                                   "swing.logDoubleBufferingDisable"));
 
     /**
      * Whether or not we should ignore requests to disable true double
      * buffering. Default is false.
      */
-    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
+    @SuppressWarnings("removal")
+    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING
+            = AccessController.doPrivileged(new GetBooleanAction(
+                                   "swing.ignoreDoubleBufferingDisable"));
 
     /**
      * Constant used for the windowDecorationStyle property. Indicates that
@@ -329,15 +326,6 @@ public class JRootPane extends JComponent implements Accessible {
      * heavy weight popups (backed by a window) set this to false.
      */
     boolean useTrueDoubleBuffering = true;
-
-    static {
-        LOG_DISABLE_TRUE_DOUBLE_BUFFERING =
-            AccessController.doPrivileged(new GetBooleanAction(
-                                   "swing.logDoubleBufferingDisable"));
-        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING =
-            AccessController.doPrivileged(new GetBooleanAction(
-                                   "swing.ignoreDoubleBufferingDisable"));
-    }
 
     /**
      * Creates a <code>JRootPane</code>, setting up its
@@ -518,10 +506,10 @@ public class JRootPane extends JComponent implements Accessible {
       * @return the default <code>glassPane</code>
       */
     protected Component createGlassPane() {
-        JComponent c = new JPanel();
+        JPanel c = new JPanel();
         c.setName(this.getName()+".glassPane");
         c.setVisible(false);
-        ((JPanel)c).setOpaque(false);
+        c.setOpaque(false);
         return c;
     }
 
@@ -844,13 +832,18 @@ public class JRootPane extends JComponent implements Accessible {
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
     @SuppressWarnings("serial")
     protected class RootLayout implements LayoutManager2, Serializable
     {
+        /**
+         * Constructs a {@code RootLayout}.
+         */
+        protected RootLayout() {}
+
         /**
          * Returns the amount of space the layout would like to have.
          *
@@ -1010,12 +1003,18 @@ public class JRootPane extends JComponent implements Accessible {
      * future Swing releases. The current serialization support is
      * appropriate for short term storage or RMI between applications running
      * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
+     * of all JavaBeans
      * has been added to the <code>java.beans</code> package.
      * Please see {@link java.beans.XMLEncoder}.
      */
     @SuppressWarnings("serial")
     protected class AccessibleJRootPane extends AccessibleJComponent {
+
+        /**
+         * Constructs an {@code AccessibleJRootPane}.
+         */
+        protected AccessibleJRootPane() {}
+
         /**
          * Get the role of this object.
          *

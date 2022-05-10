@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,8 +66,9 @@ import sun.reflect.misc.ReflectUtil;
  * @since 1.5
  */
 public class Introspector {
-    final public static boolean ALLOW_NONPUBLIC_MBEAN;
+    public static final boolean ALLOW_NONPUBLIC_MBEAN;
     static {
+        @SuppressWarnings("removal")
         String val = AccessController.doPrivileged(new GetPropertyAction("jdk.jmx.mbeans.allowNonPublic"));
         ALLOW_NONPUBLIC_MBEAN = Boolean.parseBoolean(val);
     }
@@ -450,7 +451,7 @@ public class Introspector {
      * @return nothing - this method always throw an exception.
      *         The return type makes it possible to write
      *         <pre> throw throwException(clazz,cause); </pre>
-     * @throws SecurityException - if cause is a SecurityException
+     * @throws SecurityException   if cause is a SecurityException
      * @throws NotCompliantMBeanException otherwise.
      **/
     static NotCompliantMBeanException throwException(Class<?> notCompliant,

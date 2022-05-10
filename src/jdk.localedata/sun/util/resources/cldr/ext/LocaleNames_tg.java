@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -142,7 +138,7 @@ public class LocaleNames_tg extends OpenListResourceBundle {
             { "FK", "\u04b6\u0430\u0437\u0438\u0440\u0430\u04b3\u043e\u0438 \u0424\u043e\u043b\u043a\u043b\u0435\u043d\u0434" },
             { "FM", "\u0428\u0442\u0430\u0442\u04b3\u043e\u0438 \u0424\u0435\u0434\u0435\u0440\u0430\u0442\u0438\u0432\u0438\u0438 \u041c\u0438\u043a\u0440\u043e\u043d\u0435\u0437\u0438\u044f" },
             { "FO", "\u04b6\u0430\u0437\u0438\u0440\u0430\u04b3\u043e\u0438 \u0424\u0430\u0440\u0435\u0440" },
-            { "FR", "\u0424\u0440\u0430\u043d\u0441\u0438\u044f" },
+            { "FR", "\u0424\u0430\u0440\u043e\u043d\u0441\u0430" },
             { "GA", "\u0413\u0430\u0431\u043e\u043d" },
             { "GB", "\u0428\u043e\u04b3\u0438\u0433\u0430\u0440\u0438\u0438 \u041c\u0443\u0442\u0442\u0430\u04b3\u0438\u0434\u0430" },
             { "GD", "\u0413\u0440\u0435\u043d\u0430\u0434\u0430" },
@@ -210,7 +206,7 @@ public class LocaleNames_tg extends OpenListResourceBundle {
             { "MF", "\u04b6\u0430\u0437\u0438\u0440\u0430\u0438 \u0421\u0435\u043d\u0442-\u041c\u0430\u0440\u0442\u0438\u043d" },
             { "MG", "\u041c\u0430\u0434\u0430\u0433\u0430\u0441\u043a\u0430\u0440" },
             { "MH", "\u04b6\u0430\u0437\u0438\u0440\u0430\u04b3\u043e\u0438 \u041c\u0430\u0440\u0448\u0430\u043b\u043b" },
-            { "MK", "\u041c\u0430\u049b\u0434\u0443\u043d" },
+            { "MK", "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0438\u044f\u0438 \u0428\u0438\u043c\u043e\u043b\u04e3" },
             { "ML", "\u041c\u0430\u043b\u0438" },
             { "MM", "\u041c\u044f\u043d\u043c\u0430" },
             { "MN", "\u041c\u0443\u0493\u0443\u043b\u0438\u0441\u0442\u043e\u043d" },
@@ -464,7 +460,7 @@ public class LocaleNames_tg extends OpenListResourceBundle {
             { "smn", "\u0438\u043d\u0430\u0440\u0438 \u0441\u0430\u043c\u04e3" },
             { "sms", "\u0441\u043a\u043e\u043b\u0442\u0438 \u0441\u0430\u043c\u04e3" },
             { "syr", "\u0441\u0443\u0440\u0438\u0451\u043d\u04e3" },
-            { "tzm", "\u0442\u0430\u043c\u0430\u0437\u0430\u0439\u0442\u0438 \u0430\u0442\u043b\u0430\u0441\u0438 \u043c\u0430\u0440\u043a\u0430\u0437\u04e3" },
+            { "tzm", "\u0442\u0430\u043c\u0430\u0437\u0430\u0439\u0442\u0438 \u0410\u0442\u043b\u0430\u0441\u0438 \u041c\u0430\u0440\u043a\u0430\u0437\u04e3" },
             { "und", "\u0437\u0430\u0431\u043e\u043d\u0438 \u043d\u043e\u043c\u0430\u044a\u043b\u0443\u043c" },
             { "Arab", "\u0410\u0440\u0430\u0431\u04e3" },
             { "Cyrl", "\u041a\u0438\u0440\u0438\u043b\u043b\u04e3" },
@@ -473,7 +469,19 @@ public class LocaleNames_tg extends OpenListResourceBundle {
             { "Latn", "\u041b\u043e\u0442\u0438\u043d\u04e3" },
             { "Zxxx", "\u041d\u043e\u043d\u0430\u0432\u0438\u0448\u0442\u0430" },
             { "Zzzz", "\u0421\u043a\u0440\u0438\u043f\u0442\u0438 \u043d\u043e\u043c\u0430\u044a\u043b\u0443\u043c" },
-            { "es_419", "\u0438\u0441\u043f\u0430\u043d\u04e3 (\u0410\u043c\u0435\u0440\u0438\u043a\u0430\u0438 \u041b\u043e\u0442\u0438\u043d\u04e3)" },
+            { "de_AT", "\u043d\u0435\u043c\u0438\u0441\u0438\u0438 \u0430\u0432\u0441\u0442\u0440\u0438\u044f\u0433\u04e3" },
+            { "de_CH", "\u043d\u0435\u043c\u0438\u0441\u0438\u0438 \u0448\u0432\u0435\u0439\u0441\u0430\u0440\u0438\u0438 \u0431\u043e\u043b\u043e\u04e3" },
+            { "en_AU", "\u0430\u043d\u0433\u043b\u0438\u0441\u0438\u0438 \u0430\u0432\u0441\u0442\u0440\u0430\u043b\u0438\u044f\u0433\u04e3" },
+            { "en_CA", "\u0430\u043d\u0433\u043b\u0438\u0441\u0438\u0438 \u043a\u0430\u043d\u0430\u0434\u0430\u0433\u04e3" },
+            { "en_GB", "\u0430\u043d\u0433\u043b\u0438\u0441\u0438\u0438 \u0431\u0440\u0438\u0442\u0430\u043d\u04e3" },
+            { "en_US", "\u0430\u043d\u0433\u043b\u0438\u0441\u0438\u0438 \u0430\u043c\u0435\u0440\u0438\u043a\u043e\u04e3" },
+            { "es_ES", "\u0438\u0441\u043f\u0430\u043d\u0438\u0438 \u0430\u0432\u0440\u0443\u043f\u043e\u04e3" },
+            { "es_MX", "\u0438\u0441\u043f\u0430\u043d\u0438\u0438 \u043c\u0435\u043a\u0441\u0438\u043a\u043e\u04e3" },
+            { "fr_CA", "\u0444\u0440\u0430\u043d\u0441\u0443\u0437\u0438\u0438 \u043a\u0430\u043d\u0430\u0434\u0430\u0433\u04e3" },
+            { "fr_CH", "\u0444\u0440\u0430\u043d\u0441\u0443\u0437\u0438\u0438 \u0448\u0432\u0435\u0439\u0441\u0430\u0440\u04e3" },
+            { "pt_BR", "\u043f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u0438\u0438 \u0431\u0440\u0430\u0437\u0438\u043b\u0438\u044f\u0433\u04e3" },
+            { "pt_PT", "\u043f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u0438\u0438 \u0430\u0432\u0440\u0443\u043f\u043e\u04e3" },
+            { "es_419", "\u0438\u0441\u043f\u0430\u043d\u0438\u0438 \u0430\u043c\u0435\u0440\u0438\u043a\u043e\u0438\u0438 \u043b\u043e\u0442\u0438\u043d\u04e3" },
             { "zh_Hans", "\u0445\u0438\u0442\u043e\u0438\u0438 \u043e\u0441\u043e\u043d\u0444\u0430\u04b3\u043c" },
             { "zh_Hant", "\u0445\u0438\u0442\u043e\u0438\u0438 \u0430\u043d\u044a\u0430\u043d\u0430\u0432\u04e3" },
             { "type.nu.arab", "\u0420\u0430\u049b\u0430\u043c\u04b3\u043e\u0438 \u04b3\u0438\u043d\u0434\u0443-\u0430\u0440\u0430\u0431\u04e3" },

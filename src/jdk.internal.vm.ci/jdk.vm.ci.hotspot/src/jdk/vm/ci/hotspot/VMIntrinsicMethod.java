@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,6 +54,7 @@ public final class VMIntrinsicMethod {
      */
     public final int id;
 
+    @VMEntryPoint
     VMIntrinsicMethod(String declaringClass, String name, String descriptor, int id) {
         this.declaringClass = declaringClass;
         this.name = name;

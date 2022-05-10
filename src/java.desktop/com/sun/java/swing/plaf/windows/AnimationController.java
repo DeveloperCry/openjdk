@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -59,7 +59,7 @@ import sun.awt.AppContext;
  *   <li> It tracks the animation state for every UI component involved in the
  *        animation and paints {@code Skin} in new {@code State} over the
  *        {@code Skin} in last {@code State} using
- *        {@code AlphaComposite.SrcOver.derive(alpha)} where {code alpha}
+ *        {@code AlphaComposite.SrcOver.derive(alpha)} where {@code alpha}
  *        depends on the state of animation
  * </ul>
  *
@@ -67,6 +67,7 @@ import sun.awt.AppContext;
  */
 class AnimationController implements ActionListener, PropertyChangeListener {
 
+    @SuppressWarnings("removal")
     private static final boolean VISTA_ANIMATION_DISABLED =
         AccessController.doPrivileged(new GetBooleanAction("swing.disablevistaanimation"));
 

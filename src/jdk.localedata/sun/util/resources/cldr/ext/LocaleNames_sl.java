@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -143,7 +139,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "CA", "Kanada" },
             { "CC", "Kokosovi otoki" },
             { "CD", "Demokrati\u010dna republika Kongo" },
-            { "CF", "Centralnoafri\u0161ka republika" },
+            { "CF", "Srednjeafri\u0161ka republika" },
             { "CG", "Kongo - Brazzaville" },
             { "CH", "\u0160vica" },
             { "CI", "Slonoko\u0161\u010dena obala" },
@@ -202,7 +198,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "GU", "Guam" },
             { "GW", "Gvineja Bissau" },
             { "GY", "Gvajana" },
-            { "HK", "Posebno administrativno obmo\u010dje LR Kitajske Hongkong" },
+            { "HK", "Posebno upravno obmo\u010dje Ljudske republike Kitajske Hongkong" },
             { "HM", "Heardov otok in McDonaldovi otoki" },
             { "HN", "Honduras" },
             { "HR", "Hrva\u0161ka" },
@@ -252,11 +248,11 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "MF", "Saint Martin" },
             { "MG", "Madagaskar" },
             { "MH", "Marshallovi otoki" },
-            { "MK", "Makedonija" },
+            { "MK", "Severna Makedonija" },
             { "ML", "Mali" },
             { "MM", "Mjanmar (Burma)" },
             { "MN", "Mongolija" },
-            { "MO", "Posebno administrativno obmo\u010dje LR Kitajske Macao" },
+            { "MO", "Posebno upravno obmo\u010dje Ljudske republike Kitajske Macao" },
             { "MP", "Severni Marianski otoki" },
             { "MQ", "Martinik" },
             { "MR", "Mavretanija" },
@@ -322,7 +318,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "SV", "Salvador" },
             { "SX", "Sint Maarten" },
             { "SY", "Sirija" },
-            { "SZ", "Svazi" },
+            { "SZ", "Esvatini" },
             { "TA", "Tristan da Cunha" },
             { "TC", "Otoki Turks in Caicos" },
             { "TD", "\u010cad" },
@@ -356,6 +352,8 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "VU", "Vanuatu" },
             { "WF", "Wallis in Futuna" },
             { "WS", "Samoa" },
+            { "XA", "psevdonaglasi" },
+            { "XB", "psevdobidi" },
             { "XK", "Kosovo" },
             { "YE", "Jemen" },
             { "YT", "Mayotte" },
@@ -419,7 +417,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "gv", "man\u0161\u010dina" },
             { "ha", "hav\u0161\u010dina" },
             { "he", "hebrej\u0161\u010dina" },
-            { "hi", "hinduj\u0161\u010dina" },
+            { "hi", "hindij\u0161\u010dina" },
             { "ho", "hiri motu" },
             { "hr", "hrva\u0161\u010dina" },
             { "ht", "haitijska kreol\u0161\u010dina" },
@@ -462,7 +460,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "lt", "litov\u0161\u010dina" },
             { "lu", "luba-katanga" },
             { "lv", "latvij\u0161\u010dina" },
-            { "mg", "malaga\u0161\u010dina" },
+            { "mg", "malga\u0161\u010dina" },
             { "mh", "marshallov\u0161\u010dina" },
             { "mi", "maor\u0161\u010dina" },
             { "mk", "makedon\u0161\u010dina" },
@@ -538,7 +536,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "uz", "uzbe\u0161\u010dina" },
             { "ve", "venda" },
             { "vi", "vietnam\u0161\u010dina" },
-            { "vo", "volapuk" },
+            { "vo", "volapik" },
             { "wa", "valon\u0161\u010dina" },
             { "wo", "volof\u0161\u010dina" },
             { "xh", "ko\u0161\u010dina" },
@@ -583,6 +581,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "byn", "blin\u0161\u010dina" },
             { "cad", "kado\u0161\u010dina" },
             { "car", "karibski jezik" },
+            { "ccp", "chakma" },
             { "ceb", "sebuan\u0161\u010dina" },
             { "cgg", "\u010digaj\u0161\u010dina" },
             { "chb", "\u010dib\u010dev\u0161\u010dina" },
@@ -795,7 +794,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "sma", "ju\u017ena samij\u0161\u010dina" },
             { "smj", "lule\u0161ka samij\u0161\u010dina" },
             { "smn", "inarska samij\u0161\u010dina" },
-            { "sms", "samij\u0161\u010dina Skolt" },
+            { "sms", "skoltska samij\u0161\u010dina" },
             { "snk", "soninke" },
             { "srn", "surinamska kreol\u0161\u010dina" },
             { "srr", "serer\u0161\u010dina" },
@@ -823,7 +822,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "tvl", "tuvaluj\u0161\u010dina" },
             { "twq", "tasawaq" },
             { "tyv", "tuvin\u0161\u010dina" },
-            { "tzm", "tama\u0161ek (srednji atlas)" },
+            { "tzm", "tama\u0161ek (Srednji Atlas)" },
             { "udm", "udmurt\u0161\u010dina" },
             { "uga", "ugaritski jezik" },
             { "umb", "umbund\u0161\u010dina" },
@@ -864,7 +863,6 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "Bugi", "buginski" },
             { "Buhd", "buhidski" },
             { "Cans", "poenotena zlogovna pisava kanadskih staroselcev" },
-            { "Cham", "Cham" },
             { "Cher", "\u010deroke\u0161ki" },
             { "Cirt", "kirt" },
             { "Copt", "koptski" },
@@ -884,12 +882,12 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "Grek", "gr\u0161ki" },
             { "Gujr", "gud\u017earatski" },
             { "Guru", "gurmuki" },
-            { "Hanb", "Han + Bopomofo" },
+            { "Hanb", "han + bopomofo" },
             { "Hang", "hangul" },
             { "Hani", "kanji" },
             { "Hano", "hanunski" },
-            { "Hans", "poenostavljena pisava han" },
-            { "Hant", "tradicionalna pisava han" },
+            { "Hans", "poenostavljena pisava" },
+            { "Hant", "tradicionalna pisava" },
             { "Hebr", "hebrejski" },
             { "Hira", "hiragana" },
             { "Hmng", "pahavhmonska zlogovna pisava" },
@@ -897,7 +895,7 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "Hung", "staroogrski" },
             { "Inds", "indu\u0161ki" },
             { "Ital", "staroitalski" },
-            { "Jamo", "Jamo" },
+            { "Jamo", "jamo" },
             { "Java", "javanski" },
             { "Jpan", "japonski" },
             { "Kali", "karenski" },
@@ -973,20 +971,22 @@ public class LocaleNames_sl extends OpenListResourceBundle {
             { "Zxxx", "nenapisano" },
             { "Zyyy", "splo\u0161no" },
             { "Zzzz", "neznan ali neveljaven zapis" },
-            { "root", "root\u0161\u010dina" },
             { "de_AT", "avstrijska nem\u0161\u010dina" },
             { "de_CH", "visoka nem\u0161\u010dina (\u0160vica)" },
             { "en_AU", "avstralska angle\u0161\u010dina" },
             { "en_CA", "kanadska angle\u0161\u010dina" },
-            { "en_GB", "angle\u0161\u010dina (VB)" },
-            { "en_US", "angle\u0161\u010dina (ZDA)" },
+            { "en_GB", "britanska angle\u0161\u010dina" },
+            { "en_US", "ameri\u0161ka angle\u0161\u010dina" },
             { "es_ES", "evropska \u0161pan\u0161\u010dina" },
+            { "es_MX", "mehi\u0161ka \u0161pan\u0161\u010dina" },
+            { "fa_AF", "darij\u0161\u010dina" },
             { "fr_CA", "kanadska franco\u0161\u010dina" },
             { "fr_CH", "\u0161vicarska franco\u0161\u010dina" },
             { "nl_BE", "flam\u0161\u010dina" },
             { "pt_BR", "brazilska portugal\u0161\u010dina" },
             { "pt_PT", "evropska portugal\u0161\u010dina" },
             { "ro_MD", "moldav\u0161\u010dina" },
+            { "sw_CD", "kongo\u0161ki svahili" },
             { "%%1901", "tradicionalni nem\u0161ki pravopis" },
             { "%%1994", "standardizirani rezijanski pravopis (1994)" },
             { "%%1996", "novi nem\u0161ki pravopis (1996)" },

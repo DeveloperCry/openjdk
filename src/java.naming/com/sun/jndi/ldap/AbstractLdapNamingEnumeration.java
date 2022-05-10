@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -312,7 +312,8 @@ abstract class AbstractLdapNamingEnumeration<T extends NameClassPair>
 
         if ((refEx != null) &&
             (refEx.hasMoreReferrals() ||
-             refEx.hasMoreReferralExceptions())) {
+             refEx.hasMoreReferralExceptions()
+                && !(errEx instanceof LimitExceededException))) {
 
             if (homeCtx.handleReferrals == LdapClient.LDAP_REF_THROW) {
                 throw (NamingException)(refEx.fillInStackTrace());
@@ -382,7 +383,7 @@ abstract class AbstractLdapNamingEnumeration<T extends NameClassPair>
         listArg = ne.listArg;
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     protected final void finalize() {
         cleanup();
     }

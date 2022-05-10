@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -61,4 +61,11 @@ public interface ExecutableImage {
      * @param args Additional arguments
      */
     public void storeLaunchArgs(List<String> args);
+
+    /**
+     * The Platform of the image.
+     *
+     * @return Platform
+     */
+    public Platform getTargetPlatform();
 }

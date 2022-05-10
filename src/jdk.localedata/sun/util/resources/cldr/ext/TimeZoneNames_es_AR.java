@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -78,117 +74,28 @@ public class TimeZoneNames_es_AR extends TimeZoneNamesBundle {
                "hora de Argentina",
                "ART",
             };
-        final String[] Argentina_Western = new String[] {
-               "hora est\u00e1ndar de Argentina occidental",
-               "WART",
-               "hora de verano de Argentina occidental",
-               "WARST",
-               "hora de Argentina occidental",
-               "WART",
+        final String[] EMPTY_ZONE = new String[] {
+               "",
+               "",
+               "",
+               "",
+               "",
+               "",
             };
         final Object[][] data = new Object[][] {
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Argentina/San_Juan", Argentina },
-            { "America/Argentina/Tucuman", Argentina },
-            { "America/Cordoba", Argentina },
-            { "America/Argentina/Ushuaia", Argentina },
-            { "America/Mendoza", Argentina },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Argentina/Rio_Gallegos", Argentina },
+            { "UTC", EMPTY_ZONE },
             { "America/Jujuy", Argentina },
+            { "America/Cordoba", Argentina },
+            { "America/Mendoza", Argentina },
             { "America/Catamarca", Argentina },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Argentina/La_Rioja", Argentina },
-            { "America/Argentina/Salta", Argentina },
-            { "America/Argentina/San_Luis", Argentina_Western },
             { "America/Buenos_Aires", Argentina },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
+            { "America/Argentina/Salta", Argentina },
+            { "America/Argentina/Tucuman", Argentina },
+            { "America/Argentina/Ushuaia", Argentina },
+            { "America/Argentina/La_Rioja", Argentina },
+            { "America/Argentina/San_Juan", Argentina },
+            { "America/Argentina/San_Luis", Argentina },
+            { "America/Argentina/Rio_Gallegos", Argentina },
         };
         return data;
     }

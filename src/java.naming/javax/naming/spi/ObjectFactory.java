@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -163,7 +163,7 @@ public interface ObjectFactory {
  * @param environment The possibly null environment that is used in
  *              creating the object.
  * @return The object created; null if an object cannot be created.
- * @exception Exception if this object factory encountered an exception
+ * @throws Exception if this object factory encountered an exception
  * while attempting to create an object, and no other object factories are
  * to be tried.
  *

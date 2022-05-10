@@ -25,6 +25,7 @@ public final class jmod extends ListResourceBundle {
             { "err.module.descriptor.not.found", "Module descriptor not found" },
             { "err.module.resolution.fail", "Resolution failed: {0}" },
             { "err.modulepath.must.be.specified", "--module-path must be specified when hashing modules" },
+            { "err.no.moduleToHash", "No hashes recorded: no module matching {0} found to record hashes" },
             { "err.output.must.be.specified", "--output must be specified" },
             { "err.path.not.a.dir", "path must be a directory: {0}" },
             { "err.path.not.found", "path not found: {0}" },

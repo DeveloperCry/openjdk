@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,25 +49,46 @@ public enum Target {
     JDK1_4("1.4", 48, 0),
 
     /** JDK 5, codename Tiger. */
-    JDK1_5("1.5", 49, 0),
+    JDK1_5("5", 49, 0),
 
     /** JDK 6. */
-    JDK1_6("1.6", 50, 0),
+    JDK1_6("6", 50, 0),
 
     /** JDK 7. */
-    JDK1_7("1.7", 51, 0),
+    JDK1_7("7", 51, 0),
 
     /** JDK 8. */
-    JDK1_8("1.8", 52, 0),
+    JDK1_8("8", 52, 0),
 
     /** JDK 9. */
-    JDK1_9("1.9", 53, 0),
+    JDK1_9("9", 53, 0),
 
     /** JDK 10. */
-    JDK1_10("1.10", 54, 0),
+    JDK1_10("10", 54, 0),
 
     /** JDK 11. */
-    JDK1_11("11", 55, 0);
+    JDK1_11("11", 55, 0),
+
+    /** JDK 12. */
+    JDK1_12("12", 56, 0),
+
+    /** JDK 13. */
+    JDK1_13("13", 57, 0),
+
+    /** JDK 14. */
+    JDK1_14("14", 58, 0),
+
+    /** JDK 15. */
+    JDK1_15("15", 59, 0),
+
+    /** JDK 16. */
+    JDK1_16("16", 60, 0),
+
+    /** JDK 17. */
+    JDK1_17("17", 61, 0),
+
+    /** JDK 18. */
+    JDK1_18("18", 62, 0);
 
     private static final Context.Key<Target> targetKey = new Context.Key<>();
 
@@ -83,7 +104,7 @@ public enum Target {
         return instance;
     }
 
-    public static final Target MIN = Target.JDK1_6;
+    public static final Target MIN = Target.JDK1_7;
 
     private static final Target MAX = values()[values().length - 1];
 
@@ -92,13 +113,12 @@ public enum Target {
         for (Target t : values()) {
             tab.put(t.name, t);
         }
-        tab.put("5", JDK1_5);
-        tab.put("6", JDK1_6);
-        tab.put("7", JDK1_7);
-        tab.put("8", JDK1_8);
-        tab.put("9", JDK1_9);
-        tab.put("10", JDK1_10);
-        tab.put("11", JDK1_11);
+        tab.put("1.5", JDK1_5);
+        tab.put("1.6", JDK1_6);
+        tab.put("1.7", JDK1_7);
+        tab.put("1.8", JDK1_8);
+        tab.put("1.9", JDK1_9);
+        tab.put("1.10", JDK1_10);
     }
 
     public final String name;
@@ -116,6 +136,10 @@ public enum Target {
         return tab.get(name);
     }
 
+    public boolean isSupported() {
+        return this.compareTo(MIN) >= 0;
+    }
+
     /** Return the character to be used in constructing synthetic
      *  identifiers, where not specified by the JLS.
      */
@@ -123,30 +147,10 @@ public enum Target {
         return '$';
     }
 
-    /** Does the VM support an invokedynamic instruction?
-     */
-    public boolean hasInvokedynamic() {
-        return compareTo(JDK1_7) >= 0;
-    }
-
-    /** Does the target JDK contains the java.util.Objects class?
-     */
-    public boolean hasObjects() {
-        return compareTo(JDK1_7) >= 0;
-    }
-
     /** Does the target VM expect MethodParameters attributes?
      */
     public boolean hasMethodParameters() {
         return compareTo(JDK1_8) >= 0;
-    }
-
-    /** Does the VM support polymorphic method handle invocation?
-     *  Affects the linkage information output to the classfile.
-     *  An alias for {@code hasInvokedynamic}, since all the JSR 292 features appear together.
-     */
-    public boolean hasMethodHandles() {
-        return hasInvokedynamic();
     }
 
     /** Does the target JDK contain StringConcatFactory class?
@@ -174,10 +178,36 @@ public enum Target {
         return compareTo(JDK1_11) >= 0;
     }
 
+    /** language runtime uses nest-based access.
+     *  e.g. lambda and string concat spin dynamic proxy class as a nestmate
+     *  of the target class
+     */
+    public boolean runtimeUseNestAccess() {
+        return compareTo(JDK1_15) >= 0;
+    }
+
     /** Does the target VM support virtual private invocations?
      */
     public boolean hasVirtualPrivateInvoke() {
         return compareTo(JDK1_11) >= 0;
     }
 
+    /** Does the target VM support sealed types
+     */
+    public boolean hasSealedClasses() {
+        return compareTo(JDK1_15) >= 0;
+    }
+
+    /** Is the ACC_STRICT bit redundant and obsolete
+     */
+    public boolean obsoleteAccStrict() {
+        return compareTo(JDK1_17) >= 0;
+    }
+
+    /** Omit unused enclosing instance fields from inner classes that don't access enclosing
+     * instance state.
+     */
+    public boolean optimizeOuterThis() {
+        return compareTo(JDK1_18) >= 0;
+    }
 }

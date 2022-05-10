@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -87,6 +83,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
         final String metaValue_ml = "malaiala";
         final String metaValue_mn = "mongol";
         final String metaValue_my = "birman\u00eas";
+        final String metaValue_or = "ori\u00e1";
         final String metaValue_si = "cingal\u00eas";
         final String metaValue_su = "sundan\u00eas";
         final String metaValue_ta = "t\u00e2mil";
@@ -96,7 +93,6 @@ public class LocaleNames_pt extends OpenListResourceBundle {
         final String metaValue_ban = "balin\u00eas";
         final String metaValue_bax = "bamum";
         final String metaValue_bug = "bugin\u00eas";
-        final String metaValue_chr = "cherokee";
         final String metaValue_got = "g\u00f3tico";
         final String metaValue_nqo = "n\u2019ko";
         final String metaValue_phn = "fen\u00edcio";
@@ -104,7 +100,6 @@ public class LocaleNames_pt extends OpenListResourceBundle {
         final String metaValue_syr = "sir\u00edaco";
         final String metaValue_uga = "ugar\u00edtico";
         final String metaValue_vai = "vai";
-        final String metaValue_type_d0_fwidth = "Extens\u00e3o total";
         final Object[][] data = new Object[][] {
             { "ksh", "k\u00f6lsch" },
             { "Ogam", "og\u00e2mico" },
@@ -115,6 +110,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Tagb", "tagbanwa" },
             { "Zsye", "Emoji" },
             { "%%NJIVA", "dialeto gniva/njiva" },
+            { "ccp", "chakma" },
             { "egy", "eg\u00edpcio arcaico" },
             { "raj", "rajastani" },
             { "Phag", "phags-pa" },
@@ -131,7 +127,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "AF", "Afeganist\u00e3o" },
             { "AG", "Ant\u00edgua e Barbuda" },
             { "type.ca.ethiopic", "Calend\u00e1rio Et\u00edope" },
-            { "AI", "Anguilla" },
+            { "AI", "Anguila" },
             { "key.tz", "Fuso hor\u00e1rio" },
             { "AL", "Alb\u00e2nia" },
             { "AM", "Arm\u00eania" },
@@ -157,7 +153,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "gmh", "alto alem\u00e3o m\u00e9dio" },
             { "BF", "Burquina Faso" },
             { "BG", "Bulg\u00e1ria" },
-            { "BH", "Bahrein" },
+            { "BH", "Barein" },
             { "BI", "Burundi" },
             { "BJ", "Benin" },
             { "BL", "S\u00e3o Bartolomeu" },
@@ -183,7 +179,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "mzn", "mazandarani" },
             { "CD", "Congo - Kinshasa" },
             { "CF", "Rep\u00fablica Centro-Africana" },
-            { "CG", "Congo - Brazzaville" },
+            { "CG", "Rep\u00fablica do Congo" },
             { "CH", "Su\u00ed\u00e7a" },
             { "CI", "Costa do Marfim" },
             { "CK", "Ilhas Cook" },
@@ -222,10 +218,10 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "zun", "zunhi" },
             { "tig", "tigr\u00e9" },
             { "DZ", "Arg\u00e9lia" },
-            { "type.d0.hwidth", metaValue_type_d0_fwidth },
             { "pag", "pangasin\u00e3" },
+            { "type.d0.hwidth", "Meia largura" },
             { "pal", "p\u00e1lavi" },
-            { "EA", "Ceuta e Melilha" },
+            { "EA", "Ceuta e Melilla" },
             { "chb", "chibcha" },
             { "pam", "pampanga" },
             { "EC", "Equador" },
@@ -242,7 +238,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "chm", "mari" },
             { "chp", "chipewyan" },
             { "cho", "choctaw" },
-            { "chr", metaValue_chr },
+            { "chr", "cheroqui" },
             { "ER", "Eritreia" },
             { "ES", "Espanha" },
             { "ET", "Eti\u00f3pia" },
@@ -259,12 +255,11 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "FK", "Ilhas Malvinas" },
             { "FM", "Micron\u00e9sia" },
             { "key.va", "Variante de localidade" },
-            { "FO", "Ilhas Faroe" },
+            { "FO", "Ilhas Faro\u00e9" },
             { "Taml", metaValue_ta },
             { "FR", "Fran\u00e7a" },
             { "tkl", "toquelauano" },
             { "grb", "grebo" },
-            { "root", "raiz" },
             { "type.ca.indian", "Calend\u00e1rio Nacional Indiano" },
             { "grc", "grego arcaico" },
             { "GA", "Gab\u00e3o" },
@@ -396,7 +391,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "MH", "Ilhas Marshall" },
             { "ale", "ale\u00fate" },
             { "type.nu.vaii", "D\u00edgitos vai" },
-            { "MK", "Maced\u00f4nia" },
+            { "MK", "Maced\u00f4nia do Norte" },
             { "ML", "Mali" },
             { "MM", "Mianmar (Birm\u00e2nia)" },
             { "MN", "Mong\u00f3lia" },
@@ -407,9 +402,9 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "MR", "Maurit\u00e2nia" },
             { "MS", "Montserrat" },
             { "MT", "Malta" },
-            { "type.m0.ungegn", "UNGEGN" },
+            { "type.m0.ungegn", "Translitera\u00e7\u00e3o UN GEGN" },
             { "MU", "Maur\u00edcio" },
-            { "alt", "altai do sul" },
+            { "alt", "altai meridional" },
             { "MV", "Maldivas" },
             { "MW", "Malaui" },
             { "MX", "M\u00e9xico" },
@@ -418,6 +413,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "MZ", "Mo\u00e7ambique" },
             { "Phli", "phli" },
             { "NA", "Nam\u00edbia" },
+            { "202", "\u00c1frica Subsaariana" },
             { "type.ca.hebrew", "Calend\u00e1rio Hebraico" },
             { "type.co.dictionary", "Ordem do dicion\u00e1rio" },
             { "NC", "Nova Caled\u00f4nia" },
@@ -430,7 +426,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Phlp", "phlp" },
             { "NI", "Nicar\u00e1gua" },
             { "Hmng", "pahawh hmong" },
-            { "NL", "Holanda" },
+            { "NL", "Pa\u00edses Baixos" },
             { "NO", "Noruega" },
             { "NP", "Nepal" },
             { "NR", "Nauru" },
@@ -528,20 +524,21 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "SS", "Sud\u00e3o do Sul" },
             { "ST", "S\u00e3o Tom\u00e9 e Pr\u00edncipe" },
             { "SV", "El Salvador" },
-            { "ars", "\u00e1rabe - N\u00e9gede" },
+            { "ars", "\u00e1rabe n\u00e9gede" },
             { "SX", "Sint Maarten" },
             { "SY", "S\u00edria" },
             { "yao", "yao" },
-            { "SZ", "Suazil\u00e2ndia" },
+            { "SZ", "Essuat\u00edni" },
             { "arw", "arauaqui" },
             { "yap", "yapese" },
             { "TA", "Trist\u00e3o da Cunha" },
             { "asa", "asu" },
             { "type.ms.ussystem", "Sistema de medi\u00e7\u00e3o americano" },
             { "021", "Am\u00e9rica Setentrional" },
-            { "TC", "Ilhas Turks e Caicos" },
+            { "TC", "Ilhas Turcas e Caicos" },
             { "yav", "yangben" },
             { "TD", "Chade" },
+            { "Qaag", "zawgyi" },
             { "TF", "Territ\u00f3rios Franceses do Sul" },
             { "TG", "Togo" },
             { "TH", "Tail\u00e2ndia" },
@@ -586,7 +583,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "UY", "Uruguai" },
             { "prg", "prussiano" },
             { "UZ", "Uzbequist\u00e3o" },
-            { "tzm", "tamazirte do Atlas Central" },
+            { "tzm", "tamazight do Atlas Central" },
             { "type.co.stroke", "Ordem dos Tra\u00e7os" },
             { "nnh", "ngiemboon" },
             { "VA", "Cidade do Vaticano" },
@@ -615,7 +612,9 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "WS", "Samoa" },
             { "wal", "wolaytta" },
             { "was", "washo" },
+            { "XA", "Pseudossotaques" },
             { "war", "waray" },
+            { "XB", "Pseudobidirecional" },
             { "awa", "awadhi" },
             { "061", "Polin\u00e9sia" },
             { "XK", "Kosovo" },
@@ -653,7 +652,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "jmc", "machame" },
             { "type.nu.hansfin", "Algarismos financeiros chineses simplificados" },
             { "hil", "hiligaynon" },
-            { "type.nu.arabext", "Algarismos indo-ar\u00e1bicos por extenso" },
+            { "type.nu.arabext", "Algarismos indo-ar\u00e1bicos estendidos" },
             { "nus", "nuer" },
             { "dak", "dacota" },
             { "type.nu.fullwide", "Algarismos em extens\u00e3o total" },
@@ -683,7 +682,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Guru", "gurmuqui" },
             { "lua", "luba-lulua" },
             { "%%BISCAYAN", "biscainho" },
-            { "type.d0.fwidth", metaValue_type_d0_fwidth },
+            { "type.d0.fwidth", "Largura inteira" },
             { "sbp", "sangu" },
             { "lui", "luiseno" },
             { "nyn", "nyankole" },
@@ -709,6 +708,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "scn", "siciliano" },
             { "aa", "afar" },
             { "ab", "abc\u00e1zio" },
+            { "Aran", "nastaliq" },
             { "ae", metaValue_ae },
             { "af", "afric\u00e2ner" },
             { "ak", "akan" },
@@ -751,7 +751,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "ch", "chamorro" },
             { "%%REVISED", "ortografia revisada" },
             { "co", "corso" },
-            { "Orya", "oriya" },
+            { "Orya", metaValue_or },
             { "cr", "cree" },
             { "cs", "tcheco" },
             { "cu", "eslavo eclesi\u00e1stico" },
@@ -775,7 +775,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Lisu", "lisu" },
             { "dje", "zarma" },
             { "type.nu.grek", "Algarismos gregos" },
-            { "ee", "eve" },
+            { "ee", "ewe" },
             { "bfd", "bafut" },
             { "type.lb.normal", "Quebra de linha com estilo normal" },
             { "ro_MD", "mold\u00e1vio" },
@@ -809,7 +809,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "bgn", "bal\u00fachi ocidental" },
             { "yue", "canton\u00eas" },
             { "fo", "fero\u00eas" },
-            { "type.m0.bgn", "BGN" },
+            { "type.m0.bgn", "Translitera\u00e7\u00e3o BGN EUA" },
             { "umb", "umbundu" },
             { "fr", "franc\u00eas" },
             { "sid", "sidamo" },
@@ -860,7 +860,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Sara", "sarati" },
             { "doi", "dogri" },
             { "bkm", "kom" },
-            { "sma", "sami do sul" },
+            { "sma", "sami meridional" },
             { "jv", metaValue_jv },
             { "Shaw", "shaviano" },
             { "mad", "madur\u00eas" },
@@ -868,7 +868,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "mag", "magahi" },
             { "maf", "mafa" },
             { "mai", "maithili" },
-            { "smn", "sami de Inari" },
+            { "smn", "lap\u00e3o de Inari" },
             { "ka", metaValue_ka },
             { "bla", "siksika" },
             { "mak", "makasar" },
@@ -953,7 +953,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "type.nu.armn", "Algarismos arm\u00eanios" },
             { "om", "oromo" },
             { "kaw", "kawi" },
-            { "or", "ori\u00e1" },
+            { "or", metaValue_or },
             { "os", "osseto" },
             { "kbd", "kabardiano" },
             { "mfe", "morisyen" },
@@ -981,7 +981,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "type.hc.h23", "Sistema de 24 horas (0\u201323)" },
             { "type.hc.h24", "Sistema de 24 horas (1\u201324)" },
             { "ssy", metaValue_ssy },
-            { "type.nu.mymr", "Algarismos de Myanmar" },
+            { "type.nu.mymr", "Algarismos mianmarenses" },
             { "qu", "qu\u00edchua" },
             { "zap", "zapoteco" },
             { "brx", "bodo" },
@@ -1001,7 +1001,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "bss", "akoose" },
             { "rw", "quiniaruanda" },
             { "zbl", "s\u00edmbolos blis" },
-            { "kea", "kabuverdianu" },
+            { "kea", "crioulo cabo-verdiano" },
             { "mic", "miquemaque" },
             { "suk", "sukuma" },
             { "sa", "s\u00e2nscrito" },
@@ -1173,7 +1173,7 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Cprt", "cipriota" },
             { "%%BAKU1926", "alfabeto latino turco unificado" },
             { "mua", "mundang" },
-            { "type.nu.guru", "Algarismos gurmukhi" },
+            { "type.nu.guru", "Algarismos gurmuqui" },
             { "mul", "m\u00faltiplos idiomas" },
             { "cad", "caddo" },
             { "key.ms", "Sistema de medi\u00e7\u00e3o" },
@@ -1181,12 +1181,13 @@ public class LocaleNames_pt extends OpenListResourceBundle {
             { "Glag", "glagol\u00edtico" },
             { "gil", "gilbert\u00eas" },
             { "%%KKCOR", "ortografia comum" },
-            { "Cher", metaValue_chr },
+            { "Cher", "cherokee" },
             { "car", "caribe" },
             { "cay", "cayuga" },
             { "type.nu.tamldec", "Algarismos t\u00e2mil" },
             { "krc", "karachay-balkar" },
             { "inh", "inguche" },
+            { "fa_AF", "dari" },
             { "krl", "car\u00e9lio" },
             { "efi", "efique" },
             { "key.nu", "N\u00fameros" },

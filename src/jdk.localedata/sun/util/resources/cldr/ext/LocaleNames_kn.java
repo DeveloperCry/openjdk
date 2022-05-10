@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -105,6 +101,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "mwr", "\u0cae\u0cbe\u0cb0\u0ccd\u0cb5\u0cbe\u0ca1\u0cbf" },
             { "Tagb", "\u0c9f\u0cbe\u0c97\u0ccd\u0cac\u0cbe\u0ca8\u0cb5\u0cbe" },
             { "Zsye", "\u0c8e\u0cae\u0ccb\u0c9c\u0cbf" },
+            { "ccp", "\u0c9a\u0c95\u0ccd\u0cae\u0cbe" },
             { "egy", "\u0caa\u0ccd\u0cb0\u0cbe\u0c9a\u0cc0\u0ca8 \u0c88\u0c9c\u0cbf\u0caa\u0ccd\u0c9f\u0cbf\u0caf\u0ca8\u0ccd" },
             { "raj", "\u0cb0\u0cbe\u0c9c\u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cbf" },
             { "Phag", "\u0cab\u0cbe\u0c97\u0ccd\u0cb8\u0ccd-\u0caa\u0cbe" },
@@ -174,7 +171,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "CF", "\u0cae\u0ca7\u0ccd\u0caf \u0c86\u0cab\u0ccd\u0cb0\u0cbf\u0c95\u0cbe \u0c97\u0ca3\u0cb0\u0cbe\u0c9c\u0ccd\u0caf" },
             { "CG", "\u0c95\u0cbe\u0c82\u0c97\u0ccb - \u0cac\u0ccd\u0cb0\u0cbe\u0c9c\u0cbe\u0cb5\u0cbf\u0cb2\u0ccd\u0cb2\u0cc7" },
             { "CH", "\u0cb8\u0ccd\u0cb5\u0cbf\u0c9f\u0ccd\u0c9c\u0cb0\u0ccd\u0cb2\u0ccd\u0caf\u0cbe\u0c82\u0ca1\u0ccd" },
-            { "CI", "\u0c95\u0ccb\u0ca4\u0ccd\u200c \u0ca6\u0cbf\u0cb5\u0cbe\u0cb0\u0ccd\u200d" },
+            { "CI", "\u0c95\u0ccb\u0ca4\u0ccd \u0ca6\u0ccd\u2018\u0c87\u0cb5\u0cbe\u0cb0\u0ccd" },
             { "CK", "\u0c95\u0cc1\u0c95\u0ccd \u0ca6\u0ccd\u0cb5\u0cc0\u0caa\u0c97\u0cb3\u0cc1" },
             { "CL", "\u0c9a\u0cbf\u0cb2\u0cbf" },
             { "Kthi", "\u0c95\u0cc8\u0ca5\u0cbf" },
@@ -253,12 +250,11 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "FR", "\u0cab\u0ccd\u0cb0\u0cbe\u0ca8\u0ccd\u0cb8\u0ccd" },
             { "tkl", metaValue_TK },
             { "grb", "\u0c97\u0ccd\u0cb0\u0cc7\u0cac\u0ccb" },
-            { "root", "\u0cb0\u0cc2\u0c9f\u0ccd" },
             { "type.ca.indian", "\u0cad\u0cbe\u0cb0\u0ca4\u0cc0\u0caf \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c95\u0ccd\u0caf\u0cbe\u0cb2\u0cc6\u0c82\u0ca1\u0cb0\u0ccd" },
             { "grc", "\u0caa\u0ccd\u0cb0\u0cbe\u0c9a\u0cc0\u0ca8 \u0c97\u0ccd\u0cb0\u0cc0\u0c95\u0ccd" },
             { "GA", "\u0c97\u0cc6\u0cac\u0cca\u0ca8\u0ccd" },
             { "vot", "\u0cb5\u0ccb\u0c9f\u0cbf\u0c95\u0ccd" },
-            { "GB", "\u0cac\u0ccd\u0cb0\u0cbf\u0c9f\u0ca8\u0ccd/\u0c87\u0c82\u0c97\u0ccd\u0cb2\u0cc6\u0c82\u0ca1\u0ccd" },
+            { "GB", "\u0caf\u0cc1\u0ca8\u0cc8\u0c9f\u0cc6\u0ca1\u0ccd \u0c95\u0cbf\u0c82\u0c97\u0ccd\u200c\u0ca1\u0cae\u0ccd" },
             { "pcm", "\u0ca8\u0cc8\u0c9c\u0cc0\u0cb0\u0cbf\u0caf\u0ca8\u0ccd \u0caa\u0cbf\u0ca1\u0ccd\u0c97\u0cbf\u0ca8\u0ccd" },
             { "GD", "\u0c97\u0ccd\u0cb0\u0cc6\u0ca8\u0cc6\u0ca1\u0cbe" },
             { "GE", "\u0c9c\u0cbe\u0cb0\u0ccd\u0c9c\u0cbf\u0caf\u0cbe" },
@@ -314,7 +310,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "IR", "\u0c87\u0cb0\u0cbe\u0ca8\u0ccd" },
             { "IS", "\u0c90\u0cb8\u0ccd\u200c\u0cb2\u0ccd\u0caf\u0cbe\u0c82\u0ca1\u0ccd" },
             { "IT", "\u0c87\u0c9f\u0cb2\u0cbf" },
-            { "Zmth", "\u0c97\u0ca3\u0cc0\u0ca4 \u0cb8\u0c82\u0c95\u0cc7\u0ca4\u0cb2\u0cbf\u0caa\u0cbf" },
+            { "Zmth", "\u0c97\u0ca3\u0cbf\u0ca4 \u0cb8\u0c82\u0c95\u0cc7\u0ca4\u0cb2\u0cbf\u0caa\u0cbf" },
             { "type.nu.thai", "\u0ca5\u0cbe\u0caf\u0ccd \u0c85\u0c82\u0c95\u0cc6\u0c97\u0cb3\u0cc1" },
             { "type.nu.beng", "\u0cac\u0cbe\u0c82\u0c97\u0ccd\u0cb2\u0cbe \u0c85\u0c82\u0c95\u0cc6\u0c97\u0cb3\u0cc1" },
             { "JE", "\u0c9c\u0cc6\u0cb0\u0ccd\u0cb8\u0cbf" },
@@ -385,7 +381,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "MH", "\u0cae\u0cbe\u0cb0\u0ccd\u0cb7\u0cb2\u0ccd \u0ca6\u0ccd\u0cb5\u0cc0\u0caa\u0c97\u0cb3\u0cc1" },
             { "ale", "\u0c85\u0cb2\u0cc6\u0caf\u0cc1\u0c9f\u0ccd" },
             { "type.nu.vaii", "\u0cb5\u0cbe\u0caf\u0ccd \u0c85\u0c82\u0c95\u0cc6\u0c97\u0cb3\u0cc1" },
-            { "MK", "\u0cae\u0ccd\u0caf\u0cbe\u0cb8\u0cbf\u0ca1\u0ccb\u0ca8\u0cbf\u0caf\u0cbe" },
+            { "MK", "\u0c89\u0ca4\u0ccd\u0ca4\u0cb0 \u0cae\u0ccd\u0caf\u0cbe\u0cb8\u0cbf\u0ca1\u0ccb\u0ca8\u0cbf\u0caf\u0cbe" },
             { "ML", "\u0cae\u0cbe\u0cb2\u0cbf" },
             { "MM", "\u0cae\u0caf\u0ca8\u0ccd\u0cae\u0cbe\u0cb0\u0ccd (\u0cac\u0cb0\u0ccd\u0cae\u0cbe)" },
             { "MN", "\u0cae\u0c82\u0c97\u0ccb\u0cb2\u0cbf\u0caf\u0cbe" },
@@ -407,9 +403,11 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "MZ", "\u0cae\u0cca\u0c9c\u0cbe\u0c82\u0cac\u0cbf\u0c95\u0ccd" },
             { "Phli", "\u0c87\u0ca8\u0ccd\u0cb8\u0ccd\u200c\u0c95\u0ccd\u0cb0\u0cbf\u0caa\u0ccd\u0cb6\u0ca8\u0cb2\u0ccd \u0caa\u0cbe\u0cb9\u0ccd\u0cb2\u0cb5\u0cbf" },
             { "NA", "\u0ca8\u0cae\u0cc0\u0cac\u0cbf\u0caf\u0cbe" },
+            { "202", "\u0c89\u0caa-\u0cb8\u0cb9\u0cbe\u0cb0\u0ca8\u0ccd \u0c86\u0cab\u0ccd\u0cb0\u0cbf\u0c95\u0cbe" },
             { "type.ca.hebrew", "\u0cb9\u0cc0\u0cac\u0ccd\u0cb0\u0cc2 \u0c95\u0ccd\u0caf\u0cbe\u0cb2\u0cc6\u0c82\u0ca1\u0cb0\u0ccd" },
             { "type.co.dictionary", "\u0ca1\u0cbf\u0c95\u0ccd\u0cb7\u0ca8\u0cb0\u0cbf \u0c85\u0ca8\u0cc1\u0c95\u0ccd\u0cb0\u0cae \u0cb5\u0cbf\u0ca8\u0ccd\u0caf\u0cbe\u0cb8" },
             { "NC", "\u0ca8\u0ccd\u0caf\u0cc2 \u0c95\u0ccd\u0caf\u0cbe\u0cb2\u0cbf\u0ca1\u0ccb\u0ca8\u0cbf\u0caf\u0cbe" },
+            { "%%WADEGILE", "\u0cb5\u0cc7\u0ca1\u0ccd-\u0c97\u0cc8\u0cb2\u0ccd\u0cb8\u0ccd \u0cb0\u0ccb\u0cae\u0ca8\u0cc8\u0cb8\u0cc7\u0cb6\u0ca8\u0ccd" },
             { "NE", "\u0ca8\u0cc8\u0c9c\u0cb0\u0ccd" },
             { "NF", "\u0ca8\u0cbe\u0cb0\u0ccd\u0cab\u0ccb\u0c95\u0ccd \u0ca6\u0ccd\u0cb5\u0cc0\u0caa" },
             { "NG", "\u0ca8\u0cc8\u0c9c\u0cc0\u0cb0\u0cbf\u0caf\u0cbe" },
@@ -491,7 +489,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "014", "\u0caa\u0cc2\u0cb0\u0ccd\u0cb5 \u0c86\u0cab\u0ccd\u0cb0\u0cbf\u0c95\u0cbe" },
             { "arc", "\u0c85\u0cb0\u0cbe\u0cae\u0cbf\u0c95\u0ccd" },
             { "015", "\u0c89\u0ca4\u0ccd\u0ca4\u0cb0 \u0c86\u0cab\u0ccd\u0cb0\u0cbf\u0c95\u0cbe" },
-            { "SG", "\u0cb8\u0cbf\u0c82\u0c97\u0cbe\u0caa\u0cc1\u0cb0\u0ccd" },
+            { "SG", "\u0cb8\u0cbf\u0c82\u0c97\u0caa\u0cc1\u0cb0\u0ccd" },
             { "SH", "\u0cb8\u0cc7\u0c82\u0c9f\u0ccd \u0cb9\u0cc6\u0cb2\u0cc6\u0ca8\u0cbe" },
             { "type.lb.strict", "\u0c95\u0c9f\u0ccd\u0c9f\u0cc1\u0ca8\u0cbf\u0c9f\u0ccd\u0c9f\u0cbe\u0ca6 \u0cb2\u0cc8\u0ca8\u0ccd \u0cac\u0ccd\u0cb0\u0cc7\u0c95\u0ccd \u0cb6\u0cc8\u0cb2\u0cbf" },
             { "017", "\u0cae\u0ca7\u0ccd\u0caf \u0c86\u0cab\u0ccd\u0cb0\u0cbf\u0c95\u0cbe" },
@@ -514,7 +512,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "SX", "\u0cb8\u0cbf\u0c82\u0c9f\u0ccd \u0cae\u0cbe\u0cb0\u0ccd\u0c9f\u0cc6\u0ca8\u0ccd" },
             { "SY", "\u0cb8\u0cbf\u0cb0\u0cbf\u0caf\u0cbe" },
             { "yao", "\u0caf\u0cbe\u0cb5\u0cca" },
-            { "SZ", "\u0cb8\u0ccd\u0cb5\u0cbe\u0c9c\u0cbf\u0cb2\u0ccd\u0caf\u0cbe\u0c82\u0ca1\u0ccd" },
+            { "SZ", "\u0cb8\u0ccd\u0cb5\u0cbe\u0ca4\u0cbf\u0ca8\u0cbf" },
             { "arw", "\u0c85\u0cb0\u0cbe\u0cb5\u0cbe\u0c95\u0ccd" },
             { "yap", "\u0caf\u0caa\u0cc0\u0cb8\u0cc6" },
             { "TA", "\u0c9f\u0ccd\u0cb0\u0cbf\u0cb8\u0ccd\u0ca4\u0ca8\u0ccd \u0ca1\u0cbe \u0c95\u0cc1\u0ca8\u0ccd\u0cb9\u0cbe" },
@@ -560,7 +558,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "Sinh", metaValue_si },
             { "UM", "\u0caf\u0cc1\u0c8e\u0cb8\u0ccd\u200c \u0c94\u0c9f\u0ccd\u200c\u0cb2\u0cc7\u0caf\u0cbf\u0c82\u0c97\u0ccd \u0ca6\u0ccd\u0cb5\u0cc0\u0caa\u0c97\u0cb3\u0cc1" },
             { "UN", "\u0cb8\u0c82\u0caf\u0cc1\u0c95\u0ccd\u0ca4 \u0cb8\u0c82\u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0c97\u0cb3\u0cc1" },
-            { "US", "\u0c85\u0cae\u0cc7\u0cb0\u0cbf\u0c95\u0cbe \u0cb8\u0c82\u0caf\u0cc1\u0c95\u0ccd\u0ca4 \u0cb8\u0c82\u0cb8\u0ccd\u0ca5\u0cbe\u0ca8" },
+            { "US", "\u0caf\u0cc1\u0ca8\u0cc8\u0c9f\u0cc6\u0ca1\u0ccd \u0cb8\u0ccd\u0c9f\u0cc7\u0c9f\u0ccd\u0cb8\u0ccd" },
             { "haw", "\u0cb9\u0cb5\u0cbe\u0caf\u0cbf\u0caf\u0ca8\u0ccd" },
             { "type.co.gb2312han", "\u0cb8\u0cb0\u0cb3\u0cc0\u0c95\u0cc3\u0ca4 \u0c9a\u0cc8\u0ca8\u0cc0\u0cb8\u0ccd \u0cb5\u0cbf\u0c82\u0c97\u0ca1\u0ca3\u0cc6 \u0c95\u0ccd\u0cb0\u0cae - GB2312" },
             { "UY", "\u0c89\u0cb0\u0cc1\u0c97\u0ccd\u0cb5\u0cc6" },
@@ -593,7 +591,9 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "WS", "\u0cb8\u0cae\u0ccb\u0cb5\u0cbe" },
             { "wal", "\u0cb5\u0cb2\u0cbe\u0caf\u0ccd\u0ca4\u0cbe" },
             { "was", "\u0cb5\u0cbe\u0cb7\u0ccb" },
+            { "XA", "\u0cb8\u0ccd\u0caf\u0cc1\u0ca1\u0cca \u0c89\u0c9a\u0ccd\u0c9b\u0cbe\u0cb0\u0ca3\u0cc6\u0c97\u0cb3\u0cc1" },
             { "war", "\u0cb5\u0cb0\u0cbe\u0caf\u0ccd" },
+            { "XB", "\u0cb8\u0ccd\u0caf\u0cc1\u0ca1\u0cca-\u0cac\u0cbf\u0ca1\u0cbf" },
             { "awa", "\u0c85\u0cb5\u0ca7\u0cbf" },
             { "061", "\u0caa\u0cbe\u0cb2\u0cbf\u0ca8\u0cc7\u0cb7\u0ccd\u0caf\u0cbe" },
             { "XK", "\u0c95\u0cca\u0cb8\u0cca\u0cb5\u0cca" },
@@ -616,6 +616,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "type.nu.geor", "\u0c9c\u0cbe\u0cb0\u0ccd\u0c9c\u0cbf\u0caf\u0cbe\u0ca6 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0cc1" },
             { "Hira", "\u0cb9\u0cbf\u0cb0\u0cbe\u0c97\u0ca8" },
             { "ZM", "\u0c9c\u0cbe\u0c82\u0cac\u0cbf\u0caf" },
+            { "%%PINYIN", "\u0caa\u0cbf\u0ca8\u0ccd\u200c\u0caf\u0cbf\u0ca8\u0ccd \u0cb0\u0ccb\u0cae\u0ca8\u0cc8\u0cb8\u0cc7\u0cb6\u0ca8\u0ccd" },
             { "ZW", "\u0c9c\u0cbf\u0c82\u0cac\u0cbe\u0cac\u0ccd\u0cb5\u0cc6" },
             { "ZZ", "\u0c85\u0c9c\u0ccd\u0c9e\u0cbe\u0ca4 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6" },
             { "Runr", "\u0cb0\u0cc2\u0ca8\u0cbf\u0c95\u0ccd" },
@@ -642,6 +643,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "nwc", "\u0cb6\u0cbe\u0cb8\u0ccd\u0ca4\u0ccd\u0cb0\u0cc0\u0caf \u0ca8\u0cc7\u0cb5\u0cbe\u0cb0\u0cbf" },
             { "udm", "\u0c89\u0ca1\u0ccd\u200c\u0cae\u0cc1\u0cb0\u0ccd\u0c9f\u0ccd" },
             { "Khmr", metaValue_km },
+            { "type.ca.islamic-rgsa", "\u0c87\u0cb8\u0ccd\u0cb2\u0cbe\u0cae\u0cbf\u0c95\u0ccd\u200c \u0c95\u0ccd\u0caf\u0cbe\u0cb2\u0cc6\u0c82\u0ca1\u0cb0\u0ccd\u200c (\u0cb8\u0ccc\u0ca6\u0cbf \u0c85\u0cb0\u0cc7\u0cac\u0cbf\u0caf\u0cbe, \u0cb8\u0cc8\u0c9f\u0cbf\u0c82\u0c97\u0ccd\u200c)bia, sighting)" },
             { "Limb", "\u0cb2\u0cbf\u0c82\u0cac\u0cc1" },
             { "sad", "\u0cb8\u0c82\u0ca1\u0cbe\u0cb5\u0cc7" },
             { "type.nu.roman", "\u0cb0\u0ccb\u0cae\u0ca8\u0ccd \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0cc1" },
@@ -716,10 +718,10 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "sel", "\u0cb8\u0cc6\u0cb2\u0ccd\u0c95\u0caa\u0ccd" },
             { "ca", "\u0c95\u0cc6\u0c9f\u0cb2\u0cbe\u0ca8\u0ccd" },
             { "ses", "\u0c95\u0cca\u0caf\u0ccd\u0cb0\u0cac\u0cca\u0cb0\u0cca \u0cb8\u0cc6\u0ca8\u0ccd\u0ca8\u0cbf" },
-            { "ce", "\u0c9a\u0cc6\u0c9a\u0ca8\u0ccd" },
+            { "ce", "\u0c9a\u0c9a\u0cc6\u0ca8\u0ccd" },
             { "ch", "\u0c95\u0cae\u0cca\u0cb0\u0cca" },
             { "co", "\u0c95\u0ccb\u0cb0\u0ccd\u0cb8\u0cbf\u0c95\u0ca8\u0ccd" },
-            { "Orya", "\u0c92\u0cb0\u0cbf\u0caf\u0cbe" },
+            { "Orya", "\u0c92\u0ca1\u0cbf\u0caf\u0cbe" },
             { "cr", "\u0c95\u0ccd\u0cb0\u0cc0" },
             { "cs", "\u0c9c\u0cc6\u0c95\u0ccd" },
             { "cu", "\u0c9a\u0cb0\u0ccd\u0c9a\u0ccd \u0cb8\u0ccd\u0cb2\u0cbe\u0cb5\u0cbf\u0c95\u0ccd" },
@@ -753,7 +755,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "type.co.big5han", "\u0cb8\u0cbe\u0c82\u0caa\u0ccd\u0cb0\u0ca6\u0cbe\u0caf\u0cbf\u0c95 \u0c9a\u0cc0\u0ca8\u0cbe\u0ca6 \u0c85\u0ca8\u0cc1\u0c95\u0ccd\u0cb0\u0cae \u0cb5\u0cbf\u0ca8\u0ccd\u0caf\u0cbe\u0cb8 - \u0ca6\u0cca\u0ca1\u0ccd\u0ca1 \u0c90\u0ca6\u0cc1" },
             { "es", "\u0cb8\u0ccd\u0caa\u0ccd\u0caf\u0cbe\u0ca8\u0cbf\u0cb7\u0ccd" },
             { "et", "\u0c8e\u0cb8\u0ccd\u0c9f\u0cca\u0ca8\u0cbf\u0caf\u0ca8\u0ccd" },
-            { "Hanb", "\u0cb9\u0c82\u0cac\u0ccd" },
+            { "Hanb", "\u0cac\u0ccb\u0caa\u0ccb\u0cae\u0cca\u0cab\u0ccb \u0c9c\u0cca\u0ca4\u0cc6\u0c97\u0cc6 \u0cb9\u0cbe\u0ca8\u0ccd" },
             { "eu", "\u0cac\u0cbe\u0cb8\u0ccd\u0c95\u0ccd" },
             { "Buhd", "\u0cac\u0cc1\u0cb9\u0cbf\u0ca6\u0ccd" },
             { "Hang", "\u0cb9\u0ccd\u0caf\u0cbe\u0c82\u0c97\u0cc1\u0cb2\u0ccd" },
@@ -885,7 +887,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "Saur", "\u0cb8\u0ccc\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0" },
             { "Armn", metaValue_hy },
             { "mdf", "\u0cae\u0ccb\u0c95\u0ccd\u0cb7" },
-            { "dsb", "\u0cb2\u0ccb\u0cb5\u0cb0\u0ccd \u0cb8\u0ccb\u0cb0\u0ccd\u0cac\u0cbf\u0caf\u0ca8\u0ccd" },
+            { "dsb", "\u0cb2\u0ccb\u0cb5\u0cb0\u0ccd \u0cb8\u0cb0\u0ccd\u0cac\u0cbf\u0caf\u0ca8\u0ccd" },
             { "Armi", "\u0c87\u0c82\u0caa\u0cc0\u0cb0\u0cbf\u0caf\u0cb2\u0ccd \u0c85\u0cb0\u0cc6\u0cae\u0cbe\u0caf\u0cbf\u0c95\u0ccd" },
             { "na", metaValue_NR },
             { "type.co.search", "\u0cb8\u0cbe\u0cae\u0cbe\u0ca8\u0ccd\u0caf- \u0c89\u0ca6\u0ccd\u0ca6\u0cc7\u0cb6 \u0cb9\u0cc1\u0ca1\u0cc1\u0c95\u0cbe\u0c9f" },
@@ -980,7 +982,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "sq", "\u0c85\u0cb2\u0ccd\u0cac\u0cc7\u0ca8\u0cbf\u0caf\u0ca8\u0ccd" },
             { "sr", "\u0cb8\u0cc6\u0cb0\u0ccd\u0cac\u0cbf\u0caf\u0ca8\u0ccd" },
             { "ss", "\u0cb8\u0ccd\u0cb5\u0cbe\u0ca4\u0cbf" },
-            { "type.cf.account", "\u0cb2\u0cc6\u0c95\u0ccd\u0c95\u0caa\u0cb0\u0cbf\u0cb6\u0ccb\u0ca7\u0c95 \u0c95\u0cb0\u0cc6\u0ca8\u0ccd\u0c9a\u0cbf \u0cb8\u0ccd\u0cb5\u0cb0\u0cc2\u0caa" },
+            { "type.cf.account", "\u0c85\u0c95\u0ccc\u0c82\u0c9f\u0cbf\u0c82\u0c97\u0ccd \u0c95\u0cb0\u0cc6\u0ca8\u0ccd\u0cb8\u0cbf \u0cb8\u0ccd\u0cb5\u0cb0\u0cc2\u0caa" },
             { "st", "\u0ca6\u0c95\u0ccd\u0cb7\u0cbf\u0ca3 \u0cb8\u0ccb\u0ca5\u0ccb" },
             { "Java", "\u0c9c\u0cbe\u0cb5\u0ca8\u0cc0\u0cb8\u0ccd" },
             { "su", metaValue_su },
@@ -1038,7 +1040,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "vi", "\u0cb5\u0cbf\u0caf\u0cc6\u0c9f\u0ccd\u0ca8\u0cbe\u0cae\u0cc0\u0cb8\u0ccd" },
             { "kho", "\u0c96\u0ccb\u0c9f\u0cbe\u0ca8\u0cc0\u0cb8\u0ccd" },
             { "khq", "\u0c95\u0cca\u0caf\u0ccd\u0cb0 \u0c9a\u0cc0\u0ca8\u0cbf" },
-            { "key.hc", "\u0c97\u0c82\u0c9f\u0cc6 \u0c9a\u0c95\u0ccd\u0cb0 (12 \u0cb5\u0cbf\u0cb0\u0cc1\u0ca6\u0ccd\u0ca7 24)" },
+            { "key.hc", "\u0c95\u0cbe\u0cb2 \u0c9a\u0c95\u0ccd\u0cb0 (12 \u0cb5\u0cbf\u0cb0\u0cc1\u0ca6\u0ccd\u0ca7 24)" },
             { "vo", "\u0cb5\u0ccb\u0cb2\u0cbe\u0caa\u0cc1\u0c95\u0ccd" },
             { "syc", "\u0cb6\u0cbe\u0cb8\u0ccd\u0ca4\u0ccd\u0cb0\u0cc0\u0caf \u0cb8\u0cbf\u0cb0\u0cbf\u0caf\u0c95\u0ccd" },
             { "Osma", "\u0c93\u0cb8\u0ccd\u0cae\u0cbe\u0ca8\u0ccd\u0caf\u0cbe" },
@@ -1130,6 +1132,7 @@ public class LocaleNames_kn extends OpenListResourceBundle {
             { "type.nu.tamldec", "\u0ca4\u0cae\u0cbf\u0cb3\u0cc1 \u0c85\u0c82\u0c95\u0cc6\u0c97\u0cb3\u0cc1" },
             { "krc", "\u0c95\u0cb0\u0c9a\u0caf\u0ccd-\u0cac\u0cb2\u0ccd\u0c95\u0cbe\u0cb0\u0ccd" },
             { "inh", "\u0c87\u0c82\u0c97\u0cc1\u0cb7\u0ccd" },
+            { "fa_AF", "\u0ca6\u0cb0\u0cbf" },
             { "krl", "\u0c95\u0cb0\u0cc7\u0cb2\u0cbf\u0caf\u0ca8\u0ccd" },
             { "efi", "\u0c8e\u0cab\u0cbf\u0c95\u0ccd" },
             { "key.nu", "\u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0cc1" },

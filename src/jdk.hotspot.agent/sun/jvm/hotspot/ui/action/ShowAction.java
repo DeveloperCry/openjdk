@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,7 +37,7 @@ public class ShowAction extends DelegateAction {
     public static final String VALUE_COMMAND = "show-command";
     public static final String VALUE_NAME = "Show Objects";
     public static final String VALUE_SMALL_ICON = "general/Zoom16.gif";
-    public static final Integer VALUE_MNEMONIC = new Integer('S');
+    public static final Integer VALUE_MNEMONIC = (int) 'S';
     public static final String VALUE_SHORT_DESCRIPTION = "Show Objects of this selected type";
     public static final String VALUE_LONG_DESCRIPTION = VALUE_SHORT_DESCRIPTION;
 

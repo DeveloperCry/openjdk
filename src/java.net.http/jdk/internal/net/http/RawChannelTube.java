@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,7 +73,7 @@ public class RawChannelTube implements RawChannel {
         this.initial = initial;
         this.writePublisher = new WritePublisher();
         this.readSubscriber = new ReadSubscriber();
-        dbgTag = "[WebSocket] RawChannelTube(" + tube.toString() +")";
+        dbgTag = "[WebSocket] RawChannelTube(" + tube +")";
         debug = Utils.getWebSocketLogger(dbgTag::toString, Utils.DEBUG_WS);
         connection.client().webSocketOpen();
         connectFlows();

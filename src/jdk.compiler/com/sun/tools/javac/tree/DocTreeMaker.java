@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,16 +29,15 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import javax.lang.model.element.Name;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 import com.sun.source.doctree.AttributeTree.ValueKind;
-import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.DocTree.Kind;
 import com.sun.source.doctree.EndElementTree;
@@ -46,15 +45,11 @@ import com.sun.source.doctree.IdentifierTree;
 import com.sun.source.doctree.ReferenceTree;
 import com.sun.source.doctree.StartElementTree;
 import com.sun.source.doctree.TextTree;
-import com.sun.source.doctree.ProvidesTree;
-import com.sun.source.doctree.UsesTree;
 import com.sun.source.util.DocTreeFactory;
-import com.sun.tools.doclint.HtmlTag;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.parser.ParserFactory;
 import com.sun.tools.javac.parser.ReferenceParser;
 import com.sun.tools.javac.parser.Tokens.Comment;
-import com.sun.tools.javac.parser.Tokens.Comment.CommentStyle;
 import com.sun.tools.javac.tree.DCTree.DCAttribute;
 import com.sun.tools.javac.tree.DCTree.DCAuthor;
 import com.sun.tools.javac.tree.DCTree.DCComment;
@@ -80,8 +75,10 @@ import com.sun.tools.javac.tree.DCTree.DCSerial;
 import com.sun.tools.javac.tree.DCTree.DCSerialData;
 import com.sun.tools.javac.tree.DCTree.DCSerialField;
 import com.sun.tools.javac.tree.DCTree.DCSince;
+import com.sun.tools.javac.tree.DCTree.DCSnippet;
 import com.sun.tools.javac.tree.DCTree.DCStartElement;
 import com.sun.tools.javac.tree.DCTree.DCSummary;
+import com.sun.tools.javac.tree.DCTree.DCSystemProperty;
 import com.sun.tools.javac.tree.DCTree.DCText;
 import com.sun.tools.javac.tree.DCTree.DCThrows;
 import com.sun.tools.javac.tree.DCTree.DCUnknownBlockTag;
@@ -98,8 +95,8 @@ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
+import com.sun.tools.javac.util.StringUtils;
 
-import static com.sun.tools.doclint.HtmlTag.*;
 
 /**
  *
@@ -115,7 +112,7 @@ public class DocTreeMaker implements DocTreeFactory {
 
     // A subset of block tags, which acts as sentence breakers, appearing
     // anywhere but the zero'th position in the first sentence.
-    final EnumSet<HtmlTag> sentenceBreakTags;
+    final Set<String> sentenceBreakTags;
 
     /** Get the TreeMaker instance. */
     public static DocTreeMaker instance(Context context) {
@@ -129,9 +126,6 @@ public class DocTreeMaker implements DocTreeFactory {
      */
     public int pos = Position.NOPOS;
 
-    /** Access to diag factory for ErroneousTrees. */
-    private final JCDiagnostic.Factory diags;
-
     private final JavacTrees trees;
 
     /** Utility class to parse reference signatures. */
@@ -141,11 +135,10 @@ public class DocTreeMaker implements DocTreeFactory {
      */
     protected DocTreeMaker(Context context) {
         context.put(treeMakerKey, this);
-        diags = JCDiagnostic.Factory.instance(context);
         this.pos = Position.NOPOS;
         trees = JavacTrees.instance(context);
         referenceParser = new ReferenceParser(ParserFactory.instance(context));
-        sentenceBreakTags = EnumSet.of(H1, H2, H3, H4, H5, H6, PRE, P);
+        sentenceBreakTags = Set.of("H1", "H2", "H3", "H4", "H5", "H6", "PRE", "P");
     }
 
     /** Reassign current position.
@@ -156,22 +149,15 @@ public class DocTreeMaker implements DocTreeFactory {
         return this;
     }
 
-    /** Reassign current position.
-     */
-    public DocTreeMaker at(DiagnosticPosition pos) {
-        this.pos = (pos == null ? Position.NOPOS : pos.getStartPosition());
-        return this;
-    }
-
     @Override @DefinedBy(Api.COMPILER_TREE)
-    public DCAttribute newAttributeTree(javax.lang.model.element.Name name, ValueKind vkind, java.util.List<? extends DocTree> value) {
+    public DCAttribute newAttributeTree(Name name, ValueKind vkind, List<? extends DocTree> value) {
         DCAttribute tree = new DCAttribute(name, vkind, cast(value));
         tree.pos = pos;
         return tree;
     }
 
     @Override @DefinedBy(Api.COMPILER_TREE)
-    public DCAuthor newAuthorTree(java.util.List<? extends DocTree> name) {
+    public DCAuthor newAuthorTree(List<? extends DocTree> name) {
         DCAuthor tree = new DCAuthor(cast(name));
         tree.pos = pos;
         return tree;
@@ -200,11 +186,7 @@ public class DocTreeMaker implements DocTreeFactory {
 
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCDocComment newDocCommentTree(List<? extends DocTree> fullBody, List<? extends DocTree> tags) {
-        Pair<List<DCTree>, List<DCTree>> pair = splitBody(fullBody);
-        List<DCTree> preamble = Collections.emptyList();
-        List<DCTree> postamble = Collections.emptyList();
-
-        return newDocCommentTree(fullBody, tags, preamble, postamble);
+        return newDocCommentTree(fullBody, tags, Collections.emptyList(), Collections.emptyList());
     }
 
     public DCDocComment newDocCommentTree(Comment comment,
@@ -220,7 +202,7 @@ public class DocTreeMaker implements DocTreeFactory {
     }
 
     /*
-     * Primarily to produce a DocCommenTree when given a
+     * Primarily to produce a DocCommentTree when given a
      * first sentence and a body, this is useful, in cases
      * where the trees are being synthesized by a tool.
      */
@@ -292,12 +274,6 @@ public class DocTreeMaker implements DocTreeFactory {
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCErroneous newErroneousTree(String text, Diagnostic<JavaFileObject> diag) {
         DCErroneous tree = new DCErroneous(text, (JCDiagnostic) diag);
-        tree.pos = pos;
-        return tree;
-    }
-
-    public DCErroneous newErroneousTree(String text, DiagnosticSource diagSource, String code, Object... args) {
-        DCErroneous tree = new DCErroneous(text, diags, diagSource, code, args);
         tree.pos = pos;
         return tree;
     }
@@ -377,7 +353,7 @@ public class DocTreeMaker implements DocTreeFactory {
     public DCReference newReferenceTree(String signature) {
         try {
             ReferenceParser.Reference ref = referenceParser.parse(signature);
-            DCReference tree = new DCReference(signature, ref.qualExpr, ref.member, ref.paramTypes);
+            DCReference tree = new DCReference(signature, ref.moduleName, ref.qualExpr, ref.member, ref.paramTypes);
             tree.pos = pos;
             return tree;
         } catch (ReferenceParser.ParseException e) {
@@ -385,15 +361,20 @@ public class DocTreeMaker implements DocTreeFactory {
         }
     }
 
-    public DCReference newReferenceTree(String signature, JCTree qualExpr, Name member, List<JCTree> paramTypes) {
-        DCReference tree = new DCReference(signature, qualExpr, member, paramTypes);
+    public DCReference newReferenceTree(String signature, JCTree.JCExpression moduleName, JCTree qualExpr, Name member, List<JCTree> paramTypes) {
+        DCReference tree = new DCReference(signature, moduleName, qualExpr, member, paramTypes);
         tree.pos = pos;
         return tree;
     }
 
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCReturn newReturnTree(List<? extends DocTree> description) {
-        DCReturn tree = new DCReturn(cast(description));
+        return newReturnTree(false, description);
+    }
+
+    @Override @DefinedBy(Api.COMPILER_TREE)
+    public DCReturn newReturnTree(boolean isInline, List<? extends DocTree> description) {
+        DCReturn tree = new DCReturn(isInline, cast(description));
         tree.pos = pos;
         return tree;
     }
@@ -434,6 +415,13 @@ public class DocTreeMaker implements DocTreeFactory {
     }
 
     @Override @DefinedBy(Api.COMPILER_TREE)
+    public DCSnippet newSnippetTree(List<? extends DocTree> attributes, TextTree text) {
+        DCSnippet tree = new DCSnippet(cast(attributes), (DCText) text);
+        tree.pos = pos;
+        return tree;
+    }
+
+    @Override @DefinedBy(Api.COMPILER_TREE)
     public DCStartElement newStartElementTree(Name name, List<? extends DocTree> attrs, boolean selfClosing) {
         DCStartElement tree = new DCStartElement(name, cast(attrs), selfClosing);
         tree.pos = pos;
@@ -443,6 +431,13 @@ public class DocTreeMaker implements DocTreeFactory {
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCSummary newSummaryTree(List<? extends DocTree> text) {
         DCSummary tree = new DCSummary(cast(text));
+        tree.pos = pos;
+        return tree;
+    }
+
+    @Override @DefinedBy(Api.COMPILER_TREE)
+    public DCSystemProperty newSystemPropertyTree(Name propertyName) {
+        DCSystemProperty tree = new DCSystemProperty(propertyName);
         tree.pos = pos;
         return tree;
     }
@@ -499,7 +494,7 @@ public class DocTreeMaker implements DocTreeFactory {
     }
 
     @Override @DefinedBy(Api.COMPILER_TREE)
-    public java.util.List<DocTree> getFirstSentence(java.util.List<? extends DocTree> list) {
+    public List<DocTree> getFirstSentence(List<? extends DocTree> list) {
         Pair<List<DCTree>, List<DCTree>> pair = splitBody(list);
         return new ArrayList<>(pair.fst);
     }
@@ -533,6 +528,7 @@ public class DocTreeMaker implements DocTreeFactory {
                     continue;
                 }
                 switch (dt.getKind()) {
+                    case RETURN:
                     case SUMMARY:
                         foundFirstSentence = true;
                         break;
@@ -544,7 +540,7 @@ public class DocTreeMaker implements DocTreeFactory {
                                 : null;
                         int sbreak = getSentenceBreak(s, peekedNext);
                         if (sbreak > 0) {
-                            s = removeTrailingWhitespace(s.substring(0, sbreak));
+                            s = s.substring(0, sbreak).stripTrailing();
                             DCText text = this.at(spos).newTextTree(s);
                             fs.add(text);
                             foundFirstSentence = true;
@@ -560,7 +556,7 @@ public class DocTreeMaker implements DocTreeFactory {
                             boolean sbrk = isSentenceBreak(peekedNext, false);
                             if (sbrk) {
                                 DocTree next = itr.next();
-                                s = removeTrailingWhitespace(s);
+                                s = s.stripTrailing();
                                 DCText text = this.at(spos).newTextTree(s);
                                 fs.add(text);
                                 body.add((DCTree) next);
@@ -689,8 +685,8 @@ public class DocTreeMaker implements DocTreeFactory {
         return -1; // indeterminate at this time
     }
 
-    private boolean isSentenceBreak(javax.lang.model.element.Name tagName) {
-        return sentenceBreakTags.contains(get(tagName));
+    private boolean isSentenceBreak(Name tagName) {
+        return sentenceBreakTags.contains(StringUtils.toUpperCase(tagName.toString()));
     }
 
     private boolean isSentenceBreak(DocTree dt, boolean isFirstDocTree) {
@@ -707,7 +703,7 @@ public class DocTreeMaker implements DocTreeFactory {
     }
 
     /*
-     * Returns the position of the the first non-white space
+     * Returns the position of the first non-whitespace character.
      */
     private int skipWhiteSpace(String s, int start) {
         for (int i = start; i < s.length(); i++) {
@@ -717,16 +713,6 @@ public class DocTreeMaker implements DocTreeFactory {
             }
         }
         return -1;
-    }
-
-    private String removeTrailingWhitespace(String s) {
-        for (int i = s.length() - 1 ; i >= 0 ; i--) {
-            char ch = s.charAt(i);
-            if (!Character.isWhitespace(ch)) {
-                return s.substring(0, i + 1);
-            }
-        }
-        return s;
     }
 
     @SuppressWarnings("unchecked")

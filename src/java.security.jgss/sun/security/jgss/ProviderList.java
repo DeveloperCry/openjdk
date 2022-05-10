@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,7 +27,6 @@ package sun.security.jgss;
 
 import java.lang.reflect.InvocationTargetException;
 import org.ietf.jgss.*;
-import java.security.AccessController;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
@@ -93,10 +92,6 @@ public final class ProviderList {
     private static final String SPI_MECH_FACTORY_TYPE
         = "sun.security.jgss.spi.MechanismFactory";
 
-    // Undocumented property?
-    private static final String DEFAULT_MECH_PROP =
-        "sun.security.jgss.mechanism";
-
     public static final Oid DEFAULT_MECH_OID;
 
     static {
@@ -106,8 +101,8 @@ public final class ProviderList {
          * with a valid OID value
          */
         Oid defOid = null;
-        String defaultOidStr = AccessController.doPrivileged
-            (new GetPropertyAction(DEFAULT_MECH_PROP));
+        String defaultOidStr = GetPropertyAction
+                .privilegedGetProperty("sun.security.jgss.mechanism");
         if (defaultOidStr != null) {
             defOid = GSSUtil.createOid(defaultOidStr);
         }
@@ -121,7 +116,7 @@ public final class ProviderList {
                         new HashMap<PreferencesEntry, MechanismFactory>(5);
     private HashSet<Oid> mechs = new HashSet<Oid>(5);
 
-    final private GSSCaller caller;
+    private final GSSCaller caller;
 
     public ProviderList(GSSCaller caller, boolean useNative) {
         this.caller = caller;
@@ -165,7 +160,7 @@ public final class ProviderList {
     }
 
     // So the existing code do not have to be changed
-    synchronized public MechanismFactory getMechFactory(Oid mechOid)
+    public synchronized MechanismFactory getMechFactory(Oid mechOid)
         throws GSSException {
         if (mechOid == null) mechOid = ProviderList.DEFAULT_MECH_OID;
         return getMechFactory(mechOid, null);
@@ -182,7 +177,7 @@ public final class ProviderList {
      * support the desired mechanism, or when no provider supports
      * the desired mechanism.
      */
-    synchronized public MechanismFactory getMechFactory(Oid mechOid,
+    public synchronized MechanismFactory getMechFactory(Oid mechOid,
                                                         Provider p)
         throws GSSException {
 
@@ -340,7 +335,7 @@ public final class ProviderList {
         return mechs.toArray(new Oid[] {});
     }
 
-    synchronized public void addProviderAtFront(Provider p, Oid mechOid)
+    public synchronized void addProviderAtFront(Provider p, Oid mechOid)
         throws GSSException {
 
         PreferencesEntry newEntry = new PreferencesEntry(p, mechOid);
@@ -372,7 +367,7 @@ public final class ProviderList {
         }
     }
 
-    synchronized public void addProviderAtEnd(Provider p, Oid mechOid)
+    public synchronized void addProviderAtEnd(Provider p, Oid mechOid)
         throws GSSException {
 
         PreferencesEntry newEntry = new PreferencesEntry(p, mechOid);

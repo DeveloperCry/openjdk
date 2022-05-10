@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -155,10 +155,13 @@ class TextJustifier {
             boolean absorbing = hitLimit && absorbweight > 0;
 
             // predivide delta by weight
-            float weightedDelta = delta / weight; // not used if weight == 0
+            float weightedDelta = 0;
+            if (weight != 0) { // not used if weight == 0
+                weightedDelta = delta / weight;
+            }
 
             float weightedAbsorb = 0;
-            if (hitLimit && absorbweight > 0) {
+            if (hitLimit && absorbweight != 0) {
                 weightedAbsorb = (delta - gslimit) / absorbweight;
             }
 

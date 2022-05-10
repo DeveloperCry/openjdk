@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -117,5 +117,5 @@ public interface ELFSectionHeader {
     /** Returns the name of the section or null if the section has no name. */
     public String getName();
     /** Returns the offset in bytes to the beginning of the section. */
-    public int getOffset();
+    public long getOffset();
 }

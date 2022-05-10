@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,6 +50,7 @@ public class ResolveResult implements java.io.Serializable {
      * Constructors should always initialize this.
      * @serial
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     protected Object resolvedObj;
     /**
      * Field containing the remaining name yet to be resolved.

@@ -25,6 +25,7 @@ public final class jmod_zh_CN extends ListResourceBundle {
             { "err.module.descriptor.not.found", "\u627E\u4E0D\u5230\u6A21\u5757\u63CF\u8FF0\u7B26" },
             { "err.module.resolution.fail", "\u89E3\u6790\u5931\u8D25: {0}" },
             { "err.modulepath.must.be.specified", "\u5BF9\u6A21\u5757\u8FDB\u884C\u6563\u5217\u5904\u7406\u65F6\u5FC5\u987B\u6307\u5B9A --module-path" },
+            { "err.no.moduleToHash", "\u672A\u8BB0\u5F55\u6563\u5217\uFF1A\u627E\u4E0D\u5230\u4E0E {0} \u5339\u914D\u7684\u6A21\u5757\u6765\u8BB0\u5F55\u6563\u5217" },
             { "err.output.must.be.specified", "\u5FC5\u987B\u6307\u5B9A --output" },
             { "err.path.not.a.dir", "\u8DEF\u5F84\u5FC5\u987B\u4E3A\u76EE\u5F55: {0}" },
             { "err.path.not.found", "\u627E\u4E0D\u5230\u8DEF\u5F84: {0}" },

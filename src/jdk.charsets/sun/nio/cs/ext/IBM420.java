@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,14 +48,15 @@ public class IBM420 extends Charset implements HistoricallyNamedCharset
     }
 
     public CharsetDecoder newDecoder() {
-        return new SingleByte.Decoder(this, b2c, false);
+        return new SingleByte.Decoder(this, Holder.b2c, false, false);
     }
 
     public CharsetEncoder newEncoder() {
-        return new SingleByte.Encoder(this, c2b, c2bIndex, false);
+        return new SingleByte.Encoder(this, Holder.c2b, Holder.c2bIndex, false);
     }
 
-    private final static String b2cTable = 
+    private static class Holder {
+        private static final String b2cTable = 
         "\u0634\u0061\u0062\u0063\u0064\u0065\u0066\u0067" +      // 0x80 - 0x87
         "\u0068\u0069\uFEB7\u0635\uFEBB\u0636\uFEBF\u0637" +      // 0x88 - 0x8f
         "\u0638\u006A\u006B\u006C\u006D\u006E\u006F\u0070" +      // 0x90 - 0x97
@@ -90,18 +91,18 @@ public class IBM420 extends Charset implements HistoricallyNamedCharset
         "\uFEB3\u060C\u003A\u0023\u0040\'\u003D\"" ;      // 0x78 - 0x7f
 
 
-    private final static char[] b2c = b2cTable.toCharArray();
-    private final static char[] c2b = new char[0x500];
-    private final static char[] c2bIndex = new char[0x100];
+        private static final char[] b2c = b2cTable.toCharArray();
+        private static final char[] c2b = new char[0x500];
+        private static final char[] c2bIndex = new char[0x100];
 
-    static {
-        char[] b2cMap = b2c;
-        char[] c2bNR = null;
-        // remove non-roundtrip entries
+        static {
+            char[] b2cMap = b2c;
+            char[] c2bNR = null;
+            // remove non-roundtrip entries
         b2cMap = b2cTable.toCharArray();
         b2cMap[165] = UNMAPPABLE_DECODING;
 
-        // non-roundtrip c2b only entries
+            // non-roundtrip c2b only entries
         c2bNR = (
         "\u0015\u0085\u0042\uFE7C\u0046\uFE80\u0047\uFE81" +
         "\u0049\uFE83\u004B\u066C\u004B\uFF0E\u004C\uFF1C" +
@@ -150,6 +151,7 @@ public class IBM420 extends Charset implements HistoricallyNamedCharset
         "\u00F4\uFF14\u00F5\uFF15\u00F6\uFF16\u00F7\uFF17" +
         "\u00F8\uFF18\u00F9\uFF19").toCharArray();
 
-        SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+            SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+        }
     }
 }

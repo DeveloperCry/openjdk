@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  *
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
@@ -29,11 +29,8 @@
 
 package sun.nio.cs.ext;
 
-import java.lang.ref.SoftReference;
 import java.nio.charset.Charset;
 import java.nio.charset.spi.CharsetProvider;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * Provider for extended charsets.
@@ -80,11 +77,6 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
         charset("x-Big5-Solaris", "Big5_Solaris",
                 new String[] {
                     "Big5_Solaris",
-                });
-
-        charset("GB18030", "GB18030",
-                new String[] {
-                    "gb18030-2000",
                 });
 
         charset("GB2312", "EUC_CN",
@@ -567,6 +559,14 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "1124",
                 });
 
+        charset("x-IBM1129", "IBM1129",
+                new String[] {
+                    "cp1129",
+                    "ibm1129",
+                    "ibm-1129",
+                    "1129",
+                });
+
         charset("x-IBM1364", "IBM1364",
                 new String[] {
                     "cp1364",
@@ -679,6 +679,7 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp833",
                     "ibm833",
                     "ibm-833",
+                    "833",
                 });
 
         charset("x-IBM834", "IBM834",
@@ -815,7 +816,17 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp964",
                     "ibm964",
                     "ibm-964",
+                    "ibm-euctw",
                     "964",
+                });
+
+        charset("x-IBM29626C", "IBM29626C",
+                new String[] {
+                    "cp29626c",
+                    "ibm29626c",
+                    "ibm-29626c",
+                    "29626c",
+                    "ibm-eucjp",
                 });
 
         charset("x-IBM33722", "IBM33722",
@@ -835,6 +846,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01140",
                     "1140",
                     "ebcdic-us-037+euro",
+                    "ibm1140",
+                    "ibm-1140",
                 });
 
         charset("IBM01141", "IBM1141",
@@ -844,6 +857,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01141",
                     "1141",
                     "ebcdic-de-273+euro",
+                    "ibm1141",
+                    "ibm-1141",
                 });
 
         charset("IBM01142", "IBM1142",
@@ -854,6 +869,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "1142",
                     "ebcdic-no-277+euro",
                     "ebcdic-dk-277+euro",
+                    "ibm1142",
+                    "ibm-1142",
                 });
 
         charset("IBM01143", "IBM1143",
@@ -864,6 +881,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "1143",
                     "ebcdic-fi-278+euro",
                     "ebcdic-se-278+euro",
+                    "ibm1143",
+                    "ibm-1143",
                 });
 
         charset("IBM01144", "IBM1144",
@@ -873,6 +892,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01144",
                     "1144",
                     "ebcdic-it-280+euro",
+                    "ibm1144",
+                    "ibm-1144",
                 });
 
         charset("IBM01145", "IBM1145",
@@ -882,6 +903,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01145",
                     "1145",
                     "ebcdic-es-284+euro",
+                    "ibm1145",
+                    "ibm-1145",
                 });
 
         charset("IBM01146", "IBM1146",
@@ -891,6 +914,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01146",
                     "1146",
                     "ebcdic-gb-285+euro",
+                    "ibm1146",
+                    "ibm-1146",
                 });
 
         charset("IBM01147", "IBM1147",
@@ -900,6 +925,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01147",
                     "1147",
                     "ebcdic-fr-277+euro",
+                    "ibm1147",
+                    "ibm-1147",
                 });
 
         charset("IBM01148", "IBM1148",
@@ -909,6 +936,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01148",
                     "1148",
                     "ebcdic-international-500+euro",
+                    "ibm1148",
+                    "ibm-1148",
                 });
 
         charset("IBM01149", "IBM1149",
@@ -918,6 +947,8 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
                     "cp01149",
                     "1149",
                     "ebcdic-s-871+euro",
+                    "ibm1149",
+                    "ibm-1149",
                 });
 
         charset("IBM290", "IBM290",
@@ -1019,188 +1050,6 @@ public class ExtendedCharsets extends AbstractCharsetProvider {
 
         instance = this;
 
-    }
-
-    private boolean initialized = false;
-
-    // If the sun.nio.cs.map property is defined on the command line we won't
-    // see it in the system-properties table until after the charset subsystem
-    // has been initialized.  We therefore delay the effect of this property
-    // until after the JRE has completely booted.
-    //
-    // At the moment following values for this property are supported, property
-    // value string is case insensitive.
-    //
-    // (1)"Windows-31J/Shift_JIS"
-    // In 1.4.1 we added a correct implementation of the Shift_JIS charset
-    // but in previous releases this charset name had been treated as an alias
-    // for Windows-31J, aka MS932. Users who have existing code that depends
-    // upon this alias can restore the previous behavior by defining this
-    // property to have this value.
-    //
-    // (2)"x-windows-50221/ISO-2022-JP"
-    //    "x-windows-50220/ISO-2022-JP"
-    //    "x-windows-iso2022jp/ISO-2022-JP"
-    // The charset ISO-2022-JP is a "standard based" implementation by default,
-    // which supports ASCII, JIS_X_0201 and JIS_X_0208 mappings based encoding
-    // and decoding only.
-    // There are three Microsoft iso-2022-jp variants, namely x-windows-50220,
-    // x-windows-50221 and x-windows-iso2022jp which behaves "slightly" differently
-    // compared to the "standard based" implementation. See ISO2022_JP.java for
-    // detailed description. Users who prefer the behavior of MS iso-2022-jp
-    // variants should use these names explicitly instead of using "ISO-2022-JP"
-    // and its aliases. However for those who need the ISO-2022-JP charset behaves
-    // exactly the same as MS variants do, above properties can be defined to
-    // switch.
-    //
-    // If we need to define other charset-alias mappings in the future then
-    // this property could be further extended, the general idea being that its
-    // value should be of the form
-    //
-    //     new-charset-1/old-charset-1,new-charset-2/old-charset-2,...
-    //
-    // where each charset named to the left of a slash is intended to replace
-    // (most) uses of the charset named to the right of the slash.
-    //
-    protected void init() {
-        if (initialized)
-            return;
-        if (!jdk.internal.misc.VM.isBooted())
-            return;
-
-        String map = getProperty("sun.nio.cs.map");
-        boolean sjisIsMS932 = false;
-        boolean iso2022jpIsMS50221 = false;
-        boolean iso2022jpIsMS50220 = false;
-        boolean iso2022jpIsMSISO2022JP = false;
-        if (map != null) {
-            String[] maps = map.split(",");
-            for (int i = 0; i < maps.length; i++) {
-                if (maps[i].equalsIgnoreCase("Windows-31J/Shift_JIS")) {
-                    sjisIsMS932 = true;
-                } else if (maps[i].equalsIgnoreCase("x-windows-50221/ISO-2022-JP")) {
-                    iso2022jpIsMS50221 = true;
-                } else if (maps[i].equalsIgnoreCase("x-windows-50220/ISO-2022-JP")) {
-                    iso2022jpIsMS50220 = true;
-                } else if (maps[i].equalsIgnoreCase("x-windows-iso2022jp/ISO-2022-JP")) {
-                    iso2022jpIsMSISO2022JP = true;
-                }
-            }
-        }
-        if (sjisIsMS932 && hasCharset("Shift_JIS")) {
-            deleteCharset("Shift_JIS",
-                          new String[] {
-                              // IANA aliases
-                              "sjis", // historical
-                              "shift_jis",
-                              "shift-jis",
-                              "ms_kanji",
-                              "x-sjis",
-                              "csShiftJIS"
-                          });
-            deleteCharset("windows-31j",
-                          new String[] {
-                              "MS932", // JDK historical
-                              "windows-932",
-                              "csWindows31J"
-                          });
-            charset("Shift_JIS", "SJIS",
-                    new String[] {
-                        // IANA aliases
-                        "sjis"          // JDK historical
-                    });
-            charset("windows-31j", "MS932",
-                    new String[] {
-                        "MS932",        // JDK historical
-                        "windows-932",
-                        "csWindows31J",
-                        "shift-jis",
-                        "ms_kanji",
-                        "x-sjis",
-                        "csShiftJIS",
-                        // This alias takes precedence over the actual
-                        // Shift_JIS charset itself since aliases are always
-                        // resolved first, before looking up canonical names.
-                        "shift_jis"
-                    });
-        }
-        if (iso2022jpIsMS50221 ||
-            iso2022jpIsMS50220 ||
-            iso2022jpIsMSISO2022JP) {
-            deleteCharset("ISO-2022-JP",
-                          new String[] {
-                              "iso2022jp",
-                                "jis",
-                                "csISO2022JP",
-                                "jis_encoding",
-                                "csjisencoding"
-                          });
-            if (iso2022jpIsMS50221) {
-                deleteCharset("x-windows-50221",
-                              new String[] {
-                                  "cp50221",
-                                  "ms50221"
-                              });
-                charset("x-windows-50221", "MS50221",
-                        new String[] {
-                            "cp50221",
-                            "ms50221",
-                            "iso-2022-jp",
-                            "iso2022jp",
-                            "jis",
-                            "csISO2022JP",
-                            "jis_encoding",
-                            "csjisencoding"
-                        });
-            } else if (iso2022jpIsMS50220) {
-                deleteCharset("x-windows-50220",
-                              new String[] {
-                                  "cp50220",
-                                  "ms50220"
-                              });
-                charset("x-windows-50220", "MS50220",
-                        new String[] {
-                            "cp50220",
-                            "ms50220",
-                            "iso-2022-jp",
-                            "iso2022jp",
-                            "jis",
-                            "csISO2022JP",
-                            "jis_encoding",
-                            "csjisencoding"
-                        });
-            } else {
-                deleteCharset("x-windows-iso2022jp",
-                              new String[] {
-                                  "windows-iso2022jp"
-                              });
-                charset("x-windows-iso2022jp", "MSISO2022JP",
-                        new String[] {
-                            "windows-iso2022jp",
-                            "iso-2022-jp",
-                            "iso2022jp",
-                            "jis",
-                            "csISO2022JP",
-                            "jis_encoding",
-                            "csjisencoding"
-                        });
-
-
-            }
-        }
-        initialized = true;
-    }
-
-    private static String getProperty(String key) {
-        // this method may be called during initialization of
-        // system class loader and thus not using lambda
-        return AccessController.doPrivileged(
-            new PrivilegedAction<String>() {
-                @Override
-                public String run() {
-                    return System.getProperty(key);
-                }
-            });
     }
 
     public static String[] aliasesFor(String charsetName) {

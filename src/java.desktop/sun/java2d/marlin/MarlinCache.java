@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -107,7 +107,7 @@ public final class MarlinCache implements MarlinConst {
 
     boolean useRLE = false;
 
-    MarlinCache(final IRendererContext rdrCtx) {
+    MarlinCache(final RendererContext rdrCtx) {
         this.rdrStats = rdrCtx.stats();
 
         rowAAChunk = rdrCtx.newOffHeapArray(INITIAL_CHUNK_ARRAY); // 64K

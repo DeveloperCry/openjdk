@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,11 +52,12 @@ public class DocFileIOException extends DocletException {
         READ,
         /** The file was being opened for writing, or being written when the exception occurred. */
         WRITE
-    };
+    }
 
     /**
      * The file that was in use when the exception occurred.
      */
+    @SuppressWarnings("serial") // Type of field is not Serializable
     public final DocFile fileName;
 
     /**

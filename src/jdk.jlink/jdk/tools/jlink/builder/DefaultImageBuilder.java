@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,15 +29,11 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
-import java.io.Writer;
 import java.lang.module.ModuleDescriptor;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
@@ -55,16 +51,19 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-import static java.util.stream.Collectors.*;
 
 import jdk.tools.jlink.internal.BasicImageWriter;
 import jdk.tools.jlink.internal.ExecutableImage;
 import jdk.tools.jlink.internal.Platform;
+import jdk.tools.jlink.plugin.PluginException;
 import jdk.tools.jlink.plugin.ResourcePool;
 import jdk.tools.jlink.plugin.ResourcePoolEntry;
 import jdk.tools.jlink.plugin.ResourcePoolEntry.Type;
 import jdk.tools.jlink.plugin.ResourcePoolModule;
-import jdk.tools.jlink.plugin.PluginException;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toSet;
 
 /**
  *
@@ -87,8 +86,9 @@ public final class DefaultImageBuilder implements ImageBuilder {
         private final Path home;
         private final List<String> args;
         private final Set<String> modules;
+        private final Platform platform;
 
-        DefaultExecutableImage(Path home, Set<String> modules) {
+        DefaultExecutableImage(Path home, Set<String> modules, Platform p) {
             Objects.requireNonNull(home);
             if (!Files.exists(home)) {
                 throw new IllegalArgumentException("Invalid image home");
@@ -96,6 +96,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
             this.home = home;
             this.modules = Collections.unmodifiableSet(modules);
             this.args = createArgs(home);
+            this.platform = p;
         }
 
         private static List<String> createArgs(Path home) {
@@ -128,13 +129,18 @@ public final class DefaultImageBuilder implements ImageBuilder {
                 throw new UncheckedIOException(ex);
             }
         }
+
+        @Override
+        public Platform getTargetPlatform() {
+            return platform;
+        }
     }
 
     private final Path root;
     private final Map<String, String> launchers;
     private final Path mdir;
     private final Set<String> modules = new HashSet<>();
-    private Platform targetPlatform;
+    private Platform platform;
 
     /**
      * Default image builder constructor.
@@ -150,6 +156,11 @@ public final class DefaultImageBuilder implements ImageBuilder {
     }
 
     @Override
+    public Platform getTargetPlatform() {
+        return platform;
+    }
+
+    @Override
     public void storeFiles(ResourcePool files) {
         try {
             String value = files.moduleView()
@@ -159,7 +170,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
             if (value == null) {
                 throw new PluginException("ModuleTarget attribute is missing for java.base module");
             }
-            this.targetPlatform = Platform.toPlatform(value);
+            this.platform = Platform.parsePlatform(value);
 
             checkResourcePool(files);
 
@@ -270,7 +281,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
             if (mainClassName == null) {
                 String path = "/" + module + "/module-info.class";
                 Optional<ResourcePoolEntry> res = imageContent.findEntry(path);
-                if (!res.isPresent()) {
+                if (res.isEmpty()) {
                     throw new IOException("module-info.class not found for " + module + " module");
                 }
                 ByteArrayInputStream stream = new ByteArrayInputStream(res.get().contentBytes());
@@ -282,8 +293,8 @@ public final class DefaultImageBuilder implements ImageBuilder {
 
             if (mainClassName != null) {
                 // make sure main class exists!
-                if (!imageContent.findEntry("/" + module + "/" +
-                        mainClassName.replace('.', '/') + ".class").isPresent()) {
+                if (imageContent.findEntry("/" + module + "/" +
+                        mainClassName.replace('.', '/') + ".class").isEmpty()) {
                     throw new IllegalArgumentException(module + " does not have main class: " + mainClassName);
                 }
 
@@ -300,7 +311,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
                 sb.append("$DIR/java $JLINK_VM_OPTIONS -m ")
                         .append(module).append('/')
                         .append(mainClassName)
-                        .append(" $@\n");
+                        .append(" \"$@\"\n");
 
                 try (BufferedWriter writer = Files.newBufferedWriter(cmd,
                         StandardCharsets.ISO_8859_1,
@@ -441,13 +452,6 @@ public final class DefaultImageBuilder implements ImageBuilder {
         Files.copy(in, dstFile);
     }
 
-    private void writeSymEntry(Path dstFile, Path target) throws IOException {
-        Objects.requireNonNull(dstFile);
-        Objects.requireNonNull(target);
-        Files.createDirectories(Objects.requireNonNull(dstFile.getParent()));
-        Files.createLink(dstFile, target);
-    }
-
     /*
      * Create a symbolic link to the given target if the target platform
      * supports symbolic link; otherwise, it will create a tiny file
@@ -482,7 +486,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
     }
 
     private boolean isWindows() {
-        return targetPlatform == Platform.WINDOWS;
+        return platform.os() == Platform.OperatingSystem.WINDOWS;
     }
 
     /**
@@ -515,16 +519,9 @@ public final class DefaultImageBuilder implements ImageBuilder {
         }
     }
 
-    private static void createUtf8File(File file, String content) throws IOException {
-        try (OutputStream fout = new FileOutputStream(file);
-                Writer output = new OutputStreamWriter(fout, "UTF-8")) {
-            output.write(content);
-        }
-    }
-
     @Override
     public ExecutableImage getExecutableImage() {
-        return new DefaultExecutableImage(root, modules);
+        return new DefaultExecutableImage(root, modules, platform);
     }
 
     // This is experimental, we should get rid-off the scripts in a near future
@@ -566,7 +563,10 @@ public final class DefaultImageBuilder implements ImageBuilder {
         Path binDir = root.resolve(BIN_DIRNAME);
         if (Files.exists(binDir.resolve("java")) ||
             Files.exists(binDir.resolve("java.exe"))) {
-            return new DefaultExecutableImage(root, retrieveModules(root));
+            // It may be possible to extract the platform info from the given image.
+            // --post-process-path is a hidden option and pass unknown platform for now.
+            // --generate-cds-archive plugin cannot be used with --post-process-path option.
+            return new DefaultExecutableImage(root, retrieveModules(root), Platform.UNKNOWN);
         }
         return null;
     }

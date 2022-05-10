@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -157,11 +153,12 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "MAD", "MAD" },
             { "MDL", "MDL" },
             { "MGA", "MGA" },
-            { "MKD", "\u0434\u0435\u043d" },
+            { "MKD", "\u0434\u0435\u043d." },
             { "MMK", "MMK" },
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -198,6 +195,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -214,6 +212,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VND", "VND" },
             { "VUV", "VUV" },
             { "WST", "WST" },
@@ -227,7 +226,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "all", "\u0410\u043b\u0431\u0430\u043d\u0441\u043a\u0438 \u043b\u0435\u043a" },
             { "amd", "\u0415\u0440\u043c\u0435\u043d\u0441\u043a\u0438 \u0434\u0440\u0430\u043c" },
             { "ang", "\u0425\u043e\u043b\u0430\u043d\u0434\u0441\u043a\u0438 \u0430\u043d\u0442\u0438\u043b\u0441\u043a\u0438 \u0433\u0438\u043b\u0434\u0435\u0440" },
-            { "aoa", "\u0410\u043d\u0433\u043e\u043b\u0441\u043a\u0430 \u041a\u0432\u0430\u043d\u0437\u0430" },
+            { "aoa", "\u0410\u043d\u0433\u043e\u043b\u0441\u043a\u0430 \u043a\u0432\u0430\u043d\u0437\u0430" },
             { "aok", "\u0410\u043d\u0433\u043e\u043b\u0441\u043a\u0430 \u041a\u0432\u0430\u043d\u0437\u0430 (1977\u20131990)" },
             { "aon", "\u0410\u043d\u0433\u043e\u043b\u0441\u043a\u0430 \u043d\u043e\u0432\u0430 \u041a\u0432\u0430\u043d\u0437\u0430 (1990\u20132000)" },
             { "arp", "\u0410\u0440\u0433\u0435\u043d\u0442\u0438\u043d\u0441\u043a\u0438 \u041f\u0435\u0437\u043e\u0441 (1983\u20131985)" },
@@ -237,7 +236,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "awg", "\u0410\u0440\u0443\u0431\u0438\u0441\u043a\u0438 \u0444\u043b\u043e\u0440\u0438\u043d" },
             { "azn", "\u0410\u0437\u0435\u0440\u0431\u0435\u0458\u045f\u0430\u043d\u0441\u043a\u0438 \u043c\u0430\u043d\u0430\u0442" },
             { "bad", "\u0411\u043e\u0441\u0430\u043d\u0441\u043a\u043e-\u0425\u0435\u0440\u0446\u0435\u0433\u043e\u0432\u0441\u043a\u0438 \u0414\u0438\u043d\u0430\u0440" },
-            { "bam", "\u0411\u043e\u0441\u0430\u043d\u0441\u043a\u043e-\u0425\u0435\u0440\u0446\u0435\u0433\u043e\u0432\u0441\u043a\u0430 \u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0438\u0431\u0438\u043b\u043d\u0430 \u043c\u0430\u0440\u043a\u0430" },
+            { "bam", "\u0411\u043e\u0441\u0430\u043d\u0441\u043a\u043e-\u0445\u0435\u0440\u0446\u0435\u0433\u043e\u0432\u0441\u043a\u0430 \u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0438\u0431\u0438\u043b\u043d\u0430 \u043c\u0430\u0440\u043a\u0430" },
             { "bbd", "\u0411\u0430\u0440\u0431\u0430\u0434\u043e\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "bdt", "\u0411\u0430\u043d\u0433\u043b\u0430\u0434\u0435\u0448\u043a\u0430 \u0442\u0430\u043a\u0430" },
             { "bec", "\u0411\u0435\u043b\u0433\u0438\u0441\u043a\u0438 \u0424\u0440\u0430\u043d\u043a (\u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0438\u0431\u0438\u043b\u0435\u043d)" },
@@ -257,25 +256,25 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "byb", "\u0411\u0435\u043b\u043e\u0440\u0443\u0441\u043a\u0430 \u043d\u043e\u0432\u0430 \u0440\u0443\u0431\u0459\u0430 (1994\u20131999)" },
             { "byn", "\u0411\u0435\u043b\u043e\u0440\u0443\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430" },
             { "byr", "\u0411\u0435\u043b\u043e\u0440\u0443\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430 (2000\u20132016)" },
-            { "bzd", "\u0411\u0435\u043b\u0438\u0437\u0438\u0441\u043a\u0438 \u0414\u043e\u043b\u0430\u0440" },
+            { "bzd", "\u0411\u0435\u043b\u0438\u0437\u0438\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "cad", "\u041a\u0430\u043d\u0430\u0434\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "cdf", "\u041a\u043e\u043d\u0433\u043e\u043b\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
-            { "chf", "\u0428\u0432\u0430\u0458\u0446\u0430\u0440\u0441\u043a\u0438 \u0424\u0440\u0430\u043d\u043a" },
+            { "chf", "\u0428\u0432\u0430\u0458\u0446\u0430\u0440\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
             { "clp", "\u0427\u0438\u043b\u0435\u0430\u043d\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "cnh", "\u041a\u0438\u043d\u0435\u0441\u043a\u0438 \u0458\u0443\u0430\u043d (\u043e\u0444\u0448\u043e\u0440)" },
             { "cny", "\u041a\u0438\u043d\u0435\u0441\u043a\u0438 \u0458\u0443\u0430\u043d" },
             { "cop", "\u041a\u043e\u043b\u0443\u043c\u0431\u0438\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "crc", "\u041a\u043e\u0441\u0442\u0430\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u043a\u043e\u043b\u043e\u043d" },
             { "csk", "\u0427\u0435\u0445\u043e\u0441\u043b\u043e\u0432\u0430\u0447\u043a\u0430 \u0446\u0432\u0440\u0441\u0442\u0430 \u043a\u043e\u0440\u043e\u043d\u0430" },
-            { "cuc", "\u041a\u0443\u0431\u0430\u043d\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441 (\u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0438\u0431\u0438\u043b\u0435\u043d)" },
+            { "cuc", "\u041a\u0443\u0431\u0430\u043d\u0441\u043a\u0438 \u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0438\u0431\u0438\u043b\u0435\u043d \u043f\u0435\u0437\u043e\u0441" },
             { "cup", "\u041a\u0443\u0431\u0430\u043d\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "cve", "\u0417\u0435\u043b\u0435\u043d\u043e\u2019\u0440\u0442\u0441\u043a\u0438 \u0435\u0441\u043a\u0443\u0434\u043e" },
             { "cyp", "\u041a\u0438\u043f\u0430\u0440\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
-            { "czk", "\u0427\u0435\u0448\u043a\u0430 \u043a\u043e\u0440\u043e\u043d\u0430" },
+            { "czk", "\u0427\u0435\u0448\u043a\u0430 \u043a\u0440\u0443\u043d\u0430" },
             { "dem", "\u0413\u0435\u0440\u043c\u0430\u043d\u0441\u043a\u0430 \u041c\u0430\u0440\u043a\u0430" },
             { "djf", "\u040f\u0438\u0431\u0443\u0442\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
             { "dkk", "\u0414\u0430\u043d\u0441\u043a\u0430 \u043a\u0440\u0443\u043d\u0430" },
-            { "dop", "\u0414\u043e\u043c\u0438\u043d\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u041f\u0435\u0437\u043e\u0441" },
+            { "dop", "\u0414\u043e\u043c\u0438\u043d\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "dzd", "\u0410\u043b\u0436\u0438\u0440\u0441\u043a\u0438 \u0434\u0438\u043d\u0430\u0440" },
             { "egp", "\u0415\u0433\u0438\u043f\u0435\u0442\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "ern", "\u0415\u0440\u0438\u0442\u0440\u0435\u0458\u0441\u043a\u0430 \u043d\u0430\u043a\u0444\u0430" },
@@ -286,7 +285,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "fjd", "\u0424\u0438\u045f\u0438\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "fkp", "\u0424\u043e\u043b\u043a\u043b\u0430\u043d\u0434\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "frf", "\u0424\u0440\u0430\u043d\u0446\u0443\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
-            { "gbp", "\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430 \u0424\u0443\u043d\u0442\u0430" },
+            { "gbp", "\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "gel", "\u0413\u0440\u0443\u0437\u0438\u0441\u043a\u0438 \u043b\u0430\u0440\u0438" },
             { "ghc", "\u0413\u0430\u043d\u0430\u0458\u0441\u043a\u0438 \u0421\u0435\u0434\u0438" },
             { "ghs", "\u0413\u0430\u043d\u0441\u043a\u0438 \u0441\u0435\u0434\u0438" },
@@ -307,7 +306,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "iep", "\u0418\u0440\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "ilp", "\u0418\u0437\u0440\u0435\u043b\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "ils", "\u0418\u0437\u0440\u0430\u0435\u043b\u0441\u043a\u0438 \u043d\u043e\u0432 \u0448\u0435\u043a\u0435\u043b" },
-            { "inr", "\u0418\u043d\u0434\u0438\u0458\u0441\u043a\u0430 \u0440\u0443\u043f\u0438\u0458\u0430" },
+            { "inr", "\u0418\u043d\u0434\u0438\u0441\u043a\u0430 \u0440\u0443\u043f\u0438\u0458\u0430" },
             { "iqd", "\u0418\u0440\u0430\u0447\u043a\u0438 \u0434\u0438\u043d\u0430\u0440" },
             { "irr", "\u0418\u0440\u0430\u043d\u0441\u043a\u0438 \u0440\u0438\u0430\u043b" },
             { "isk", "\u0418\u0441\u043b\u0430\u043d\u0434\u0441\u043a\u0430 \u043a\u0440\u043e\u043d\u0430" },
@@ -322,7 +321,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "kpw", "\u0421\u0435\u0432\u0435\u0440\u043d\u043e \u043a\u043e\u0440\u0435\u0458\u0441\u043a\u0438 \u0432\u043e\u043d" },
             { "krw", "\u0408\u0443\u0436\u043d\u043e \u043a\u043e\u0440\u0435\u0458\u0441\u043a\u0438 \u0432\u043e\u043d" },
             { "kwd", "\u041a\u0443\u0432\u0430\u0458\u0442\u0441\u043a\u0438 \u0434\u0438\u043d\u0430\u0440" },
-            { "kyd", "\u0414\u043e\u043b\u0430\u0440 \u043d\u0430 \u043a\u0430\u0458\u043c\u0430\u043d\u0441\u043a\u0438 \u043e\u0441\u0442\u0440\u043e\u0432\u0438" },
+            { "kyd", "\u041a\u0430\u0458\u043c\u0430\u043d\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "kzt", "\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0441\u043a\u0430 \u0442\u0435\u043d\u0433\u0430" },
             { "lak", "\u041b\u0430\u043e\u0441\u043a\u0438 \u043a\u0438\u043f" },
             { "lbp", "\u041b\u0438\u0431\u0430\u043d\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
@@ -335,7 +334,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "lvl", "\u041b\u0430\u0442\u0432\u0438\u0458\u0441\u043a\u0438 \u043b\u0430\u0442" },
             { "lvr", "\u041b\u0430\u0442\u0432\u0438\u0458\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430" },
             { "lyd", "\u041b\u0438\u0431\u0438\u0458\u0441\u043a\u0438 \u0434\u0438\u043d\u0430\u0440" },
-            { "mad", "\u041c\u0430\u0440\u043e\u043a\u0430\u043d\u0441\u043a\u0438 \u0414\u0438\u0440\u0445\u0430\u043c" },
+            { "mad", "\u041c\u0430\u0440\u043e\u043a\u0430\u043d\u0441\u043a\u0438 \u0434\u0438\u0440\u0445\u0430\u043c" },
             { "maf", "\u041c\u0430\u0440\u043e\u043a\u0430\u043d\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
             { "mdl", "\u041c\u043e\u043b\u0434\u0430\u0432\u0441\u043a\u0438 \u043b\u0435\u0443" },
             { "mga", "\u041c\u0430\u043b\u0430\u0433\u0430\u0441\u0438\u0441\u043a\u0438 \u0430\u0440\u0438\u0430\u0440\u0438" },
@@ -349,7 +348,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "mtl", "\u041c\u0430\u043b\u0442\u0435\u0448\u043a\u0430 \u043b\u0438\u0440\u0430" },
             { "mtp", "\u041c\u0430\u043b\u0442\u0435\u0448\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "mur", "\u041c\u0430\u0432\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430 \u0440\u0443\u043f\u0438\u0458\u0430" },
-            { "mvr", "\u041c\u0430\u043b\u0434\u0438\u0432\u0438\u0441\u043a\u0430 \u0440\u0443\u0444\u0438\u0458\u0430" },
+            { "mvr", "\u041c\u0430\u043b\u0434\u0438\u0432\u0441\u043a\u0430 \u0440\u0443\u0444\u0438\u0458\u0430" },
             { "mwk", "\u041c\u0430\u043b\u0430\u0432\u0438\u0441\u043a\u0430 \u043a\u0432\u0430\u0447\u0430" },
             { "mxn", "\u041c\u0435\u043a\u0441\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "mxp", "\u041c\u0435\u043a\u0441\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u0441\u0440\u0435\u0431\u0440\u0435\u043d \u043f\u0435\u0437\u043e\u0441 (1861\u20131992)" },
@@ -378,7 +377,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "pyg", "\u041f\u0430\u0440\u0430\u0433\u0432\u0430\u0458\u0441\u043a\u0430 \u0433\u0443\u0430\u0440\u0430\u043d\u0430" },
             { "qar", "\u041a\u0430\u0442\u0430\u0440\u0441\u043a\u0438 \u0440\u0438\u0430\u043b" },
             { "rol", "\u0420\u043e\u043c\u0430\u043d\u0441\u043a\u0430 \u043b\u0435\u0438 (1952\u20132006)" },
-            { "ron", "\u0420\u043e\u043c\u0430\u043d\u0441\u043a\u0430 \u043b\u0435\u0438" },
+            { "ron", "\u0420\u043e\u043c\u0430\u043d\u0441\u043a\u0438 \u043b\u0435\u0443" },
             { "rsd", "\u0421\u0440\u043f\u0441\u043a\u0438 \u0434\u0438\u043d\u0430\u0440" },
             { "rub", "\u0420\u0443\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430" },
             { "rur", "\u0420\u0443\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430 (1991\u20131998)" },
@@ -400,7 +399,7 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "srg", "\u0421\u0443\u0440\u0438\u043d\u0430\u043c\u0441\u043a\u0438 \u0433\u0438\u043b\u0434\u0435\u0440" },
             { "ssp", "\u0408\u0443\u0436\u043d\u043e\u0441\u0443\u0434\u0430\u043d\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
             { "std", "\u0414\u043e\u0431\u0440\u0430 \u043d\u0430 \u0421\u0430\u0443\u043d \u0422\u043e\u043c\u0435 \u0438 \u041f\u0440\u0438\u043d\u0441\u0438\u043f (1977\u20132017)" },
-            { "stn", "\u0414\u043e\u0431\u0440\u0430 \u043d\u0430 \u0421\u0430\u0443\u043d \u0422\u043e\u043c\u0435 \u0438 \u041f\u0440\u0438\u043d\u0441\u0438\u043f" },
+            { "stn", "\u0414\u043e\u0431\u0440\u0430 \u043d\u0430 \u0421\u0430\u043e \u0422\u043e\u043c\u0435 \u0438 \u041f\u0440\u0438\u043d\u0441\u0438\u043f\u0435" },
             { "sur", "\u0421\u043e\u0432\u0435\u0442\u0441\u043a\u0430 \u0440\u0443\u0431\u0459\u0430" },
             { "svc", "\u0421\u0430\u043b\u0432\u0430\u0434\u043e\u0440\u0441\u043a\u0438 \u043a\u043e\u043b\u043e\u043d" },
             { "syp", "\u0421\u0438\u0440\u0438\u0458\u0441\u043a\u0430 \u0444\u0443\u043d\u0442\u0430" },
@@ -428,12 +427,13 @@ public class CurrencyNames_mk extends OpenListResourceBundle {
             { "uyu", "\u0423\u0440\u0443\u0433\u0432\u0430\u0458\u0441\u043a\u0438 \u043f\u0435\u0437\u043e\u0441" },
             { "uzs", "\u0423\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u0430\u043d\u0441\u043a\u0438 \u0441\u043e\u043c" },
             { "veb", "\u0412\u0435\u043d\u0435\u0446\u0443\u0435\u043b\u0441\u043a\u0438 \u0431\u043e\u043b\u0438\u0432\u0430\u0440 (1871\u20132008)" },
-            { "vef", "\u0412\u0435\u043d\u0435\u0446\u0443\u0435\u043b\u0441\u043a\u0438 \u0431\u043e\u043b\u0438\u0432\u0430\u0440" },
+            { "vef", "\u0412\u0435\u043d\u0435\u0446\u0443\u0435\u043b\u0441\u043a\u0438 \u0431\u043e\u043b\u0438\u0432\u0430\u0440 (2008\u20132018)" },
+            { "ves", "\u0412\u0435\u043d\u0435\u0446\u0443\u0435\u043b\u0441\u043a\u0438 \u0431\u043e\u043b\u0438\u0432\u0430\u0440" },
             { "vnd", "\u0412\u0438\u0435\u0442\u043d\u0430\u043c\u0441\u043a\u0438 \u0434\u043e\u043d\u0433" },
             { "vuv", "\u0412\u0430\u043d\u0430\u0442\u0441\u043a\u0438 \u0432\u0430\u0442\u0443" },
             { "wst", "\u0421\u0430\u043c\u043e\u0430\u043d\u0441\u043a\u0430 \u0442\u0430\u043b\u0430" },
             { "xaf", "\u0426\u0435\u043d\u0442\u0440\u0430\u043b\u043d\u043e\u0430\u0444\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
-            { "xcd", "\u0418\u0441\u0442\u043e\u0447\u043d\u043e \u043a\u0430\u0440\u0438\u0431\u0438\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
+            { "xcd", "\u0418\u0441\u0442\u043e\u0447\u043d\u043e\u043a\u0430\u0440\u0438\u043f\u0441\u043a\u0438 \u0434\u043e\u043b\u0430\u0440" },
             { "xof", "\u0417\u0430\u043f\u0430\u0434\u043d\u043e\u0430\u0444\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0438 \u0444\u0440\u0430\u043d\u043a" },
             { "xpf", "\u0426\u0424\u041f \u0444\u0440\u0430\u043d\u043a" },
             { "xxx", "\u041d\u0435\u043f\u043e\u0437\u043d\u0430\u0442\u0430 \u0432\u0430\u043b\u0443\u0442\u0430" },

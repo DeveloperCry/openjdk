@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,13 +22,14 @@
  *
  *
  */
-package com.sun.beans.introspect;
 
-import com.sun.beans.util.Cache;
+package com.sun.beans.introspect;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+
+import com.sun.beans.util.Cache;
 
 import static sun.reflect.misc.ReflectUtil.checkPackageAccess;
 
@@ -52,6 +53,14 @@ public final class ClassInfo {
         } catch (SecurityException exception) {
             return DEFAULT;
         }
+    }
+
+    public static void clear() {
+        CACHE.clear();
+    }
+
+    public static void remove(Class<?> clz) {
+        CACHE.remove(clz);
     }
 
     private final Object mutex = new Object();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,6 @@ import javax.xml.transform.Result;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.net.MalformedURLException;
 
 /**
  * <p>Acts as an holder for a transformation result,

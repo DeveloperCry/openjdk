@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -60,6 +60,11 @@ public class Segment implements Cloneable, CharacterIterator, CharSequence {
      * make up the text of interest.
      */
     public int count;
+
+    /**
+     * Whether the array is a copy of data or not.
+     */
+    boolean copy;
 
     private boolean partialReturn;
 

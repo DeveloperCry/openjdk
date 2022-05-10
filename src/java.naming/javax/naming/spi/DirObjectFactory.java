@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -118,7 +118,7 @@ public interface DirObjectFactory extends ObjectFactory {
  * to get it, either using {@code obj}, or {@code name} and {@code nameCtx}.
  *      The factory must not modify attrs.
  * @return The object created; null if an object cannot be created.
- * @exception Exception If this object factory encountered an exception
+ * @throws Exception If this object factory encountered an exception
  * while attempting to create an object, and no other object factories are
  * to be tried.
  *

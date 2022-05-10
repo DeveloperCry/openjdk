@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,5 +73,5 @@ public interface ELFSymbol {
 
     /** Size of the symbol.  0 if the symbol has no size or the size
      * is unknown. */
-    public int getSize();
+    public long getSize();
 }

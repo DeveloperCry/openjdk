@@ -25,6 +25,7 @@
 
 package jdk.internal.net.http;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ConnectException;
@@ -53,7 +54,7 @@ import static jdk.internal.net.http.frame.SettingsFrame.MAX_FRAME_SIZE;
  */
 class Http2ClientImpl {
 
-    final static Logger debug =
+    static final Logger debug =
             Utils.getDebugLogger("Http2ClientImpl"::toString, Utils.DEBUG);
 
     private final HttpClientImpl client;
@@ -186,14 +187,18 @@ class Http2ClientImpl {
         }
     }
 
+    private EOFException STOPPED;
     void stop() {
         if (debug.on()) debug.log("stopping");
+        STOPPED = new EOFException("HTTP/2 client stopped");
+        STOPPED.setStackTrace(new StackTraceElement[0]);
         connections.values().forEach(this::close);
         connections.clear();
     }
 
     private void close(Http2Connection h2c) {
         try { h2c.close(); } catch (Throwable t) {}
+        try { h2c.shutdown(STOPPED); } catch (Throwable t) {}
     }
 
     HttpClientImpl client() {
@@ -232,8 +237,7 @@ class Http2ClientImpl {
 
         // The default is the max between the stream window size
         // and the connection window size.
-        int defaultValue = Math.min(Integer.MAX_VALUE,
-                Math.max(streamWindow, K*K*32));
+        int defaultValue = Math.max(streamWindow, K*K*32);
 
         return getParameter(
                 "jdk.httpclient.connectionWindowSize",

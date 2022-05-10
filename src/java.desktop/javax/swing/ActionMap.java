@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,14 +22,15 @@
  *
  *
  */
+
 package javax.swing;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * <code>ActionMap</code> provides mappings from
@@ -222,12 +223,14 @@ public class ActionMap implements Serializable {
         return keyMap.keySet().toArray();
     }
 
+    @Serial
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
         ArrayTable.writeArrayTable(s, arrayTable);
     }
 
+    @Serial
     private void readObject(ObjectInputStream s) throws ClassNotFoundException,
                                                  IOException {
         s.defaultReadObject();

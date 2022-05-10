@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -114,16 +114,17 @@ final class ChannelImpl extends CardChannel {
         return responseBytes.length;
     }
 
-    private final static boolean t0GetResponse =
+    private static final boolean t0GetResponse =
         getBooleanProperty("sun.security.smartcardio.t0GetResponse", true);
 
-    private final static boolean t1GetResponse =
+    private static final boolean t1GetResponse =
         getBooleanProperty("sun.security.smartcardio.t1GetResponse", true);
 
-    private final static boolean t1StripLe =
+    private static final boolean t1StripLe =
         getBooleanProperty("sun.security.smartcardio.t1StripLe", false);
 
     private static boolean getBooleanProperty(String name, boolean def) {
+        @SuppressWarnings("removal")
         String val = AccessController.doPrivileged(
             (PrivilegedAction<String>) () -> System.getProperty(name));
         if (val == null) {
@@ -150,7 +151,8 @@ final class ChannelImpl extends CardChannel {
         return res;
     }
 
-    private final static byte[] B0 = new byte[0];
+    private static final int RESPONSE_ITERATIONS = 256;
+    private static final byte[] B0 = new byte[0];
 
     private byte[] doTransmit(byte[] command) throws CardException {
         // note that we modify the 'command' array in some cases, so it must
@@ -182,13 +184,14 @@ final class ChannelImpl extends CardChannel {
             int k = 0;
             byte[] result = B0;
             while (true) {
-                if (++k >= 32) {
-                    throw new CardException("Could not obtain response");
+                if (++k > RESPONSE_ITERATIONS) {
+                    throw new CardException("Number of response iterations" +
+                            " exceeded maximum " + RESPONSE_ITERATIONS);
                 }
                 byte[] response = SCardTransmit
                     (card.cardId, card.protocol, command, 0, n);
                 int rn = response.length;
-                if (getresponse && (rn >= 2)) {
+                if (getresponse && (rn >= 2) && (n >= 1)) {
                     // see ISO 7816/2005, 5.1.3
                     if ((rn == 2) && (response[0] == 0x6c)) {
                         // Resend command using SW2 as short Le field
@@ -201,6 +204,11 @@ final class ChannelImpl extends CardChannel {
                         if (rn > 2) {
                             result = concat(result, response, rn - 2);
                         }
+                        if (command.length < 5) {
+                            byte cla = command[0];
+                            command = new byte[5];
+                            command[0] = cla;
+                        }
                         command[1] = (byte)0xC0;
                         command[2] = 0;
                         command[3] = 0;
@@ -208,7 +216,6 @@ final class ChannelImpl extends CardChannel {
                         n = 5;
                         continue;
                     }
-
                 }
                 result = concat(result, response, rn);
                 break;

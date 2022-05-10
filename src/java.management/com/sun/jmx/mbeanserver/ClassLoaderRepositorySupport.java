@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -295,6 +295,7 @@ final class ClassLoaderRepositorySupport
     public final ClassLoader getClassLoader(ObjectName name) {
         ClassLoader instance = loadersWithNames.get(name);
         if (instance != null) {
+            @SuppressWarnings("removal")
             SecurityManager sm = System.getSecurityManager();
             if (sm != null) {
                 Permission perm =

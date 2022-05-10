@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,6 +48,7 @@ public interface EntityReference extends XMLEvent {
 
   /**
    * Return the declaration of this entity.
+   * @return the declaration
    */
   EntityDeclaration getDeclaration();
 

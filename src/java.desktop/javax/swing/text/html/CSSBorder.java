@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -70,7 +70,7 @@ class CSSBorder extends AbstractBorder {
     };
 
     /** Parsers for the border properties.  */
-    static final CssValue PARSERS[] = {
+    static final CssValue[] PARSERS = {
         new ColorValue(), new BorderStyle(), new BorderWidthValue(null, 0),
     };
 

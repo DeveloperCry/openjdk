@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -321,7 +321,7 @@ public abstract class SynthFileChooserUI extends BasicFileChooserUI implements
 
             resetGlobFilter();
 
-            if (fileName == null || fileName.equals("") ||
+            if (fileName == null || fileName.isEmpty() ||
                     (chooser.isMultiSelectionEnabled() && fileName.startsWith("\""))) {
                 return;
             }
@@ -407,7 +407,7 @@ public abstract class SynthFileChooserUI extends BasicFileChooserUI implements
     /* A file filter which accepts file patterns containing
      * the special wildcard '*' on windows, plus '?', and '[ ]' on Unix.
      */
-    class GlobFilter extends FileFilter {
+    static class GlobFilter extends FileFilter {
         Pattern pattern;
         String globPattern;
 

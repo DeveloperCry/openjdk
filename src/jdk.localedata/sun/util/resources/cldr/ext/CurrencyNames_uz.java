@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -98,6 +94,7 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "CDF", "CDF" },
             { "CHF", "CHF" },
             { "CLP", "CLP" },
+            { "CNH", "CNH" },
             { "COP", "COP" },
             { "CRC", "CRC" },
             { "CUC", "CUC" },
@@ -153,6 +150,7 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "MNT", "MNT" },
             { "MOP", "MOP" },
             { "MRO", "MRO" },
+            { "MRU", "MRU" },
             { "MUR", "MUR" },
             { "MVR", "MVR" },
             { "MWK", "MWK" },
@@ -188,6 +186,7 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "SRD", "SRD" },
             { "SSP", "SSP" },
             { "STD", "STD" },
+            { "STN", "STN" },
             { "SYP", "SYP" },
             { "SZL", "SZL" },
             { "THB", "THB" },
@@ -203,6 +202,7 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "UYU", "UYU" },
             { "UZS", "so\u02bbm" },
             { "VEF", "VEF" },
+            { "VES", "VES" },
             { "VUV", "VUV" },
             { "WST", "WST" },
             { "YER", "YER" },
@@ -238,7 +238,7 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "cdf", "Kongo franki" },
             { "chf", "Shveytsariya franki" },
             { "clp", "Chili pesosi" },
-            { "cnh", "CNH" },
+            { "cnh", "Xitoy yuani (ofshor)" },
             { "cny", "Xitoy yuani" },
             { "cop", "Kolumbiya pesosi" },
             { "crc", "Kosta-Rika koloni" },
@@ -357,7 +357,8 @@ public class CurrencyNames_uz extends OpenListResourceBundle {
             { "usd", "AQSH dollari" },
             { "uyu", "Urugvay pesosi" },
             { "uzs", "O\u2018zbekiston so\u2018mi" },
-            { "vef", "Venesuela bolivari" },
+            { "vef", "Venesuela bolivari (2008\u20132018)" },
+            { "ves", "Venesuela bolivari" },
             { "vnd", "Vyetnam dongi" },
             { "vuv", "Vanuatu vatusi" },
             { "wst", "Samoa talasi" },

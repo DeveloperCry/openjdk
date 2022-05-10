@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,6 +30,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
+
 import sun.awt.AWTAccessor;
 
 /**
@@ -145,10 +147,11 @@ import sun.awt.AWTAccessor;
  *
  * @see KeyAdapter
  * @see KeyListener
- * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html">Tutorial: Writing a Key Listener</a>
+ * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html">Tutorial: Writing a Key Listener</a>
  *
  * @since 1.1
  */
+@SuppressWarnings("doclint:missing")
 public class KeyEvent extends InputEvent {
 
     /**
@@ -1060,9 +1063,10 @@ public class KeyEvent extends InputEvent {
     private transient long scancode = 0; // for MS Windows only
     private transient long extendedKeyCode = 0;
 
-    /*
-     * JDK 1.1 serialVersionUID
+    /**
+     * Use serialVersionUID from JDK 1.1 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = -2352130953028126954L;
 
     static {
@@ -1878,8 +1882,14 @@ public class KeyEvent extends InputEvent {
     /**
      * Sets new modifiers by the old ones. The key modifiers
      * override overlapping mouse modifiers.
+     *
+     * @param  s the {@code ObjectInputStream} to read
+     * @throws ClassNotFoundException if the class of a serialized object could
+     *         not be found
+     * @throws IOException if an I/O error occurs
      * @serial
      */
+    @Serial
     @SuppressWarnings("deprecation")
     private void readObject(ObjectInputStream s)
       throws IOException, ClassNotFoundException {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 /*
@@ -358,6 +358,7 @@ public class NodeSetDTM extends NodeVector
   }
 
   /* An instance of the DTMManager. */
+  @SuppressWarnings("serial") // Type of field is not Serializable
   DTMManager m_manager;
 
   /**

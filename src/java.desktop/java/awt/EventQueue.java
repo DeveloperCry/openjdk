@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,8 +47,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import java.security.AccessControlContext;
 
-import jdk.internal.misc.SharedSecrets;
-import jdk.internal.misc.JavaSecurityAccess;
+import jdk.internal.access.SharedSecrets;
+import jdk.internal.access.JavaSecurityAccess;
 
 /**
  * {@code EventQueue} is a platform-independent class
@@ -95,7 +95,7 @@ import jdk.internal.misc.JavaSecurityAccess;
  * @since       1.1
  */
 public class EventQueue {
-    private static final AtomicInteger threadInitNumber = new AtomicInteger(0);
+    private static final AtomicInteger threadInitNumber = new AtomicInteger();
 
     private static final int LOW_PRIORITY = 0;
     private static final int NORM_PRIORITY = 1;
@@ -191,8 +191,6 @@ public class EventQueue {
         return eventLog;
     }
 
-    private static boolean fxAppThreadIsDispatchThread;
-
     static {
         AWTAccessor.setEventQueueAccessor(
             new AWTAccessor.EventQueueAccessor() {
@@ -229,14 +227,15 @@ public class EventQueue {
                     return eventQueue.getMostRecentEventTimeImpl();
                 }
             });
-        AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            public Object run() {
-                fxAppThreadIsDispatchThread =
-                        "true".equals(System.getProperty("javafx.embed.singleThread"));
-                return null;
-            }
-        });
     }
+
+    @SuppressWarnings("removal")
+    private static boolean fxAppThreadIsDispatchThread =
+            AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+                public Boolean run() {
+                    return "true".equals(System.getProperty("javafx.embed.singleThread"));
+                }
+            });
 
     /**
      * Initializes a new instance of {@code EventQueue}.
@@ -733,8 +732,11 @@ public class EventQueue {
             }
         };
 
+        @SuppressWarnings("removal")
         final AccessControlContext stack = AccessController.getContext();
+        @SuppressWarnings("removal")
         final AccessControlContext srcAcc = getAccessControlContextFrom(src);
+        @SuppressWarnings("removal")
         final AccessControlContext eventAcc = event.getAccessControlContext();
         if (srcAcc == null) {
             javaSecurityAccess.doIntersectionPrivilege(action, stack, eventAcc);
@@ -749,6 +751,7 @@ public class EventQueue {
         }
     }
 
+    @SuppressWarnings("removal")
     private static AccessControlContext getAccessControlContextFrom(Object src) {
         return src instanceof Component ?
             ((Component)src).getAccessControlContext() :
@@ -1019,8 +1022,8 @@ public class EventQueue {
     }
 
     private class FwSecondaryLoopWrapper implements SecondaryLoop {
-        final private SecondaryLoop loop;
-        final private EventFilter filter;
+        private final SecondaryLoop loop;
+        private final EventFilter filter;
 
         public FwSecondaryLoopWrapper(SecondaryLoop loop, EventFilter filter) {
             this.loop = loop;
@@ -1105,6 +1108,7 @@ public class EventQueue {
         }
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     final void initDispatchThread() {
         pushPopLock.lock();
         try {

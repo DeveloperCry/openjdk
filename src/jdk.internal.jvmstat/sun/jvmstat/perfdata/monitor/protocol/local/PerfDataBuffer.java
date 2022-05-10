@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,6 +48,7 @@ import java.security.AccessController;
 // Suppreess unchecked conversion warning at line 34.
 //@SuppressWarnings("unchecked")
 public class PerfDataBuffer extends AbstractPerfDataBuffer {
+    @SuppressWarnings("removal")
     private static final Perf perf = AccessController.doPrivileged(new Perf.GetPerfAction());
 
     /**

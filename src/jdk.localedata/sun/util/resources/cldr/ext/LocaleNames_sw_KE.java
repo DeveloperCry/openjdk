@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,72 +66,129 @@ import sun.util.resources.OpenListResourceBundle;
 public class LocaleNames_sw_KE extends OpenListResourceBundle {
     @Override
     protected final Object[][] getContents() {
+        final String metaValue_or = "Kiodia";
         final Object[][] data = new Object[][] {
+            { "PR", "Puetoriko" },
+            { "hup", "Kihupa" },
+            { "PS", "Himaya za Palestina" },
+            { "moh", "Kimohoki" },
+            { "PY", "Paragwai" },
+            { "HR", "Kroashia" },
+            { "kkj", "Kikako" },
+            { "nqo", "Kiin\u2019ko" },
+            { "Hebr", "Kihibrania" },
+            { "QA", "Katari" },
+            { "hy", "Kiamenia" },
+            { "Jamo", "Kijamo" },
+            { "type.nu.mymr", "Nambari za Kimyama" },
+            { "YT", "Mayote" },
+            { "AF", "Afghanistani" },
+            { "IO", "Himaya ya Uingereza katika Bahari Hindi" },
+            { "type.ca.ethiopic", "Kalenda ya Kihabeshi" },
+            { "AI", "Anguila" },
+            { "type.nu.geor", "Nambari za Kijiojia" },
             { "AQ", "Antaktika" },
+            { "Ethi", "Kihabeshi" },
+            { "as", "Kiasamisi" },
+            { "Hira", "Kihiragana" },
+            { "jbo", "Kilojbani" },
             { "AZ", "Azabajani" },
-            { "CI", "Ivorikosti" },
-            { "CX", "Kisiwa cha Christmas" },
-            { "CY", "Saiprasi" },
-            { "FM", "Mikronesia" },
-            { "GP", "Gwadelupe" },
             { "JO", "Yordani" },
+            { "mic", "Kimi'kmak" },
+            { "BJ", "Benini" },
+            { "BT", "Bhutani" },
+            { "SG", "Singapuri" },
+            { "Mymr", "Kimyama" },
+            { "BY", "Belarusi" },
+            { "type.nu.hebr", "Nambari za Kihibrania" },
+            { "SR", "Surinamu" },
+            { "CC", "Visiwa vya Kokos (Keeling)" },
+            { "ses", "Kikoyraborosenni" },
+            { "CD", "Kongo - Kinshasa" },
+            { "ST", "Sao Tome na Prinsipe" },
+            { "arq", "Kiarabu cha Aljeria" },
+            { "km", "Kikhmeri" },
+            { "kn", "Kikanada" },
+            { "SY", "Shamu" },
+            { "Orya", metaValue_or },
+            { "KY", "Visiwa vya Kaimani" },
+            { "TD", "Chadi" },
+            { "cu", "Kislovakia cha Kanisa la Jadi" },
+            { "CV", "Kepuvede" },
+            { "TH", "Thailandi" },
+            { "LA", "Laosi" },
             { "LB", "Lebanoni" },
-            { "LI", "Lishtensteni" },
+            { "gwi", "Kigwich\u02bcin" },
+            { "type.nu.ethi", "Nambari za Kihabeshi" },
+            { "type.nu.mlym", "Nambari za Kimalayalam" },
+            { "TM", "Turukimenstani" },
+            { "LI", "Lishenteni" },
+            { "li", "Kilimbugishi" },
+            { "swb", "Kikomoro" },
+            { "TW", "Taiwani" },
+            { "tw", "Kitwi" },
+            { "koi", "Kikomipermyak" },
             { "LS", "Lesotho" },
+            { "Brai", "Breli" },
             { "LU", "Lasembagi" },
             { "LV", "Lativia" },
-            { "MV", "Maldivi" },
-            { "NC", "Nyukaledonia" },
-            { "NE", "Nijer" },
-            { "NG", "Nijeria" },
-            { "NO", "Norwe" },
-            { "NP", "Nepali" },
-            { "OM", "Omani" },
-            { "PF", "Polinesia ya Ufaransa" },
-            { "PR", "Puetoriko" },
-            { "QA", "Katari" },
-            { "ST", "Sao Tome na Prinsipe" },
-            { "TD", "Chadi" },
-            { "VN", "Vietnamu" },
-            { "az", "Kiazabajani" },
-            { "li", "Kilimbugish" },
-            { "mk", "Kimasedonia" },
-            { "or", "Kiodia" },
-            { "tw", "Kitwi" },
-            { "wa", "Kiwaloon" },
-            { "ain", "Ainu" },
-            { "arq", "Kiarabu cha Aljeria" },
-            { "bug", "Kibugini" },
-            { "ckb", "Kikurdi cha Kati" },
-            { "dsb", "Kisorbian cha Chini" },
-            { "grc", "Kigiriki cha Kale" },
-            { "hsb", "Kisorbia cha Juu" },
-            { "inh", "Kingushi" },
-            { "jbo", "Kilojbani" },
-            { "kac", "Kikachin" },
-            { "khq", "Kikoyra Chiini" },
-            { "kkj", "Kikako" },
-            { "koi", "Kikomipermyak" },
-            { "kru", "Kikurukh" },
+            { "UA", "Ukreni" },
+            { "sw_CD", "Kiswahili cha Kongo" },
+            { "ug", "Kiuiguri" },
+            { "lag", "Kilangi" },
+            { "MA", "Moroko" },
+            { "MC", "Monako" },
             { "lam", "Kilamba" },
-            { "mdf", "Kimoksha" },
-            { "mic", "Kimicmac" },
-            { "moh", "Kimohoki" },
+            { "EA", "Keuta na Melilla" },
+            { "EC", "Ekwado" },
+            { "MK", "Masedonia" },
+            { "mk", "Kimasedonia" },
+            { "MM", "Myama (Burma)" },
+            { "MQ", "Martiniki" },
+            { "UY", "Urugwai" },
+            { "MS", "Montserati" },
             { "nnh", "Kiingiemboon" },
-            { "nqo", "Kiin\u2019ko" },
-            { "pcm", "Pijini ya Nijeria" },
-            { "sco", "sco" },
-            { "ses", "Kikoyraboro Senni" },
-            { "shu", "Kiarabu cha Chadi" },
-            { "srn", "Kiscran Tongo" },
-            { "swb", "Kicomoro" },
-            { "syr", "Kisyria" },
-            { "tzm", "Lugha ya Central Atlas Tamazight" },
+            { "VA", "Mji wa Vatikani" },
+            { "chr", "Kicheroki" },
+            { "mdf", "Kimoksha" },
+            { "VG", "Visiwa vya Virgin vya Uingereza" },
+            { "VI", "Visiwa vya Virgin vya Marekani" },
+            { "202", "Kusini mwa Jangwa la Sahara" },
+            { "type.ca.hebrew", "Kalenda ya kihibrania" },
+            { "NC", "Nyukaledonia" },
+            { "khq", "Kikoyrachiini" },
+            { "hsb", "Kisorbia cha Juu" },
+            { "NE", "Nijeri" },
+            { "key.hc", "Kipindi cha saa (12 dhidi ya 24)" },
             { "udm", "Kiudumurti" },
-            { "wae", "Kiwalser" },
-            { "zgh", "Tamazight Sanifu ya Moroko" },
-            { "root", "Kiroot" },
-            { "ar_001", "Kiarabu cha Sasa Kilichosanifishwa" },
+            { "NO", "Norwe" },
+            { "shu", "Kiarabu cha Chadi" },
+            { "NP", "Nepali" },
+            { "gaa", "Kiga" },
+            { "key.va", "Tofauti ya Lugha" },
+            { "Taml", "Kitamili" },
+            { "kac", "Kikachini" },
+            { "syr", "Kisiria" },
+            { "grc", "Kigiriki cha Kale" },
+            { "GA", "Gaboni" },
+            { "zgh", "Kitamazighati Sanifu cha Moroko" },
+            { "pcm", "Kipijini cha Nigeria" },
+            { "type.nu.tamldec", "Nambari za Kitamili" },
+            { "OM", "Omani" },
+            { "inh", "Kiingushi" },
+            { "or", metaValue_or },
+            { "GL", "Grinilandi" },
+            { "GP", "Gwadelupe" },
+            { "XA", "Kiinitoni cha kigeni" },
+            { "XB", "Pseudo-Bidi" },
+            { "GS", "Visiwa vya Jojia ya Kusini na Sandwich ya Kusini" },
+            { "GU", "Guami" },
+            { "srn", "Kisranantongo" },
+            { "kru", "Kikurukh" },
+            { "PF", "Polinesia ya Ufaransa" },
+            { "PG", "Papua Guinea Mpya" },
+            { "PL", "Polandi" },
+            { "type.ca.dangi", "Kalenda ya Kidangi" },
         };
         return data;
     }

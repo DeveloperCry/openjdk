@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,8 @@
  */
 
 package javax.print.attribute.standard;
+
+import java.io.Serial;
 
 import javax.print.attribute.Attribute;
 import javax.print.attribute.EnumSyntax;
@@ -63,6 +65,7 @@ public final class Severity extends EnumSyntax implements Attribute {
     /**
      * Use serialVersionUID from JDK 1.4 for interoperability.
      */
+    @Serial
     private static final long serialVersionUID = 8781881462717925380L;
 
     /**

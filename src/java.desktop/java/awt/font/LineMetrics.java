@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,6 +43,10 @@ package java.awt.font;
 
 public abstract class LineMetrics {
 
+    /**
+     * Constructor for subclasses to call.
+     */
+    protected LineMetrics() {}
 
     /**
      * Returns the number of characters ({@code char} values) in the text whose

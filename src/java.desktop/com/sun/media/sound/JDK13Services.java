@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -170,6 +170,7 @@ public final class JDK13Services {
             return null;
         }
         String name = typeClass.getName();
+        @SuppressWarnings("removal")
         String value = AccessController.doPrivileged(
                 (PrivilegedAction<String>) () -> System.getProperty(name));
         if (value == null) {

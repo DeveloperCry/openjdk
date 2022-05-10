@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -131,7 +131,7 @@ public class XMLEventAllocatorImpl implements XMLEventAllocator {
                 } else {
                     sdEvent.setDeclaredEncoding(false);
                 }
-                sdEvent.setStandalone(streamReader.isStandalone());
+                sdEvent.setStandalone(streamReader.isStandalone(), streamReader.standaloneSet());
                 sdEvent.setLocation(streamReader.getLocation());
                 event = sdEvent;
                 break;

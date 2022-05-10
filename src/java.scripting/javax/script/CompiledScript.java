@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,10 @@ import java.util.Map;
  * @since 1.6
  */
 public abstract class CompiledScript {
+    /**
+     * Constructor for subclasses to call.
+     */
+    public CompiledScript() {}
 
     /**
      * Executes the program stored in this <code>CompiledScript</code> object.

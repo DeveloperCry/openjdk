@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -120,9 +120,10 @@ class WeakIdentityHashMap<K, V> {
                 return true;
             if (!(o instanceof IdentityWeakReference<?>))
                 return false;
-            IdentityWeakReference<?> wr = (IdentityWeakReference<?>) o;
-            Object got = get();
-            return (got != null && got == wr.get());
+            @SuppressWarnings("unchecked")
+            IdentityWeakReference<T> wr = (IdentityWeakReference<T>) o;
+            T got = get();
+            return got != null && wr.refersTo(got);
         }
 
         public int hashCode() {

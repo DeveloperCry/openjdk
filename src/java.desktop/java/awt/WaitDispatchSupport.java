@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -164,6 +164,7 @@ class WaitDispatchSupport implements SecondaryLoop {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("removal")
     @Override
     public boolean enter() {
         if (log.isLoggable(PlatformLogger.Level.FINE)) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,12 +47,16 @@ import java.util.stream.Collectors;
 
 public abstract class HotSpotVirtualMachine extends VirtualMachine {
 
-    private static final long CURRENT_PID;
+    private static final long CURRENT_PID = pid();
+
+    @SuppressWarnings("removal")
+    private static long pid() {
+        PrivilegedAction<ProcessHandle> pa = () -> ProcessHandle.current();
+        return AccessController.doPrivileged(pa).pid();
+    }
+
     private static final boolean ALLOW_ATTACH_SELF;
     static {
-        PrivilegedAction<ProcessHandle> pa = ProcessHandle::current;
-        CURRENT_PID = AccessController.doPrivileged(pa).pid();
-
         String s = VM.getSavedProperty("jdk.attach.allowAttachSelf");
         ALLOW_ATTACH_SELF = "".equals(s) || Boolean.parseBoolean(s);
     }
