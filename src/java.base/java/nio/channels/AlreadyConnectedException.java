@@ -41,6 +41,7 @@ public class AlreadyConnectedException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -7331895245053773357L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,6 +42,7 @@ import java.security.InvalidKeyException;
 
 public final class DSAPublicKeyImpl extends DSAPublicKey {
 
+    @java.io.Serial
     private static final long serialVersionUID = 7819830118247182730L;
 
     /**
@@ -70,6 +71,7 @@ public final class DSAPublicKeyImpl extends DSAPublicKey {
         super(encoded);
     }
 
+    @java.io.Serial
     protected Object writeReplace() throws java.io.ObjectStreamException {
         return new KeyRep(KeyRep.Type.PUBLIC,
                         getAlgorithm(),

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,6 +55,7 @@ public abstract class FtpClientProvider {
      *         {@link RuntimePermission}{@code ("ftpClientProvider")}
      */
     protected FtpClientProvider() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("ftpClientProvider"));
@@ -134,6 +135,7 @@ public abstract class FtpClientProvider {
      *
      * @return  The system-wide default FtpClientProvider
      */
+    @SuppressWarnings("removal")
     public static FtpClientProvider provider() {
         synchronized (lock) {
             if (provider != null) {

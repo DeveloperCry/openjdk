@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -62,9 +62,10 @@ public class ResourceManager {
             }
         } catch (NumberFormatException e) {}
         maxSockets = defmax;
-        numSockets = new AtomicInteger(0);
+        numSockets = new AtomicInteger();
     }
 
+    @SuppressWarnings("removal")
     public static void beforeUdpCreate() throws SocketException {
         if (System.getSecurityManager() != null) {
             if (numSockets.incrementAndGet() > maxSockets) {
@@ -74,6 +75,7 @@ public class ResourceManager {
         }
     }
 
+    @SuppressWarnings("removal")
     public static void afterUdpClose() {
         if (System.getSecurityManager() != null) {
             numSockets.decrementAndGet();

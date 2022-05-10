@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,7 +28,7 @@ package java.io;
 import java.util.Arrays;
 
 /**
- * This class implements a character buffer that can be used as an Writer.
+ * This class implements a character buffer that can be used as a Writer.
  * The buffer automatically grows when data is written to the stream.  The data
  * can be retrieved using toCharArray() and toString().
  * <P>
@@ -39,8 +39,7 @@ import java.util.Arrays;
  * @author      Herb Jellinek
  * @since       1.1
  */
-public
-class CharArrayWriter extends Writer {
+public class CharArrayWriter extends Writer {
     /**
      * The buffer where data is stored.
      */
@@ -61,8 +60,8 @@ class CharArrayWriter extends Writer {
     /**
      * Creates a new CharArrayWriter with the specified initial size.
      *
-     * @param initialSize  an int specifying the initial buffer size.
-     * @exception IllegalArgumentException if initialSize is negative
+     * @param  initialSize  an int specifying the initial buffer size.
+     * @throws IllegalArgumentException if initialSize is negative
      */
     public CharArrayWriter(int initialSize) {
         if (initialSize < 0) {
@@ -97,7 +96,7 @@ class CharArrayWriter extends Writer {
      *          or {@code off + len} is negative or greater than the length
      *          of the given array
      */
-    public void write(char c[], int off, int len) {
+    public void write(char[] c, int off, int len) {
         if ((off < 0) || (off > c.length) || (len < 0) ||
             ((off + len) > c.length) || ((off + len) < 0)) {
             throw new IndexOutOfBoundsException();
@@ -277,6 +276,8 @@ class CharArrayWriter extends Writer {
 
     /**
      * Flush the stream.
+     *
+     * <p> The {@code flush} method of {@code CharArrayWriter} does nothing.
      */
     public void flush() { }
 

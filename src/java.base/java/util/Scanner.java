@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -155,7 +155,7 @@ import sun.util.locale.provider.ResourceBundleBasedAdapter;
  * {@link #reset} method will reset the value of the scanner's radix to
  * {@code 10} regardless of whether it was previously changed.
  *
- * <h3> <a id="localized-numbers">Localized numbers</a> </h3>
+ * <h2> <a id="localized-numbers">Localized numbers</a> </h2>
  *
  * <p> An instance of this class is capable of scanning numbers in the standard
  * formats as well as in the formats of the scanner's locale. A scanner's
@@ -216,7 +216,7 @@ import sun.util.locale.provider.ResourceBundleBasedAdapter;
  *         getInfinity()}
  * </dl></blockquote>
  *
- * <h4> <a id="number-syntax">Number syntax</a> </h4>
+ * <h3> <a id="number-syntax">Number syntax</a> </h3>
  *
  * <p> The strings that can be parsed as numbers by an instance of this class
  * are specified in terms of the following regular-expression grammar, where
@@ -428,7 +428,7 @@ public final class Scanner implements Iterator<String>, Closeable {
         // here but what can we do? The final authority will be
         // whatever parse method is invoked, so ultimately the
         // Scanner will do the right thing
-        String digit = "((?i)["+radixDigits+"]|\\p{javaDigit})";
+        String digit = "((?i)["+radixDigits+"\\p{javaDigit}])";
         String groupedNumeral = "("+non0Digit+digit+"?"+digit+"?("+
                                 groupSeparator+digit+digit+digit+")+)";
         // digit++ is the possessive form which is necessary for reducing
@@ -478,7 +478,7 @@ public final class Scanner implements Iterator<String>, Closeable {
     private Pattern decimalPattern;
     private void buildFloatAndDecimalPattern() {
         // \\p{javaDigit} may not be perfect, see above
-        String digit = "([0-9]|(\\p{javaDigit}))";
+        String digit = "(([0-9\\p{javaDigit}]))";
         String exponent = "([eE][+-]?"+digit+"+)?";
         String groupedNumeral = "("+non0Digit+digit+"?"+digit+"?("+
                                 groupSeparator+digit+digit+digit+")+)";
@@ -557,10 +557,11 @@ public final class Scanner implements Iterator<String>, Closeable {
     /**
      * Constructs a new {@code Scanner} that produces values scanned
      * from the specified input stream. Bytes from the stream are converted
-     * into characters using the underlying platform's
-     * {@linkplain java.nio.charset.Charset#defaultCharset() default charset}.
+     * into characters using the
+     * {@linkplain Charset#defaultCharset() default charset}.
      *
      * @param  source An input stream to be scanned
+     * @see Charset#defaultCharset()
      */
     public Scanner(InputStream source) {
         this(new InputStreamReader(source), WHITESPACE_PATTERN);
@@ -614,7 +615,7 @@ public final class Scanner implements Iterator<String>, Closeable {
     /*
      * This method is added so that null-check on charset can be performed before
      * creating InputStream as an existing test required it.
-    */
+     */
     private static Readable makeReadable(Path source, Charset charset)
             throws IOException {
         Objects.requireNonNull(charset, "charset");
@@ -629,11 +630,12 @@ public final class Scanner implements Iterator<String>, Closeable {
     /**
      * Constructs a new {@code Scanner} that produces values scanned
      * from the specified file. Bytes from the file are converted into
-     * characters using the underlying platform's
-     * {@linkplain java.nio.charset.Charset#defaultCharset() default charset}.
+     * characters using the
+     * {@linkplain Charset#defaultCharset() default charset}.
      *
      * @param  source A file to be scanned
      * @throws FileNotFoundException if source is not found
+     * @see Charset#defaultCharset()
      */
     public Scanner(File source) throws FileNotFoundException {
         this((ReadableByteChannel)(new FileInputStream(source).getChannel()));
@@ -702,13 +704,14 @@ public final class Scanner implements Iterator<String>, Closeable {
     /**
      * Constructs a new {@code Scanner} that produces values scanned
      * from the specified file. Bytes from the file are converted into
-     * characters using the underlying platform's
-     * {@linkplain java.nio.charset.Charset#defaultCharset() default charset}.
+     * characters using the
+     * {@linkplain Charset#defaultCharset() default charset}.
      *
      * @param   source
      *          the path to the file to be scanned
      * @throws  IOException
      *          if an I/O error occurs opening source
+     * @see Charset#defaultCharset()
      *
      * @since   1.7
      */
@@ -769,10 +772,11 @@ public final class Scanner implements Iterator<String>, Closeable {
     /**
      * Constructs a new {@code Scanner} that produces values scanned
      * from the specified channel. Bytes from the source are converted into
-     * characters using the underlying platform's
-     * {@linkplain java.nio.charset.Charset#defaultCharset() default charset}.
+     * characters using the
+     * {@linkplain Charset#defaultCharset() default charset}.
      *
      * @param  source A channel to scan
+     * @see Charset#defaultCharset()
      */
     public Scanner(ReadableByteChannel source) {
         this(makeReadable(Objects.requireNonNull(source, "source")),
@@ -1289,25 +1293,25 @@ public final class Scanner implements Iterator<String>, Closeable {
 
         // These must be literalized to avoid collision with regex
         // metacharacters such as dot or parenthesis
-        groupSeparator =   "\\" + dfs.getGroupingSeparator();
-        decimalSeparator = "\\" + dfs.getDecimalSeparator();
+        groupSeparator =   "\\x{" + Integer.toHexString(dfs.getGroupingSeparator()) + "}";
+        decimalSeparator = "\\x{" + Integer.toHexString(dfs.getDecimalSeparator()) + "}";
 
         // Quoting the nonzero length locale-specific things
         // to avoid potential conflict with metacharacters
-        nanString = "\\Q" + dfs.getNaN() + "\\E";
-        infinityString = "\\Q" + dfs.getInfinity() + "\\E";
+        nanString = Pattern.quote(dfs.getNaN());
+        infinityString = Pattern.quote(dfs.getInfinity());
         positivePrefix = df.getPositivePrefix();
-        if (positivePrefix.length() > 0)
-            positivePrefix = "\\Q" + positivePrefix + "\\E";
+        if (!positivePrefix.isEmpty())
+            positivePrefix = Pattern.quote(positivePrefix);
         negativePrefix = df.getNegativePrefix();
-        if (negativePrefix.length() > 0)
-            negativePrefix = "\\Q" + negativePrefix + "\\E";
+        if (!negativePrefix.isEmpty())
+            negativePrefix = Pattern.quote(negativePrefix);
         positiveSuffix = df.getPositiveSuffix();
-        if (positiveSuffix.length() > 0)
-            positiveSuffix = "\\Q" + positiveSuffix + "\\E";
+        if (!positiveSuffix.isEmpty())
+            positiveSuffix = Pattern.quote(positiveSuffix);
         negativeSuffix = df.getNegativeSuffix();
-        if (negativeSuffix.length() > 0)
-            negativeSuffix = "\\Q" + negativeSuffix + "\\E";
+        if (!negativeSuffix.isEmpty())
+            negativeSuffix = Pattern.quote(negativeSuffix);
 
         // Force rebuilding and recompilation of locale dependent
         // primitive patterns
@@ -1600,7 +1604,8 @@ public final class Scanner implements Iterator<String>, Closeable {
      * This method may block while waiting for input. The scanner does not
      * advance past any input.
      *
-     * @return true if and only if this scanner has another line of input
+     * @return true if there is a line separator in the remaining input
+     * or if the input has other remaining characters
      * @throws IllegalStateException if this scanner is closed
      */
     public boolean hasNextLine() {
@@ -2664,9 +2669,8 @@ public final class Scanner implements Iterator<String>, Closeable {
      */
     public BigInteger nextBigInteger(int radix) {
         // Check cached result
-        if ((typeCache != null) && (typeCache instanceof BigInteger)
+        if ((typeCache != null) && (typeCache instanceof BigInteger val)
             && this.radix == radix) {
-            BigInteger val = (BigInteger)typeCache;
             useTypeCache();
             return val;
         }
@@ -2730,8 +2734,7 @@ public final class Scanner implements Iterator<String>, Closeable {
      */
     public BigDecimal nextBigDecimal() {
         // Check cached result
-        if ((typeCache != null) && (typeCache instanceof BigDecimal)) {
-            BigDecimal val = (BigDecimal)typeCache;
+        if ((typeCache != null) && (typeCache instanceof BigDecimal val)) {
             useTypeCache();
             return val;
         }

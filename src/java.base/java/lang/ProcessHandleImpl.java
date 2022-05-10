@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,7 @@
 package java.lang;
 
 import java.lang.annotation.Native;
+import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.time.Instant;
@@ -36,10 +37,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static java.security.AccessController.doPrivileged;
 
 /**
  * ProcessHandleImpl is the implementation of ProcessHandle.
@@ -47,6 +47,7 @@ import static java.security.AccessController.doPrivileged;
  * @see Process
  * @since 9
  */
+@jdk.internal.ValueBased
 final class ProcessHandleImpl implements ProcessHandle {
     /**
      * Default size of stack for reaper processes.
@@ -81,14 +82,22 @@ final class ProcessHandleImpl implements ProcessHandle {
     /**
      * The thread pool of "process reaper" daemon threads.
      */
+    @SuppressWarnings("removal")
     private static final Executor processReaperExecutor =
-            doPrivileged((PrivilegedAction<Executor>) () -> {
+            AccessController.doPrivileged((PrivilegedAction<Executor>) () -> {
+                // Initialize ThreadLocalRandom now to avoid using the smaller stack
+                // of the processReaper threads.
+                ThreadLocalRandom.current();
 
                 ThreadGroup tg = Thread.currentThread().getThreadGroup();
                 while (tg.getParent() != null) tg = tg.getParent();
                 ThreadGroup systemThreadGroup = tg;
+
+                // For a debug build, the stack shadow zone is larger;
+                // Increase the total stack size to avoid potential stack overflow.
+                int debugDelta = "release".equals(System.getProperty("jdk.debug")) ? 0 : (4*4096);
                 final long stackSize = Boolean.getBoolean("jdk.lang.processReaperUseDefaultStackSize")
-                        ? 0 : REAPER_DEFAULT_STACKSIZE;
+                        ? 0 : REAPER_DEFAULT_STACKSIZE + debugDelta;
 
                 ThreadFactory threadFactory = grimReaper -> {
                     Thread t = new Thread(systemThreadGroup, grimReaper,
@@ -223,12 +232,13 @@ final class ProcessHandleImpl implements ProcessHandle {
     /**
      * Returns a ProcessHandle for an existing native process.
      *
-     * @param pid the native process identifier
+     * @param  pid the native process identifier
      * @return The ProcessHandle for the pid if the process is alive;
-     *      or {@code null} if the process ID does not exist in the native system.
+     *         or {@code null} if the process ID does not exist in the native system.
      * @throws SecurityException if RuntimePermission("manageProcess") is not granted
      */
     static Optional<ProcessHandle> get(long pid) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));
@@ -269,6 +279,7 @@ final class ProcessHandleImpl implements ProcessHandle {
      * @throws SecurityException if RuntimePermission("manageProcess") is not granted
      */
     public static ProcessHandleImpl current() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));
@@ -292,6 +303,7 @@ final class ProcessHandleImpl implements ProcessHandle {
      *                                     security policy
      */
     public Optional<ProcessHandle> parent() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));
@@ -319,7 +331,7 @@ final class ProcessHandleImpl implements ProcessHandle {
      * @param pids an allocated long array to receive the pids
      * @param ppids an allocated long array to receive the parent pids; may be null
      * @param starttimes an allocated long array to receive the child start times; may be null
-     * @return if greater than or equals to zero is the number of pids in the array;
+     * @return if greater than or equal to zero is the number of pids in the array;
      *      if greater than the length of the arrays, the arrays are too small
      */
     private static native int getProcessPids0(long pid, long[] pids,
@@ -340,14 +352,14 @@ final class ProcessHandleImpl implements ProcessHandle {
     }
 
     /**
-      * Signal the process to terminate.
-      * The process is signaled only if its start time matches the known start time.
-      *
-      * @param pid  process id to kill
-      * @param startTime the start time of the process
-      * @param forcibly true to forcibly terminate (SIGKILL vs SIGTERM)
-      * @return true if the process was signaled without error; false otherwise
-      */
+     * Signal the process to terminate.
+     * The process is signaled only if its start time matches the known start time.
+     *
+     * @param pid  process id to kill
+     * @param startTime the start time of the process
+     * @param forcibly true to forcibly terminate (SIGKILL vs SIGTERM)
+     * @return true if the process was signaled without error; false otherwise
+     */
     private static native boolean destroy0(long pid, long startTime, boolean forcibly);
 
     @Override
@@ -410,6 +422,7 @@ final class ProcessHandleImpl implements ProcessHandle {
      * @return a stream of ProcessHandles
      */
     static Stream<ProcessHandle> children(long pid) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));
@@ -430,6 +443,7 @@ final class ProcessHandleImpl implements ProcessHandle {
 
     @Override
     public Stream<ProcessHandle> descendants() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));
@@ -510,14 +524,9 @@ final class ProcessHandleImpl implements ProcessHandle {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof ProcessHandleImpl) {
-            ProcessHandleImpl other = (ProcessHandleImpl) obj;
-            return (pid == other.pid) &&
-                    (startTime == other.startTime
-                        || startTime == 0
-                        || other.startTime == 0);
-        }
-        return false;
+        return (obj instanceof ProcessHandleImpl other)
+                && (pid == other.pid)
+                && (startTime == other.startTime || startTime == 0 || other.startTime == 0);
     }
 
     /**
@@ -633,27 +642,27 @@ final class ProcessHandleImpl implements ProcessHandle {
                 sb.append(user());
             }
             if (command != null) {
-                if (sb.length() != 0) sb.append(", ");
+                if (sb.length() > 1) sb.append(", ");
                 sb.append("cmd: ");
                 sb.append(command);
             }
             if (arguments != null && arguments.length > 0) {
-                if (sb.length() != 0) sb.append(", ");
+                if (sb.length() > 1) sb.append(", ");
                 sb.append("args: ");
                 sb.append(Arrays.toString(arguments));
             }
             if (commandLine != null) {
-                if (sb.length() != 0) sb.append(", ");
+                if (sb.length() > 1) sb.append(", ");
                 sb.append("cmdLine: ");
                 sb.append(commandLine);
             }
             if (startTime > 0) {
-                if (sb.length() != 0) sb.append(", ");
+                if (sb.length() > 1) sb.append(", ");
                 sb.append("startTime: ");
                 sb.append(startInstant());
             }
             if (totalTime != -1) {
-                if (sb.length() != 0) sb.append(", ");
+                if (sb.length() > 1) sb.append(", ");
                 sb.append("totalTime: ");
                 sb.append(totalCpuDuration().toString());
             }

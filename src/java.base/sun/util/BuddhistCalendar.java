@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,6 +39,7 @@ public class BuddhistCalendar extends GregorianCalendar {
 // Class Variables
 //////////////////
 
+    @java.io.Serial
     private static final long serialVersionUID = -8527488697350388578L;
 
     private static final int BUDDHIST_YEAR_OFFSET = 543;
@@ -254,6 +255,7 @@ public class BuddhistCalendar extends GregorianCalendar {
 
     private transient int yearOffset = BUDDHIST_YEAR_OFFSET;
 
+    @java.io.Serial
     private void readObject(ObjectInputStream stream)
         throws IOException, ClassNotFoundException {
         stream.defaultReadObject();

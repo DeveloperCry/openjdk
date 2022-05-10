@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,14 +35,15 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
 import jdk.internal.misc.TerminatingThreadLocal;
-import sun.nio.ch.Interruptible;
 import jdk.internal.reflect.CallerSensitive;
 import jdk.internal.reflect.Reflection;
+import jdk.internal.vm.annotation.IntrinsicCandidate;
+import sun.nio.ch.Interruptible;
 import sun.security.util.SecurityConstants;
-import jdk.internal.HotSpotIntrinsicCandidate;
 
 /**
  * A <i>thread</i> is a thread of execution in a program. The Java
@@ -132,15 +133,13 @@ import jdk.internal.HotSpotIntrinsicCandidate;
  * or method in this class will cause a {@link NullPointerException} to be
  * thrown.
  *
- * @author  unascribed
  * @see     Runnable
  * @see     Runtime#exit(int)
  * @see     #run()
  * @see     #stop()
  * @since   1.0
  */
-public
-class Thread implements Runnable {
+public class Thread implements Runnable {
     /* Make sure registerNatives is the first thing <clinit> does. */
     private static native void registerNatives();
     static {
@@ -152,6 +151,9 @@ class Thread implements Runnable {
 
     /* Whether or not the thread is a daemon thread. */
     private boolean daemon = false;
+
+    /* Interrupt state of the thread - read/written directly by JVM */
+    private volatile boolean interrupted;
 
     /* Fields reserved for exclusive use by the JVM */
     private boolean stillborn = false;
@@ -167,6 +169,7 @@ class Thread implements Runnable {
     private ClassLoader contextClassLoader;
 
     /* The inherited AccessControlContext of this thread */
+    @SuppressWarnings("removal")
     private AccessControlContext inheritedAccessControlContext;
 
     /* For autonumbering anonymous threads. */
@@ -191,11 +194,6 @@ class Thread implements Runnable {
      * likes with this number; some VMs will ignore it.
      */
     private final long stackSize;
-
-    /*
-     * JVM-private state that persists after native thread termination.
-     */
-    private long nativeParkEventPointer;
 
     /*
      * Thread ID
@@ -229,7 +227,7 @@ class Thread implements Runnable {
     private volatile Interruptible blocker;
     private final Object blockerLock = new Object();
 
-    /* Set the blocker field; invoked via jdk.internal.misc.SharedSecrets
+    /* Set the blocker field; invoked via jdk.internal.access.SharedSecrets
      * from java.nio code
      */
     static void blockedOn(Interruptible b) {
@@ -244,7 +242,7 @@ class Thread implements Runnable {
      */
     public static final int MIN_PRIORITY = 1;
 
-   /**
+    /**
      * The default priority that is assigned to a thread.
      */
     public static final int NORM_PRIORITY = 5;
@@ -259,7 +257,7 @@ class Thread implements Runnable {
      *
      * @return  the currently executing thread.
      */
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     public static native Thread currentThread();
 
     /**
@@ -332,7 +330,7 @@ class Thread implements Runnable {
                                 "nanosecond timeout value out of range");
         }
 
-        if (nanos >= 500000 || (nanos != 0 && millis == 0)) {
+        if (nanos > 0 && millis < Long.MAX_VALUE) {
             millis++;
         }
 
@@ -375,7 +373,7 @@ class Thread implements Runnable {
      *
      * @since 9
      */
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     public static void onSpinWait() {}
 
     /**
@@ -391,6 +389,7 @@ class Thread implements Runnable {
      * @param inheritThreadLocals if {@code true}, inherit initial values for
      *            inheritable thread-locals from the constructing thread
      */
+    @SuppressWarnings("removal")
     private Thread(ThreadGroup g, Runnable target, String name,
                    long stackSize, AccessControlContext acc,
                    boolean inheritThreadLocals) {
@@ -418,14 +417,14 @@ class Thread implements Runnable {
             }
         }
 
-        /* checkAccess regardless of whether or not threadgroup is
-           explicitly passed in. */
-        g.checkAccess();
-
         /*
          * Do we have the required permissions?
          */
         if (security != null) {
+            /* checkAccess regardless of whether or not threadgroup is
+               explicitly passed in. */
+            security.checkAccess(g);
+
             if (isCCLOverridden(getClass())) {
                 security.checkPermission(
                         SecurityConstants.SUBCLASS_IMPLEMENTATION_PERMISSION);
@@ -499,7 +498,7 @@ class Thread implements Runnable {
      * but thread-local variables are not inherited.
      * This is not a public constructor.
      */
-    Thread(Runnable target, AccessControlContext acc) {
+    Thread(Runnable target, @SuppressWarnings("removal") AccessControlContext acc) {
         this(null, target, "Thread-" + nextThreadNum(), 0, acc, false);
     }
 
@@ -923,8 +922,9 @@ class Thread implements Runnable {
      *       <a href="{@docRoot}/java.base/java/lang/doc-files/threadPrimitiveDeprecation.html">Why
      *       are Thread.stop, Thread.suspend and Thread.resume Deprecated?</a>.
      */
-    @Deprecated(since="1.2")
+    @Deprecated(since="1.2", forRemoval=true)
     public final void stop() {
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             checkAccess();
@@ -954,7 +954,7 @@ class Thread implements Runnable {
      * Object#wait() wait()}, {@link Object#wait(long) wait(long)}, or {@link
      * Object#wait(long, int) wait(long, int)} methods of the {@link Object}
      * class, or of the {@link #join()}, {@link #join(long)}, {@link
-     * #join(long, int)}, {@link #sleep(long)}, or {@link #sleep(long, int)},
+     * #join(long, int)}, {@link #sleep(long)}, or {@link #sleep(long, int)}
      * methods of this class, then its interrupt status will be cleared and it
      * will receive an {@link InterruptedException}.
      *
@@ -975,11 +975,14 @@ class Thread implements Runnable {
      *
      * <p> Interrupting a thread that is not alive need not have any effect.
      *
+     * @implNote In the JDK Reference Implementation, interruption of a thread
+     * that is not alive still records that the interrupt request was made and
+     * will report it via {@link #interrupted} and {@link #isInterrupted()}.
+     *
      * @throws  SecurityException
      *          if the current thread cannot modify this thread
      *
-     * @revised 6.0
-     * @spec JSR-51
+     * @revised 6.0, 14
      */
     public void interrupt() {
         if (this != Thread.currentThread()) {
@@ -989,14 +992,15 @@ class Thread implements Runnable {
             synchronized (blockerLock) {
                 Interruptible b = blocker;
                 if (b != null) {
-                    interrupt0();  // set interrupt status
+                    interrupted = true;
+                    interrupt0();  // inform VM of interrupt
                     b.interrupt(this);
                     return;
                 }
             }
         }
-
-        // set interrupt status
+        interrupted = true;
+        // inform VM of interrupt
         interrupt0();
     }
 
@@ -1008,43 +1012,36 @@ class Thread implements Runnable {
      * interrupted again, after the first call had cleared its interrupted
      * status and before the second call had examined it).
      *
-     * <p>A thread interruption ignored because a thread was not alive
-     * at the time of the interrupt will be reflected by this method
-     * returning false.
-     *
      * @return  {@code true} if the current thread has been interrupted;
      *          {@code false} otherwise.
      * @see #isInterrupted()
-     * @revised 6.0
+     * @revised 6.0, 14
      */
     public static boolean interrupted() {
-        return currentThread().isInterrupted(true);
+        Thread t = currentThread();
+        boolean interrupted = t.interrupted;
+        // We may have been interrupted the moment after we read the field,
+        // so only clear the field if we saw that it was set and will return
+        // true; otherwise we could lose an interrupt.
+        if (interrupted) {
+            t.interrupted = false;
+            clearInterruptEvent();
+        }
+        return interrupted;
     }
 
     /**
      * Tests whether this thread has been interrupted.  The <i>interrupted
      * status</i> of the thread is unaffected by this method.
      *
-     * <p>A thread interruption ignored because a thread was not alive
-     * at the time of the interrupt will be reflected by this method
-     * returning false.
-     *
      * @return  {@code true} if this thread has been interrupted;
      *          {@code false} otherwise.
      * @see     #interrupted()
-     * @revised 6.0
+     * @revised 6.0, 14
      */
     public boolean isInterrupted() {
-        return isInterrupted(false);
+        return interrupted;
     }
-
-    /**
-     * Tests if some Thread has been interrupted.  The interrupted state
-     * is reset or not based on the value of ClearInterrupted that is
-     * passed.
-     */
-    @HotSpotIntrinsicCandidate
-    private native boolean isInterrupted(boolean ClearInterrupted);
 
     /**
      * Tests if this thread is alive. A thread is alive if it has
@@ -1079,7 +1076,7 @@ class Thread implements Runnable {
      *   <a href="{@docRoot}/java.base/java/lang/doc-files/threadPrimitiveDeprecation.html">Why
      *   are Thread.stop, Thread.suspend and Thread.resume Deprecated?</a>.
      */
-    @Deprecated(since="1.2")
+    @Deprecated(since="1.2", forRemoval=true)
     public final void suspend() {
         checkAccess();
         suspend0();
@@ -1105,7 +1102,7 @@ class Thread implements Runnable {
      *     <a href="{@docRoot}/java.base/java/lang/doc-files/threadPrimitiveDeprecation.html">Why
      *     are Thread.stop, Thread.suspend and Thread.resume Deprecated?</a>.
      */
-    @Deprecated(since="1.2")
+    @Deprecated(since="1.2", forRemoval=true)
     public final void resume() {
         checkAccess();
         resume0();
@@ -1250,25 +1247,25 @@ class Thread implements Runnable {
      *          if {@link java.lang.ThreadGroup#checkAccess} determines that
      *          the current thread cannot access its thread group
      */
-    public static int enumerate(Thread tarray[]) {
+    public static int enumerate(Thread[] tarray) {
         return currentThread().getThreadGroup().enumerate(tarray);
     }
 
     /**
-     * Counts the number of stack frames in this thread. The thread must
-     * be suspended.
+     * Throws {@code UnsupportedOperationException}.
      *
-     * @return     the number of stack frames in this thread.
-     * @throws     IllegalThreadStateException  if this thread is not
-     *             suspended.
-     * @deprecated The definition of this call depends on {@link #suspend},
-     *             which is deprecated.  Further, the results of this call
-     *             were never well-defined.
+     * @return     nothing
+     *
+     * @deprecated This method was originally designed to count the number of
+     *             stack frames but the results were never well-defined and it
+     *             depended on thread-suspension.
      *             This method is subject to removal in a future version of Java SE.
      * @see        StackWalker
      */
     @Deprecated(since="1.2", forRemoval=true)
-    public native int countStackFrames();
+    public int countStackFrames() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Waits at most {@code millis} milliseconds for this thread to
@@ -1291,34 +1288,30 @@ class Thread implements Runnable {
      *          <i>interrupted status</i> of the current thread is
      *          cleared when this exception is thrown.
      */
-    public final synchronized void join(long millis)
+    public final synchronized void join(final long millis)
     throws InterruptedException {
-        long base = System.currentTimeMillis();
-        long now = 0;
-
-        if (millis < 0) {
-            throw new IllegalArgumentException("timeout value is negative");
-        }
-
-        if (millis == 0) {
+        if (millis > 0) {
+            if (isAlive()) {
+                final long startTime = System.nanoTime();
+                long delay = millis;
+                do {
+                    wait(delay);
+                } while (isAlive() && (delay = millis -
+                        TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime)) > 0);
+            }
+        } else if (millis == 0) {
             while (isAlive()) {
                 wait(0);
             }
         } else {
-            while (isAlive()) {
-                long delay = millis - now;
-                if (delay <= 0) {
-                    break;
-                }
-                wait(delay);
-                now = System.currentTimeMillis() - base;
-            }
+            throw new IllegalArgumentException("timeout value is negative");
         }
     }
 
     /**
      * Waits at most {@code millis} milliseconds plus
      * {@code nanos} nanoseconds for this thread to die.
+     * If both arguments are {@code 0}, it means to wait forever.
      *
      * <p> This implementation uses a loop of {@code this.wait} calls
      * conditioned on {@code this.isAlive}. As a thread terminates the
@@ -1353,7 +1346,7 @@ class Thread implements Runnable {
                                 "nanosecond timeout value out of range");
         }
 
-        if (nanos >= 500000 || (nanos != 0 && millis == 0)) {
+        if (nanos > 0 && millis < Long.MAX_VALUE) {
             millis++;
         }
 
@@ -1434,8 +1427,16 @@ class Thread implements Runnable {
      * @throws  SecurityException  if the current thread is not allowed to
      *          access this thread.
      * @see        SecurityManager#checkAccess(Thread)
+     * @deprecated This method is only useful in conjunction with
+     *       {@linkplain SecurityManager the Security Manager}, which is
+     *       deprecated and subject to removal in a future release.
+     *       Consequently, this method is also deprecated and subject to
+     *       removal. There is no replacement for the Security Manager or this
+     *       method.
      */
+    @Deprecated(since="17", forRemoval=true)
     public final void checkAccess() {
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkAccess(this);
@@ -1486,6 +1487,7 @@ class Thread implements Runnable {
     public ClassLoader getContextClassLoader() {
         if (contextClassLoader == null)
             return null;
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             ClassLoader.checkClassLoaderPermission(contextClassLoader,
@@ -1517,6 +1519,7 @@ class Thread implements Runnable {
      * @since 1.2
      */
     public void setContextClassLoader(ClassLoader cl) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("setContextClassLoader"));
@@ -1584,6 +1587,7 @@ class Thread implements Runnable {
     public StackTraceElement[] getStackTrace() {
         if (this != Thread.currentThread()) {
             // check for getStackTrace permission
+            @SuppressWarnings("removal")
             SecurityManager security = System.getSecurityManager();
             if (security != null) {
                 security.checkPermission(
@@ -1644,6 +1648,7 @@ class Thread implements Runnable {
      */
     public static Map<Thread, StackTraceElement[]> getAllStackTraces() {
         // check for getStackTrace permission
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkPermission(
@@ -1706,6 +1711,7 @@ class Thread implements Runnable {
      * subclass overrides any of the methods, false otherwise.
      */
     private static boolean auditSubclass(final Class<?> subcl) {
+        @SuppressWarnings("removal")
         Boolean result = AccessController.doPrivileged(
             new PrivilegedAction<>() {
                 public Boolean run() {
@@ -1937,6 +1943,7 @@ class Thread implements Runnable {
      * @since 1.5
      */
     public static void setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler eh) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(
@@ -2054,9 +2061,9 @@ class Thread implements Runnable {
                 return true;
 
             if (obj instanceof WeakClassKey) {
-                Object referent = get();
+                Class<?> referent = get();
                 return (referent != null) &&
-                       (referent == ((WeakClassKey) obj).get());
+                        (((WeakClassKey) obj).refersTo(referent));
             } else {
                 return false;
             }
@@ -2088,5 +2095,6 @@ class Thread implements Runnable {
     private native void suspend0();
     private native void resume0();
     private native void interrupt0();
+    private static native void clearInterruptEvent();
     private native void setNativeName(String name);
 }

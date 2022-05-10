@@ -42,6 +42,7 @@ public class FileLockInterruptionException
     extends java.io.IOException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 7104080643653532383L;
 
     /**

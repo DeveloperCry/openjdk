@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,7 @@ package javax.security.auth.login;
  */
 public class CredentialExpiredException extends CredentialException {
 
+    @java.io.Serial
     private static final long serialVersionUID = -5344739593859737937L;
 
     /**

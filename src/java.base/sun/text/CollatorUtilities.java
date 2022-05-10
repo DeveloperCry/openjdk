@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,7 @@
 
 package sun.text;
 
-import sun.text.normalizer.NormalizerBase;
+import jdk.internal.icu.text.NormalizerBase;
 
 public class CollatorUtilities {
 

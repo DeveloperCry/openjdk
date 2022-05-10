@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ package java.nio.file;
 public class AccessDeniedException
     extends FileSystemException
 {
+    @java.io.Serial
     private static final long serialVersionUID = 4943049599949219617L;
 
     /**

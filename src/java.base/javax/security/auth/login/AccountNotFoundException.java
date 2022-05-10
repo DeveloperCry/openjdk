@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,6 +35,7 @@ package javax.security.auth.login;
  */
 public class AccountNotFoundException extends AccountException {
 
+    @java.io.Serial
     private static final long serialVersionUID = 1498349563916294614L;
 
     /**

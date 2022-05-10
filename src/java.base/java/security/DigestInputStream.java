@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -117,7 +117,7 @@ public class DigestInputStream extends FilterInputStream {
      *
      * @return the byte read.
      *
-     * @exception IOException if an I/O error occurs.
+     * @throws    IOException if an I/O error occurs.
      *
      * @see MessageDigest#update(byte)
      */
@@ -154,7 +154,7 @@ public class DigestInputStream extends FilterInputStream {
      * read because the end of the stream had already been reached when
      * the call was made.
      *
-     * @exception IOException if an I/O error occurs.
+     * @throws    IOException if an I/O error occurs.
      *
      * @see MessageDigest#update(byte[], int, int)
      */

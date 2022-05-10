@@ -97,7 +97,7 @@ public final class SecurityConstants {
     public static final NetPermission GET_RESPONSECACHE_PERMISSION =
        new NetPermission("getResponseCache");
 
-    // java.net.Socket
+    // java.net.ServerSocket, java.net.Socket
     public static final NetPermission SET_SOCKETIMPL_PERMISSION =
         new NetPermission("setSocketImpl");
 

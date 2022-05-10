@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,7 @@ package java.lang.invoke;
  * @since 1.8
  */
 public class LambdaConversionException extends Exception {
+    @java.io.Serial
     private static final long serialVersionUID = 292L + 8L;
 
     /**

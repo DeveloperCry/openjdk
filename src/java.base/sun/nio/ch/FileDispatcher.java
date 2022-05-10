@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,6 +66,8 @@ abstract class FileDispatcher extends NativeDispatcher {
     abstract boolean canTransferToDirectly(SelectableChannel sc);
 
     abstract boolean transferToDirectlyNeedsPositionLock();
+
+    abstract boolean canTransferToFromOverlappedMap();
 
     abstract int setDirectIO(FileDescriptor fd, String path);
 }

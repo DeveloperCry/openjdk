@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -118,7 +118,7 @@ public class TypeVariableImpl<D extends GenericDeclaration>
      *     for any reason
      * @return an array of Types representing the upper bound(s) of this
      *     type variable
-    */
+     */
     public Type[] getBounds() {
         Object[] value = bounds;
         if (value instanceof FieldTypeSignature[]) {

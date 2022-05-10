@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,7 @@ package java.security;
  *
  * @since 1.6
  */
+@SuppressWarnings("removal")
 public class URIParameter implements
         Policy.Parameters, javax.security.auth.login.Configuration.Parameters {
 
@@ -43,7 +44,7 @@ public class URIParameter implements
      *
      * @param uri the URI pointing to the data.
      *
-     * @exception NullPointerException if the specified URI is null.
+     * @throws    NullPointerException if the specified URI is null.
      */
     public URIParameter(java.net.URI uri) {
         if (uri == null) {

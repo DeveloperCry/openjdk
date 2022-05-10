@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,7 @@ package jdk.internal.util.xml;
  */
 
 public class XMLStreamException extends Exception {
+    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
 

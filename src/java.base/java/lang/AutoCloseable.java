@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,7 +54,8 @@ public interface AutoCloseable {
      * This method is invoked automatically on objects managed by the
      * {@code try}-with-resources statement.
      *
-     * <p>While this interface method is declared to throw {@code
+     * @apiNote
+     * While this interface method is declared to throw {@code
      * Exception}, implementers are <em>strongly</em> encouraged to
      * declare concrete implementations of the {@code close} method to
      * throw more specific exceptions, or to throw no exception at all

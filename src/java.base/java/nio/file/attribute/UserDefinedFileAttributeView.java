@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -177,8 +177,8 @@ public interface UserDefinedFileAttributeView
      * will not have changed.
      *
      * <p> If an attribute of the given name already exists then its value is
-     * replaced. If the attribute does not exist then it is created. If it
-     * implementation specific if a test to check for the existence of the
+     * replaced. If the attribute does not exist then it is created. It
+     * is implementation specific if a test to check for the existence of the
      * attribute and the creation of attribute are atomic with respect to other
      * file system activities.
      *
@@ -190,7 +190,7 @@ public interface UserDefinedFileAttributeView
      * Suppose we want to write a file's MIME type as a user-defined attribute:
      * <pre>
      *    UserDefinedFileAttributeView view =
-     *        FIles.getFileAttributeView(path, UserDefinedFileAttributeView.class);
+     *        Files.getFileAttributeView(path, UserDefinedFileAttributeView.class);
      *    view.write("user.mimetype", Charset.defaultCharset().encode("text/html"));
      * </pre>
      *

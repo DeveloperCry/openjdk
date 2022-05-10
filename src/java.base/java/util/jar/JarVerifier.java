@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -84,16 +84,24 @@ class JarVerifier {
     /** the bytes for the manDig object */
     byte manifestRawBytes[] = null;
 
+    /** the manifest name this JarVerifier is created upon */
+    final String manifestName;
+
     /** controls eager signature validation */
     boolean eagerValidation;
 
     /** makes code source singleton instances unique to us */
     private Object csdomain = new Object();
 
-    /** collect -DIGEST-MANIFEST values for blacklist */
+    /** collect -DIGEST-MANIFEST values for deny list */
     private List<Object> manifestDigests;
 
-    public JarVerifier(byte rawBytes[]) {
+    /* A cache mapping code signers to the algorithms used to digest jar
+       entries, and whether or not the algorithms are permitted. */
+    private Map<CodeSigner[], Map<String, Boolean>> signersToAlgs;
+
+    public JarVerifier(String name, byte[] rawBytes) {
+        manifestName = name;
         manifestRawBytes = rawBytes;
         sigFileSigners = new Hashtable<>();
         verifiedSigners = new Hashtable<>();
@@ -101,6 +109,7 @@ class JarVerifier {
         pendingBlocks = new ArrayList<>();
         baos = new ByteArrayOutputStream();
         manifestDigests = new ArrayList<>();
+        signersToAlgs = new HashMap<>();
     }
 
     /**
@@ -180,7 +189,7 @@ class JarVerifier {
 
         // only set the jev object for entries that have a signature
         // (either verified or not)
-        if (!name.equals(JarFile.MANIFEST_NAME)) {
+        if (!name.equalsIgnoreCase(JarFile.MANIFEST_NAME)) {
             if (sigFileSigners.get(name) != null ||
                     verifiedSigners.get(name) != null) {
                 mev.setEntry(name, je);
@@ -240,7 +249,8 @@ class JarVerifier {
         if (!parsingBlockOrSF) {
             JarEntry je = mev.getEntry();
             if ((je != null) && (je.signers == null)) {
-                je.signers = mev.verify(verifiedSigners, sigFileSigners);
+                je.signers = mev.verify(verifiedSigners, sigFileSigners,
+                                        signersToAlgs);
                 je.certs = mapSignersToCertArray(je.signers);
             }
         } else {
@@ -270,7 +280,8 @@ class JarVerifier {
                             }
 
                             sfv.setSignatureFile(bytes);
-                            sfv.process(sigFileSigners, manifestDigests);
+                            sfv.process(sigFileSigners, manifestDigests,
+                                    manifestName);
                         }
                     }
                     return;
@@ -313,7 +324,7 @@ class JarVerifier {
                         sfv.setSignatureFile(bytes);
                     }
                 }
-                sfv.process(sigFileSigners, manifestDigests);
+                sfv.process(sigFileSigners, manifestDigests, manifestName);
 
             } catch (IOException | CertificateException |
                     NoSuchAlgorithmException | SignatureException e) {
@@ -419,9 +430,9 @@ class JarVerifier {
         manDig = null;
         // MANIFEST.MF is always treated as signed and verified,
         // move its signers from sigFileSigners to verifiedSigners.
-        if (sigFileSigners.containsKey(JarFile.MANIFEST_NAME)) {
-            CodeSigner[] codeSigners = sigFileSigners.remove(JarFile.MANIFEST_NAME);
-            verifiedSigners.put(JarFile.MANIFEST_NAME, codeSigners);
+        if (sigFileSigners.containsKey(manifestName)) {
+            CodeSigner[] codeSigners = sigFileSigners.remove(manifestName);
+            verifiedSigners.put(manifestName, codeSigners);
         }
     }
 
@@ -437,9 +448,9 @@ class JarVerifier {
                        InputStream is,
                        JarVerifier jv) throws IOException
         {
-            this.is = is;
+            this.is = Objects.requireNonNull(is);
             this.jv = jv;
-            this.mev = new ManifestEntryVerifier(man);
+            this.mev = new ManifestEntryVerifier(man, jv.manifestName);
             this.jv.beginEntry(je, mev);
             this.numLeft = je.getSize();
             if (this.numLeft == 0)
@@ -448,6 +459,7 @@ class JarVerifier {
 
         public int read() throws IOException
         {
+            ensureOpen();
             if (numLeft > 0) {
                 int b = is.read();
                 jv.update(b, mev);
@@ -460,7 +472,8 @@ class JarVerifier {
             }
         }
 
-        public int read(byte b[], int off, int len) throws IOException {
+        public int read(byte[] b, int off, int len) throws IOException {
+            ensureOpen();
             if ((numLeft > 0) && (numLeft < len)) {
                 len = (int)numLeft;
             }
@@ -488,9 +501,15 @@ class JarVerifier {
         }
 
         public int available() throws IOException {
+            ensureOpen();
             return is.available();
         }
 
+        private void ensureOpen() throws IOException {
+            if (is == null) {
+                throw new IOException("stream closed");
+            }
+        }
     }
 
     // Extended JavaUtilJarAccess CodeSource API Support
@@ -543,10 +562,9 @@ class JarVerifier {
      * Match CodeSource to a CodeSigner[] in the signer cache.
      */
     private CodeSigner[] findMatchingSigners(CodeSource cs) {
-        if (cs instanceof VerifierCodeSource) {
-            VerifierCodeSource vcs = (VerifierCodeSource) cs;
+        if (cs instanceof VerifierCodeSource vcs) {
             if (vcs.isSameDomain(csdomain)) {
-                return ((VerifierCodeSource) cs).getPrivateSigners();
+                return vcs.getPrivateSigners();
             }
         }
 
@@ -576,11 +594,13 @@ class JarVerifier {
      * signing data that can be compared by object reference identity.
      */
     private static class VerifierCodeSource extends CodeSource {
+        @java.io.Serial
         private static final long serialVersionUID = -9047366145967768825L;
 
         URL vlocation;
         CodeSigner[] vsigners;
         java.security.cert.Certificate[] vcerts;
+        @SuppressWarnings("serial") // Not statically typed as Serializable
         Object csdomain;
 
         VerifierCodeSource(Object csdomain, URL location, CodeSigner[] signers) {
@@ -607,8 +627,7 @@ class JarVerifier {
             if (obj == this) {
                 return true;
             }
-            if (obj instanceof VerifierCodeSource) {
-                VerifierCodeSource that = (VerifierCodeSource) obj;
+            if (obj instanceof VerifierCodeSource that) {
 
                 /*
                  * Only compare against other per-signer singletons constructed
@@ -865,7 +884,7 @@ class JarVerifier {
      */
     boolean isTrustedManifestEntry(String name) {
         // How many signers? MANIFEST.MF is always verified
-        CodeSigner[] forMan = verifiedSigners.get(JarFile.MANIFEST_NAME);
+        CodeSigner[] forMan = verifiedSigners.get(manifestName);
         if (forMan == null) {
             return true;
         }

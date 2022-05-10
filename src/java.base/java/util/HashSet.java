@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,7 @@
 package java.util;
 
 import java.io.InvalidObjectException;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * This class implements the {@code Set} interface, backed by a hash table
@@ -91,6 +91,7 @@ public class HashSet<E>
     extends AbstractSet<E>
     implements Set<E>, Cloneable, java.io.Serializable
 {
+    @java.io.Serial
     static final long serialVersionUID = -5024744406713321676L;
 
     private transient HashMap<E,Object> map;
@@ -271,6 +272,7 @@ public class HashSet<E>
      *             (int), followed by all of its elements (each an Object) in
      *             no particular order.
      */
+    @java.io.Serial
     private void writeObject(java.io.ObjectOutputStream s)
         throws java.io.IOException {
         // Write out any hidden serialization magic
@@ -292,10 +294,11 @@ public class HashSet<E>
      * Reconstitute the {@code HashSet} instance from a stream (that is,
      * deserialize it).
      */
+    @java.io.Serial
     private void readObject(java.io.ObjectInputStream s)
         throws java.io.IOException, ClassNotFoundException {
-        // Read in any hidden serialization magic
-        s.defaultReadObject();
+        // Consume and ignore stream fields (currently zero).
+        s.readFields();
 
         // Read capacity and verify non-negative.
         int capacity = s.readInt();
@@ -310,12 +313,13 @@ public class HashSet<E>
             throw new InvalidObjectException("Illegal load factor: " +
                                              loadFactor);
         }
+        // Clamp load factor to range of 0.25...4.0.
+        loadFactor = Math.min(Math.max(0.25f, loadFactor), 4.0f);
 
         // Read size and verify non-negative.
         int size = s.readInt();
         if (size < 0) {
-            throw new InvalidObjectException("Illegal size: " +
-                                             size);
+            throw new InvalidObjectException("Illegal size: " + size);
         }
 
         // Set the capacity according to the size and load factor ensuring that
@@ -331,7 +335,7 @@ public class HashSet<E>
                      .checkArray(s, Map.Entry[].class, HashMap.tableSizeFor(capacity));
 
         // Create backing HashMap
-        map = (((HashSet<?>)this) instanceof LinkedHashSet ?
+        map = (this instanceof LinkedHashSet ?
                new LinkedHashMap<>(capacity, loadFactor) :
                new HashMap<>(capacity, loadFactor));
 
@@ -357,5 +361,15 @@ public class HashSet<E>
      */
     public Spliterator<E> spliterator() {
         return new HashMap.KeySpliterator<>(map, 0, -1, 0, 0);
+    }
+
+    @Override
+    public Object[] toArray() {
+        return map.keysToArray(new Object[map.size()]);
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return map.keysToArray(map.prepareArray(a));
     }
 }

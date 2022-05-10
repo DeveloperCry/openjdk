@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsLongBufferB                  // package-private
     extends LongBuffer
@@ -40,11 +41,11 @@ class ByteBufferAsLongBufferB                  // package-private
 
 
 
-    ByteBufferAsLongBufferB(ByteBuffer bb) {   // package-private
+    ByteBufferAsLongBufferB(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
         super(-1, 0,
               bb.remaining() >> 3,
-              bb.remaining() >> 3);
+              bb.remaining() >> 3, segment);
         this.bb = bb;
         // enforce limit == capacity
         int cap = this.capacity();
@@ -59,10 +60,10 @@ class ByteBufferAsLongBufferB                  // package-private
 
     ByteBufferAsLongBufferB(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
+        super(mark, pos, lim, cap, segment);
         this.bb = bb;
         address = addr;
         assert address >= bb.address;
@@ -79,10 +80,20 @@ class ByteBufferAsLongBufferB                  // package-private
     public LongBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsLongBufferB(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsLongBufferB(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public LongBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsLongBufferB(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public LongBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsLongBufferB                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public LongBuffer asReadOnlyBuffer() {
@@ -101,7 +112,7 @@ class ByteBufferAsLongBufferB                  // package-private
                                                  this.position(),
                                                  this.limit(),
                                                  this.capacity(),
-                                                 address);
+                                                 address, segment);
 
 
 
@@ -119,13 +130,13 @@ class ByteBufferAsLongBufferB                  // package-private
     }
 
     public long get() {
-        long x = UNSAFE.getLongUnaligned(bb.hb, byteOffset(nextGetIndex()),
+        long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), bb.hb, byteOffset(nextGetIndex()),
             true);
         return (x);
     }
 
     public long get(int i) {
-        long x = UNSAFE.getLongUnaligned(bb.hb, byteOffset(checkIndex(i)),
+        long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)),
             true);
         return (x);
     }
@@ -143,7 +154,7 @@ class ByteBufferAsLongBufferB                  // package-private
     public LongBuffer put(long x) {
 
         long y = (x);
-        UNSAFE.putLongUnaligned(bb.hb, byteOffset(nextPutIndex()), y,
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), bb.hb, byteOffset(nextPutIndex()), y,
             true);
         return this;
 
@@ -154,7 +165,7 @@ class ByteBufferAsLongBufferB                  // package-private
     public LongBuffer put(int i, long x) {
 
         long y = (x);
-        UNSAFE.putLongUnaligned(bb.hb, byteOffset(checkIndex(i)), y,
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)), y,
             true);
         return this;
 
@@ -191,8 +202,6 @@ class ByteBufferAsLongBufferB                  // package-private
     public boolean isReadOnly() {
         return false;
     }
-
-
 
 
 

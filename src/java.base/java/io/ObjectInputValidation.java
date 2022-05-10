@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,6 @@ package java.io;
  * Allows an object to be called when a complete graph of objects has
  * been deserialized.
  *
- * @author  unascribed
  * @see     ObjectInputStream
  * @see     ObjectInputStream#registerValidation(java.io.ObjectInputValidation, int)
  * @since   1.1
@@ -39,7 +38,7 @@ public interface ObjectInputValidation {
     /**
      * Validates the object.
      *
-     * @exception InvalidObjectException If the object cannot validate itself.
+     * @throws    InvalidObjectException If the object cannot validate itself.
      */
     public void validateObject() throws InvalidObjectException;
 }

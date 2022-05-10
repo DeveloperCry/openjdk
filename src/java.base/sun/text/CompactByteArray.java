@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -129,7 +129,7 @@ public final class CompactByteArray implements Cloneable {
     {
         if (isCompact)
             expand();
-        values[(int)index] = value;
+        values[index] = value;
         touchBlock(index >> BLOCKSHIFT, value);
     }
 
@@ -152,8 +152,8 @@ public final class CompactByteArray implements Cloneable {
     }
 
     /**
-      *Compact the array.
-      */
+     * Compact the array.
+     */
     public void compact()
     {
         if (!isCompact) {
@@ -241,18 +241,20 @@ public final class CompactByteArray implements Cloneable {
         return hashes[i] != 0;
     }
 
-    /** For internal use only.  Do not modify the result, the behavior of
-      * modified results are undefined.
-      */
-    public short getIndexArray()[]
+    /**
+     * For internal use only.  Do not modify the result, the behavior of
+     * modified results are undefined.
+     */
+    public short[] getIndexArray()
     {
         return indices;
     }
 
-    /** For internal use only.  Do not modify the result, the behavior of
-      * modified results are undefined.
-      */
-    public byte getStringArray()[]
+    /**
+     * For internal use only.  Do not modify the result, the behavior of
+     * modified results are undefined.
+     */
+    public byte[] getStringArray()
     {
         return values;
     }
@@ -297,7 +299,6 @@ public final class CompactByteArray implements Cloneable {
     /**
      * Generates the hash code for the compact array object
      */
-
     public int hashCode() {
         int result = 0;
         int increment = Math.min(3, values.length/16);
@@ -307,12 +308,9 @@ public final class CompactByteArray implements Cloneable {
         return result;
     }
 
-    // --------------------------------------------------------------
-    // package private
-    // --------------------------------------------------------------
     /**
-      * Expanding takes the array back to a 65536 element array.
-      */
+     * Expanding takes the array back to a 65536 element array.
+     */
     private void expand()
     {
         int i;
@@ -328,15 +326,9 @@ public final class CompactByteArray implements Cloneable {
             for (i = 0; i < INDEXCOUNT; ++i) {
                 indices[i] = (short)(i<<BLOCKSHIFT);
             }
-            values = null;
             values = tempArray;
             isCompact = false;
         }
-    }
-
-    private byte[] getArray()
-    {
-        return values;
     }
 
     private static  final int BLOCKSHIFT =7;
@@ -349,4 +341,4 @@ public final class CompactByteArray implements Cloneable {
     private short indices[];
     private boolean isCompact;
     private int[] hashes;
-};
+}

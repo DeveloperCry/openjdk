@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,8 +46,8 @@ import sun.security.util.DerValue;
  *
  * <p>
  * The extension is defined in Section 5.2.5 of
- * <a href="http://tools.ietf.org/html/rfc5280">Internet X.509 PKI Certific
-ate and Certificate Revocation List (CRL) Profile</a>.
+ * <a href="http://tools.ietf.org/html/rfc5280">Internet X.509 PKI
+ * Certificate and Certificate Revocation List (CRL) Profile</a>.
  *
  * <p>
  * Its ASN.1 definition is as follows:
@@ -393,7 +393,8 @@ public class IssuingDistributionPointExtension extends Extension
         if (distributionPoint != null) {
             DerOutputStream tmp = new DerOutputStream();
             distributionPoint.encode(tmp);
-            tagged.writeImplicit(DerValue.createTag(DerValue.TAG_CONTEXT, true,
+            // DistributionPointName is CHOICE. Do not writeImplicit.
+            tagged.write(DerValue.createTag(DerValue.TAG_CONTEXT, true,
                 TAG_DISTRIBUTION_POINT), tmp);
         }
 

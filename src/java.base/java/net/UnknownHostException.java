@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,8 +33,8 @@ import java.io.IOException;
  * @author  Jonathan Payne
  * @since   1.0
  */
-public
-class UnknownHostException extends IOException {
+public class UnknownHostException extends IOException {
+    @java.io.Serial
     private static final long serialVersionUID = -4639126076052875403L;
 
     /**

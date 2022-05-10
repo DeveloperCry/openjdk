@@ -41,6 +41,7 @@ public class AlreadyBoundException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 6796072983322737592L;
 
     /**

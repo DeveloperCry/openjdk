@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -193,7 +193,7 @@ public class TSResponse {
     /**
      * Constructs an object to store the response to a timestamp request.
      *
-     * @param status A buffer containing the ASN.1 BER encoded response.
+     * @param tsReply A buffer containing the ASN.1 BER encoded response.
      * @throws IOException The exception is thrown if a problem is encountered
      *         parsing the timestamp response.
      */
@@ -375,6 +375,7 @@ public class TSResponse {
     }
 
     static final class TimestampException extends IOException {
+        @java.io.Serial
         private static final long serialVersionUID = -1631631794891940953L;
 
         TimestampException(String message) {

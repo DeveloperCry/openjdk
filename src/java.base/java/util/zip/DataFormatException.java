@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,8 +31,8 @@ package java.util.zip;
  * @author      David Connelly
  * @since 1.1
  */
-public
-class DataFormatException extends Exception {
+public class DataFormatException extends Exception {
+    @java.io.Serial
     private static final long serialVersionUID = 2219632870893641452L;
 
     /**

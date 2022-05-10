@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -103,7 +103,7 @@ public class PropertiesDefaultHandler extends DefaultHandler {
             writer.writeStartDocument();
             writer.writeDTD(PROPS_DTD_DECL);
             writer.writeStartElement(ELEMENT_ROOT);
-            if (comment != null && comment.length() > 0) {
+            if (comment != null && !comment.isEmpty()) {
                 writer.writeStartElement(ELEMENT_COMMENT);
                 writer.writeCharacters(comment);
                 writer.writeEndElement();
@@ -118,6 +118,9 @@ public class PropertiesDefaultHandler extends DefaultHandler {
                         writer.writeAttribute(ATTR_KEY, (String)k);
                         writer.writeCharacters((String)v);
                         writer.writeEndElement();
+                    } else {
+                        throw new ClassCastException(
+                                "Keys and values in Properties must be Strings");
                     }
                 }
             }

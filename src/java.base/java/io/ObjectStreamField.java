@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -60,10 +60,10 @@ public class ObjectStreamField
 
     /**
      * Create a Serializable field with the specified type.  This field should
-     * be documented with a <code>serialField</code> tag.
+     * be documented with a {@code serialField} tag.
      *
      * @param   name the name of the serializable field
-     * @param   type the <code>Class</code> object of the serializable field
+     * @param   type the {@code Class} object of the serializable field
      */
     public ObjectStreamField(String name, Class<?> type) {
         this(name, type, false);
@@ -110,19 +110,18 @@ public class ObjectStreamField
         this.unshared = unshared;
         this.field = null;
 
-        switch (signature.charAt(0)) {
-            case 'Z': type = Boolean.TYPE; break;
-            case 'B': type = Byte.TYPE; break;
-            case 'C': type = Character.TYPE; break;
-            case 'S': type = Short.TYPE; break;
-            case 'I': type = Integer.TYPE; break;
-            case 'J': type = Long.TYPE; break;
-            case 'F': type = Float.TYPE; break;
-            case 'D': type = Double.TYPE; break;
-            case 'L':
-            case '[': type = Object.class; break;
-            default: throw new IllegalArgumentException("illegal signature");
-        }
+        type = switch (signature.charAt(0)) {
+            case 'Z'      -> Boolean.TYPE;
+            case 'B'      -> Byte.TYPE;
+            case 'C'      -> Character.TYPE;
+            case 'S'      -> Short.TYPE;
+            case 'I'      -> Integer.TYPE;
+            case 'J'      -> Long.TYPE;
+            case 'F'      -> Float.TYPE;
+            case 'D'      -> Double.TYPE;
+            case 'L', '[' -> Object.class;
+            default       -> throw new IllegalArgumentException("illegal signature");
+        };
     }
 
     /**
@@ -197,7 +196,7 @@ public class ObjectStreamField
     /**
      * Get the name of this field.
      *
-     * @return  a <code>String</code> representing the name of the serializable
+     * @return  a {@code String} representing the name of the serializable
      *          field
      */
     public String getName() {
@@ -206,14 +205,15 @@ public class ObjectStreamField
 
     /**
      * Get the type of the field.  If the type is non-primitive and this
-     * <code>ObjectStreamField</code> was obtained from a deserialized {@link
-     * ObjectStreamClass} instance, then <code>Object.class</code> is returned.
-     * Otherwise, the <code>Class</code> object for the type of the field is
+     * {@code ObjectStreamField} was obtained from a deserialized {@link
+     * ObjectStreamClass} instance, then {@code Object.class} is returned.
+     * Otherwise, the {@code Class} object for the type of the field is
      * returned.
      *
-     * @return  a <code>Class</code> object representing the type of the
+     * @return  a {@code Class} object representing the type of the
      *          serializable field
      */
+    @SuppressWarnings("removal")
     @CallerSensitive
     public Class<?> getType() {
         if (System.getSecurityManager() != null) {
@@ -303,7 +303,7 @@ public class ObjectStreamField
     }
 
     /**
-     * Compare this field with another <code>ObjectStreamField</code>.  Return
+     * Compare this field with another {@code ObjectStreamField}.  Return
      * -1 if this is smaller, 0 if equal, 1 if greater.  Types that are
      * primitives are "smaller" than object types.  If equal, the field names
      * are compared.

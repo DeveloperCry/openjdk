@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -183,15 +183,15 @@ final class RBCollationTables {
     }
 
     /**
-      * Return the maximum length of any expansion sequences that end
-      * with the specified comparison order.
-      *
-      * @param order a collation order returned by previous or next.
-      * @return the maximum length of any expansion seuences ending
-      *         with the specified order.
-      *
-      * @see CollationElementIterator#getMaxExpansion
-      */
+     * Return the maximum length of any expansion sequences that end
+     * with the specified comparison order.
+     *
+     * @param order a collation order returned by previous or next.
+     * @return the maximum length of any expansion seuences ending
+     *         with the specified order.
+     *
+     * @see CollationElementIterator#getMaxExpansion
+     */
     int getMaxExpansion(int order) {
         int result = 1;
 

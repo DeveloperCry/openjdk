@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
  * A read/write HeapFloatBuffer.
@@ -44,7 +47,7 @@ class HeapFloatBuffer
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(float[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(float[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,9 +59,9 @@ class HeapFloatBuffer
 
     */
 
-    HeapFloatBuffer(int cap, int lim) {            // package-private
+    HeapFloatBuffer(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
-        super(-1, 0, lim, cap, new float[cap], 0);
+        super(-1, 0, lim, cap, new float[cap], 0, segment);
         /*
         hb = new float[cap];
         offset = 0;
@@ -70,9 +73,9 @@ class HeapFloatBuffer
 
     }
 
-    HeapFloatBuffer(float[] buf, int off, int len) { // package-private
+    HeapFloatBuffer(float[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
-        super(-1, off, off + len, buf.length, buf, 0);
+        super(-1, off, off + len, buf.length, buf, 0, segment);
         /*
         hb = buf;
         offset = 0;
@@ -86,10 +89,10 @@ class HeapFloatBuffer
 
     protected HeapFloatBuffer(float[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap, buf, off);
+        super(mark, pos, lim, cap, buf, off, segment);
         /*
         hb = buf;
         offset = off;
@@ -102,27 +105,27 @@ class HeapFloatBuffer
     }
 
     public FloatBuffer slice() {
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapFloatBuffer(hb,
                                         -1,
                                         0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
+                                        rem,
+                                        rem,
+                                        pos + offset, segment);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public FloatBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapFloatBuffer(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public FloatBuffer duplicate() {
         return new HeapFloatBuffer(hb,
@@ -130,7 +133,7 @@ class HeapFloatBuffer
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public FloatBuffer asReadOnlyBuffer() {
@@ -140,7 +143,7 @@ class HeapFloatBuffer
                                      this.position(),
                                      this.limit(),
                                      this.capacity(),
-                                     offset);
+                                     offset, segment);
 
 
 
@@ -173,11 +176,21 @@ class HeapFloatBuffer
 
 
     public FloatBuffer get(float[] dst, int offset, int length) {
-        checkBounds(offset, length, dst.length);
-        if (length > remaining())
+        checkScope();
+        Objects.checkFromIndexSize(offset, length, dst.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferUnderflowException();
-        System.arraycopy(hb, ix(position()), dst, offset, length);
-        position(position() + length);
+        System.arraycopy(hb, ix(pos), dst, offset, length);
+        position(pos + length);
+        return this;
+    }
+
+    public FloatBuffer get(int index, float[] dst, int offset, int length) {
+        checkScope();
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, dst.length);
+        System.arraycopy(hb, ix(index), dst, offset, length);
         return this;
     }
 
@@ -211,11 +224,13 @@ class HeapFloatBuffer
 
     public FloatBuffer put(float[] src, int offset, int length) {
 
-        checkBounds(offset, length, src.length);
-        if (length > remaining())
+        checkScope();
+        Objects.checkFromIndexSize(offset, length, src.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferOverflowException();
-        System.arraycopy(src, offset, hb, ix(position()), length);
-        position(position() + length);
+        System.arraycopy(src, offset, hb, ix(pos), length);
+        position(pos + length);
         return this;
 
 
@@ -224,36 +239,66 @@ class HeapFloatBuffer
 
     public FloatBuffer put(FloatBuffer src) {
 
-        if (src instanceof HeapFloatBuffer) {
-            if (src == this)
-                throw createSameBufferException();
-            HeapFloatBuffer sb = (HeapFloatBuffer)src;
-            int n = sb.remaining();
-            if (n > remaining())
-                throw new BufferOverflowException();
-            System.arraycopy(sb.hb, sb.ix(sb.position()),
-                             hb, ix(position()), n);
-            sb.position(sb.position() + n);
-            position(position() + n);
-        } else if (src.isDirect()) {
-            int n = src.remaining();
-            if (n > remaining())
-                throw new BufferOverflowException();
-            src.get(hb, ix(position()), n);
-            position(position() + n);
-        } else {
-            super.put(src);
-        }
+        checkScope();
+        super.put(src);
         return this;
 
 
 
     }
 
+    public FloatBuffer put(int index, FloatBuffer src, int offset, int length) {
+
+        checkScope();
+        super.put(index, src, offset, length);
+        return this;
+
+
+
+    }
+
+    public FloatBuffer put(int index, float[] src, int offset, int length) {
+
+        checkScope();
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, src.length);
+        System.arraycopy(src, offset, hb, ix(index), length);
+        return this;
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public FloatBuffer compact() {
 
-        System.arraycopy(hb, ix(position()), hb, ix(0), remaining());
-        position(remaining());
+        int pos = position();
+        int lim = limit();
+        assert (pos <= lim);
+        int rem = (pos <= lim ? lim - pos : 0);
+        System.arraycopy(hb, ix(pos), hb, ix(0), rem);
+        position(rem);
         limit(capacity());
         discardMark();
         return this;
@@ -261,6 +306,9 @@ class HeapFloatBuffer
 
 
     }
+
+
+
 
 
 

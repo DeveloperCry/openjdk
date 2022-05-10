@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,7 +69,7 @@ public class LDAPCertStoreParameters implements CertStoreParameters {
      *
      * @param serverName the DNS name of the LDAP server
      * @param port the port number of the LDAP server
-     * @exception NullPointerException if {@code serverName} is
+     * @throws    NullPointerException if {@code serverName} is
      * {@code null}
      */
     public LDAPCertStoreParameters(String serverName, int port) {
@@ -84,7 +84,7 @@ public class LDAPCertStoreParameters implements CertStoreParameters {
      * specified server name and a default port of 389.
      *
      * @param serverName the DNS name of the LDAP server
-     * @exception NullPointerException if {@code serverName} is
+     * @throws    NullPointerException if {@code serverName} is
      * {@code null}
      */
     public LDAPCertStoreParameters(String serverName) {

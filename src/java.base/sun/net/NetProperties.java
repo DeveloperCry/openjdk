@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ import java.util.Properties;
  *
  */
 
+@SuppressWarnings("removal")
 public class NetProperties {
     private static Properties props = new Properties();
     static {

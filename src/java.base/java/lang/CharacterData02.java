@@ -1,6 +1,6 @@
-// This file was generated AUTOMATICALLY from a template file Sun Oct 06 11:35:17 UTC 2019
+// This file was generated AUTOMATICALLY from a template file 
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -78,16 +78,6 @@ class CharacterData02 extends CharacterData {
         return props;
     }
 
-    boolean isOtherLowercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0001) != 0;
-    }
-
-    boolean isOtherUppercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0002) != 0;
-    }
-
     boolean isOtherAlphabetic(int ch) {
         int props = getPropertiesEx(ch);
         return (props & 0x0004) != 0;
@@ -95,7 +85,7 @@ class CharacterData02 extends CharacterData {
 
     boolean isIdeographic(int ch) {
         int props = getPropertiesEx(ch);
-        return (props & 0x0010) != 0;
+        return (props & 0x0008) != 0;
     }
 
     int getType(int ch) {
@@ -114,13 +104,12 @@ class CharacterData02 extends CharacterData {
     }
 
     boolean isUnicodeIdentifierStart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00007000) == 0x00007000);
+        return (getPropertiesEx(ch) & 0x0010) != 0;
     }
 
     boolean isUnicodeIdentifierPart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00001000) != 0);
+        return (getPropertiesEx(ch) & 0x0020) != 0 ||
+               isIdentifierIgnorable(ch);
     }
 
     boolean isIdentifierIgnorable(int ch) {
@@ -218,6 +207,19 @@ class CharacterData02 extends CharacterData {
         return retval;
     }
 
+    boolean isDigit(int ch) {
+        int props = getProperties(ch);
+        return (props & 0x1F) == Character.DECIMAL_DIGIT_NUMBER;
+    }
+
+    boolean isLowerCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0001) != 0;
+    }
+
+    boolean isUpperCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0002) != 0;
+    }
+
     boolean isWhitespace(int ch) {
         return (getProperties(ch) & 0x00007000) == 0x00004000;
     }
@@ -238,9 +240,7 @@ class CharacterData02 extends CharacterData {
     static final CharacterData instance = new CharacterData02();
     private CharacterData02() {};
 
-    // The following tables and code generated using:
-  // java GenerateCharacter -string -plane 2 -template t:/workspace/open/make/data/characterdata/CharacterData02.java.template -spec t:/workspace/open/make/data/unicodedata/UnicodeData.txt -specialcasing t:/workspace/open/make/data/unicodedata/SpecialCasing.txt -proplist t:/workspace/open/make/data/unicodedata/PropList.txt -o t:/workspace/build/windows-x64/support/gensrc/java.base/java/lang/CharacterData02.java -usecharforbyte 11 4 1
-  // The X table has 2048 entries for a total of 4096 bytes.
+    // The X table has 2048 entries for a total of 4096 bytes.
 
   static final char X[] = (
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
@@ -320,7 +320,7 @@ class CharacterData02 extends CharacterData {
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
-    "\000\000\060\000\000\000\000\000\000\100\000\000\000\000\000\000\000\000\000"+
+    "\000\000\060\000\000\000\000\000\000\020\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
@@ -330,7 +330,7 @@ class CharacterData02 extends CharacterData {
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
-    "\120\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
+    "\100\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
@@ -342,40 +342,39 @@ class CharacterData02 extends CharacterData {
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
-    "\000\000\000\000\000\000\140\040\040\040\040\040\040\040\040\040\040\040\040"+
+    "\000\000\000\000\000\000\120\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040"+
-    "\040\040\040\040\040\040\040\040\000\000\000\000\160\000\000\000\000\000\000"+
-    "\000\000\000\000\000\100\040\040\040\040\040\040\040\040\040\040\040\040\040"+
+    "\040\040\040\040\040\040\040\040\000\000\000\000\140\000\000\000\000\000\000"+
+    "\000\000\000\000\000\020\040\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040"+
     "\040\040\040\040\040\040\040\040\040\040\040\040\040\040\040").toCharArray();
 
-  // The Y table has 128 entries for a total of 256 bytes.
+  // The Y table has 112 entries for a total of 224 bytes.
 
   static final char Y[] = (
     "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"+
-    "\000\000\000\000\000\000\000\000\002\004\004\004\004\004\004\004\004\004\004"+
-    "\004\004\004\004\004\004\004\004\004\004\000\000\000\000\000\000\000\000\000"+
-    "\000\002\004\004\004\004\004\000\000\000\000\000\000\000\000\000\000\000\000"+
-    "\000\000\000\004\000\004\004\004\004\004\004\004\000\000\000\000\000\000\000"+
-    "\000\002\004\004\004\004\004\004\004\004\004\004\004\004\004\004\004\000\000"+
-    "\000\000\000\000\000\000\006\000\000\000\000\000\000\000").toCharArray();
+    "\000\000\000\000\000\000\000\000\000\000\000\000\002\002\002\002\002\002\002"+
+    "\002\002\002\002\002\002\002\002\002\002\000\000\000\000\000\000\000\000\000"+
+    "\000\004\002\002\002\002\002\000\002\002\002\002\002\002\002\000\000\000\000"+
+    "\000\000\000\000\004\002\002\002\002\002\002\002\002\002\002\002\002\002\002"+
+    "\002\000\000\000\000\000\000\000\000\006\000\000\000\000\000\000\000").toCharArray();
 
   // The A table has 8 entries for a total of 32 bytes.
 
   static final int A[] = new int[8];
   static final String A_DATA =
-    "\000\u7005\000\u7005\000\u7005\u7800\000\u7800\000\u7800\000\000\u7725\000"+
+    "\000\u7005\000\u7005\u7800\000\u7800\000\000\u7005\u7800\000\000\u7725\000"+
     "\u7005";
 
   // The B table has 8 entries for a total of 16 bytes.
 
   static final char B[] = (
-    "\020\020\020\000\000\000\020\020").toCharArray();
+    "\070\070\000\000\070\000\070\070").toCharArray();
 
-  // In all, the character property tables require 4384 bytes.
+  // In all, the character property tables require 4352 bytes.
 
     static {
                 { // THIS CODE WAS AUTOMATICALLY CREATED BY GenerateCharacter:

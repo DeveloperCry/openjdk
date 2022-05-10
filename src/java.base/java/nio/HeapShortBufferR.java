@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
 
@@ -44,7 +47,7 @@ class HeapShortBufferR
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(short[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(short[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,7 +59,7 @@ class HeapShortBufferR
 
     */
 
-    HeapShortBufferR(int cap, int lim) {            // package-private
+    HeapShortBufferR(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
 
 
@@ -65,12 +68,12 @@ class HeapShortBufferR
 
 
 
-        super(cap, lim);
+        super(cap, lim, segment);
         this.isReadOnly = true;
 
     }
 
-    HeapShortBufferR(short[] buf, int off, int len) { // package-private
+    HeapShortBufferR(short[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
 
 
@@ -79,14 +82,14 @@ class HeapShortBufferR
 
 
 
-        super(buf, off, len);
+        super(buf, off, len, segment);
         this.isReadOnly = true;
 
     }
 
     protected HeapShortBufferR(short[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
 
@@ -96,33 +99,33 @@ class HeapShortBufferR
 
 
 
-        super(buf, mark, pos, lim, cap, off);
+        super(buf, mark, pos, lim, cap, off, segment);
         this.isReadOnly = true;
 
     }
 
     public ShortBuffer slice() {
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapShortBufferR(hb,
                                         -1,
                                         0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
+                                        rem,
+                                        rem,
+                                        pos + offset, segment);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public ShortBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapShortBufferR(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public ShortBuffer duplicate() {
         return new HeapShortBufferR(hb,
@@ -130,7 +133,7 @@ class HeapShortBufferR
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public ShortBuffer asReadOnlyBuffer() {
@@ -145,6 +148,16 @@ class HeapShortBufferR
         return duplicate();
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -218,6 +231,8 @@ class HeapShortBufferR
 
 
 
+
+
         throw new ReadOnlyBufferException();
 
     }
@@ -228,17 +243,21 @@ class HeapShortBufferR
 
 
 
+        throw new ReadOnlyBufferException();
+
+    }
+
+    public ShortBuffer put(int index, ShortBuffer src, int offset, int length) {
 
 
 
 
 
+        throw new ReadOnlyBufferException();
 
+    }
 
-
-
-
-
+    public ShortBuffer put(int index, short[] src, int offset, int length) {
 
 
 
@@ -249,6 +268,28 @@ class HeapShortBufferR
         throw new ReadOnlyBufferException();
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public ShortBuffer compact() {
 
@@ -258,9 +299,16 @@ class HeapShortBufferR
 
 
 
+
+
+
+
         throw new ReadOnlyBufferException();
 
     }
+
+
+
 
 
 

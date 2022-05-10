@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -163,7 +163,7 @@ public class TSRequest {
         // encode optional elements
 
         if (policyId != null) {
-            request.putOID(new ObjectIdentifier(policyId));
+            request.putOID(ObjectIdentifier.of(policyId));
         }
         if (nonce != null) {
             request.putInteger(nonce);

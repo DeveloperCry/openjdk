@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,6 +46,7 @@ import sun.security.util.ResourcesMgr;
  */
 class SubjectCodeSource extends CodeSource implements java.io.Serializable {
 
+    @java.io.Serial
     private static final long serialVersionUID = 6039418085604715275L;
 
     private Subject subject;
@@ -53,6 +54,7 @@ class SubjectCodeSource extends CodeSource implements java.io.Serializable {
     private static final Class<?>[] PARAMS = { String.class };
     private static final sun.security.util.Debug debug =
         sun.security.util.Debug.getInstance("auth", "\t[Auth Access]");
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private ClassLoader sysClassLoader;
 
     /**
@@ -78,6 +80,7 @@ class SubjectCodeSource extends CodeSource implements java.io.Serializable {
      * @param certs the signers associated with this
      *                  <code>SubjectCodeSource</code> <p>
      */
+    @SuppressWarnings("removal")
     SubjectCodeSource(Subject subject,
         LinkedList<PrincipalEntry> principals,
         URL url, Certificate[] certs) {
@@ -363,6 +366,7 @@ class SubjectCodeSource extends CodeSource implements java.io.Serializable {
      *
      * @return a String representation of this <code>SubjectCodeSource</code>.
      */
+    @SuppressWarnings("removal")
     public String toString() {
         String returnMe = super.toString();
         if (getSubject() != null) {
@@ -380,9 +384,7 @@ class SubjectCodeSource extends CodeSource implements java.io.Serializable {
             }
         }
         if (principals != null) {
-            ListIterator<PrincipalEntry> li = principals.listIterator();
-            while (li.hasNext()) {
-                PrincipalEntry pppe = li.next();
+            for (PrincipalEntry pppe : principals) {
                 returnMe = returnMe + ResourcesMgr.getAuthResourceString("NEWLINE") +
                         pppe.getPrincipalClass() + " " +
                         pppe.getPrincipalName();

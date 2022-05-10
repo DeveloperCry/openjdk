@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -77,6 +77,7 @@ public class UnsupportedTemporalTypeException extends DateTimeException {
     /**
      * Serialization version.
      */
+    @java.io.Serial
     private static final long serialVersionUID = -6158898438688206006L;
 
     /**

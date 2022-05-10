@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,12 +73,19 @@ public class FloatConsts {
      */
     public static final int     SIGNIF_BIT_MASK = 0x007FFFFF;
 
+    /**
+     * Bit mask to isolate the magnitude bits (combined exponent and
+     * significand fields) of a {@code float}.
+     */
+    public static final int     MAG_BIT_MASK = ~SIGN_BIT_MASK;
+
     static {
         // verify bit masks cover all bit positions and that the bit
         // masks are non-overlapping
         assert(((SIGN_BIT_MASK | EXP_BIT_MASK | SIGNIF_BIT_MASK) == ~0) &&
                (((SIGN_BIT_MASK & EXP_BIT_MASK) == 0) &&
                 ((SIGN_BIT_MASK & SIGNIF_BIT_MASK) == 0) &&
-                ((EXP_BIT_MASK & SIGNIF_BIT_MASK) == 0)));
+                ((EXP_BIT_MASK & SIGNIF_BIT_MASK) == 0)) &&
+                ((SIGN_BIT_MASK | MAG_BIT_MASK) == ~0));
     }
 }

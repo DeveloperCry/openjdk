@@ -44,6 +44,7 @@ public class ClosedChannelException
     extends java.io.IOException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 882777185433553857L;
 
     /**

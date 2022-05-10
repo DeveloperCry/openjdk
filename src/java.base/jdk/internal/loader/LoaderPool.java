@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,7 +46,7 @@ public final class LoaderPool {
 
     /**
      * Creates a pool of class loaders. Each module in the given configuration
-     * will be loaded its own class loader in the pool. The class loader is
+     * is mapped to its own class loader in the pool. The class loader is
      * created with the given parent class loader as its parent.
      */
     public LoaderPool(Configuration cf,

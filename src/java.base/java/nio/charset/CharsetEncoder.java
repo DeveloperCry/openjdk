@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -189,10 +189,12 @@ public abstract class CharsetEncoder {
                    byte[] replacement)
     {
         this.charset = cs;
-        if (averageBytesPerChar <= 0.0f)
+        // Use !(a > 0.0f) rather than (a <= 0.0f) to exclude NaN values
+        if (!(averageBytesPerChar > 0.0f))
             throw new IllegalArgumentException("Non-positive "
                                                + "averageBytesPerChar");
-        if (maxBytesPerChar <= 0.0f)
+        // Use !(a > 0.0f) rather than (a <= 0.0f) to exclude NaN values
+        if (!(maxBytesPerChar > 0.0f))
             throw new IllegalArgumentException("Non-positive "
                                                + "maxBytesPerChar");
         if (averageBytesPerChar > maxBytesPerChar)
@@ -453,7 +455,14 @@ public abstract class CharsetEncoder {
     /**
      * Returns the maximum number of bytes that will be produced for each
      * character of input.  This value may be used to compute the worst-case size
-     * of the output buffer required for a given input sequence.
+     * of the output buffer required for a given input sequence. This value
+     * accounts for any necessary content-independent prefix or suffix
+
+     * bytes, such as byte-order marks.
+
+
+
+
      *
      * @return  The maximum number of bytes that will be produced per
      *          character of input
@@ -574,9 +583,7 @@ public abstract class CharsetEncoder {
             CoderResult cr;
             try {
                 cr = encodeLoop(in, out);
-            } catch (BufferUnderflowException x) {
-                throw new CoderMalfunctionError(x);
-            } catch (BufferOverflowException x) {
+            } catch (RuntimeException x) {
                 throw new CoderMalfunctionError(x);
             }
 

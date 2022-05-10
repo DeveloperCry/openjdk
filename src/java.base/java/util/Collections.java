@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,7 +40,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * This class consists exclusively of static methods that operate on or return
@@ -1008,12 +1008,17 @@ public class Collections {
      * The returned collection will be serializable if the specified collection
      * is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param  <T> the class of the objects in the collection
      * @param  c the collection for which an unmodifiable view is to be
      *         returned.
      * @return an unmodifiable view of the specified collection.
      */
+    @SuppressWarnings("unchecked")
     public static <T> Collection<T> unmodifiableCollection(Collection<? extends T> c) {
+        if (c.getClass() == UnmodifiableCollection.class) {
+            return (Collection<T>) c;
+        }
         return new UnmodifiableCollection<>(c);
     }
 
@@ -1021,8 +1026,10 @@ public class Collections {
      * @serial include
      */
     static class UnmodifiableCollection<E> implements Collection<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 1820017752578914078L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         final Collection<? extends E> c;
 
         UnmodifiableCollection(Collection<? extends E> c) {
@@ -1114,11 +1121,17 @@ public class Collections {
      * The returned set will be serializable if the specified set
      * is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param  <T> the class of the objects in the set
      * @param  s the set for which an unmodifiable view is to be returned.
      * @return an unmodifiable view of the specified set.
      */
+    @SuppressWarnings("unchecked")
     public static <T> Set<T> unmodifiableSet(Set<? extends T> s) {
+        // Not checking for subclasses because of heap pollution and information leakage.
+        if (s.getClass() == UnmodifiableSet.class) {
+            return (Set<T>) s;
+        }
         return new UnmodifiableSet<>(s);
     }
 
@@ -1127,6 +1140,7 @@ public class Collections {
      */
     static class UnmodifiableSet<E> extends UnmodifiableCollection<E>
                                  implements Set<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -9215047833775013803L;
 
         UnmodifiableSet(Set<? extends E> s)     {super(s);}
@@ -1145,12 +1159,17 @@ public class Collections {
      * The returned sorted set will be serializable if the specified sorted set
      * is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param  <T> the class of the objects in the set
      * @param s the sorted set for which an unmodifiable view is to be
      *        returned.
      * @return an unmodifiable view of the specified sorted set.
      */
     public static <T> SortedSet<T> unmodifiableSortedSet(SortedSet<T> s) {
+        // Not checking for subclasses because of heap pollution and information leakage.
+        if (s.getClass() == UnmodifiableSortedSet.class) {
+            return s;
+        }
         return new UnmodifiableSortedSet<>(s);
     }
 
@@ -1160,7 +1179,9 @@ public class Collections {
     static class UnmodifiableSortedSet<E>
                              extends UnmodifiableSet<E>
                              implements SortedSet<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -4929149591599911165L;
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedSet<E> ss;
 
         UnmodifiableSortedSet(SortedSet<E> s) {super(s); ss = s;}
@@ -1192,6 +1213,7 @@ public class Collections {
      * The returned navigable set will be serializable if the specified
      * navigable set is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param  <T> the class of the objects in the set
      * @param s the navigable set for which an unmodifiable view is to be
      *        returned
@@ -1199,6 +1221,9 @@ public class Collections {
      * @since 1.8
      */
     public static <T> NavigableSet<T> unmodifiableNavigableSet(NavigableSet<T> s) {
+        if (s.getClass() == UnmodifiableNavigableSet.class) {
+            return s;
+        }
         return new UnmodifiableNavigableSet<>(s);
     }
 
@@ -1212,6 +1237,7 @@ public class Collections {
                              extends UnmodifiableSortedSet<E>
                              implements NavigableSet<E>, Serializable {
 
+        @java.io.Serial
         private static final long serialVersionUID = -6027448201786391929L;
 
         /**
@@ -1222,12 +1248,14 @@ public class Collections {
          */
         private static class EmptyNavigableSet<E> extends UnmodifiableNavigableSet<E>
             implements Serializable {
+            @java.io.Serial
             private static final long serialVersionUID = -6291252904449939134L;
 
             public EmptyNavigableSet() {
                 super(new TreeSet<>());
             }
 
+            @java.io.Serial
             private Object readResolve()        { return EMPTY_NAVIGABLE_SET; }
         }
 
@@ -1238,6 +1266,7 @@ public class Collections {
         /**
          * The instance we are protecting.
          */
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableSet<E> ns;
 
         UnmodifiableNavigableSet(NavigableSet<E> s)         {super(s); ns = s;}
@@ -1280,11 +1309,17 @@ public class Collections {
      * is serializable. Similarly, the returned list will implement
      * {@link RandomAccess} if the specified list does.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param  <T> the class of the objects in the list
      * @param  list the list for which an unmodifiable view is to be returned.
      * @return an unmodifiable view of the specified list.
      */
+    @SuppressWarnings("unchecked")
     public static <T> List<T> unmodifiableList(List<? extends T> list) {
+        if (list.getClass() == UnmodifiableList.class || list.getClass() == UnmodifiableRandomAccessList.class) {
+           return (List<T>) list;
+        }
+
         return (list instanceof RandomAccess ?
                 new UnmodifiableRandomAccessList<>(list) :
                 new UnmodifiableList<>(list));
@@ -1295,8 +1330,10 @@ public class Collections {
      */
     static class UnmodifiableList<E> extends UnmodifiableCollection<E>
                                   implements List<E> {
+        @java.io.Serial
         private static final long serialVersionUID = -283967356065247728L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         final List<? extends E> list;
 
         UnmodifiableList(List<? extends E> list) {
@@ -1379,6 +1416,7 @@ public class Collections {
          * serialized in 1.4.1 and deserialized in 1.4 will become
          * UnmodifiableList instances, as this method was missing in 1.4.
          */
+        @java.io.Serial
         private Object readResolve() {
             return (list instanceof RandomAccess
                     ? new UnmodifiableRandomAccessList<>(list)
@@ -1401,6 +1439,7 @@ public class Collections {
                 list.subList(fromIndex, toIndex));
         }
 
+        @java.io.Serial
         private static final long serialVersionUID = -2542308836966382001L;
 
         /**
@@ -1409,6 +1448,7 @@ public class Collections {
          * a readResolve method that inverts this transformation upon
          * deserialization.
          */
+        @java.io.Serial
         private Object writeReplace() {
             return new UnmodifiableList<>(list);
         }
@@ -1424,12 +1464,18 @@ public class Collections {
      * The returned map will be serializable if the specified map
      * is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param <K> the class of the map keys
      * @param <V> the class of the map values
      * @param  m the map for which an unmodifiable view is to be returned.
      * @return an unmodifiable view of the specified map.
      */
+    @SuppressWarnings("unchecked")
     public static <K,V> Map<K,V> unmodifiableMap(Map<? extends K, ? extends V> m) {
+        // Not checking for subclasses because of heap pollution and information leakage.
+        if (m.getClass() == UnmodifiableMap.class) {
+            return (Map<K,V>) m;
+        }
         return new UnmodifiableMap<>(m);
     }
 
@@ -1437,8 +1483,10 @@ public class Collections {
      * @serial include
      */
     private static class UnmodifiableMap<K,V> implements Map<K,V>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -1034234728574286014L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final Map<? extends K, ? extends V> m;
 
         UnmodifiableMap(Map<? extends K, ? extends V> m) {
@@ -1563,6 +1611,7 @@ public class Collections {
          */
         static class UnmodifiableEntrySet<K,V>
             extends UnmodifiableSet<Map.Entry<K,V>> {
+            @java.io.Serial
             private static final long serialVersionUID = 7854390611657943733L;
 
             @SuppressWarnings({"unchecked", "rawtypes"})
@@ -1726,12 +1775,9 @@ public class Collections {
                 if (o == this)
                     return true;
 
-                if (!(o instanceof Set))
-                    return false;
-                Set<?> s = (Set<?>) o;
-                if (s.size() != c.size())
-                    return false;
-                return containsAll(s); // Invokes safe containsAll() above
+                return o instanceof Set<?> s
+                        && s.size() == c.size()
+                        && containsAll(s); // Invokes safe containsAll() above
             }
 
             /**
@@ -1756,11 +1802,9 @@ public class Collections {
                 public boolean equals(Object o) {
                     if (this == o)
                         return true;
-                    if (!(o instanceof Map.Entry))
-                        return false;
-                    Map.Entry<?,?> t = (Map.Entry<?,?>)o;
-                    return eq(e.getKey(),   t.getKey()) &&
-                           eq(e.getValue(), t.getValue());
+                    return o instanceof Map.Entry<?, ?> t
+                            && eq(e.getKey(),   t.getKey())
+                            && eq(e.getValue(), t.getValue());
                 }
                 public String toString() {return e.toString();}
             }
@@ -1778,13 +1822,19 @@ public class Collections {
      * The returned sorted map will be serializable if the specified sorted map
      * is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param <K> the class of the map keys
      * @param <V> the class of the map values
      * @param m the sorted map for which an unmodifiable view is to be
      *        returned.
      * @return an unmodifiable view of the specified sorted map.
      */
+    @SuppressWarnings("unchecked")
     public static <K,V> SortedMap<K,V> unmodifiableSortedMap(SortedMap<K, ? extends V> m) {
+        // Not checking for subclasses because of heap pollution and information leakage.
+        if (m.getClass() == UnmodifiableSortedMap.class) {
+            return (SortedMap<K,V>) m;
+        }
         return new UnmodifiableSortedMap<>(m);
     }
 
@@ -1794,8 +1844,10 @@ public class Collections {
     static class UnmodifiableSortedMap<K,V>
           extends UnmodifiableMap<K,V>
           implements SortedMap<K,V>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -8806743815996713206L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedMap<K, ? extends V> sm;
 
         UnmodifiableSortedMap(SortedMap<K, ? extends V> m) {super(m); sm = m; }
@@ -1821,6 +1873,7 @@ public class Collections {
      * The returned navigable map will be serializable if the specified
      * navigable map is serializable.
      *
+     * @implNote This method may return its argument if the argument is already unmodifiable.
      * @param <K> the class of the map keys
      * @param <V> the class of the map values
      * @param m the navigable map for which an unmodifiable view is to be
@@ -1828,7 +1881,11 @@ public class Collections {
      * @return an unmodifiable view of the specified navigable map
      * @since 1.8
      */
+    @SuppressWarnings("unchecked")
     public static <K,V> NavigableMap<K,V> unmodifiableNavigableMap(NavigableMap<K, ? extends V> m) {
+        if (m.getClass() == UnmodifiableNavigableMap.class) {
+            return (NavigableMap<K,V>) m;
+        }
         return new UnmodifiableNavigableMap<>(m);
     }
 
@@ -1838,6 +1895,7 @@ public class Collections {
     static class UnmodifiableNavigableMap<K,V>
           extends UnmodifiableSortedMap<K,V>
           implements NavigableMap<K,V>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -4858195264774772197L;
 
         /**
@@ -1850,6 +1908,7 @@ public class Collections {
         private static class EmptyNavigableMap<K,V> extends UnmodifiableNavigableMap<K,V>
             implements Serializable {
 
+            @java.io.Serial
             private static final long serialVersionUID = -2239321462712562324L;
 
             EmptyNavigableMap()                       { super(new TreeMap<>()); }
@@ -1858,6 +1917,7 @@ public class Collections {
             public NavigableSet<K> navigableKeySet()
                                                 { return emptyNavigableSet(); }
 
+            @java.io.Serial
             private Object readResolve()        { return EMPTY_NAVIGABLE_MAP; }
         }
 
@@ -1870,6 +1930,7 @@ public class Collections {
         /**
          * The instance we wrap and protect.
          */
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableMap<K, ? extends V> nm;
 
         UnmodifiableNavigableMap(NavigableMap<K, ? extends V> m)
@@ -1998,9 +2059,12 @@ public class Collections {
      * @serial include
      */
     static class SynchronizedCollection<E> implements Collection<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 3053995032091335093L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         final Collection<E> c;  // Backing Collection
+        @SuppressWarnings("serial") // Conditionally serializable
         final Object mutex;     // Object on which to synchronize
 
         SynchronizedCollection(Collection<E> c) {
@@ -2082,6 +2146,7 @@ public class Collections {
         public Stream<E> parallelStream() {
             return c.parallelStream(); // Must be manually synched by user!
         }
+        @java.io.Serial
         private void writeObject(ObjectOutputStream s) throws IOException {
             synchronized (mutex) {s.defaultWriteObject();}
         }
@@ -2128,6 +2193,7 @@ public class Collections {
     static class SynchronizedSet<E>
           extends SynchronizedCollection<E>
           implements Set<E> {
+        @java.io.Serial
         private static final long serialVersionUID = 487447009682186044L;
 
         SynchronizedSet(Set<E> s) {
@@ -2197,8 +2263,10 @@ public class Collections {
         extends SynchronizedSet<E>
         implements SortedSet<E>
     {
+        @java.io.Serial
         private static final long serialVersionUID = 8695801310862127406L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedSet<E> ss;
 
         SynchronizedSortedSet(SortedSet<E> s) {
@@ -2291,8 +2359,10 @@ public class Collections {
         extends SynchronizedSortedSet<E>
         implements NavigableSet<E>
     {
+        @java.io.Serial
         private static final long serialVersionUID = -5505529816273629798L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableSet<E> ns;
 
         SynchronizedNavigableSet(NavigableSet<E> s) {
@@ -2400,8 +2470,10 @@ public class Collections {
     static class SynchronizedList<E>
         extends SynchronizedCollection<E>
         implements List<E> {
+        @java.io.Serial
         private static final long serialVersionUID = -7754090372962971524L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         final List<E> list;
 
         SynchronizedList(List<E> list) {
@@ -2482,6 +2554,7 @@ public class Collections {
          * serialized in 1.4.1 and deserialized in 1.4 will become
          * SynchronizedList instances, as this method was missing in 1.4.
          */
+        @java.io.Serial
         private Object readResolve() {
             return (list instanceof RandomAccess
                     ? new SynchronizedRandomAccessList<>(list)
@@ -2511,6 +2584,7 @@ public class Collections {
             }
         }
 
+        @java.io.Serial
         private static final long serialVersionUID = 1530674583602358482L;
 
         /**
@@ -2519,6 +2593,7 @@ public class Collections {
          * a readResolve method that inverts this transformation upon
          * deserialization.
          */
+        @java.io.Serial
         private Object writeReplace() {
             return new SynchronizedList<>(list);
         }
@@ -2563,9 +2638,12 @@ public class Collections {
      */
     private static class SynchronizedMap<K,V>
         implements Map<K,V>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 1978198479659022715L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final Map<K,V> m;     // Backing Map
+        @SuppressWarnings("serial") // Conditionally serializable
         final Object      mutex;        // Object on which to synchronize
 
         SynchronizedMap(Map<K,V> m) {
@@ -2697,6 +2775,7 @@ public class Collections {
             synchronized (mutex) {return m.merge(key, value, remappingFunction);}
         }
 
+        @java.io.Serial
         private void writeObject(ObjectOutputStream s) throws IOException {
             synchronized (mutex) {s.defaultWriteObject();}
         }
@@ -2758,8 +2837,10 @@ public class Collections {
         extends SynchronizedMap<K,V>
         implements SortedMap<K,V>
     {
+        @java.io.Serial
         private static final long serialVersionUID = -8798146769416483793L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedMap<K,V> sm;
 
         SynchronizedSortedMap(SortedMap<K,V> m) {
@@ -2860,8 +2941,10 @@ public class Collections {
         extends SynchronizedSortedMap<K,V>
         implements NavigableMap<K,V>
     {
+        @java.io.Serial
         private static final long serialVersionUID = 699392247599746807L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableMap<K,V> nm;
 
         SynchronizedNavigableMap(NavigableMap<K,V> m) {
@@ -3038,9 +3121,12 @@ public class Collections {
      * @serial include
      */
     static class CheckedCollection<E> implements Collection<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 1578914078182001775L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         final Collection<E> c;
+        @SuppressWarnings("serial") // Conditionally serializable
         final Class<E> type;
 
         @SuppressWarnings("unchecked")
@@ -3096,6 +3182,7 @@ public class Collections {
 
         public boolean add(E e)          { return c.add(typeCheck(e)); }
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private E[] zeroLengthElementArray; // Lazily initialized
 
         private E[] zeroLengthElementArray() {
@@ -3187,7 +3274,9 @@ public class Collections {
         extends CheckedCollection<E>
         implements Queue<E>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 1433151992604707767L;
+        @SuppressWarnings("serial") // Conditionally serializable
         final Queue<E> queue;
 
         CheckedQueue(Queue<E> queue, Class<E> elementType) {
@@ -3241,6 +3330,7 @@ public class Collections {
     static class CheckedSet<E> extends CheckedCollection<E>
                                  implements Set<E>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 4694047833775013803L;
 
         CheckedSet(Set<E> s, Class<E> elementType) { super(s, elementType); }
@@ -3288,8 +3378,10 @@ public class Collections {
     static class CheckedSortedSet<E> extends CheckedSet<E>
         implements SortedSet<E>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 1599911165492914959L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedSet<E> ss;
 
         CheckedSortedSet(SortedSet<E> s, Class<E> type) {
@@ -3312,7 +3404,7 @@ public class Collections {
         }
     }
 
-/**
+    /**
      * Returns a dynamically typesafe view of the specified navigable set.
      * Any attempt to insert an element of the wrong type will result in an
      * immediate {@link ClassCastException}.  Assuming a navigable set
@@ -3351,8 +3443,10 @@ public class Collections {
     static class CheckedNavigableSet<E> extends CheckedSortedSet<E>
         implements NavigableSet<E>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = -5429120189805438922L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableSet<E> ns;
 
         CheckedNavigableSet(NavigableSet<E> s, Class<E> type) {
@@ -3434,7 +3528,9 @@ public class Collections {
         extends CheckedCollection<E>
         implements List<E>
     {
+        @java.io.Serial
         private static final long serialVersionUID = 65247728283967356L;
+        @SuppressWarnings("serial") // Conditionally serializable
         final List<E> list;
 
         CheckedList(List<E> list, Class<E> type) {
@@ -3519,6 +3615,7 @@ public class Collections {
     static class CheckedRandomAccessList<E> extends CheckedList<E>
                                             implements RandomAccess
     {
+        @java.io.Serial
         private static final long serialVersionUID = 1638200125423088369L;
 
         CheckedRandomAccessList(List<E> list, Class<E> type) {
@@ -3580,10 +3677,14 @@ public class Collections {
     private static class CheckedMap<K,V>
         implements Map<K,V>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 5742860141034234728L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final Map<K, V> m;
+        @SuppressWarnings("serial") // Conditionally serializable
         final Class<K> keyType;
+        @SuppressWarnings("serial") // Conditionally serializable
         final Class<V> valueType;
 
         private void typeCheck(Object key, Object value) {
@@ -3827,11 +3928,8 @@ public class Collections {
              * setValue method.
              */
             public boolean contains(Object o) {
-                if (!(o instanceof Map.Entry))
-                    return false;
-                Map.Entry<?,?> e = (Map.Entry<?,?>) o;
-                return s.contains(
-                    (e instanceof CheckedEntry) ? e : checkedEntry(e, valueType));
+                return o instanceof Map.Entry<?, ?> e
+                        && s.contains((e instanceof CheckedEntry) ? e : checkedEntry(e, valueType));
             }
 
             /**
@@ -3875,11 +3973,9 @@ public class Collections {
             public boolean equals(Object o) {
                 if (o == this)
                     return true;
-                if (!(o instanceof Set))
-                    return false;
-                Set<?> that = (Set<?>) o;
-                return that.size() == s.size()
-                    && containsAll(that); // Invokes safe containsAll() above
+                return o instanceof Set<?> that
+                        && that.size() == s.size()
+                        && containsAll(that); // Invokes safe containsAll() above
             }
 
             static <K,V,T> CheckedEntry<K,V,T> checkedEntry(Map.Entry<K,V> e,
@@ -3979,8 +4075,10 @@ public class Collections {
     static class CheckedSortedMap<K,V> extends CheckedMap<K,V>
         implements SortedMap<K,V>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 1599671320688067438L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final SortedMap<K, V> sm;
 
         CheckedSortedMap(SortedMap<K, V> m,
@@ -4053,8 +4151,10 @@ public class Collections {
     static class CheckedNavigableMap<K,V> extends CheckedSortedMap<K,V>
         implements NavigableMap<K,V>, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = -4852462692372534096L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final NavigableMap<K, V> nm;
 
         CheckedNavigableMap(NavigableMap<K, V> m,
@@ -4331,6 +4431,7 @@ public class Collections {
         extends AbstractSet<E>
         implements Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 1582296315990362920L;
 
         public Iterator<E> iterator() { return emptyIterator(); }
@@ -4364,6 +4465,7 @@ public class Collections {
         public Spliterator<E> spliterator() { return Spliterators.emptySpliterator(); }
 
         // Preserves singleton property
+        @java.io.Serial
         private Object readResolve() {
             return EMPTY_SET;
         }
@@ -4455,6 +4557,7 @@ public class Collections {
     private static class EmptyList<E>
         extends AbstractList<E>
         implements RandomAccess, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 8842843931221139166L;
 
         public Iterator<E> iterator() {
@@ -4512,6 +4615,7 @@ public class Collections {
         public Spliterator<E> spliterator() { return Spliterators.emptySpliterator(); }
 
         // Preserves singleton property
+        @java.io.Serial
         private Object readResolve() {
             return EMPTY_LIST;
         }
@@ -4598,6 +4702,7 @@ public class Collections {
         extends AbstractMap<K,V>
         implements Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 6428348081105594320L;
 
         public int size()                          {return 0;}
@@ -4678,6 +4783,7 @@ public class Collections {
         }
 
         // Preserves singleton property
+        @java.io.Serial
         private Object readResolve() {
             return EMPTY_MAP;
         }
@@ -4777,8 +4883,10 @@ public class Collections {
         extends AbstractSet<E>
         implements Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 3193687207550431679L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final E element;
 
         SingletonSet(E e) {element = e;}
@@ -4830,8 +4938,10 @@ public class Collections {
         extends AbstractList<E>
         implements RandomAccess, Serializable {
 
+        @java.io.Serial
         private static final long serialVersionUID = 3093736618740652951L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final E element;
 
         SingletonList(E obj)                {element = obj;}
@@ -4898,9 +5008,12 @@ public class Collections {
     private static class SingletonMap<K,V>
           extends AbstractMap<K,V>
           implements Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = -6979724477215052911L;
 
+        @SuppressWarnings("serial") // Conditionally serializable
         private final K k;
+        @SuppressWarnings("serial") // Conditionally serializable
         private final V v;
 
         SingletonMap(K key, V value) {
@@ -5035,9 +5148,11 @@ public class Collections {
         extends AbstractList<E>
         implements RandomAccess, Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 2739099268398711800L;
 
         final int n;
+        @SuppressWarnings("serial") // Conditionally serializable
         final E element;
 
         CopiesList(int n, E e) {
@@ -5063,10 +5178,18 @@ public class Collections {
         }
 
         public E get(int index) {
-            if (index < 0 || index >= n)
-                throw new IndexOutOfBoundsException("Index: "+index+
-                                                    ", Size: "+n);
+            Objects.checkIndex(index, n);
             return element;
+        }
+
+        @Override
+        public void forEach(Consumer<? super E> action) {
+            Objects.requireNonNull(action);
+            int n = this.n;
+            E element = this.element;
+            for (int i = 0; i < n; i++) {
+                action.accept(element);
+            }
         }
 
         public Object[] toArray() {
@@ -5126,8 +5249,7 @@ public class Collections {
         public boolean equals(Object o) {
             if (o == this)
                 return true;
-            if (o instanceof CopiesList) {
-                CopiesList<?> other = (CopiesList<?>) o;
+            if (o instanceof CopiesList<?> other) {
                 return n == other.n && (n == 0 || eq(element, other.element));
             }
             if (!(o instanceof List))
@@ -5166,6 +5288,7 @@ public class Collections {
             return stream().spliterator();
         }
 
+        @java.io.Serial
         private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
             ois.defaultReadObject();
             SharedSecrets.getJavaObjectInputStreamAccess().checkArray(ois, Object[].class, n);
@@ -5203,6 +5326,7 @@ public class Collections {
     private static class ReverseComparator
         implements Comparator<Comparable<Object>>, Serializable {
 
+        @java.io.Serial
         private static final long serialVersionUID = 7207038068494060240L;
 
         static final ReverseComparator REVERSE_ORDER
@@ -5212,6 +5336,7 @@ public class Collections {
             return c2.compareTo(c1);
         }
 
+        @java.io.Serial
         private Object readResolve() { return Collections.reverseOrder(); }
 
         @Override
@@ -5258,6 +5383,7 @@ public class Collections {
     private static class ReverseComparator2<T> implements Comparator<T>,
         Serializable
     {
+        @java.io.Serial
         private static final long serialVersionUID = 4374092139857L;
 
         /**
@@ -5267,6 +5393,7 @@ public class Collections {
          *
          * @serial
          */
+        @SuppressWarnings("serial") // Conditionally serializable
         final Comparator<T> cmp;
 
         ReverseComparator2(Comparator<T> cmp) {
@@ -5475,9 +5602,8 @@ public class Collections {
     /**
      * Adds all of the specified elements to the specified collection.
      * Elements to be added may be specified individually or as an array.
-     * The behavior of this convenience method is identical to that of
-     * {@code c.addAll(Arrays.asList(elements))}, but this method is likely
-     * to run significantly faster under most implementations.
+     * The behaviour of this convenience method is similar to that of
+     * {@code cc.addAll(Collections.unmodifiableList(Arrays.asList(elements)))}.
      *
      * <p>When elements are specified individually, this method provides a
      * convenient way to add a few elements to an existing collection:
@@ -5548,6 +5674,7 @@ public class Collections {
     private static class SetFromMap<E> extends AbstractSet<E>
         implements Set<E>, Serializable
     {
+        @SuppressWarnings("serial") // Conditionally serializable
         private final Map<E, Boolean> m;  // The backing map
         private transient Set<E> s;       // Its keySet
 
@@ -5592,8 +5719,10 @@ public class Collections {
         @Override
         public Stream<E> parallelStream()   {return s.parallelStream();}
 
+        @java.io.Serial
         private static final long serialVersionUID = 2454657854757543876L;
 
+        @java.io.Serial
         private void readObject(java.io.ObjectInputStream stream)
             throws IOException, ClassNotFoundException
         {
@@ -5629,7 +5758,9 @@ public class Collections {
      */
     static class AsLIFOQueue<E> extends AbstractQueue<E>
         implements Queue<E>, Serializable {
+        @java.io.Serial
         private static final long serialVersionUID = 1802017725587941708L;
+        @SuppressWarnings("serial") // Conditionally serializable
         private final Deque<E> q;
         AsLIFOQueue(Deque<E> q)                     { this.q = q; }
         public boolean add(E e)                     { q.addFirst(e); return true; }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -58,6 +58,7 @@ public class DSAPublicKey extends X509Key
 implements java.security.interfaces.DSAPublicKey, Serializable {
 
     /** use serialVersionUID from JDK 1.1. for interoperability */
+    @java.io.Serial
     private static final long serialVersionUID = -2994193307391104133L;
 
     /* the public key */
@@ -121,7 +122,7 @@ implements java.security.interfaces.DSAPublicKey, Serializable {
                     return null;
                 }
                 paramSpec = algParams.getParameterSpec(DSAParameterSpec.class);
-                return (DSAParams)paramSpec;
+                return paramSpec;
             }
         } catch (InvalidParameterSpecException e) {
             return null;

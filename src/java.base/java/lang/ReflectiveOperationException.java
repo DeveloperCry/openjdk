@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ package java.lang;
  * @since 1.7
  */
 public class ReflectiveOperationException extends Exception {
+    @java.io.Serial
     static final long serialVersionUID = 123456789L;
 
     /**

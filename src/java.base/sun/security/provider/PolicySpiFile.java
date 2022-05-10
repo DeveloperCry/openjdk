@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,6 +41,7 @@ import java.net.MalformedURLException;
  * via the Policy.getInstance calls.
  *
  */
+@SuppressWarnings("removal")
 public final class PolicySpiFile extends PolicySpi {
 
     private PolicyFile pf;

@@ -1,6 +1,6 @@
-// This file was generated AUTOMATICALLY from a template file Sun Oct 06 11:35:17 UTC 2019
+// This file was generated AUTOMATICALLY from a template file 
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -78,16 +78,6 @@ class CharacterData0E extends CharacterData {
         return props;
     }
 
-    boolean isOtherLowercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0001) != 0;
-    }
-
-    boolean isOtherUppercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0002) != 0;
-    }
-
     boolean isOtherAlphabetic(int ch) {
         int props = getPropertiesEx(ch);
         return (props & 0x0004) != 0;
@@ -95,7 +85,7 @@ class CharacterData0E extends CharacterData {
 
     boolean isIdeographic(int ch) {
         int props = getPropertiesEx(ch);
-        return (props & 0x0010) != 0;
+        return (props & 0x0008) != 0;
     }
 
     int getType(int ch) {
@@ -114,15 +104,14 @@ class CharacterData0E extends CharacterData {
     }
 
     boolean isUnicodeIdentifierStart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00007000) == 0x00007000);
+        return (getPropertiesEx(ch) & 0x0010) != 0;
     }
 
     boolean isUnicodeIdentifierPart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00001000) != 0);
+        return (getPropertiesEx(ch) & 0x0020) != 0 ||
+               isIdentifierIgnorable(ch);
     }
-
+    
     boolean isIdentifierIgnorable(int ch) {
         int props = getProperties(ch);
         return ((props & 0x00007000) == 0x00001000);
@@ -218,6 +207,19 @@ class CharacterData0E extends CharacterData {
         return retval;
     }
 
+    boolean isDigit(int ch) {
+        int props = getProperties(ch);
+        return (props & 0x1F) == Character.DECIMAL_DIGIT_NUMBER;
+    }
+
+    boolean isLowerCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0001) != 0;
+    }
+
+    boolean isUpperCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0002) != 0;
+    }
+
     boolean isWhitespace(int ch) {
         int props = getProperties(ch);
         return ((props & 0x00007000) == 0x00004000);
@@ -240,9 +242,7 @@ class CharacterData0E extends CharacterData {
     static final CharacterData instance = new CharacterData0E();
     private CharacterData0E() {};
 
-    // The following tables and code generated using:
-  // java GenerateCharacter -string -plane 14 -template t:/workspace/open/make/data/characterdata/CharacterData0E.java.template -spec t:/workspace/open/make/data/unicodedata/UnicodeData.txt -specialcasing t:/workspace/open/make/data/unicodedata/SpecialCasing.txt -proplist t:/workspace/open/make/data/unicodedata/PropList.txt -o t:/workspace/build/windows-x64/support/gensrc/java.base/java/lang/CharacterData0E.java -usecharforbyte 11 4 1
-  // The X table has 2048 entries for a total of 4096 bytes.
+    // The X table has 2048 entries for a total of 4096 bytes.
 
   static final char X[] = (
     "\000\020\020\020\040\040\040\040\060\060\060\060\060\060\060\100\040\040\040"+
@@ -373,7 +373,7 @@ class CharacterData0E extends CharacterData {
   // The B table has 8 entries for a total of 16 bytes.
 
   static final char B[] = (
-    "\000\000\000\000\000\000\000\000").toCharArray();
+    "\000\000\000\000\000\000\040\040").toCharArray();
 
   // In all, the character property tables require 4288 bytes.
 

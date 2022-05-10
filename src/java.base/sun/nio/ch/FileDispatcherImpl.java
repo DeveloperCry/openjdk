@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,8 @@ package sun.nio.ch;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-import jdk.internal.misc.SharedSecrets;
-import jdk.internal.misc.JavaIOFileDescriptorAccess;
+import jdk.internal.access.SharedSecrets;
+import jdk.internal.access.JavaIOFileDescriptorAccess;
 import sun.security.action.GetPropertyAction;
 import java.io.File;
 import java.nio.CharBuffer;
@@ -125,6 +125,10 @@ class FileDispatcherImpl extends FileDispatcher {
         return true;
     }
 
+    boolean canTransferToFromOverlappedMap() {
+        return true;
+    }
+
     int setDirectIO(FileDescriptor fd, String path) {
         int result = -1;
         String filePath = path.substring(0, path.lastIndexOf(File.separator));
@@ -141,14 +145,8 @@ class FileDispatcherImpl extends FileDispatcher {
 
     static boolean isFastFileTransferRequested() {
         String fileTransferProp = GetPropertyAction
-                .privilegedGetProperty("jdk.nio.enableFastFileTransfer");
-        boolean enable;
-        if ("".equals(fileTransferProp)) {
-            enable = true;
-        } else {
-            enable = Boolean.parseBoolean(fileTransferProp);
-        }
-        return enable;
+                .privilegedGetProperty("jdk.nio.enableFastFileTransfer", "false");
+        return fileTransferProp.isEmpty() ? true : Boolean.parseBoolean(fileTransferProp);
     }
 
     static {

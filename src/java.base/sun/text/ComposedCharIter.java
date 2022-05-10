@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 
 package sun.text;
 
-import sun.text.normalizer.NormalizerBase;
-import sun.text.normalizer.NormalizerImpl;
+import jdk.internal.icu.impl.NormalizerImpl;
+import jdk.internal.icu.text.NormalizerBase;
 
 public final class ComposedCharIter {
     /**

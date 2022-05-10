@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,12 +42,18 @@ import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.WritableByteChannel;
+import java.util.Objects;
 
-import jdk.internal.misc.JavaIOFileDescriptorAccess;
-import jdk.internal.misc.JavaNioAccess;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.JavaIOFileDescriptorAccess;
+import jdk.internal.access.SharedSecrets;
+import jdk.internal.misc.ExtendedMapMode;
+import jdk.internal.misc.Unsafe;
+import jdk.internal.misc.VM;
+import jdk.internal.misc.VM.BufferPool;
 import jdk.internal.ref.Cleaner;
 import jdk.internal.ref.CleanerFactory;
+
+import jdk.internal.access.foreign.UnmapperProxy;
 
 public class FileChannelImpl
     extends FileChannel
@@ -58,6 +64,9 @@ public class FileChannelImpl
     // Access to FileDescriptor internals
     private static final JavaIOFileDescriptorAccess fdAccess =
         SharedSecrets.getJavaIOFileDescriptorAccess();
+
+    // Maximum direct transfer size
+    private static final int MAX_DIRECT_TRANSFER_SIZE;
 
     // Used to make native read and write calls
     private final FileDispatcher nd;
@@ -234,8 +243,7 @@ public class FileChannelImpl
     public long read(ByteBuffer[] dsts, int offset, int length)
         throws IOException
     {
-        if ((offset < 0) || (length < 0) || (offset > dsts.length - length))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromIndexSize(offset, length, dsts.length);
         ensureOpen();
         if (!readable)
             throw new NonReadableChannelException();
@@ -291,8 +299,7 @@ public class FileChannelImpl
     public long write(ByteBuffer[] srcs, int offset, int length)
         throws IOException
     {
-        if ((offset < 0) || (length < 0) || (offset > srcs.length - length))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromIndexSize(offset, length, srcs.length);
         ensureOpen();
         if (!writable)
             throw new NonWritableChannelException();
@@ -578,6 +585,15 @@ public class FileChannelImpl
         if (!((target instanceof FileChannelImpl) || isSelChImpl))
             return IOStatus.UNSUPPORTED;
 
+        if (target == this) {
+            long posThis = position();
+            if (posThis - count + 1 <= position &&
+                position - count + 1 <= posThis &&
+                !nd.canTransferToFromOverlappedMap()) {
+                return IOStatus.UNSUPPORTED_CASE;
+            }
+        }
+
         // Trusted target: Use a mapped buffer
         long remaining = count;
         while (remaining > 0L) {
@@ -618,18 +634,18 @@ public class FileChannelImpl
         return count - remaining;
     }
 
-    private long transferToArbitraryChannel(long position, int icount,
+    private long transferToArbitraryChannel(long position, long count,
                                             WritableByteChannel target)
         throws IOException
     {
         // Untrusted target: Use a newly-erased buffer
-        int c = Math.min(icount, TRANSFER_SIZE);
+        int c = (int)Math.min(count, TRANSFER_SIZE);
         ByteBuffer bb = ByteBuffer.allocate(c);
         long tw = 0;                    // Total bytes written
         long pos = position;
         try {
-            while (tw < icount) {
-                bb.limit(Math.min((int)(icount - tw), TRANSFER_SIZE));
+            while (tw < count) {
+                bb.limit((int)Math.min(count - tw, TRANSFER_SIZE));
                 int nr = read(bb, pos);
                 if (nr <= 0)
                     break;
@@ -668,22 +684,23 @@ public class FileChannelImpl
         long sz = size();
         if (position > sz)
             return 0;
-        int icount = (int)Math.min(count, Integer.MAX_VALUE);
-        if ((sz - position) < icount)
-            icount = (int)(sz - position);
 
+        if ((sz - position) < count)
+            count = sz - position;
+
+        // Attempt a direct transfer, if the kernel supports it, limiting
+        // the number of bytes according to which platform
+        int icount = (int)Math.min(count, MAX_DIRECT_TRANSFER_SIZE);
         long n;
-
-        // Attempt a direct transfer, if the kernel supports it
         if ((n = transferToDirectly(position, icount, target)) >= 0)
             return n;
 
         // Attempt a mapped transfer, but only to trusted channel types
-        if ((n = transferToTrustedChannel(position, icount, target)) >= 0)
+        if ((n = transferToTrustedChannel(position, count, target)) >= 0)
             return n;
 
         // Slow path for untrusted targets
-        return transferToArbitraryChannel(position, icount, target);
+        return transferToArbitraryChannel(position, count, target);
     }
 
     private long transferFromFileChannel(FileChannelImpl src,
@@ -695,6 +712,14 @@ public class FileChannelImpl
         synchronized (src.positionLock) {
             long pos = src.position();
             long max = Math.min(count, src.size() - pos);
+
+            if (src == this) {
+                if (position() - max + 1 <= pos &&
+                    pos - max + 1 <= position() &&
+                    !nd.canTransferToFromOverlappedMap()) {
+                    return IOStatus.UNSUPPORTED_CASE;
+                }
+            }
 
             long remaining = max;
             long p = pos;
@@ -771,9 +796,12 @@ public class FileChannelImpl
             throw new IllegalArgumentException();
         if (position > size())
             return 0;
-        if (src instanceof FileChannelImpl)
-           return transferFromFileChannel((FileChannelImpl)src,
-                                          position, count);
+
+        if (src instanceof FileChannelImpl fci) {
+            long n = transferFromFileChannel(fci, position, count);
+            if (n >= 0)
+                return n;
+        }
 
         return transferFromArbitraryChannel(src, position, count);
     }
@@ -783,11 +811,11 @@ public class FileChannelImpl
             throw new NullPointerException();
         if (position < 0)
             throw new IllegalArgumentException("Negative position");
+        ensureOpen();
         if (!readable)
             throw new NonReadableChannelException();
         if (direct)
             Util.checkChannelPositionAligned(position, alignment);
-        ensureOpen();
         if (nd.needsPositionLock()) {
             synchronized (positionLock) {
                 return readInternal(dst, position);
@@ -823,11 +851,11 @@ public class FileChannelImpl
             throw new NullPointerException();
         if (position < 0)
             throw new IllegalArgumentException("Negative position");
+        ensureOpen();
         if (!writable)
             throw new NonWritableChannelException();
         if (direct)
             Util.checkChannelPositionAligned(position, alignment);
-        ensureOpen();
         if (nd.needsPositionLock()) {
             synchronized (positionLock) {
                 return writeInternal(src, position);
@@ -860,39 +888,45 @@ public class FileChannelImpl
 
     // -- Memory-mapped buffers --
 
-    private static class Unmapper
-        implements Runnable
+    private abstract static class Unmapper
+        implements Runnable, UnmapperProxy
     {
         // may be required to close file
         private static final NativeDispatcher nd = new FileDispatcherImpl();
 
-        // keep track of mapped buffer usage
-        static volatile int count;
-        static volatile long totalSize;
-        static volatile long totalCapacity;
-
         private volatile long address;
-        private final long size;
-        private final int cap;
+        protected final long size;
+        protected final long cap;
         private final FileDescriptor fd;
+        private final int pagePosition;
 
-        private Unmapper(long address, long size, int cap,
-                         FileDescriptor fd)
+        private Unmapper(long address, long size, long cap,
+                         FileDescriptor fd, int pagePosition)
         {
             assert (address != 0);
             this.address = address;
             this.size = size;
             this.cap = cap;
             this.fd = fd;
-
-            synchronized (Unmapper.class) {
-                count++;
-                totalSize += size;
-                totalCapacity += cap;
-            }
+            this.pagePosition = pagePosition;
         }
 
+        @Override
+        public long address() {
+            return address + pagePosition;
+        }
+
+        @Override
+        public FileDescriptor fileDescriptor() {
+            return fd;
+        }
+
+        @Override
         public void run() {
+            unmap();
+        }
+
+        public void unmap() {
             if (address == 0)
                 return;
             unmap0(address, size);
@@ -907,11 +941,75 @@ public class FileChannelImpl
                 }
             }
 
-            synchronized (Unmapper.class) {
+            decrementStats();
+        }
+        protected abstract void incrementStats();
+        protected abstract void decrementStats();
+    }
+
+    private static class DefaultUnmapper extends Unmapper {
+
+        // keep track of non-sync mapped buffer usage
+        static volatile int count;
+        static volatile long totalSize;
+        static volatile long totalCapacity;
+
+        public DefaultUnmapper(long address, long size, long cap,
+                               FileDescriptor fd, int pagePosition) {
+            super(address, size, cap, fd, pagePosition);
+            incrementStats();
+        }
+
+        protected void incrementStats() {
+            synchronized (DefaultUnmapper.class) {
+                count++;
+                totalSize += size;
+                totalCapacity += cap;
+            }
+        }
+        protected void decrementStats() {
+            synchronized (DefaultUnmapper.class) {
                 count--;
                 totalSize -= size;
                 totalCapacity -= cap;
             }
+        }
+
+        public boolean isSync() {
+            return false;
+        }
+    }
+
+    private static class SyncUnmapper extends Unmapper {
+
+        // keep track of mapped buffer usage
+        static volatile int count;
+        static volatile long totalSize;
+        static volatile long totalCapacity;
+
+        public SyncUnmapper(long address, long size, long cap,
+                            FileDescriptor fd, int pagePosition) {
+            super(address, size, cap, fd, pagePosition);
+            incrementStats();
+        }
+
+        protected void incrementStats() {
+            synchronized (SyncUnmapper.class) {
+                count++;
+                totalSize += size;
+                totalCapacity += cap;
+            }
+        }
+        protected void decrementStats() {
+            synchronized (SyncUnmapper.class) {
+                count--;
+                totalSize -= size;
+                totalCapacity -= cap;
+            }
+        }
+
+        public boolean isSync() {
+            return true;
         }
     }
 
@@ -921,11 +1019,44 @@ public class FileChannelImpl
             cl.clean();
     }
 
+    private static final int MAP_INVALID = -1;
     private static final int MAP_RO = 0;
     private static final int MAP_RW = 1;
     private static final int MAP_PV = 2;
 
-    public MappedByteBuffer map(MapMode mode, long position, long size)
+    public MappedByteBuffer map(MapMode mode, long position, long size) throws IOException {
+        if (size > Integer.MAX_VALUE)
+            throw new IllegalArgumentException("Size exceeds Integer.MAX_VALUE");
+        boolean isSync = isSync(Objects.requireNonNull(mode, "Mode is null"));
+        int prot = toProt(mode);
+        Unmapper unmapper = mapInternal(mode, position, size, prot, isSync);
+        if (unmapper == null) {
+            // a valid file descriptor is not required
+            FileDescriptor dummy = new FileDescriptor();
+            if ((!writable) || (prot == MAP_RO))
+                return Util.newMappedByteBufferR(0, 0, dummy, null, isSync);
+            else
+                return Util.newMappedByteBuffer(0, 0, dummy, null, isSync);
+        } else if ((!writable) || (prot == MAP_RO)) {
+            return Util.newMappedByteBufferR((int)unmapper.cap,
+                    unmapper.address + unmapper.pagePosition,
+                    unmapper.fd,
+                    unmapper, isSync);
+        } else {
+            return Util.newMappedByteBuffer((int)unmapper.cap,
+                    unmapper.address + unmapper.pagePosition,
+                    unmapper.fd,
+                    unmapper, isSync);
+        }
+    }
+
+    public Unmapper mapInternal(MapMode mode, long position, long size) throws IOException {
+        boolean isSync = isSync(Objects.requireNonNull(mode, "Mode is null"));
+        int prot = toProt(mode);
+        return mapInternal(mode, position, size, prot, isSync);
+    }
+
+    private Unmapper mapInternal(MapMode mode, long position, long size, int prot, boolean isSync)
         throws IOException
     {
         ensureOpen();
@@ -937,22 +1068,8 @@ public class FileChannelImpl
             throw new IllegalArgumentException("Negative size");
         if (position + size < 0)
             throw new IllegalArgumentException("Position + size overflow");
-        if (size > Integer.MAX_VALUE)
-            throw new IllegalArgumentException("Size exceeds Integer.MAX_VALUE");
 
-        int imode = -1;
-        if (mode == MapMode.READ_ONLY)
-            imode = MAP_RO;
-        else if (mode == MapMode.READ_WRITE)
-            imode = MAP_RW;
-        else if (mode == MapMode.PRIVATE)
-            imode = MAP_PV;
-        assert (imode >= 0);
-        if ((mode != MapMode.READ_ONLY) && !writable)
-            throw new NonWritableChannelException();
-        if (!readable)
-            throw new NonReadableChannelException();
-
+        checkMode(mode, prot, isSync);
         long addr = -1;
         int ti = -1;
         try {
@@ -985,13 +1102,7 @@ public class FileChannelImpl
                 }
 
                 if (size == 0) {
-                    addr = 0;
-                    // a valid file descriptor is not required
-                    FileDescriptor dummy = new FileDescriptor();
-                    if ((!writable) || (imode == MAP_RO))
-                        return Util.newMappedByteBufferR(0, 0, dummy, null);
-                    else
-                        return Util.newMappedByteBuffer(0, 0, dummy, null);
+                    return null;
                 }
 
                 pagePosition = (int)(position % allocationGranularity);
@@ -999,7 +1110,7 @@ public class FileChannelImpl
                 mapSize = size + pagePosition;
                 try {
                     // If map0 did not throw an exception, the address is valid
-                    addr = map0(imode, mapPosition, mapSize);
+                    addr = map0(prot, mapPosition, mapSize, isSync);
                 } catch (OutOfMemoryError x) {
                     // An OutOfMemoryError may indicate that we've exhausted
                     // memory so force gc and re-attempt map
@@ -1010,7 +1121,7 @@ public class FileChannelImpl
                         Thread.currentThread().interrupt();
                     }
                     try {
-                        addr = map0(imode, mapPosition, mapSize);
+                        addr = map0(prot, mapPosition, mapSize, isSync);
                     } catch (OutOfMemoryError y) {
                         // After a second OOME, fail
                         throw new IOException("Map failed", y);
@@ -1030,22 +1141,53 @@ public class FileChannelImpl
 
             assert (IOStatus.checkAll(addr));
             assert (addr % allocationGranularity == 0);
-            int isize = (int)size;
-            Unmapper um = new Unmapper(addr, mapSize, isize, mfd);
-            if ((!writable) || (imode == MAP_RO)) {
-                return Util.newMappedByteBufferR(isize,
-                                                 addr + pagePosition,
-                                                 mfd,
-                                                 um);
-            } else {
-                return Util.newMappedByteBuffer(isize,
-                                                addr + pagePosition,
-                                                mfd,
-                                                um);
-            }
+            Unmapper um = (isSync
+                           ? new SyncUnmapper(addr, mapSize, size, mfd, pagePosition)
+                           : new DefaultUnmapper(addr, mapSize, size, mfd, pagePosition));
+            return um;
         } finally {
             threads.remove(ti);
             endBlocking(IOStatus.checkAll(addr));
+        }
+    }
+
+    private boolean isSync(MapMode mode) {
+        // Do not want to initialize ExtendedMapMode until
+        // after the module system has been initialized
+        return !VM.isModuleSystemInited() ? false :
+            (mode == ExtendedMapMode.READ_ONLY_SYNC ||
+                mode == ExtendedMapMode.READ_WRITE_SYNC);
+    }
+
+    private int toProt(MapMode mode) {
+        int prot;
+        if (mode == MapMode.READ_ONLY) {
+            prot = MAP_RO;
+        } else if (mode == MapMode.READ_WRITE) {
+            prot = MAP_RW;
+        } else if (mode == MapMode.PRIVATE) {
+            prot = MAP_PV;
+        } else if (mode == ExtendedMapMode.READ_ONLY_SYNC) {
+            prot = MAP_RO;
+        } else if (mode == ExtendedMapMode.READ_WRITE_SYNC) {
+            prot = MAP_RW;
+        } else {
+            prot = MAP_INVALID;
+        }
+        return prot;
+    }
+
+    private void checkMode(MapMode mode, int prot, boolean isSync) {
+        if (prot == MAP_INVALID) {
+            throw new UnsupportedOperationException();
+        }
+        if ((mode != MapMode.READ_ONLY) && mode != ExtendedMapMode.READ_ONLY_SYNC && !writable)
+            throw new NonWritableChannelException();
+        if (!readable)
+            throw new NonReadableChannelException();
+        // reject SYNC request if writeback is not enabled for this platform
+        if (isSync && !Unsafe.isWritebackEnabled()) {
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -1053,23 +1195,48 @@ public class FileChannelImpl
      * Invoked by sun.management.ManagementFactoryHelper to create the management
      * interface for mapped buffers.
      */
-    public static JavaNioAccess.BufferPool getMappedBufferPool() {
-        return new JavaNioAccess.BufferPool() {
+    public static BufferPool getMappedBufferPool() {
+        return new BufferPool() {
             @Override
             public String getName() {
                 return "mapped";
             }
             @Override
             public long getCount() {
-                return Unmapper.count;
+                return DefaultUnmapper.count;
             }
             @Override
             public long getTotalCapacity() {
-                return Unmapper.totalCapacity;
+                return DefaultUnmapper.totalCapacity;
             }
             @Override
             public long getMemoryUsed() {
-                return Unmapper.totalSize;
+                return DefaultUnmapper.totalSize;
+            }
+        };
+    }
+
+    /**
+     * Invoked by sun.management.ManagementFactoryHelper to create the management
+     * interface for sync mapped buffers.
+     */
+    public static BufferPool getSyncMappedBufferPool() {
+        return new BufferPool() {
+            @Override
+            public String getName() {
+                return "mapped - 'non-volatile memory'";
+            }
+            @Override
+            public long getCount() {
+                return SyncUnmapper.count;
+            }
+            @Override
+            public long getTotalCapacity() {
+                return SyncUnmapper.totalCapacity;
+            }
+            @Override
+            public long getMemoryUsed() {
+                return SyncUnmapper.totalSize;
             }
         };
     }
@@ -1195,7 +1362,7 @@ public class FileChannelImpl
     // -- Native methods --
 
     // Creates a new mapping
-    private native long map0(int prot, long position, long length)
+    private native long map0(int prot, long position, long length, boolean isSync)
         throws IOException;
 
     // Removes an existing mapping
@@ -1205,11 +1372,15 @@ public class FileChannelImpl
     private native long transferTo0(FileDescriptor src, long position,
                                     long count, FileDescriptor dst);
 
+    // Retrieves the maximum size of a transfer
+    private static native int maxDirectTransferSize0();
+
     // Caches fieldIDs
     private static native long initIDs();
 
     static {
         IOUtil.load();
         allocationGranularity = initIDs();
+        MAX_DIRECT_TRANSFER_SIZE = maxDirectTransferSize0();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,11 @@ package java.net;
  */
 public abstract class SocketAddress implements java.io.Serializable {
 
+    @java.io.Serial
     static final long serialVersionUID = 5215720748342549866L;
 
+    /**
+     * Constructor for subclasses to call.
+     */
+    public SocketAddress() {}
 }

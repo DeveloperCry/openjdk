@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsCharBufferL                  // package-private
     extends CharBuffer
@@ -40,11 +41,11 @@ class ByteBufferAsCharBufferL                  // package-private
 
 
 
-    ByteBufferAsCharBufferL(ByteBuffer bb) {   // package-private
+    ByteBufferAsCharBufferL(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
         super(-1, 0,
               bb.remaining() >> 1,
-              bb.remaining() >> 1);
+              bb.remaining() >> 1, segment);
         this.bb = bb;
         // enforce limit == capacity
         int cap = this.capacity();
@@ -59,10 +60,10 @@ class ByteBufferAsCharBufferL                  // package-private
 
     ByteBufferAsCharBufferL(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
+        super(mark, pos, lim, cap, segment);
         this.bb = bb;
         address = addr;
         assert address >= bb.address;
@@ -79,10 +80,20 @@ class ByteBufferAsCharBufferL                  // package-private
     public CharBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsCharBufferL(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsCharBufferL(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public CharBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsCharBufferL(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public CharBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsCharBufferL                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public CharBuffer asReadOnlyBuffer() {
@@ -101,7 +112,7 @@ class ByteBufferAsCharBufferL                  // package-private
                                                  this.position(),
                                                  this.limit(),
                                                  this.capacity(),
-                                                 address);
+                                                 address, segment);
 
 
 
@@ -119,20 +130,20 @@ class ByteBufferAsCharBufferL                  // package-private
     }
 
     public char get() {
-        char x = UNSAFE.getCharUnaligned(bb.hb, byteOffset(nextGetIndex()),
+        char x = SCOPED_MEMORY_ACCESS.getCharUnaligned(scope(), bb.hb, byteOffset(nextGetIndex()),
             false);
         return (x);
     }
 
     public char get(int i) {
-        char x = UNSAFE.getCharUnaligned(bb.hb, byteOffset(checkIndex(i)),
+        char x = SCOPED_MEMORY_ACCESS.getCharUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)),
             false);
         return (x);
     }
 
 
    char getUnchecked(int i) {
-        char x = UNSAFE.getCharUnaligned(bb.hb, byteOffset(i),
+        char x = SCOPED_MEMORY_ACCESS.getCharUnaligned(null, bb.hb, byteOffset(i),
             false);
         return (x);
     }
@@ -143,7 +154,7 @@ class ByteBufferAsCharBufferL                  // package-private
     public CharBuffer put(char x) {
 
         char y = (x);
-        UNSAFE.putCharUnaligned(bb.hb, byteOffset(nextPutIndex()), y,
+        SCOPED_MEMORY_ACCESS.putCharUnaligned(scope(), bb.hb, byteOffset(nextPutIndex()), y,
             false);
         return this;
 
@@ -154,7 +165,7 @@ class ByteBufferAsCharBufferL                  // package-private
     public CharBuffer put(int i, char x) {
 
         char y = (x);
-        UNSAFE.putCharUnaligned(bb.hb, byteOffset(checkIndex(i)), y,
+        SCOPED_MEMORY_ACCESS.putCharUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)), y,
             false);
         return this;
 
@@ -195,8 +206,7 @@ class ByteBufferAsCharBufferL                  // package-private
 
 
     public String toString(int start, int end) {
-        if ((end > limit()) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, limit());
         try {
             int len = end - start;
             char[] ca = new char[len];
@@ -221,14 +231,13 @@ class ByteBufferAsCharBufferL                  // package-private
         pos = (pos <= lim ? pos : lim);
         int len = lim - pos;
 
-        if ((start < 0) || (end > len) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, len);
         return new ByteBufferAsCharBufferL(bb,
                                                   -1,
                                                   pos + start,
                                                   pos + end,
                                                   capacity(),
-                                                  address);
+                                                  address, segment);
     }
 
 

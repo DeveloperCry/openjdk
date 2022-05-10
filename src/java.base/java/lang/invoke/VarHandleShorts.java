@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,7 +27,9 @@ package java.lang.invoke;
 import jdk.internal.util.Preconditions;
 import jdk.internal.vm.annotation.ForceInline;
 
+import java.lang.invoke.VarHandle.VarHandleDesc;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.lang.invoke.MethodHandleStatics.UNSAFE;
 
@@ -40,41 +42,72 @@ final class VarHandleShorts {
         final Class<?> receiverType;
 
         FieldInstanceReadOnly(Class<?> receiverType, long fieldOffset) {
-            this(receiverType, fieldOffset, FieldInstanceReadOnly.FORM);
+            this(receiverType, fieldOffset, FieldInstanceReadOnly.FORM, false);
         }
 
         protected FieldInstanceReadOnly(Class<?> receiverType, long fieldOffset,
-                                        VarForm form) {
-            super(form);
+                                        VarForm form, boolean exact) {
+            super(form, exact);
             this.fieldOffset = fieldOffset;
             this.receiverType = receiverType;
         }
 
         @Override
-        final MethodType accessModeTypeUncached(AccessMode accessMode) {
-            return accessMode.at.accessModeType(receiverType, short.class);
+        public FieldInstanceReadOnly withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new FieldInstanceReadOnly(receiverType, fieldOffset, vform, true);
+        }
+
+        @Override
+        public FieldInstanceReadOnly withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new FieldInstanceReadOnly(receiverType, fieldOffset, vform, false);
+        }
+
+        @Override
+        final MethodType accessModeTypeUncached(AccessType at) {
+            return at.accessModeType(receiverType, short.class);
+        }
+
+        @Override
+        public Optional<VarHandleDesc> describeConstable() {
+            var receiverTypeRef = receiverType.describeConstable();
+            var fieldTypeRef = short.class.describeConstable();
+            if (!receiverTypeRef.isPresent() || !fieldTypeRef.isPresent())
+                return Optional.empty();
+
+            // Reflect on this VarHandle to extract the field name
+            String name = VarHandles.getFieldFromReceiverAndOffset(
+                receiverType, fieldOffset, short.class).getName();
+            return Optional.of(VarHandleDesc.ofField(receiverTypeRef.get(), name, fieldTypeRef.get()));
         }
 
         @ForceInline
-        static short get(FieldInstanceReadOnly handle, Object holder) {
+        static short get(VarHandle ob, Object holder) {
+            FieldInstanceReadOnly handle = (FieldInstanceReadOnly)ob;
             return UNSAFE.getShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getVolatile(FieldInstanceReadOnly handle, Object holder) {
+        static short getVolatile(VarHandle ob, Object holder) {
+            FieldInstanceReadOnly handle = (FieldInstanceReadOnly)ob;
             return UNSAFE.getShortVolatile(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getOpaque(FieldInstanceReadOnly handle, Object holder) {
+        static short getOpaque(VarHandle ob, Object holder) {
+            FieldInstanceReadOnly handle = (FieldInstanceReadOnly)ob;
             return UNSAFE.getShortOpaque(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getAcquire(FieldInstanceReadOnly handle, Object holder) {
+        static short getAcquire(VarHandle ob, Object holder) {
+            FieldInstanceReadOnly handle = (FieldInstanceReadOnly)ob;
             return UNSAFE.getShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                  handle.fieldOffset);
         }
@@ -85,39 +118,63 @@ final class VarHandleShorts {
     static final class FieldInstanceReadWrite extends FieldInstanceReadOnly {
 
         FieldInstanceReadWrite(Class<?> receiverType, long fieldOffset) {
-            super(receiverType, fieldOffset, FieldInstanceReadWrite.FORM);
+            this(receiverType, fieldOffset, false);
+        }
+
+        private FieldInstanceReadWrite(Class<?> receiverType, long fieldOffset,
+                                       boolean exact) {
+            super(receiverType, fieldOffset, FieldInstanceReadWrite.FORM, exact);
+        }
+
+        @Override
+        public FieldInstanceReadWrite withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new FieldInstanceReadWrite(receiverType, fieldOffset, true);
+        }
+
+        @Override
+        public FieldInstanceReadWrite withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new FieldInstanceReadWrite(receiverType, fieldOffset, false);
         }
 
         @ForceInline
-        static void set(FieldInstanceReadWrite handle, Object holder, short value) {
+        static void set(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             UNSAFE.putShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                              handle.fieldOffset,
                              value);
         }
 
         @ForceInline
-        static void setVolatile(FieldInstanceReadWrite handle, Object holder, short value) {
+        static void setVolatile(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             UNSAFE.putShortVolatile(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                      handle.fieldOffset,
                                      value);
         }
 
         @ForceInline
-        static void setOpaque(FieldInstanceReadWrite handle, Object holder, short value) {
+        static void setOpaque(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             UNSAFE.putShortOpaque(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                    handle.fieldOffset,
                                    value);
         }
 
         @ForceInline
-        static void setRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static void setRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             UNSAFE.putShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                     handle.fieldOffset,
                                     value);
         }
 
         @ForceInline
-        static boolean compareAndSet(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static boolean compareAndSet(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.compareAndSetShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -125,7 +182,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short compareAndExchange(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static short compareAndExchange(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.compareAndExchangeShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -133,7 +191,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short compareAndExchangeAcquire(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static short compareAndExchangeAcquire(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.compareAndExchangeShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -141,7 +200,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short compareAndExchangeRelease(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static short compareAndExchangeRelease(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.compareAndExchangeShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -149,7 +209,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetPlain(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static boolean weakCompareAndSetPlain(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortPlain(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -157,7 +218,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSet(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static boolean weakCompareAndSet(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.weakCompareAndSetShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -165,7 +227,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetAcquire(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static boolean weakCompareAndSetAcquire(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -173,7 +236,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetRelease(FieldInstanceReadWrite handle, Object holder, short expected, short value) {
+        static boolean weakCompareAndSetRelease(VarHandle ob, Object holder, short expected, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                                handle.fieldOffset,
                                                expected,
@@ -181,42 +245,48 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short getAndSet(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndSet(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndSetShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndSetAcquire(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndSetAcquire(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndSetShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndSetRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndSetRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndSetShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndAdd(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndAdd(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndAddShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndAddAcquire(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndAddAcquire(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndAddShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndAddRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndAddRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndAddShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
@@ -224,63 +294,72 @@ final class VarHandleShorts {
 
 
         @ForceInline
-        static short getAndBitwiseOr(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseOr(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseOrRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrAcquire(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseOrAcquire(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAnd(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseAnd(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseAndRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndAcquire(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseAndAcquire(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXor(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseXor(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShort(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorRelease(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseXorRelease(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShortRelease(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorAcquire(FieldInstanceReadWrite handle, Object holder, short value) {
+        static short getAndBitwiseXorAcquire(VarHandle ob, Object holder, short value) {
+            FieldInstanceReadWrite handle = (FieldInstanceReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShortAcquire(Objects.requireNonNull(handle.receiverType.cast(holder)),
                                        handle.fieldOffset,
                                        value);
@@ -295,41 +374,74 @@ final class VarHandleShorts {
         final long fieldOffset;
 
         FieldStaticReadOnly(Object base, long fieldOffset) {
-            this(base, fieldOffset, FieldStaticReadOnly.FORM);
+            this(base, fieldOffset, FieldStaticReadOnly.FORM, false);
         }
 
         protected FieldStaticReadOnly(Object base, long fieldOffset,
-                                      VarForm form) {
-            super(form);
+                                      VarForm form, boolean exact) {
+            super(form, exact);
             this.base = base;
             this.fieldOffset = fieldOffset;
         }
 
         @Override
-        final MethodType accessModeTypeUncached(AccessMode accessMode) {
-            return accessMode.at.accessModeType(null, short.class);
+        public FieldStaticReadOnly withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new FieldStaticReadOnly(base, fieldOffset, vform, true);
+        }
+
+        @Override
+        public FieldStaticReadOnly withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new FieldStaticReadOnly(base, fieldOffset, vform, false);
+        }
+
+        @Override
+        public Optional<VarHandleDesc> describeConstable() {
+            var fieldTypeRef = short.class.describeConstable();
+            if (!fieldTypeRef.isPresent())
+                return Optional.empty();
+
+            // Reflect on this VarHandle to extract the field name
+            var staticField = VarHandles.getStaticFieldFromBaseAndOffset(
+                base, fieldOffset, short.class);
+            var receiverTypeRef = staticField.getDeclaringClass().describeConstable();
+            if (!receiverTypeRef.isPresent())
+                return Optional.empty();
+            return Optional.of(VarHandleDesc.ofStaticField(receiverTypeRef.get(), staticField.getName(), fieldTypeRef.get()));
+        }
+
+        @Override
+        final MethodType accessModeTypeUncached(AccessType at) {
+            return at.accessModeType(null, short.class);
         }
 
         @ForceInline
-        static short get(FieldStaticReadOnly handle) {
+        static short get(VarHandle ob) {
+            FieldStaticReadOnly handle = (FieldStaticReadOnly)ob;
             return UNSAFE.getShort(handle.base,
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getVolatile(FieldStaticReadOnly handle) {
+        static short getVolatile(VarHandle ob) {
+            FieldStaticReadOnly handle = (FieldStaticReadOnly)ob;
             return UNSAFE.getShortVolatile(handle.base,
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getOpaque(FieldStaticReadOnly handle) {
+        static short getOpaque(VarHandle ob) {
+            FieldStaticReadOnly handle = (FieldStaticReadOnly)ob;
             return UNSAFE.getShortOpaque(handle.base,
                                  handle.fieldOffset);
         }
 
         @ForceInline
-        static short getAcquire(FieldStaticReadOnly handle) {
+        static short getAcquire(VarHandle ob) {
+            FieldStaticReadOnly handle = (FieldStaticReadOnly)ob;
             return UNSAFE.getShortAcquire(handle.base,
                                  handle.fieldOffset);
         }
@@ -340,39 +452,63 @@ final class VarHandleShorts {
     static final class FieldStaticReadWrite extends FieldStaticReadOnly {
 
         FieldStaticReadWrite(Object base, long fieldOffset) {
-            super(base, fieldOffset, FieldStaticReadWrite.FORM);
+            this(base, fieldOffset, false);
+        }
+
+        private FieldStaticReadWrite(Object base, long fieldOffset,
+                                     boolean exact) {
+            super(base, fieldOffset, FieldStaticReadWrite.FORM, exact);
+        }
+
+        @Override
+        public FieldStaticReadWrite withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new FieldStaticReadWrite(base, fieldOffset, true);
+        }
+
+        @Override
+        public FieldStaticReadWrite withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new FieldStaticReadWrite(base, fieldOffset, false);
         }
 
         @ForceInline
-        static void set(FieldStaticReadWrite handle, short value) {
+        static void set(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             UNSAFE.putShort(handle.base,
                              handle.fieldOffset,
                              value);
         }
 
         @ForceInline
-        static void setVolatile(FieldStaticReadWrite handle, short value) {
+        static void setVolatile(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             UNSAFE.putShortVolatile(handle.base,
                                      handle.fieldOffset,
                                      value);
         }
 
         @ForceInline
-        static void setOpaque(FieldStaticReadWrite handle, short value) {
+        static void setOpaque(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             UNSAFE.putShortOpaque(handle.base,
                                    handle.fieldOffset,
                                    value);
         }
 
         @ForceInline
-        static void setRelease(FieldStaticReadWrite handle, short value) {
+        static void setRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             UNSAFE.putShortRelease(handle.base,
                                     handle.fieldOffset,
                                     value);
         }
 
         @ForceInline
-        static boolean compareAndSet(FieldStaticReadWrite handle, short expected, short value) {
+        static boolean compareAndSet(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.compareAndSetShort(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -381,7 +517,8 @@ final class VarHandleShorts {
 
 
         @ForceInline
-        static short compareAndExchange(FieldStaticReadWrite handle, short expected, short value) {
+        static short compareAndExchange(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.compareAndExchangeShort(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -389,7 +526,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short compareAndExchangeAcquire(FieldStaticReadWrite handle, short expected, short value) {
+        static short compareAndExchangeAcquire(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.compareAndExchangeShortAcquire(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -397,7 +535,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short compareAndExchangeRelease(FieldStaticReadWrite handle, short expected, short value) {
+        static short compareAndExchangeRelease(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.compareAndExchangeShortRelease(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -405,7 +544,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetPlain(FieldStaticReadWrite handle, short expected, short value) {
+        static boolean weakCompareAndSetPlain(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortPlain(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -413,7 +553,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSet(FieldStaticReadWrite handle, short expected, short value) {
+        static boolean weakCompareAndSet(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.weakCompareAndSetShort(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -421,7 +562,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetAcquire(FieldStaticReadWrite handle, short expected, short value) {
+        static boolean weakCompareAndSetAcquire(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortAcquire(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -429,7 +571,8 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetRelease(FieldStaticReadWrite handle, short expected, short value) {
+        static boolean weakCompareAndSetRelease(VarHandle ob, short expected, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.weakCompareAndSetShortRelease(handle.base,
                                                handle.fieldOffset,
                                                expected,
@@ -437,105 +580,120 @@ final class VarHandleShorts {
         }
 
         @ForceInline
-        static short getAndSet(FieldStaticReadWrite handle, short value) {
+        static short getAndSet(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndSetShort(handle.base,
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndSetAcquire(FieldStaticReadWrite handle, short value) {
+        static short getAndSetAcquire(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndSetShortAcquire(handle.base,
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndSetRelease(FieldStaticReadWrite handle, short value) {
+        static short getAndSetRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndSetShortRelease(handle.base,
                                           handle.fieldOffset,
                                           value);
         }
 
         @ForceInline
-        static short getAndAdd(FieldStaticReadWrite handle, short value) {
+        static short getAndAdd(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndAddShort(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndAddAcquire(FieldStaticReadWrite handle, short value) {
+        static short getAndAddAcquire(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndAddShortAcquire(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndAddRelease(FieldStaticReadWrite handle, short value) {
+        static short getAndAddRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndAddShortRelease(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOr(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseOr(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShort(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrRelease(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseOrRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShortRelease(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrAcquire(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseOrAcquire(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseOrShortAcquire(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAnd(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseAnd(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShort(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndRelease(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseAndRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShortRelease(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndAcquire(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseAndAcquire(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseAndShortAcquire(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXor(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseXor(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShort(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorRelease(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseXorRelease(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShortRelease(handle.base,
                                        handle.fieldOffset,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorAcquire(FieldStaticReadWrite handle, short value) {
+        static short getAndBitwiseXorAcquire(VarHandle ob, short value) {
+            FieldStaticReadWrite handle = (FieldStaticReadWrite)ob;
             return UNSAFE.getAndBitwiseXorShortAcquire(handle.base,
                                        handle.fieldOffset,
                                        value);
@@ -550,263 +708,321 @@ final class VarHandleShorts {
         final int ashift;
 
         Array(int abase, int ashift) {
-            super(Array.FORM);
+            this(abase, ashift, false);
+        }
+
+        private Array(int abase, int ashift, boolean exact) {
+            super(Array.FORM, exact);
             this.abase = abase;
             this.ashift = ashift;
         }
 
         @Override
-        final MethodType accessModeTypeUncached(AccessMode accessMode) {
-            return accessMode.at.accessModeType(short[].class, short.class, int.class);
+        public Array withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new Array(abase, ashift, true);
+        }
+
+        @Override
+        public Array withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new Array(abase, ashift, false);
+        }
+
+        @Override
+        public Optional<VarHandleDesc> describeConstable() {
+            var arrayTypeRef = short[].class.describeConstable();
+            if (!arrayTypeRef.isPresent())
+                return Optional.empty();
+
+            return Optional.of(VarHandleDesc.ofArray(arrayTypeRef.get()));
+        }
+
+        @Override
+        final MethodType accessModeTypeUncached(AccessType at) {
+            return at.accessModeType(short[].class, short.class, int.class);
         }
 
 
         @ForceInline
-        static short get(Array handle, Object oarray, int index) {
+        static short get(VarHandle ob, Object oarray, int index) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return array[index];
         }
 
         @ForceInline
-        static void set(Array handle, Object oarray, int index, short value) {
+        static void set(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             array[index] = value;
         }
 
         @ForceInline
-        static short getVolatile(Array handle, Object oarray, int index) {
+        static short getVolatile(VarHandle ob, Object oarray, int index) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
-        static void setVolatile(Array handle, Object oarray, int index, short value) {
+        static void setVolatile(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getOpaque(Array handle, Object oarray, int index) {
+        static short getOpaque(VarHandle ob, Object oarray, int index) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
-        static void setOpaque(Array handle, Object oarray, int index, short value) {
+        static void setOpaque(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAcquire(Array handle, Object oarray, int index) {
+        static short getAcquire(VarHandle ob, Object oarray, int index) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
-        static void setRelease(Array handle, Object oarray, int index, short value) {
+        static void setRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static boolean compareAndSet(Array handle, Object oarray, int index, short expected, short value) {
+        static boolean compareAndSet(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static short compareAndExchange(Array handle, Object oarray, int index, short expected, short value) {
+        static short compareAndExchange(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static short compareAndExchangeAcquire(Array handle, Object oarray, int index, short expected, short value) {
+        static short compareAndExchangeAcquire(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static short compareAndExchangeRelease(Array handle, Object oarray, int index, short expected, short value) {
+        static short compareAndExchangeRelease(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static boolean weakCompareAndSetPlain(Array handle, Object oarray, int index, short expected, short value) {
+        static boolean weakCompareAndSetPlain(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortPlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static boolean weakCompareAndSet(Array handle, Object oarray, int index, short expected, short value) {
+        static boolean weakCompareAndSet(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static boolean weakCompareAndSetAcquire(Array handle, Object oarray, int index, short expected, short value) {
+        static boolean weakCompareAndSetAcquire(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static boolean weakCompareAndSetRelease(Array handle, Object oarray, int index, short expected, short value) {
+        static boolean weakCompareAndSetRelease(VarHandle ob, Object oarray, int index, short expected, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
 
         @ForceInline
-        static short getAndSet(Array handle, Object oarray, int index, short value) {
+        static short getAndSet(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndSetAcquire(Array handle, Object oarray, int index, short value) {
+        static short getAndSetAcquire(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndSetRelease(Array handle, Object oarray, int index, short value) {
+        static short getAndSetRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndAdd(Array handle, Object oarray, int index, short value) {
+        static short getAndAdd(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndAddAcquire(Array handle, Object oarray, int index, short value) {
+        static short getAndAddAcquire(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndAddRelease(Array handle, Object oarray, int index, short value) {
+        static short getAndAddRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                     value);
         }
 
         @ForceInline
-        static short getAndBitwiseOr(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseOr(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrRelease(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseOrRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseOrAcquire(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseOrAcquire(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAnd(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseAnd(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndRelease(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseAndRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseAndAcquire(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseAndAcquire(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXor(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseXor(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorRelease(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseXorRelease(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
         @ForceInline
-        static short getAndBitwiseXorAcquire(Array handle, Object oarray, int index, short value) {
+        static short getAndBitwiseXorAcquire(VarHandle ob, Object oarray, int index, short value) {
+            Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
                                        value);
         }
 

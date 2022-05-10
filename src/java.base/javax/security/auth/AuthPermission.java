@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -129,6 +129,7 @@ package javax.security.auth;
 public final class AuthPermission extends
 java.security.BasicPermission {
 
+    @java.io.Serial
     private static final long serialVersionUID = 5806031445061587174L;
 
     /**

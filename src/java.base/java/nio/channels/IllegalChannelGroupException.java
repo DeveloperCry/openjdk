@@ -41,6 +41,7 @@ public class IllegalChannelGroupException
     extends IllegalArgumentException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -2495041211157744253L;
 
     /**

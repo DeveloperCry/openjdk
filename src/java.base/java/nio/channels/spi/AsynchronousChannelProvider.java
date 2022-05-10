@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,6 +52,7 @@ import java.security.PrivilegedAction;
 
 public abstract class AsynchronousChannelProvider {
     private static Void checkPermission() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null)
             sm.checkPermission(new RuntimePermission("asynchronousChannelProvider"));
@@ -74,6 +75,7 @@ public abstract class AsynchronousChannelProvider {
     private static class ProviderHolder {
         static final AsynchronousChannelProvider provider = load();
 
+        @SuppressWarnings("removal")
         private static AsynchronousChannelProvider load() {
             return AccessController
                 .doPrivileged(new PrivilegedAction<>() {
@@ -138,10 +140,10 @@ public abstract class AsynchronousChannelProvider {
      * <ol>
      *
      *   <li><p> If the system property
-     *   {@code java.nio.channels.spi.AsynchronousChannelProvider} is defined
-     *   then it is taken to be the fully-qualified name of a concrete provider class.
-     *   The class is loaded and instantiated; if this process fails then an
-     *   unspecified error is thrown.  </p></li>
+     *   {@systemProperty java.nio.channels.spi.AsynchronousChannelProvider} is
+     *   defined then it is taken to be the fully-qualified name of a concrete
+     *   provider class. The class is loaded and instantiated; if this process
+     *   fails then an unspecified error is thrown.  </p></li>
      *
      *   <li><p> If a provider class has been installed in a jar file that is
      *   visible to the system class loader, and that jar file contains a

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -67,7 +67,7 @@ public class RSAOtherPrimeInfo {
     * @param primeExponent the exponent.
     * @param crtCoefficient the Chinese Remainder Theorem
     * coefficient.
-    * @exception NullPointerException if any of the parameters, i.e.
+    * @throws    NullPointerException if any of the parameters, i.e.
     * {@code prime}, {@code primeExponent},
     * {@code crtCoefficient}, is null.
     *

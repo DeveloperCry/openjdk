@@ -41,6 +41,7 @@ public class NotYetConnectedException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 4697316551909513464L;
 
     /**

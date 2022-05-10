@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,7 @@ package java.util.zip;
  * @since   1.6
  */
 public class ZipError extends InternalError {
+    @java.io.Serial
     private static final long serialVersionUID = 853973422266861979L;
 
     /**

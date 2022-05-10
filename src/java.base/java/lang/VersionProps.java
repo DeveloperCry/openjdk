@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,7 @@ package java.lang;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 class VersionProps {
@@ -35,51 +36,85 @@ class VersionProps {
     private static final String launcher_name =
         "java";
 
+    // This field is read by HotSpot
     private static final String java_version =
-        "11.0.5";
+        "18.0.1.1";
 
     private static final String java_version_date =
-        "2019-10-15";
+        "2022-04-22";
 
+    // This field is read by HotSpot
     private static final String java_runtime_name =
         "Java(TM) SE Runtime Environment";
 
+    // This field is read by HotSpot
     private static final String java_runtime_version =
-        "11.0.5+10-LTS";
+        "18.0.1.1+2-6";
 
     private static final String VERSION_NUMBER =
-        "11.0.5";
+        "18.0.1.1";
+
+    private static final String VERSION_SPECIFICATION =
+        "18";
 
     private static final String VERSION_BUILD =
-        "10";
+        "2";
 
     private static final String VERSION_PRE =
         "";
 
     private static final String VERSION_OPT =
-        "LTS";
+        "6";
 
     private static final boolean isLTS =
-        "LTS".startsWith("LTS");
+        "6".startsWith("LTS");
 
-    private static final String VENDOR_VERSION_STRING =
-        "18.9";
+    private static final String CLASSFILE_MAJOR_MINOR =
+        "62.0";
 
-    private static final String vendor_version =
-        (VENDOR_VERSION_STRING.length() > 0
-         ? " " + VENDOR_VERSION_STRING : "");
+    private static final String VENDOR =
+        "Oracle Corporation";
 
-    static {
-        init();
-    }
+    private static final String VENDOR_URL =
+        "https://java.oracle.com/";
 
-    public static void init() {
-        System.setProperty("java.version", java_version);
-        System.setProperty("java.version.date", java_version_date);
-        System.setProperty("java.runtime.version", java_runtime_version);
-        System.setProperty("java.runtime.name", java_runtime_name);
-        if (VENDOR_VERSION_STRING.length() > 0)
-            System.setProperty("java.vendor.version", VENDOR_VERSION_STRING);
+    // The remaining VENDOR_* fields must not be final,
+    // so that they can be redefined by jlink plugins
+
+    // This field is read by HotSpot
+    private static String VENDOR_VERSION =
+        "";
+
+    private static String VENDOR_URL_BUG =
+        "https://bugreport.java.com/bugreport/";
+
+    // This field is read by HotSpot
+    @SuppressWarnings("unused")
+    private static String VENDOR_URL_VM_BUG =
+        "https://bugreport.java.com/bugreport/crash.jsp";
+
+    /**
+     * Initialize system properties using build provided values.
+     *
+     * @param props Map instance in which to insert the properties
+     */
+    public static void init(Map<String, String> props) {
+        props.put("java.version", java_version);
+        props.put("java.version.date", java_version_date);
+        props.put("java.runtime.version", java_runtime_version);
+        props.put("java.runtime.name", java_runtime_name);
+        if (!VENDOR_VERSION.isEmpty())
+            props.put("java.vendor.version", VENDOR_VERSION);
+
+        props.put("java.class.version", CLASSFILE_MAJOR_MINOR);
+
+        props.put("java.specification.version", VERSION_SPECIFICATION);
+        props.put("java.specification.name", "Java Platform API Specification");
+        props.put("java.specification.vendor", "Oracle Corporation");
+
+        props.put("java.vendor", VENDOR);
+        props.put("java.vendor.url", VENDOR_URL);
+        props.put("java.vendor.url.bug", VENDOR_URL_BUG);
     }
 
     private static int parseVersionNumber(String version, int prevIndex, int index) {
@@ -188,6 +223,9 @@ class VersionProps {
         } else {
             jdk_debug_level = jdk_debug_level + " ";
         }
+
+        String vendor_version = (VENDOR_VERSION.isEmpty()
+                                 ? "" : " " + VENDOR_VERSION);
 
         ps.println(java_runtime_name + vendor_version
                    + " (" + jdk_debug_level + "build " + java_runtime_version + ")");

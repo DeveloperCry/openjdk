@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,6 +38,7 @@ import java.util.Enumeration;
  */
 public class AttributeNameEnumeration extends Vector<String> {
 
+    @java.io.Serial
     private static final long serialVersionUID = -6067440240757099134L;
 
     /**

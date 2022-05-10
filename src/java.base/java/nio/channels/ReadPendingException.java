@@ -41,6 +41,7 @@ public class ReadPendingException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 1986315242191227217L;
 
     /**

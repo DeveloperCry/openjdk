@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,6 +36,7 @@ package javax.security.auth;
  */
 public class RefreshFailedException extends Exception {
 
+    @java.io.Serial
     private static final long serialVersionUID = 5058444488565265840L;
 
     /**

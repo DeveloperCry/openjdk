@@ -42,6 +42,7 @@ public class ShutdownChannelGroupException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -3903801676350154157L;
 
     /**

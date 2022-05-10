@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,7 +32,7 @@ import sun.util.logging.PlatformLogger;
 
 /**
  * An implementation of {@link Logger} that redirects all calls to a wrapped
- instance of Logger.
+ * instance of Logger.
  *
  * @param <L> Type of the wrapped Logger: {@code Logger} or an
  *            extension of that interface.

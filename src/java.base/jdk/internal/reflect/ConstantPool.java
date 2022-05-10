@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,6 +26,7 @@
 package jdk.internal.reflect;
 
 import java.lang.reflect.*;
+import java.util.Set;
 
 /** Provides reflective access to the constant pools of classes.
     Currently this is needed to provide reflective access to annotations
@@ -104,7 +105,7 @@ public class ConstantPool {
   //
 
   static {
-      Reflection.registerFieldsToFilter(ConstantPool.class, new String[] { "constantPoolOop" });
+      Reflection.registerFieldsToFilter(ConstantPool.class, Set.of("constantPoolOop"));
   }
 
   // HotSpot-internal constant pool object (set by the VM, name known to the VM)

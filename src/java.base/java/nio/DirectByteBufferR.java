@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -42,9 +45,6 @@ class DirectByteBufferR
 
     implements DirectBuffer
 {
-
-
-
 
 
 
@@ -163,11 +163,21 @@ class DirectByteBufferR
 
 
 
+
+
+
+
+
+
+
+
+
     // For memory-mapped buffers -- invoked by FileChannelImpl via reflection
     //
     protected DirectByteBufferR(int cap, long addr,
                                      FileDescriptor fd,
-                                     Runnable unmapper)
+                                     Runnable unmapper,
+                                     boolean isSync, MemorySegmentProxy segment)
     {
 
 
@@ -175,7 +185,7 @@ class DirectByteBufferR
 
 
 
-        super(cap, addr, fd, unmapper);
+        super(cap, addr, fd, unmapper, isSync, segment);
         this.isReadOnly = true;
 
     }
@@ -185,8 +195,11 @@ class DirectByteBufferR
     // For duplicates and slices
     //
     DirectByteBufferR(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+                               FileDescriptor fd, boolean isSync,
+
+                               MemorySegmentProxy segment)
     {
 
 
@@ -196,7 +209,16 @@ class DirectByteBufferR
 
 
 
-        super(db, mark, pos, lim, cap, off);
+
+
+
+
+
+        super(db, mark, pos, lim, cap, off,
+
+              fd, isSync,
+
+              segment);
         this.isReadOnly = true;
 
     }
@@ -206,32 +228,53 @@ class DirectByteBufferR
         return null;
     }
 
-    public ByteBuffer slice() {
+    public MappedByteBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 0);
         assert (off >= 0);
-        return new DirectByteBufferR(this, -1, 0, rem, rem, off);
+        return new DirectByteBufferR(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
+    @Override
+    public MappedByteBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectByteBufferR(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 0,
 
-    public ByteBuffer slice(int pos, int lim) {
-        assert (pos >= 0);
-        assert (pos <= lim);
-        int rem = lim - pos;
-        return new DirectByteBufferR(this, -1, 0, rem, rem, pos);
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
-
-    public ByteBuffer duplicate() {
+    public MappedByteBuffer duplicate() {
         return new DirectByteBufferR(this,
                                               this.markValue(),
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
     public ByteBuffer asReadOnlyBuffer() {
@@ -243,40 +286,14 @@ class DirectByteBufferR
 
 
 
+
+
+
+
+
         return duplicate();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -352,94 +369,9 @@ class DirectByteBufferR
 
     }
 
-    public ByteBuffer put(ByteBuffer src) {
+    public MappedByteBuffer compact() {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
-    public ByteBuffer put(byte[] src, int offset, int length) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
-    public ByteBuffer compact() {
 
 
 
@@ -466,8 +398,6 @@ class DirectByteBufferR
     public boolean isReadOnly() {
         return true;
     }
-
-
 
 
 
@@ -610,13 +540,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (CharBuffer)(new ByteBufferAsCharBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (CharBuffer)(new DirectCharBufferRU(this,
@@ -624,13 +554,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (CharBuffer)(new DirectCharBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -710,13 +640,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (ShortBuffer)(new ByteBufferAsShortBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (ShortBuffer)(new DirectShortBufferRU(this,
@@ -724,13 +654,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (ShortBuffer)(new DirectShortBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -810,13 +740,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (IntBuffer)(new ByteBufferAsIntBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (IntBuffer)(new DirectIntBufferRU(this,
@@ -824,13 +754,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (IntBuffer)(new DirectIntBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -910,13 +840,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (LongBuffer)(new ByteBufferAsLongBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (LongBuffer)(new DirectLongBufferRU(this,
@@ -924,13 +854,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (LongBuffer)(new DirectLongBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -1010,13 +940,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (FloatBuffer)(new ByteBufferAsFloatBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (FloatBuffer)(new DirectFloatBufferRU(this,
@@ -1024,13 +954,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (FloatBuffer)(new DirectFloatBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -1110,13 +1040,13 @@ class DirectByteBufferR
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (DoubleBuffer)(new ByteBufferAsDoubleBufferRL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (DoubleBuffer)(new DirectDoubleBufferRU(this,
@@ -1124,13 +1054,13 @@ class DirectByteBufferR
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (DoubleBuffer)(new DirectDoubleBufferRS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 

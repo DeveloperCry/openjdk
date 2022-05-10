@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -200,8 +200,8 @@ public class PKIXParameters implements CertPathParameters {
             throw new InvalidAlgorithmParameterException("the trustAnchors " +
                 "parameter must be non-empty");
         }
-        for (Iterator<TrustAnchor> i = trustAnchors.iterator(); i.hasNext(); ) {
-            if (!(i.next() instanceof TrustAnchor)) {
+        for (Object trustAnchor : trustAnchors) {
+            if (!(trustAnchor instanceof TrustAnchor)) {
                 throw new ClassCastException("all elements of set must be "
                     + "of type java.security.cert.TrustAnchor");
             }
@@ -249,9 +249,8 @@ public class PKIXParameters implements CertPathParameters {
      */
     public void setInitialPolicies(Set<String> initialPolicies) {
         if (initialPolicies != null) {
-            for (Iterator<String> i = initialPolicies.iterator();
-                        i.hasNext();) {
-                if (!(i.next() instanceof String))
+            for (Object initialPolicy : initialPolicies) {
+                if (!(initialPolicy instanceof String))
                     throw new ClassCastException("all elements of set must be "
                         + "of type java.lang.String");
             }
@@ -282,8 +281,8 @@ public class PKIXParameters implements CertPathParameters {
         if (stores == null) {
             this.certStores = new ArrayList<>();
         } else {
-            for (Iterator<CertStore> i = stores.iterator(); i.hasNext();) {
-                if (!(i.next() instanceof CertStore)) {
+            for (Object store : stores) {
+                if (!(store instanceof CertStore)) {
                     throw new ClassCastException("all elements of list must be "
                         + "of type java.security.cert.CertStore");
                 }
@@ -609,7 +608,7 @@ public class PKIXParameters implements CertPathParameters {
      *
      * @param sigProvider the signature provider's name (or {@code null})
      * @see #getSigProvider
-    */
+     */
     public void setSigProvider(String sigProvider) {
         this.sigProvider = sigProvider;
     }

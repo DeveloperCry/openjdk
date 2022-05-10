@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsCharBufferRL                  // package-private
     extends ByteBufferAsCharBufferL
@@ -40,7 +41,7 @@ class ByteBufferAsCharBufferRL                  // package-private
 
 
 
-    ByteBufferAsCharBufferRL(ByteBuffer bb) {   // package-private
+    ByteBufferAsCharBufferRL(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
 
 
@@ -53,13 +54,13 @@ class ByteBufferAsCharBufferRL                  // package-private
 
 
 
-        super(bb);
+        super(bb, segment);
 
     }
 
     ByteBufferAsCharBufferRL(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
 
@@ -67,7 +68,7 @@ class ByteBufferAsCharBufferRL                  // package-private
 
 
 
-        super(bb, mark, pos, lim, cap, addr);
+        super(bb, mark, pos, lim, cap, addr, segment);
 
     }
 
@@ -79,10 +80,20 @@ class ByteBufferAsCharBufferRL                  // package-private
     public CharBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsCharBufferRL(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsCharBufferRL(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public CharBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsCharBufferRL(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public CharBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsCharBufferRL                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public CharBuffer asReadOnlyBuffer() {
@@ -195,8 +206,7 @@ class ByteBufferAsCharBufferRL                  // package-private
 
 
     public String toString(int start, int end) {
-        if ((end > limit()) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, limit());
         try {
             int len = end - start;
             char[] ca = new char[len];
@@ -221,14 +231,13 @@ class ByteBufferAsCharBufferRL                  // package-private
         pos = (pos <= lim ? pos : lim);
         int len = lim - pos;
 
-        if ((start < 0) || (end > len) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, len);
         return new ByteBufferAsCharBufferRL(bb,
                                                   -1,
                                                   pos + start,
                                                   pos + end,
                                                   capacity(),
-                                                  address);
+                                                  address, segment);
     }
 
 

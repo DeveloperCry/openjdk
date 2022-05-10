@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,7 +42,7 @@ package java.security;
  *                                              AccessControlContext)
  * @see PrivilegedAction
  */
-
+@FunctionalInterface
 public interface PrivilegedExceptionAction<T> {
     /**
      * Performs the computation.  This method will be called by

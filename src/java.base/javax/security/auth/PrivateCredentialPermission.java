@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,6 +26,7 @@
 package javax.security.auth;
 
 import java.util.*;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -104,6 +105,7 @@ import sun.security.util.ResourcesMgr;
  */
 public final class PrivateCredentialPermission extends Permission {
 
+    @java.io.Serial
     private static final long serialVersionUID = 5284372143517237068L;
 
     private static final CredOwner[] EMPTY_PRINCIPALS = new CredOwner[0];
@@ -118,6 +120,7 @@ public final class PrivateCredentialPermission extends Permission {
      *          The set contains elements of type,
      *          {@code PrivateCredentialPermission.CredOwner}.
      */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Set<Principal> principals;  // ignored - kept around for compatibility
     private transient CredOwner[] credOwners;
 
@@ -142,9 +145,7 @@ public final class PrivateCredentialPermission extends Permission {
             } else {
                 this.credOwners = new CredOwner[principals.size()];
                 int index = 0;
-                Iterator<Principal> i = principals.iterator();
-                while (i.hasNext()) {
-                    Principal p = i.next();
+                for (Principal p : principals) {
                     this.credOwners[index++] = new CredOwner
                                                 (p.getClass().getName(),
                                                 p.getName());
@@ -312,7 +313,7 @@ public final class PrivateCredentialPermission extends Permission {
 
     private void init(String name) {
 
-        if (name == null || name.trim().length() == 0) {
+        if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("invalid empty name");
         }
 
@@ -473,9 +474,14 @@ public final class PrivateCredentialPermission extends Permission {
 
     /**
      * Reads this object from a stream (i.e., deserializes it)
+     *
+     * @param  s the {@code ObjectInputStream} from which data is read
+     * @throws IOException if an I/O error occurs
+     * @throws ClassNotFoundException if a serialized class cannot be loaded
      */
+    @java.io.Serial
     private void readObject(java.io.ObjectInputStream s) throws
-                                        java.io.IOException,
+                                        IOException,
                                         ClassNotFoundException {
 
         s.defaultReadObject();
@@ -500,6 +506,7 @@ public final class PrivateCredentialPermission extends Permission {
      */
     static class CredOwner implements java.io.Serializable {
 
+        @java.io.Serial
         private static final long serialVersionUID = -5607449830436408266L;
 
         /**

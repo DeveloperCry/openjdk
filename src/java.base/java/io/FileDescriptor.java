@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import jdk.internal.misc.JavaIOFileDescriptorAccess;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.JavaIOFileDescriptorAccess;
+import jdk.internal.access.SharedSecrets;
 import jdk.internal.ref.PhantomCleanable;
 
 /**
@@ -199,7 +199,7 @@ public final class FileDescriptor {
      * be flushed into the FileDescriptor (for example, by invoking
      * OutputStream.flush) before that data will be affected by sync.
      *
-     * @exception SyncFailedException
+     * @throws    SyncFailedException
      *        Thrown when the buffers cannot be flushed,
      *        or because the system cannot guarantee that all the
      *        buffers have been synchronized with physical media.

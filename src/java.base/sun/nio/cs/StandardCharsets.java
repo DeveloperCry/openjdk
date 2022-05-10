@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  *
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import jdk.internal.vm.annotation.Stable;
-import sun.security.action.GetPropertyAction;
 
 public class StandardCharsets extends CharsetProvider {
 
@@ -49,7 +48,6 @@ public class StandardCharsets extends CharsetProvider {
             "IBM367",
             "cp367",
             "csASCII",
-            "default",
             "646",
             "iso_646.irv:1983",
             "ANSI_X3.4-1968",
@@ -285,6 +283,7 @@ public class StandardCharsets extends CharsetProvider {
             "iso-ir-226",
             "ISO_8859-16:2001",
             "ISO_8859-16",
+            "ISO8859_16",
             "latin10",
             "l10",
             "csISO885916",
@@ -426,6 +425,8 @@ public class StandardCharsets extends CharsetProvider {
             "cp00858",
             "858",
             "PC-Multilingual-850+euro",
+            "ibm858",
+            "ibm-858",
         };
 
     }
@@ -490,6 +491,12 @@ public class StandardCharsets extends CharsetProvider {
     static String[] aliases_GBK() { return new String[] {
             "windows-936",
             "CP936",
+        };
+
+    }
+
+    static String[] aliases_GB18030() { return new String[] {
+            "gb18030-2000",
         };
 
     }
@@ -570,7 +577,7 @@ public class StandardCharsets extends CharsetProvider {
     {
 
         private static final int ROWS = 1024;
-        private static final int SIZE = 256;
+        private static final int SIZE = 259;
         private static final int SHIFT = 0;
         private static final int MASK = 0x3ff;
 
@@ -718,7 +725,8 @@ public class StandardCharsets extends CharsetProvider {
             ht[481] = new Object[] { "ibm852", "ibm852" };
             ht[484] = new Object[] { "ibm855", "ibm855" };
             ht[486] = new Object[] { "ibm857", "ibm857" };
-            ht[487] = new Object[] { "ibm737", "x-ibm737" };
+            ht[487] = new Object[] { "ibm858", "ibm00858",
+                         new Object[] { "ibm737", "x-ibm737" } };
             ht[495] = new Object[] { "ms950_hkscs", "x-ms950-hkscs" };
             ht[502] = new Object[] { "x-sjis", "shift_jis",
                          new Object[] { "utf_16le", "utf-16le" } };
@@ -727,7 +735,8 @@ public class StandardCharsets extends CharsetProvider {
             ht[511] = new Object[] { "ibm-855", "ibm855" };
             ht[512] = new Object[] { "ibm862", "ibm862" };
             ht[513] = new Object[] { "ibm-857", "ibm857" };
-            ht[514] = new Object[] { "ibm-737", "x-ibm737" };
+            ht[514] = new Object[] { "ibm-858", "ibm00858",
+                         new Object[] { "ibm-737", "x-ibm737" } };
             ht[516] = new Object[] { "ibm866", "ibm866" };
             ht[520] = new Object[] { "unicodebigunmarked", "utf-16be" };
             ht[523] = new Object[] { "cp437", "ibm437" };
@@ -743,7 +752,7 @@ public class StandardCharsets extends CharsetProvider {
             ht[564] = new Object[] { "windows-949", "x-windows-949" };
             ht[572] = new Object[] { "ibm-874", "x-ibm874" };
             ht[573] = new Object[] { "iso_8859-4:1988", "iso-8859-4" };
-            ht[577] = new Object[] { "default", "us-ascii" };
+            ht[576] = new Object[] { "gb18030-2000", "gb18030" };
             ht[579] = new Object[] { "ms_936", "x-mswin-936" };
             ht[582] = new Object[] { "utf32", "utf-32" };
             ht[583] = new Object[] { "pc-multilingual-850+euro", "ibm00858" };
@@ -769,7 +778,8 @@ public class StandardCharsets extends CharsetProvider {
             ht[632] = new Object[] { "iso8859_13", "iso-8859-13" };
             ht[634] = new Object[] { "iso8859_15", "iso-8859-15",
                          new Object[] { "utf_32be", "utf-32be" } };
-            ht[635] = new Object[] { "utf_32be_bom", "x-utf-32be-bom" };
+            ht[635] = new Object[] { "iso8859_16", "iso-8859-16",
+                         new Object[] { "utf_32be_bom", "x-utf-32be-bom" } };
             ht[636] = new Object[] { "ibm-775", "ibm775" };
             ht[654] = new Object[] { "cp00858", "ibm00858" };
             ht[669] = new Object[] { "8859_13", "iso-8859-13" };
@@ -844,7 +854,7 @@ public class StandardCharsets extends CharsetProvider {
     {
 
         private static final int ROWS = 64;
-        private static final int SIZE = 54;
+        private static final int SIZE = 55;
         private static final int SHIFT = 0;
         private static final int MASK = 0x3f;
 
@@ -865,7 +875,8 @@ public class StandardCharsets extends CharsetProvider {
             ht[9] = new Object[] { "windows-1253", "MS1253" };
             ht[10] = new Object[] { "windows-1254", "MS1254" };
             ht[11] = new Object[] { "windows-1255", "MS1255",
-                         new Object[] { "utf-16", "UTF_16" } };
+                         new Object[] { "gb18030", "GB18030",
+                             new Object[] { "utf-16", "UTF_16" } } };
             ht[12] = new Object[] { "windows-1256", "MS1256",
                          new Object[] { "x-ms950-hkscs", "MS950_HKSCS" } };
             ht[13] = new Object[] { "windows-1257", "MS1257" };
@@ -916,7 +927,7 @@ public class StandardCharsets extends CharsetProvider {
     {
 
         private static final int ROWS = 64;
-        private static final int SIZE = 54;
+        private static final int SIZE = 55;
         private static final int SHIFT = 0;
         private static final int MASK = 0x3f;
 
@@ -937,7 +948,8 @@ public class StandardCharsets extends CharsetProvider {
             ht[9] = new Object[] { "windows-1253", null };
             ht[10] = new Object[] { "windows-1254", null };
             ht[11] = new Object[] { "windows-1255", null,
-                         new Object[] { "utf-16", null } };
+                         new Object[] { "gb18030", null,
+                             new Object[] { "utf-16", null } } };
             ht[12] = new Object[] { "windows-1256", null,
                          new Object[] { "x-ms950-hkscs", null } };
             ht[13] = new Object[] { "windows-1257", null };
@@ -1060,8 +1072,6 @@ public class StandardCharsets extends CharsetProvider {
     }
 
     private Charset lookup(String charsetName) {
-        init();
-
         // By checking these built-ins we can avoid initializing Aliases,
         // Classes and Cache eagerly during bootstrap.
         //
@@ -1117,7 +1127,6 @@ public class StandardCharsets extends CharsetProvider {
     public final Iterator<Charset> charsets() {
         Set<String> charsetNames;
         synchronized (this) {
-            init();
             // Ensure initialized in synchronized block
             charsetNames = classMap().keySet();
             aliasMap();
@@ -1142,53 +1151,4 @@ public class StandardCharsets extends CharsetProvider {
 
             };
     }
-
-    private boolean initialized = false;
-
-    /*   provider the sun.nio.cs.map property fir sjis/ms932 mapping hack
-     */
-    private void init() {
-        if (initialized)
-            return;
-        if (!jdk.internal.misc.VM.isBooted())
-            return;
-        initialized = true;
-
-        String map = GetPropertyAction.privilegedGetProperty("sun.nio.cs.map");
-        if (map != null) {
-            Map<String,String> aliasMap = aliasMap();
-            Map<String,String> classMap = classMap();
-            String[] maps = map.split(",");
-            for (int i = 0; i < maps.length; i++) {
-                if (maps[i].equalsIgnoreCase("Windows-31J/Shift_JIS")) {
-                    // if we dont have both sjis and ms932, do nothing
-                    if (classMap.get("shift_jis") == null ||
-                        classMap.get("windows-31j") == null) {
-                        break;
-                    }
-                    aliases_MS932 = new String[] {
-                        "MS932",        // JDK historical
-                        "windows-932",
-                        "csWindows31J",
-                        "shift-jis",
-                        "ms_kanji",
-                        "x-sjis",
-                        "csShiftJIS",
-                        // This alias takes precedence over the actual
-                        // Shift_JIS charset itself since aliases are always
-                        // resolved first, before looking up canonical names.
-                        "shift_jis"
-                    };
-                    aliases_SJIS = new String[] { "sjis" };
-
-                    for (String alias : aliases_MS932) {
-                        aliasMap.put(toLower(alias), "windows-31j");
-                    }
-                    cache().put("shift_jis", null);
-                    break;
-                }
-            }
-        }
-    }
-
 }

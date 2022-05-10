@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,8 +34,8 @@ package java.lang;
  * @author  Frank Yellin
  * @since   1.0
  */
-public
-class LinkageError extends Error {
+public class LinkageError extends Error {
+    @java.io.Serial
     private static final long serialVersionUID = 3579600108157160122L;
 
     /**

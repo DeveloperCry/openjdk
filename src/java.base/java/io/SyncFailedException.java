@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ package java.io;
  * @since   1.1
  */
 public class SyncFailedException extends IOException {
+    @java.io.Serial
     private static final long serialVersionUID = -2353342684412443330L;
 
     /**

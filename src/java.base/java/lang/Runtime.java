@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 1995, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, Azul Systems, Inc. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,16 +28,15 @@ package java.lang;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
+import jdk.internal.loader.NativeLibrary;
 import jdk.internal.reflect.CallerSensitive;
 import jdk.internal.reflect.Reflection;
 
@@ -48,7 +48,6 @@ import jdk.internal.reflect.Reflection;
  * <p>
  * An application cannot create its own instance of this class.
  *
- * @author  unascribed
  * @see     java.lang.Runtime#getRuntime()
  * @since   1.0
  */
@@ -108,6 +107,7 @@ public class Runtime {
      * @see #halt(int)
      */
     public void exit(int status) {
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkExit(status);
@@ -200,7 +200,7 @@ public class Runtime {
      *
      * @throws  SecurityException
      *          If a security manager is present and it denies
-     *          {@link RuntimePermission}("shutdownHooks")
+     *          {@link RuntimePermission}{@code ("shutdownHooks")}
      *
      * @see #removeShutdownHook
      * @see #halt(int)
@@ -208,6 +208,7 @@ public class Runtime {
      * @since 1.3
      */
     public void addShutdownHook(Thread hook) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("shutdownHooks"));
@@ -229,13 +230,14 @@ public class Runtime {
      *
      * @throws  SecurityException
      *          If a security manager is present and it denies
-     *          {@link RuntimePermission}("shutdownHooks")
+     *          {@link RuntimePermission}{@code ("shutdownHooks")}
      *
      * @see #addShutdownHook
      * @see #exit(int)
      * @since 1.3
      */
     public boolean removeShutdownHook(Thread hook) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("shutdownHooks"));
@@ -271,6 +273,7 @@ public class Runtime {
      * @since 1.3
      */
     public void halt(int status) {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkExit(status);
@@ -286,6 +289,12 @@ public class Runtime {
      * {@code exec(command)}
      * behaves in exactly the same way as the invocation
      * {@link #exec(String, String[], File) exec}{@code (command, null, null)}.
+     *
+     * @deprecated This method is error-prone and should not be used, the corresponding method
+     * {@link #exec(String[])} or {@link ProcessBuilder} should be used instead.
+     * The command string is broken into tokens using only whitespace characters.
+     * For an argument with an embedded space, such as a filename, this can cause problems
+     * as the token does not include the full filename.
      *
      * @param   command   a specified system command.
      *
@@ -308,6 +317,7 @@ public class Runtime {
      * @see     #exec(String[], String[], File)
      * @see     ProcessBuilder
      */
+    @Deprecated(since="18")
     public Process exec(String command) throws IOException {
         return exec(command, null, null);
     }
@@ -320,6 +330,12 @@ public class Runtime {
      * {@code exec(command, envp)}
      * behaves in exactly the same way as the invocation
      * {@link #exec(String, String[], File) exec}{@code (command, envp, null)}.
+     *
+     * @deprecated This method is error-prone and should not be used, the corresponding method
+     * {@link #exec(String[], String[])} or {@link ProcessBuilder} should be used instead.
+     * The command string is broken into tokens using only whitespace characters.
+     * For an argument with an embedded space, such as a filename, this can cause problems
+     * as the token does not include the full filename.
      *
      * @param   command   a specified system command.
      *
@@ -349,6 +365,7 @@ public class Runtime {
      * @see     #exec(String[], String[], File)
      * @see     ProcessBuilder
      */
+    @Deprecated(since="18")
     public Process exec(String command, String[] envp) throws IOException {
         return exec(command, envp, null);
     }
@@ -366,10 +383,16 @@ public class Runtime {
      *
      * <p>More precisely, the {@code command} string is broken
      * into tokens using a {@link StringTokenizer} created by the call
-     * {@code new {@link StringTokenizer}(command)} with no
+     * {@code new StringTokenizer(command)} with no
      * further modification of the character categories.  The tokens
      * produced by the tokenizer are then placed in the new string
      * array {@code cmdarray}, in the same order.
+     *
+     * @deprecated This method is error-prone and should not be used, the corresponding method
+     * {@link #exec(String[], String[], File)} or {@link ProcessBuilder} should be used instead.
+     * The command string is broken into tokens using only whitespace characters.
+     * For an argument with an embedded space, such as a filename, this can cause problems
+     * as the token does not include the full filename.
      *
      * @param   command   a specified system command.
      *
@@ -403,9 +426,10 @@ public class Runtime {
      * @see     ProcessBuilder
      * @since 1.3
      */
+    @Deprecated(since="18")
     public Process exec(String command, String[] envp, File dir)
         throws IOException {
-        if (command.length() == 0)
+        if (command.isEmpty())
             throw new IllegalArgumentException("Empty command");
 
         StringTokenizer st = new StringTokenizer(command);
@@ -446,7 +470,7 @@ public class Runtime {
      *
      * @see     ProcessBuilder
      */
-    public Process exec(String cmdarray[]) throws IOException {
+    public Process exec(String[] cmdarray) throws IOException {
         return exec(cmdarray, null, null);
     }
 
@@ -641,15 +665,24 @@ public class Runtime {
     public native long maxMemory();
 
     /**
-     * Runs the garbage collector.
-     * Calling this method suggests that the Java virtual machine expend
-     * effort toward recycling unused objects in order to make the memory
-     * they currently occupy available for quick reuse. When control
-     * returns from the method call, the virtual machine has made
-     * its best effort to recycle all discarded objects.
+     * Runs the garbage collector in the Java Virtual Machine.
+     * <p>
+     * Calling this method suggests that the Java Virtual Machine
+     * expend effort toward recycling unused objects in order to
+     * make the memory they currently occupy available for reuse
+     * by the Java Virtual Machine.
+     * When control returns from the method call, the Java Virtual Machine
+     * has made a best effort to reclaim space from all unused objects.
+     * There is no guarantee that this effort will recycle any particular
+     * number of unused objects, reclaim any particular amount of space, or
+     * complete at any particular time, if at all, before the method returns or ever.
+     * There is also no guarantee that this effort will determine
+     * the change of reachability in any particular number of objects,
+     * or that any particular number of {@link java.lang.ref.Reference Reference}
+     * objects will be cleared and enqueued.
      * <p>
      * The name {@code gc} stands for "garbage
-     * collector". The virtual machine performs this recycling
+     * collector". The Java Virtual Machine performs this recycling
      * process automatically as needed, in a separate thread, even if the
      * {@code gc} method is not invoked explicitly.
      * <p>
@@ -674,37 +707,20 @@ public class Runtime {
      * The method {@link System#runFinalization()} is the conventional
      * and convenient means of invoking this method.
      *
+     * @deprecated Finalization has been deprecated for removal.  See
+     * {@link java.lang.Object#finalize} for background information and details
+     * about migration options.
+     * <p>
+     * When running in a JVM in which finalization has been disabled or removed,
+     * no objects will be pending finalization, so this method does nothing.
+     *
      * @see     java.lang.Object#finalize()
+     * @jls 12.6 Finalization of Class Instances
      */
+    @Deprecated(since="18", forRemoval=true)
     public void runFinalization() {
         SharedSecrets.getJavaLangRefAccess().runFinalization();
     }
-
-    /**
-     * Not implemented, does nothing.
-     *
-     * @deprecated
-     * This method was intended to control instruction tracing.
-     * It has been superseded by JVM-specific tracing mechanisms.
-     * This method is subject to removal in a future version of Java SE.
-     *
-     * @param on ignored
-     */
-    @Deprecated(since="9", forRemoval=true)
-    public void traceInstructions(boolean on) { }
-
-    /**
-     * Not implemented, does nothing.
-     *
-     * @deprecated
-     * This method was intended to control method call tracing.
-     * It has been superseded by JVM-specific tracing mechanisms.
-     * This method is subject to removal in a future version of Java SE.
-     *
-     * @param on ignored
-     */
-    @Deprecated(since="9", forRemoval=true)
-    public void traceMethodCalls(boolean on) { }
 
     /**
      * Loads the native library specified by the filename argument.  The filename
@@ -755,16 +771,18 @@ public class Runtime {
         load0(Reflection.getCallerClass(), filename);
     }
 
-    synchronized void load0(Class<?> fromClass, String filename) {
+    void load0(Class<?> fromClass, String filename) {
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkLink(filename);
         }
-        if (!(new File(filename).isAbsolute())) {
+        File file = new File(filename);
+        if (!file.isAbsolute()) {
             throw new UnsatisfiedLinkError(
                 "Expecting an absolute path of the library: " + filename);
         }
-        ClassLoader.loadLibrary(fromClass, filename, true);
+        ClassLoader.loadLibrary(fromClass, file);
     }
 
     /**
@@ -777,8 +795,8 @@ public class Runtime {
      * for more details.
      *
      * Otherwise, the libname argument is loaded from a system library
-     * location and mapped to a native library image in an implementation-
-     * dependent manner.
+     * location and mapped to a native library image in an
+     * implementation-dependent manner.
      * <p>
      * First, if there is a security manager, its {@code checkLink}
      * method is called with the {@code libname} as its argument.
@@ -817,16 +835,17 @@ public class Runtime {
         loadLibrary0(Reflection.getCallerClass(), libname);
     }
 
-    synchronized void loadLibrary0(Class<?> fromClass, String libname) {
+    void loadLibrary0(Class<?> fromClass, String libname) {
+        @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             security.checkLink(libname);
         }
         if (libname.indexOf((int)File.separatorChar) != -1) {
             throw new UnsatisfiedLinkError(
-    "Directory separator should not appear in library name: " + libname);
+                "Directory separator should not appear in library name: " + libname);
         }
-        ClassLoader.loadLibrary(fromClass, libname, false);
+        ClassLoader.loadLibrary(fromClass, libname);
     }
 
     /**
@@ -837,12 +856,14 @@ public class Runtime {
      * @since  9
      */
     public static Version version() {
-        if (version == null) {
-            version = new Version(VersionProps.versionNumbers(),
+        var v = version;
+        if (v == null) {
+            v = new Version(VersionProps.versionNumbers(),
                     VersionProps.pre(), VersionProps.build(),
                     VersionProps.optional());
+            version = v;
         }
-        return version;
+        return v;
     }
 
     /**
@@ -918,7 +939,7 @@ public class Runtime {
      * <blockquote><pre>
      *     $VNUM(-$PRE)?\+$BUILD(-$OPT)?
      *     $VNUM-$PRE(-$OPT)?
-     *     $VNUM(+-$OPT)?
+     *     $VNUM(\+-$OPT)?
      * </pre></blockquote>
      *
      * <p> where: </p>
@@ -962,14 +983,15 @@ public class Runtime {
      *     $VNUM(-$PRE)?
      * </pre></blockquote>
      *
-     * <p>This is a <a href="./doc-files/ValueBased.html">value-based</a>
-     * class; use of identity-sensitive operations (including reference equality
-     * ({@code ==}), identity hash code, or synchronization) on instances of
-     * {@code Version} may have unpredictable results and should be avoided.
-     * </p>
+     * <p>This is a <a href="{@docRoot}/java.base/java/lang/doc-files/ValueBased.html">value-based</a>
+     * class; programmers should treat instances that are
+     * {@linkplain #equals(Object) equal} as interchangeable and should not
+     * use instances for synchronization, or unpredictable behavior may
+     * occur. For example, in a future release, synchronization may fail.</p>
      *
      * @since  9
      */
+    @jdk.internal.ValueBased
     public static final class Version
         implements Comparable<Version>
     {
@@ -980,7 +1002,7 @@ public class Runtime {
 
         /*
          * List of version number components passed to this constructor MUST
-         * be at least unmodifiable (ideally immutable). In the case on an
+         * be at least unmodifiable (ideally immutable). In the case of an
          * unmodifiable list, the caller MUST hand the list over to this
          * constructor and never change the underlying list.
          */
@@ -1066,7 +1088,7 @@ public class Runtime {
                 } else {
                     if (optional.isPresent() && !pre.isPresent()) {
                         throw new IllegalArgumentException("optional component"
-                            + " must be preceeded by a pre-release component"
+                            + " must be preceded by a pre-release component"
                             + " or '+': '" + s + "'");
                     }
                 }
@@ -1445,11 +1467,8 @@ public class Runtime {
         public boolean equalsIgnoreOptional(Object obj) {
             if (this == obj)
                 return true;
-            if (!(obj instanceof Version))
-                return false;
-
-            Version that = (Version)obj;
-            return (this.version().equals(that.version())
+            return (obj instanceof Version that)
+                && (this.version().equals(that.version())
                 && this.pre().equals(that.pre())
                 && this.build().equals(that.build()));
         }

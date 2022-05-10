@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
 
@@ -44,7 +47,7 @@ class HeapCharBufferR
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(char[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(char[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,7 +59,7 @@ class HeapCharBufferR
 
     */
 
-    HeapCharBufferR(int cap, int lim) {            // package-private
+    HeapCharBufferR(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
 
 
@@ -65,12 +68,12 @@ class HeapCharBufferR
 
 
 
-        super(cap, lim);
+        super(cap, lim, segment);
         this.isReadOnly = true;
 
     }
 
-    HeapCharBufferR(char[] buf, int off, int len) { // package-private
+    HeapCharBufferR(char[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
 
 
@@ -79,14 +82,14 @@ class HeapCharBufferR
 
 
 
-        super(buf, off, len);
+        super(buf, off, len, segment);
         this.isReadOnly = true;
 
     }
 
     protected HeapCharBufferR(char[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
 
@@ -96,33 +99,33 @@ class HeapCharBufferR
 
 
 
-        super(buf, mark, pos, lim, cap, off);
+        super(buf, mark, pos, lim, cap, off, segment);
         this.isReadOnly = true;
 
     }
 
     public CharBuffer slice() {
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapCharBufferR(hb,
                                         -1,
                                         0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
+                                        rem,
+                                        rem,
+                                        pos + offset, segment);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public CharBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapCharBufferR(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public CharBuffer duplicate() {
         return new HeapCharBufferR(hb,
@@ -130,7 +133,7 @@ class HeapCharBufferR
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public CharBuffer asReadOnlyBuffer() {
@@ -145,6 +148,16 @@ class HeapCharBufferR
         return duplicate();
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -218,6 +231,8 @@ class HeapCharBufferR
 
 
 
+
+
         throw new ReadOnlyBufferException();
 
     }
@@ -228,11 +243,35 @@ class HeapCharBufferR
 
 
 
+        throw new ReadOnlyBufferException();
+
+    }
+
+    public CharBuffer put(int index, CharBuffer src, int offset, int length) {
 
 
 
 
 
+        throw new ReadOnlyBufferException();
+
+    }
+
+    public CharBuffer put(int index, char[] src, int offset, int length) {
+
+
+
+
+
+
+
+        throw new ReadOnlyBufferException();
+
+    }
+
+
+
+    public CharBuffer put(String src, int start, int end) {
 
 
 
@@ -249,6 +288,8 @@ class HeapCharBufferR
         throw new ReadOnlyBufferException();
 
     }
+
+
 
     public CharBuffer compact() {
 
@@ -258,9 +299,19 @@ class HeapCharBufferR
 
 
 
+
+
+
+
         throw new ReadOnlyBufferException();
 
     }
+
+
+
+
+
+
 
 
 
@@ -609,17 +660,14 @@ class HeapCharBufferR
     // --- Methods to support CharSequence ---
 
     public CharBuffer subSequence(int start, int end) {
-        if ((start < 0)
-            || (end > length())
-            || (start > end))
-            throw new IndexOutOfBoundsException();
         int pos = position();
+        Objects.checkFromToIndex(start, end, limit() - pos);
         return new HeapCharBufferR(hb,
                                       -1,
                                       pos + start,
                                       pos + end,
                                       capacity(),
-                                      offset);
+                                      offset, segment);
     }
 
 

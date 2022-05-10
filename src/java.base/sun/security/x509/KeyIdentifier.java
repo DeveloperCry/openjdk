@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 1999, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,7 +63,7 @@ public class KeyIdentifier {
     /**
      * Creates a KeyIdentifier from a public-key value.
      *
-     * <p>From RFC2459: Two common methods for generating key identifiers from
+     * <p>From RFC 5280: Two common methods for generating key identifiers from
      * the public key are:
      * <ol>
      * <li>The keyIdentifier is composed of the 160-bit SHA-1 hash of the

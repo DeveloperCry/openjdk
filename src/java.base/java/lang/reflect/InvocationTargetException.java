@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,13 +29,6 @@ package java.lang.reflect;
  * InvocationTargetException is a checked exception that wraps
  * an exception thrown by an invoked method or constructor.
  *
- * <p>As of release 1.4, this exception has been retrofitted to conform to
- * the general purpose exception-chaining mechanism.  The "target exception"
- * that is provided at construction time and accessed via the
- * {@link #getTargetException()} method is now known as the <i>cause</i>,
- * and may be accessed via the {@link Throwable#getCause()} method,
- * as well as the aforementioned "legacy method."
- *
  * @see Method
  * @see Constructor
  * @since 1.1
@@ -44,9 +37,10 @@ public class InvocationTargetException extends ReflectiveOperationException {
     /**
      * Use serialVersionUID from JDK 1.1.X for interoperability
      */
+    @java.io.Serial
     private static final long serialVersionUID = 4085088731926701167L;
 
-     /**
+    /**
      * This field holds the target if the
      * InvocationTargetException(Throwable target) constructor was
      * used to instantiate the object
@@ -89,7 +83,8 @@ public class InvocationTargetException extends ReflectiveOperationException {
     /**
      * Get the thrown target exception.
      *
-     * <p>This method predates the general-purpose exception chaining facility.
+     * @apiNote
+     * This method predates the general-purpose exception chaining facility.
      * The {@link Throwable#getCause()} method is now the preferred means of
      * obtaining this information.
      *
@@ -106,6 +101,7 @@ public class InvocationTargetException extends ReflectiveOperationException {
      * @return  the cause of this exception.
      * @since   1.4
      */
+    @Override
     public Throwable getCause() {
         return target;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -44,9 +47,6 @@ class DirectByteBuffer
 {
 
 
-
-    // Cached array base offset
-    private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
 
     // Cached unaligned-access capability
     protected static final boolean UNALIGNED = Bits.unaligned();
@@ -111,7 +111,7 @@ class DirectByteBuffer
     //
     DirectByteBuffer(int cap) {                   // package-private
 
-        super(-1, 0, cap, cap);
+        super(-1, 0, cap, cap, null);
         boolean pa = VM.isDirectMemoryPageAligned();
         int ps = Bits.pageSize();
         long size = Math.max(1L, (long)cap + (pa ? ps : 0));
@@ -144,18 +144,27 @@ class DirectByteBuffer
     // Invoked to construct a direct ByteBuffer referring to the block of
     // memory. A given arbitrary object may also be attached to the buffer.
     //
-    DirectByteBuffer(long addr, int cap, Object ob) {
-        super(-1, 0, cap, cap);
+    DirectByteBuffer(long addr, int cap, Object ob, MemorySegmentProxy segment) {
+        super(-1, 0, cap, cap, segment);
         address = addr;
         cleaner = null;
         att = ob;
     }
 
+    // Invoked to construct a direct ByteBuffer referring to the block of
+    // memory. A given arbitrary object may also be attached to the buffer.
+    //
+    DirectByteBuffer(long addr, int cap, Object ob, FileDescriptor fd, boolean isSync, MemorySegmentProxy segment) {
+        super(-1, 0, cap, cap, fd, isSync, segment);
+        address = addr;
+        cleaner = null;
+        att = ob;
+    }
 
     // Invoked only by JNI: NewDirectByteBuffer(void*, long)
     //
     private DirectByteBuffer(long addr, int cap) {
-        super(-1, 0, cap, cap);
+        super(-1, 0, cap, cap, null);
         address = addr;
         cleaner = null;
         att = null;
@@ -167,10 +176,11 @@ class DirectByteBuffer
     //
     protected DirectByteBuffer(int cap, long addr,
                                      FileDescriptor fd,
-                                     Runnable unmapper)
+                                     Runnable unmapper,
+                                     boolean isSync, MemorySegmentProxy segment)
     {
 
-        super(-1, 0, cap, cap, fd);
+        super(-1, 0, cap, cap, fd, isSync, segment);
         address = addr;
         cleaner = Cleaner.create(this, unmapper);
         att = null;
@@ -185,16 +195,28 @@ class DirectByteBuffer
     // For duplicates and slices
     //
     DirectByteBuffer(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+                               FileDescriptor fd, boolean isSync,
+
+                               MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
-        address = db.address() + off;
+        super(mark, pos, lim, cap,
+
+              fd, isSync,
+
+              segment);
+        address = ((Buffer)db).address + off;
 
         cleaner = null;
 
-        att = db;
+        Object attachment = db.attachment();
+        att = (attachment == null ? db : attachment);
+
+
+
+
 
 
 
@@ -206,32 +228,53 @@ class DirectByteBuffer
         return null;
     }
 
-    public ByteBuffer slice() {
+    public MappedByteBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 0);
         assert (off >= 0);
-        return new DirectByteBuffer(this, -1, 0, rem, rem, off);
+        return new DirectByteBuffer(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
+    @Override
+    public MappedByteBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectByteBuffer(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 0,
 
-    public ByteBuffer slice(int pos, int lim) {
-        assert (pos >= 0);
-        assert (pos <= lim);
-        int rem = lim - pos;
-        return new DirectByteBuffer(this, -1, 0, rem, rem, pos);
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
-
-    public ByteBuffer duplicate() {
+    public MappedByteBuffer duplicate() {
         return new DirectByteBuffer(this,
                                               this.markValue(),
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+                                              fileDescriptor(),
+                                              isSync(),
+
+                                              segment);
     }
 
     public ByteBuffer asReadOnlyBuffer() {
@@ -241,7 +284,12 @@ class DirectByteBuffer
                                            this.position(),
                                            this.limit(),
                                            this.capacity(),
-                                           0);
+                                           0,
+
+                                           fileDescriptor(),
+                                           isSync(),
+
+                                           segment);
 
 
 
@@ -250,6 +298,17 @@ class DirectByteBuffer
 
 
     public long address() {
+        Scope scope = scope();
+        if (scope != null) {
+            if (scope.ownerThread() == null) {
+                throw new UnsupportedOperationException("ByteBuffer derived from shared segments not supported");
+            }
+            try {
+                scope.checkValidState();
+            } catch (Scope.ScopedAccessError e) {
+                throw new IllegalStateException("This segment is already closed");
+            }
+        }
         return address;
     }
 
@@ -259,7 +318,7 @@ class DirectByteBuffer
 
     public byte get() {
         try {
-            return ((UNSAFE.getByte(ix(nextGetIndex()))));
+            return ((SCOPED_MEMORY_ACCESS.getByte(scope(), null, ix(nextGetIndex()))));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -267,7 +326,7 @@ class DirectByteBuffer
 
     public byte get(int i) {
         try {
-            return ((UNSAFE.getByte(ix(checkIndex(i)))));
+            return ((SCOPED_MEMORY_ACCESS.getByte(scope(), null, ix(checkIndex(i)))));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -283,53 +342,11 @@ class DirectByteBuffer
 
 
 
-    public ByteBuffer get(byte[] dst, int offset, int length) {
-
-        if (((long)length << 0) > Bits.JNI_COPY_TO_ARRAY_THRESHOLD) {
-            checkBounds(offset, length, dst.length);
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-            if (length > rem)
-                throw new BufferUnderflowException();
-
-            long dstOffset = ARRAY_BASE_OFFSET + ((long)offset << 0);
-            try {
-
-
-
-
-
-
-
-
-
-
-                    UNSAFE.copyMemory(null,
-                                      ix(pos),
-                                      dst,
-                                      dstOffset,
-                                      (long)length << 0);
-            } finally {
-                Reference.reachabilityFence(this);
-            }
-            position(pos + length);
-        } else {
-            super.get(dst, offset, length);
-        }
-        return this;
-
-
-
-    }
-
-
 
     public ByteBuffer put(byte x) {
 
         try {
-            UNSAFE.putByte(ix(nextPutIndex()), ((x)));
+            SCOPED_MEMORY_ACCESS.putByte(scope(), null, ix(nextPutIndex()), ((x)));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -342,7 +359,7 @@ class DirectByteBuffer
     public ByteBuffer put(int i, byte x) {
 
         try {
-            UNSAFE.putByte(ix(checkIndex(i)), ((x)));
+            SCOPED_MEMORY_ACCESS.putByte(scope(), null, ix(checkIndex(i)), ((x)));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -352,101 +369,16 @@ class DirectByteBuffer
 
     }
 
-    public ByteBuffer put(ByteBuffer src) {
-
-        if (src instanceof DirectByteBuffer) {
-            if (src == this)
-                throw createSameBufferException();
-            DirectByteBuffer sb = (DirectByteBuffer)src;
-
-            int spos = sb.position();
-            int slim = sb.limit();
-            assert (spos <= slim);
-            int srem = (spos <= slim ? slim - spos : 0);
-
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-
-            if (srem > rem)
-                throw new BufferOverflowException();
-            try {
-                UNSAFE.copyMemory(sb.ix(spos), ix(pos), (long)srem << 0);
-            } finally {
-                Reference.reachabilityFence(sb);
-                Reference.reachabilityFence(this);
-            }
-            sb.position(spos + srem);
-            position(pos + srem);
-        } else if (src.hb != null) {
-
-            int spos = src.position();
-            int slim = src.limit();
-            assert (spos <= slim);
-            int srem = (spos <= slim ? slim - spos : 0);
-
-            put(src.hb, src.offset + spos, srem);
-            src.position(spos + srem);
-
-        } else {
-            super.put(src);
-        }
-        return this;
-
-
-
-    }
-
-    public ByteBuffer put(byte[] src, int offset, int length) {
-
-        if (((long)length << 0) > Bits.JNI_COPY_FROM_ARRAY_THRESHOLD) {
-            checkBounds(offset, length, src.length);
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-            if (length > rem)
-                throw new BufferOverflowException();
-
-            long srcOffset = ARRAY_BASE_OFFSET + ((long)offset << 0);
-            try {
-
-
-
-
-
-
-
-
-
-
-                    UNSAFE.copyMemory(src,
-                                      srcOffset,
-                                      null,
-                                      ix(pos),
-                                      (long)length << 0);
-            } finally {
-                Reference.reachabilityFence(this);
-            }
-            position(pos + length);
-        } else {
-            super.put(src, offset, length);
-        }
-        return this;
-
-
-
-    }
-
-    public ByteBuffer compact() {
+    public MappedByteBuffer compact() {
 
         int pos = position();
         int lim = limit();
         assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         try {
-            UNSAFE.copyMemory(ix(pos), ix(0), (long)rem << 0);
+            // null is passed as destination Scope to avoid checking scope() twice
+            SCOPED_MEMORY_ACCESS.copyMemory(scope(), null, null,
+                    ix(pos), null, ix(0), (long)rem << 0);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -535,11 +467,9 @@ class DirectByteBuffer
 
 
 
-
-
     private char getChar(long a) {
         try {
-            char x = UNSAFE.getCharUnaligned(null, a, bigEndian);
+            char x = SCOPED_MEMORY_ACCESS.getCharUnaligned(scope(), null, a, bigEndian);
             return (x);
         } finally {
             Reference.reachabilityFence(this);
@@ -568,7 +498,7 @@ class DirectByteBuffer
 
         try {
             char y = (x);
-            UNSAFE.putCharUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putCharUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -610,13 +540,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (CharBuffer)(new ByteBufferAsCharBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (CharBuffer)(new DirectCharBufferU(this,
@@ -624,13 +554,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (CharBuffer)(new DirectCharBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -639,7 +569,7 @@ class DirectByteBuffer
 
     private short getShort(long a) {
         try {
-            short x = UNSAFE.getShortUnaligned(null, a, bigEndian);
+            short x = SCOPED_MEMORY_ACCESS.getShortUnaligned(scope(), null, a, bigEndian);
             return (x);
         } finally {
             Reference.reachabilityFence(this);
@@ -668,7 +598,7 @@ class DirectByteBuffer
 
         try {
             short y = (x);
-            UNSAFE.putShortUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putShortUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -710,13 +640,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (ShortBuffer)(new ByteBufferAsShortBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (ShortBuffer)(new DirectShortBufferU(this,
@@ -724,13 +654,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (ShortBuffer)(new DirectShortBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -739,7 +669,7 @@ class DirectByteBuffer
 
     private int getInt(long a) {
         try {
-            int x = UNSAFE.getIntUnaligned(null, a, bigEndian);
+            int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), null, a, bigEndian);
             return (x);
         } finally {
             Reference.reachabilityFence(this);
@@ -768,7 +698,7 @@ class DirectByteBuffer
 
         try {
             int y = (x);
-            UNSAFE.putIntUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -810,13 +740,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (IntBuffer)(new ByteBufferAsIntBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (IntBuffer)(new DirectIntBufferU(this,
@@ -824,13 +754,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (IntBuffer)(new DirectIntBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -839,7 +769,7 @@ class DirectByteBuffer
 
     private long getLong(long a) {
         try {
-            long x = UNSAFE.getLongUnaligned(null, a, bigEndian);
+            long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), null, a, bigEndian);
             return (x);
         } finally {
             Reference.reachabilityFence(this);
@@ -868,7 +798,7 @@ class DirectByteBuffer
 
         try {
             long y = (x);
-            UNSAFE.putLongUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -910,13 +840,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (LongBuffer)(new ByteBufferAsLongBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (LongBuffer)(new DirectLongBufferU(this,
@@ -924,13 +854,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (LongBuffer)(new DirectLongBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -939,7 +869,7 @@ class DirectByteBuffer
 
     private float getFloat(long a) {
         try {
-            int x = UNSAFE.getIntUnaligned(null, a, bigEndian);
+            int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), null, a, bigEndian);
             return Float.intBitsToFloat(x);
         } finally {
             Reference.reachabilityFence(this);
@@ -968,7 +898,7 @@ class DirectByteBuffer
 
         try {
             int y = Float.floatToRawIntBits(x);
-            UNSAFE.putIntUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -1010,13 +940,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (FloatBuffer)(new ByteBufferAsFloatBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (FloatBuffer)(new DirectFloatBufferU(this,
@@ -1024,13 +954,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (FloatBuffer)(new DirectFloatBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 
@@ -1039,7 +969,7 @@ class DirectByteBuffer
 
     private double getDouble(long a) {
         try {
-            long x = UNSAFE.getLongUnaligned(null, a, bigEndian);
+            long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), null, a, bigEndian);
             return Double.longBitsToDouble(x);
         } finally {
             Reference.reachabilityFence(this);
@@ -1068,7 +998,7 @@ class DirectByteBuffer
 
         try {
             long y = Double.doubleToRawLongBits(x);
-            UNSAFE.putLongUnaligned(null, a, y, bigEndian);
+            SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), null, a, y, bigEndian);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -1110,13 +1040,13 @@ class DirectByteBuffer
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off))
+                                                                       address + off, segment))
                     : (DoubleBuffer)(new ByteBufferAsDoubleBufferL(this,
                                                                        -1,
                                                                        0,
                                                                        size,
                                                                        size,
-                                                                       address + off)));
+                                                                       address + off, segment)));
         } else {
             return (nativeByteOrder
                     ? (DoubleBuffer)(new DirectDoubleBufferU(this,
@@ -1124,13 +1054,13 @@ class DirectByteBuffer
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off))
+                                                                 off, segment))
                     : (DoubleBuffer)(new DirectDoubleBufferS(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 off)));
+                                                                 off, segment)));
         }
     }
 

@@ -41,6 +41,7 @@ public class AcceptPendingException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 2721339977965416421L;
 
     /**

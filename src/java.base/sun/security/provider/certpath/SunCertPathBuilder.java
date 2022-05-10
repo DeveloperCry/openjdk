@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -344,7 +344,7 @@ public final class SunCertPathBuilder extends CertPathBuilderSpi {
 
                 // add the algorithm checker
                 checkers.add(new AlgorithmChecker(builder.trustAnchor,
-                        buildParams.date(), buildParams.variant()));
+                        buildParams.timestamp(), buildParams.variant()));
 
                 BasicChecker basicChecker = null;
                 if (nextState.keyParamsNeeded()) {

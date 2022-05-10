@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,7 @@ package java.lang.annotation;
  * @since   1.5
  */
 public class AnnotationFormatError extends Error {
+    @java.io.Serial
     private static final long serialVersionUID = -4256701562333669892L;
 
     /**

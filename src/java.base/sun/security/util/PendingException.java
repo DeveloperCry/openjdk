@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,7 @@ package sun.security.util;
  */
 public class PendingException extends RuntimeException {
 
+    @java.io.Serial
     private static final long serialVersionUID = -5201837247928788640L;
 
     /**

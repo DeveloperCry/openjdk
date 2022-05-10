@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -102,9 +102,8 @@ class WindowsSecurity {
         final boolean stopImpersontating = impersontating;
         final boolean needToRevert = elevated;
 
-        return new Privilege() {
-            @Override
-            public void drop() {
+        return () -> {
+            try {
                 if (token != 0L) {
                     try {
                         if (stopImpersontating)
@@ -118,6 +117,8 @@ class WindowsSecurity {
                         CloseHandle(token);
                     }
                 }
+            } finally {
+                LocalFree(pLuid);
             }
         };
     }

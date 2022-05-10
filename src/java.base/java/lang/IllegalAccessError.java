@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,21 +33,21 @@ package java.lang;
  * only occur at run time if the definition of a class has
  * incompatibly changed.
  *
- * @author  unascribed
  * @since   1.0
  */
 public class IllegalAccessError extends IncompatibleClassChangeError {
+    @java.io.Serial
     private static final long serialVersionUID = -8988904074992417891L;
 
     /**
-     * Constructs an <code>IllegalAccessError</code> with no detail message.
+     * Constructs an {@code IllegalAccessError} with no detail message.
      */
     public IllegalAccessError() {
         super();
     }
 
     /**
-     * Constructs an <code>IllegalAccessError</code> with the specified
+     * Constructs an {@code IllegalAccessError} with the specified
      * detail message.
      *
      * @param   s   the detail message.

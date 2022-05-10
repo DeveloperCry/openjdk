@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,11 +25,8 @@
 
 package java.util.zip;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.file.attribute.FileTime;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -40,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 import static java.util.zip.ZipConstants.ENDHDR;
 
 import jdk.internal.misc.Unsafe;
-import sun.nio.ch.DirectBuffer;
 
 class ZipUtils {
 
@@ -135,14 +131,8 @@ class ZipUtils {
     /**
      * Converts Java time to DOS time.
      */
-    private static long javaToDosTime(long time) {
-        Instant instant = Instant.ofEpochMilli(time);
-        LocalDateTime ldt = LocalDateTime.ofInstant(
-                instant, ZoneId.systemDefault());
+    private static long javaToDosTime(LocalDateTime ldt) {
         int year = ldt.getYear() - 1980;
-        if (year < 0) {
-            return (1 << 21) | (1 << 16);
-        }
         return (year << 25 |
             ldt.getMonthValue() << 21 |
             ldt.getDayOfMonth() << 16 |
@@ -158,21 +148,24 @@ class ZipUtils {
      * @param time milliseconds since epoch
      * @return DOS time with 2s remainder encoded into upper half
      */
-    public static long javaToExtendedDosTime(long time) {
-        if (time < 0) {
-            return ZipEntry.DOSTIME_BEFORE_1980;
+    static long javaToExtendedDosTime(long time) {
+        LocalDateTime ldt = javaEpochToLocalDateTime(time);
+        if (ldt.getYear() >= 1980) {
+            return javaToDosTime(ldt) + ((time % 2000) << 32);
         }
-        long dostime = javaToDosTime(time);
-        return (dostime != ZipEntry.DOSTIME_BEFORE_1980)
-                ? dostime + ((time % 2000) << 32)
-                : ZipEntry.DOSTIME_BEFORE_1980;
+        return ZipEntry.DOSTIME_BEFORE_1980;
+    }
+
+    static LocalDateTime javaEpochToLocalDateTime(long time) {
+        Instant instant = Instant.ofEpochMilli(time);
+        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
     /**
      * Fetches unsigned 16-bit value from byte array at specified offset.
      * The bytes are assumed to be in Intel (little-endian) byte order.
      */
-    public static final int get16(byte b[], int off) {
+    public static final int get16(byte[] b, int off) {
         return (b[off] & 0xff) | ((b[off + 1] & 0xff) << 8);
     }
 
@@ -180,7 +173,7 @@ class ZipUtils {
      * Fetches unsigned 32-bit value from byte array at specified offset.
      * The bytes are assumed to be in Intel (little-endian) byte order.
      */
-    public static final long get32(byte b[], int off) {
+    public static final long get32(byte[] b, int off) {
         return (get16(b, off) | ((long)get16(b, off+2) << 16)) & 0xffffffffL;
     }
 
@@ -188,7 +181,7 @@ class ZipUtils {
      * Fetches signed 64-bit value from byte array at specified offset.
      * The bytes are assumed to be in Intel (little-endian) byte order.
      */
-    public static final long get64(byte b[], int off) {
+    public static final long get64(byte[] b, int off) {
         return get32(b, off) | (get32(b, off+4) << 32);
     }
 
@@ -197,7 +190,7 @@ class ZipUtils {
      * The bytes are assumed to be in Intel (little-endian) byte order.
      *
      */
-    public static final int get32S(byte b[], int off) {
+    public static final int get32S(byte[] b, int off) {
         return (get16(b, off) | (get16(b, off+2) << 16));
     }
 
@@ -221,6 +214,17 @@ class ZipUtils {
     static final long GETSIG(byte[] b) {
         return LG(b, 0);
     }
+
+    /*
+     * File attribute compatibility types of CEN field "version made by"
+     */
+    static final int FILE_ATTRIBUTES_UNIX = 3; // Unix
+
+    /*
+     * Base values for CEN field "version made by"
+     */
+    static final int VERSION_MADE_BY_BASE_UNIX = FILE_ATTRIBUTES_UNIX << 8; // Unix
+
 
     // local file (LOC) header fields
     static final long LOCSIG(byte[] b) { return LG(b, 0); } // signature
@@ -257,6 +261,7 @@ class ZipUtils {
     // central directory header (CEN) fields
     static final long CENSIG(byte[] b, int pos) { return LG(b, pos + 0); }
     static final int  CENVEM(byte[] b, int pos) { return SH(b, pos + 4); }
+    static final int  CENVEM_FA(byte[] b, int pos) { return CH(b, pos + 5); } // file attribute compatibility
     static final int  CENVER(byte[] b, int pos) { return SH(b, pos + 6); }
     static final int  CENFLG(byte[] b, int pos) { return SH(b, pos + 8); }
     static final int  CENHOW(byte[] b, int pos) { return SH(b, pos + 10);}
@@ -270,6 +275,7 @@ class ZipUtils {
     static final int  CENDSK(byte[] b, int pos) { return SH(b, pos + 34);}
     static final int  CENATT(byte[] b, int pos) { return SH(b, pos + 36);}
     static final long CENATX(byte[] b, int pos) { return LG(b, pos + 38);}
+    static final int  CENATX_PERMS(byte[] b, int pos) { return SH(b, pos + 40);} // posix permission data
     static final long CENOFF(byte[] b, int pos) { return LG(b, pos + 42);}
 
     // The END header is followed by a variable length comment of size < 64k.
@@ -280,13 +286,7 @@ class ZipUtils {
      * Loads zip native library, if not already laoded
      */
     static void loadLibrary() {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm == null) {
-            System.loadLibrary("zip");
-        } else {
-            PrivilegedAction<Void> pa = () -> { System.loadLibrary("zip"); return null; };
-            AccessController.doPrivileged(pa);
-        }
+        jdk.internal.loader.BootLoader.loadLibrary("zip");
     }
 
     private static final Unsafe unsafe = Unsafe.getUnsafe();
@@ -295,7 +295,7 @@ class ZipUtils {
     private static final long byteBufferOffsetOffset = unsafe.objectFieldOffset(ByteBuffer.class, "offset");
 
     static byte[] getBufferArray(ByteBuffer byteBuffer) {
-        return (byte[]) unsafe.getObject(byteBuffer, byteBufferArrayOffset);
+        return (byte[]) unsafe.getReference(byteBuffer, byteBufferArrayOffset);
     }
 
     static int getBufferOffset(ByteBuffer byteBuffer) {

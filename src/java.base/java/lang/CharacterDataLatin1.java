@@ -1,6 +1,6 @@
-// This file was generated AUTOMATICALLY from a template file Sun Oct 06 11:35:16 UTC 2019
+// This file was generated AUTOMATICALLY from a template file 
 /*
- * Copyright (c) 2002, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
  */
 
 package java.lang;
+
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 /** The CharacterData class encapsulates the large tables found in
     Java.lang.Character. */
@@ -79,14 +81,19 @@ class CharacterDataLatin1 extends CharacterData {
         return props;
     }
 
-    boolean isOtherLowercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0001) != 0;
+    @IntrinsicCandidate
+    boolean isDigit(int ch) {
+        return '0' <= ch && ch <= '9';
     }
 
-    boolean isOtherUppercase(int ch) {
-        int props = getPropertiesEx(ch);
-        return (props & 0x0002) != 0;
+    @IntrinsicCandidate
+    boolean isLowerCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0001) != 0;
+    }
+
+    @IntrinsicCandidate
+    boolean isUpperCase(int ch) {
+        return (getPropertiesEx(ch) & 0x0002) != 0;
     }
 
     boolean isOtherAlphabetic(int ch) {
@@ -96,7 +103,7 @@ class CharacterDataLatin1 extends CharacterData {
 
     boolean isIdeographic(int ch) {
         int props = getPropertiesEx(ch);
-        return (props & 0x0010) != 0;
+        return (props & 0x0008) != 0;
     }
 
     int getType(int ch) {
@@ -115,13 +122,12 @@ class CharacterDataLatin1 extends CharacterData {
     }
 
     boolean isUnicodeIdentifierStart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00007000) == 0x00007000);
+        return (getPropertiesEx(ch) & 0x0010) != 0;
     }
 
     boolean isUnicodeIdentifierPart(int ch) {
-        int props = getProperties(ch);
-        return ((props & 0x00001000) != 0);
+        return (getPropertiesEx(ch) & 0x0020) != 0 ||
+               isIdentifierIgnorable(ch);
     }
 
     boolean isIdentifierIgnorable(int ch) {
@@ -215,6 +221,7 @@ class CharacterDataLatin1 extends CharacterData {
         return retval;
     }
 
+    @IntrinsicCandidate
     boolean isWhitespace(int ch) {
         int props = getProperties(ch);
         return ((props & 0x00007000) == 0x00004000);
@@ -268,9 +275,7 @@ class CharacterDataLatin1 extends CharacterData {
     static final CharacterDataLatin1 instance = new CharacterDataLatin1();
     private CharacterDataLatin1() {};
 
-    // The following tables and code generated using:
-  // java GenerateCharacter -template t:/workspace/open/make/data/characterdata/CharacterDataLatin1.java.template -spec t:/workspace/open/make/data/unicodedata/UnicodeData.txt -specialcasing t:/workspace/open/make/data/unicodedata/SpecialCasing.txt -proplist t:/workspace/open/make/data/unicodedata/PropList.txt -o t:/workspace/build/windows-x64/support/gensrc/java.base/java/lang/CharacterDataLatin1.java -usecharforbyte -latin1 8
-  // The A table has 256 entries for a total of 1024 bytes.
+    // The A table has 256 entries for a total of 1024 bytes.
 
   static final int A[] = {
     0x4800100F,  //   0   Cc, ignorable
@@ -321,16 +326,16 @@ class CharacterDataLatin1 extends CharacterData {
     0x20000014,  //  45   Pd, ES
     0x38000018,  //  46   Po, CS
     0x38000018,  //  47   Po, CS
-    0x18003609,  //  48   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  49   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  50   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  51   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  52   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  53   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  54   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  55   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  56   Nd, EN, identifier part, decimal 16
-    0x18003609,  //  57   Nd, EN, identifier part, decimal 16
+    -0xE7FFC9F7,  //  48   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  49   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  50   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  51   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  52   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  53   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  54   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  55   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  56   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
+    -0xE7FFC9F7,  //  57   Pc, WS, hasUpper (subtract 511), hasLower (add 511), hasTitle, whitespace, strange
     0x38000018,  //  58   Po, CS
     0x68000018,  //  59   Po, ON
     -0x17FFFFE7,  //  60   Me, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
@@ -338,64 +343,64 @@ class CharacterDataLatin1 extends CharacterData {
     -0x17FFFFE7,  //  62   Me, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
     0x68000018,  //  63   Po, ON
     0x68000018,  //  64   Po, ON
-    0x00827FE1,  //  65   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  66   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  67   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  68   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  69   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  70   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  71   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  72   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  73   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  74   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  75   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  76   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  77   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  78   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  79   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  80   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  81   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  82   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  83   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  84   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  85   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  86   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  87   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  88   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  89   Lu, L, hasLower (add 32), identifier start, supradecimal 31
-    0x00827FE1,  //  90   Lu, L, hasLower (add 32), identifier start, supradecimal 31
+    -0xFF7D801F,  //  65   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  66   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  67   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  68   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  69   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  70   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  71   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  72   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  73   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  74   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  75   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  76   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  77   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  78   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  79   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  80   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  81   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  82   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  83   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  84   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  85   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  86   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  87   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  88   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  89   , hasUpper (subtract 479), hasTitle
+    -0xFF7D801F,  //  90   , hasUpper (subtract 479), hasTitle
     -0x17FFFFEB,  //  91   No, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
     0x68000018,  //  92   Po, ON
     -0x17FFFFEA,  //  93   Nl, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
     0x6800001B,  //  94   Sk, ON
-    0x68005017,  //  95   Pc, ON, underscore
+    -0x97FFAFE9,  //  95   Nd, hasUpper (subtract 511), hasLower (add 511), hasTitle, supradecimal 31
     0x6800001B,  //  96   Sk, ON
-    0x00817FE2,  //  97   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  //  98   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  //  99   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 100   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 101   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 102   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 103   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 104   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 105   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 106   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 107   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 108   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 109   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 110   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 111   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 112   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 113   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 114   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 115   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 116   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 117   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 118   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 119   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 120   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 121   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
-    0x00817FE2,  // 122   Ll, L, hasUpper (subtract 32), identifier start, supradecimal 31
+    -0xFF7E801E,  //  97   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  //  98   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  //  99   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 100   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 101   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 102   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 103   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 104   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 105   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 106   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 107   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 108   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 109   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 110   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 111   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 112   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 113   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 114   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 115   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 116   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 117   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 118   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 119   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 120   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 121   , hasLower (add 479), hasTitle
+    -0xFF7E801E,  // 122   , hasLower (add 479), hasTitle
     -0x17FFFFEB,  // 123   No, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
     0x68000019,  // 124   Sm, ON
     -0x17FFFFEA,  // 125   Nl, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
@@ -454,9 +459,9 @@ class CharacterDataLatin1 extends CharacterData {
     0x1800060B,  // 178   No, EN, decimal 16
     0x1800060B,  // 179   No, EN, decimal 16
     0x6800001B,  // 180   Sk, ON
-    0x07FD7002,  // 181   Ll, L, hasUpper (subtract 511), identifier start
+    -0xF8028FFE,  // 181   , hasLower (add 0), hasTitle, supradecimal 31
     0x68000018,  // 182   Po, ON
-    0x68000018,  // 183   Po, ON
+    -0x97FFFFE8,  // 183   Mc, hasUpper (subtract 511), hasLower (add 511), hasTitle, identifier start, supradecimal 31
     0x6800001B,  // 184   Sk, ON
     0x1800050B,  // 185   No, EN, decimal 8
     -0xFFFF8FFB,  // 186   Sk, hasUpper (subtract 511), hasLower (add 511), hasTitle, supradecimal 31
@@ -465,337 +470,337 @@ class CharacterDataLatin1 extends CharacterData {
     0x6800080B,  // 189   No, ON, strange
     0x6800080B,  // 190   No, ON, strange
     0x68000018,  // 191   Po, ON
-    0x00827001,  // 192   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 193   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 194   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 195   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 196   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 197   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 198   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 199   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 200   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 201   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 202   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 203   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 204   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 205   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 206   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 207   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 208   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 209   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 210   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 211   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 212   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 213   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 214   Lu, L, hasLower (add 32), identifier start
+    -0xFF7D8FFF,  // 192   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 193   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 194   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 195   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 196   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 197   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 198   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 199   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 200   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 201   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 202   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 203   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 204   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 205   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 206   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 207   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 208   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 209   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 210   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 211   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 212   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 213   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 214   , hasUpper (subtract 479), hasTitle, supradecimal 31
     0x68000019,  // 215   Sm, ON
-    0x00827001,  // 216   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 217   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 218   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 219   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 220   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 221   Lu, L, hasLower (add 32), identifier start
-    0x00827001,  // 222   Lu, L, hasLower (add 32), identifier start
-    0x07FD7002,  // 223   Ll, L, hasUpper (subtract 511), identifier start
-    0x00817002,  // 224   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 225   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 226   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 227   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 228   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 229   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 230   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 231   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 232   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 233   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 234   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 235   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 236   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 237   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 238   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 239   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 240   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 241   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 242   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 243   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 244   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 245   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 246   Ll, L, hasUpper (subtract 32), identifier start
+    -0xFF7D8FFF,  // 216   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 217   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 218   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 219   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 220   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 221   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xFF7D8FFF,  // 222   , hasUpper (subtract 479), hasTitle, supradecimal 31
+    -0xF8028FFE,  // 223   , hasLower (add 0), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 224   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 225   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 226   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 227   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 228   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 229   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 230   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 231   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 232   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 233   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 234   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 235   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 236   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 237   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 238   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 239   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 240   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 241   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 242   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 243   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 244   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 245   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 246   , hasLower (add 479), hasTitle, supradecimal 31
     0x68000019,  // 247   Sm, ON
-    0x00817002,  // 248   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 249   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 250   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 251   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 252   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 253   Ll, L, hasUpper (subtract 32), identifier start
-    0x00817002,  // 254   Ll, L, hasUpper (subtract 32), identifier start
-    0x061D7002   // 255   Ll, L, hasUpper (subtract 391), identifier start
+    -0xFF7E8FFE,  // 248   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 249   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 250   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 251   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 252   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 253   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xFF7E8FFE,  // 254   , hasLower (add 479), hasTitle, supradecimal 31
+    -0xF9E28FFE   // 255   , hasLower (add 120), hasTitle, supradecimal 31
   };
 
-  // The B table has 256 entries for a total of 512 bytes.
+  // The B table has 256 entries for a total of 256 bytes.
 
-  static final char B[] = {
-    0x0000,  //   0   unassigned, L
-    0x0000,  //   1   unassigned, L
-    0x0000,  //   2   unassigned, L
-    0x0000,  //   3   unassigned, L
-    0x0000,  //   4   unassigned, L
-    0x0000,  //   5   unassigned, L
-    0x0000,  //   6   unassigned, L
-    0x0000,  //   7   unassigned, L
-    0x0000,  //   8   unassigned, L
-    0x0000,  //   9   unassigned, L
-    0x0000,  //  10   unassigned, L
-    0x0000,  //  11   unassigned, L
-    0x0000,  //  12   unassigned, L
-    0x0000,  //  13   unassigned, L
-    0x0000,  //  14   unassigned, L
-    0x0000,  //  15   unassigned, L
-    0x0000,  //  16   unassigned, L
-    0x0000,  //  17   unassigned, L
-    0x0000,  //  18   unassigned, L
-    0x0000,  //  19   unassigned, L
-    0x0000,  //  20   unassigned, L
-    0x0000,  //  21   unassigned, L
-    0x0000,  //  22   unassigned, L
-    0x0000,  //  23   unassigned, L
-    0x0000,  //  24   unassigned, L
-    0x0000,  //  25   unassigned, L
-    0x0000,  //  26   unassigned, L
-    0x0000,  //  27   unassigned, L
-    0x0000,  //  28   unassigned, L
-    0x0000,  //  29   unassigned, L
-    0x0000,  //  30   unassigned, L
-    0x0000,  //  31   unassigned, L
-    0x0000,  //  32   unassigned, L
-    0x0000,  //  33   unassigned, L
-    0x0000,  //  34   unassigned, L
-    0x0000,  //  35   unassigned, L
-    0x0000,  //  36   unassigned, L
-    0x0000,  //  37   unassigned, L
-    0x0000,  //  38   unassigned, L
-    0x0000,  //  39   unassigned, L
-    0x0000,  //  40   unassigned, L
-    0x0000,  //  41   unassigned, L
-    0x0000,  //  42   unassigned, L
-    0x0000,  //  43   unassigned, L
-    0x0000,  //  44   unassigned, L
-    0x0000,  //  45   unassigned, L
-    0x0000,  //  46   unassigned, L
-    0x0000,  //  47   unassigned, L
-    0x0000,  //  48   unassigned, L
-    0x0000,  //  49   unassigned, L
-    0x0000,  //  50   unassigned, L
-    0x0000,  //  51   unassigned, L
-    0x0000,  //  52   unassigned, L
-    0x0000,  //  53   unassigned, L
-    0x0000,  //  54   unassigned, L
-    0x0000,  //  55   unassigned, L
-    0x0000,  //  56   unassigned, L
-    0x0000,  //  57   unassigned, L
-    0x0000,  //  58   unassigned, L
-    0x0000,  //  59   unassigned, L
-    0x0000,  //  60   unassigned, L
-    0x0000,  //  61   unassigned, L
-    0x0000,  //  62   unassigned, L
-    0x0000,  //  63   unassigned, L
-    0x0000,  //  64   unassigned, L
-    0x0000,  //  65   unassigned, L
-    0x0000,  //  66   unassigned, L
-    0x0000,  //  67   unassigned, L
-    0x0000,  //  68   unassigned, L
-    0x0000,  //  69   unassigned, L
-    0x0000,  //  70   unassigned, L
-    0x0000,  //  71   unassigned, L
-    0x0000,  //  72   unassigned, L
-    0x0000,  //  73   unassigned, L
-    0x0000,  //  74   unassigned, L
-    0x0000,  //  75   unassigned, L
-    0x0000,  //  76   unassigned, L
-    0x0000,  //  77   unassigned, L
-    0x0000,  //  78   unassigned, L
-    0x0000,  //  79   unassigned, L
-    0x0000,  //  80   unassigned, L
-    0x0000,  //  81   unassigned, L
-    0x0000,  //  82   unassigned, L
-    0x0000,  //  83   unassigned, L
-    0x0000,  //  84   unassigned, L
-    0x0000,  //  85   unassigned, L
-    0x0000,  //  86   unassigned, L
-    0x0000,  //  87   unassigned, L
-    0x0000,  //  88   unassigned, L
-    0x0000,  //  89   unassigned, L
-    0x0000,  //  90   unassigned, L
-    0x0000,  //  91   unassigned, L
-    0x0000,  //  92   unassigned, L
-    0x0000,  //  93   unassigned, L
-    0x0000,  //  94   unassigned, L
-    0x0000,  //  95   unassigned, L
-    0x0000,  //  96   unassigned, L
-    0x0000,  //  97   unassigned, L
-    0x0000,  //  98   unassigned, L
-    0x0000,  //  99   unassigned, L
-    0x0000,  // 100   unassigned, L
-    0x0000,  // 101   unassigned, L
-    0x0000,  // 102   unassigned, L
-    0x0000,  // 103   unassigned, L
-    0x0000,  // 104   unassigned, L
-    0x0000,  // 105   unassigned, L
-    0x0000,  // 106   unassigned, L
-    0x0000,  // 107   unassigned, L
-    0x0000,  // 108   unassigned, L
-    0x0000,  // 109   unassigned, L
-    0x0000,  // 110   unassigned, L
-    0x0000,  // 111   unassigned, L
-    0x0000,  // 112   unassigned, L
-    0x0000,  // 113   unassigned, L
-    0x0000,  // 114   unassigned, L
-    0x0000,  // 115   unassigned, L
-    0x0000,  // 116   unassigned, L
-    0x0000,  // 117   unassigned, L
-    0x0000,  // 118   unassigned, L
-    0x0000,  // 119   unassigned, L
-    0x0000,  // 120   unassigned, L
-    0x0000,  // 121   unassigned, L
-    0x0000,  // 122   unassigned, L
-    0x0000,  // 123   unassigned, L
-    0x0000,  // 124   unassigned, L
-    0x0000,  // 125   unassigned, L
-    0x0000,  // 126   unassigned, L
-    0x0000,  // 127   unassigned, L
-    0x0000,  // 128   unassigned, L
-    0x0000,  // 129   unassigned, L
-    0x0000,  // 130   unassigned, L
-    0x0000,  // 131   unassigned, L
-    0x0000,  // 132   unassigned, L
-    0x0000,  // 133   unassigned, L
-    0x0000,  // 134   unassigned, L
-    0x0000,  // 135   unassigned, L
-    0x0000,  // 136   unassigned, L
-    0x0000,  // 137   unassigned, L
-    0x0000,  // 138   unassigned, L
-    0x0000,  // 139   unassigned, L
-    0x0000,  // 140   unassigned, L
-    0x0000,  // 141   unassigned, L
-    0x0000,  // 142   unassigned, L
-    0x0000,  // 143   unassigned, L
-    0x0000,  // 144   unassigned, L
-    0x0000,  // 145   unassigned, L
-    0x0000,  // 146   unassigned, L
-    0x0000,  // 147   unassigned, L
-    0x0000,  // 148   unassigned, L
-    0x0000,  // 149   unassigned, L
-    0x0000,  // 150   unassigned, L
-    0x0000,  // 151   unassigned, L
-    0x0000,  // 152   unassigned, L
-    0x0000,  // 153   unassigned, L
-    0x0000,  // 154   unassigned, L
-    0x0000,  // 155   unassigned, L
-    0x0000,  // 156   unassigned, L
-    0x0000,  // 157   unassigned, L
-    0x0000,  // 158   unassigned, L
-    0x0000,  // 159   unassigned, L
-    0x0000,  // 160   unassigned, L
-    0x0000,  // 161   unassigned, L
-    0x0000,  // 162   unassigned, L
-    0x0000,  // 163   unassigned, L
-    0x0000,  // 164   unassigned, L
-    0x0000,  // 165   unassigned, L
-    0x0000,  // 166   unassigned, L
-    0x0000,  // 167   unassigned, L
-    0x0000,  // 168   unassigned, L
-    0x0000,  // 169   unassigned, L
-    0x0001,  // 170   Lu, L
-    0x0000,  // 171   unassigned, L
-    0x0000,  // 172   unassigned, L
-    0x0000,  // 173   unassigned, L
-    0x0000,  // 174   unassigned, L
-    0x0000,  // 175   unassigned, L
-    0x0000,  // 176   unassigned, L
-    0x0000,  // 177   unassigned, L
-    0x0000,  // 178   unassigned, L
-    0x0000,  // 179   unassigned, L
-    0x0000,  // 180   unassigned, L
-    0x0000,  // 181   unassigned, L
-    0x0000,  // 182   unassigned, L
-    0x0000,  // 183   unassigned, L
-    0x0000,  // 184   unassigned, L
-    0x0000,  // 185   unassigned, L
-    0x0001,  // 186   Lu, L
-    0x0000,  // 187   unassigned, L
-    0x0000,  // 188   unassigned, L
-    0x0000,  // 189   unassigned, L
-    0x0000,  // 190   unassigned, L
-    0x0000,  // 191   unassigned, L
-    0x0000,  // 192   unassigned, L
-    0x0000,  // 193   unassigned, L
-    0x0000,  // 194   unassigned, L
-    0x0000,  // 195   unassigned, L
-    0x0000,  // 196   unassigned, L
-    0x0000,  // 197   unassigned, L
-    0x0000,  // 198   unassigned, L
-    0x0000,  // 199   unassigned, L
-    0x0000,  // 200   unassigned, L
-    0x0000,  // 201   unassigned, L
-    0x0000,  // 202   unassigned, L
-    0x0000,  // 203   unassigned, L
-    0x0000,  // 204   unassigned, L
-    0x0000,  // 205   unassigned, L
-    0x0000,  // 206   unassigned, L
-    0x0000,  // 207   unassigned, L
-    0x0000,  // 208   unassigned, L
-    0x0000,  // 209   unassigned, L
-    0x0000,  // 210   unassigned, L
-    0x0000,  // 211   unassigned, L
-    0x0000,  // 212   unassigned, L
-    0x0000,  // 213   unassigned, L
-    0x0000,  // 214   unassigned, L
-    0x0000,  // 215   unassigned, L
-    0x0000,  // 216   unassigned, L
-    0x0000,  // 217   unassigned, L
-    0x0000,  // 218   unassigned, L
-    0x0000,  // 219   unassigned, L
-    0x0000,  // 220   unassigned, L
-    0x0000,  // 221   unassigned, L
-    0x0000,  // 222   unassigned, L
-    0x0000,  // 223   unassigned, L
-    0x0000,  // 224   unassigned, L
-    0x0000,  // 225   unassigned, L
-    0x0000,  // 226   unassigned, L
-    0x0000,  // 227   unassigned, L
-    0x0000,  // 228   unassigned, L
-    0x0000,  // 229   unassigned, L
-    0x0000,  // 230   unassigned, L
-    0x0000,  // 231   unassigned, L
-    0x0000,  // 232   unassigned, L
-    0x0000,  // 233   unassigned, L
-    0x0000,  // 234   unassigned, L
-    0x0000,  // 235   unassigned, L
-    0x0000,  // 236   unassigned, L
-    0x0000,  // 237   unassigned, L
-    0x0000,  // 238   unassigned, L
-    0x0000,  // 239   unassigned, L
-    0x0000,  // 240   unassigned, L
-    0x0000,  // 241   unassigned, L
-    0x0000,  // 242   unassigned, L
-    0x0000,  // 243   unassigned, L
-    0x0000,  // 244   unassigned, L
-    0x0000,  // 245   unassigned, L
-    0x0000,  // 246   unassigned, L
-    0x0000,  // 247   unassigned, L
-    0x0000,  // 248   unassigned, L
-    0x0000,  // 249   unassigned, L
-    0x0000,  // 250   unassigned, L
-    0x0000,  // 251   unassigned, L
-    0x0000,  // 252   unassigned, L
-    0x0000,  // 253   unassigned, L
-    0x0000,  // 254   unassigned, L
-    0x0000   // 255   unassigned, L
+  static final byte B[] = {
+    0x00,  //   0   unassigned, L
+    0x00,  //   1   unassigned, L
+    0x00,  //   2   unassigned, L
+    0x00,  //   3   unassigned, L
+    0x00,  //   4   unassigned, L
+    0x00,  //   5   unassigned, L
+    0x00,  //   6   unassigned, L
+    0x00,  //   7   unassigned, L
+    0x00,  //   8   unassigned, L
+    0x00,  //   9   unassigned, L
+    0x00,  //  10   unassigned, L
+    0x00,  //  11   unassigned, L
+    0x00,  //  12   unassigned, L
+    0x00,  //  13   unassigned, L
+    0x00,  //  14   unassigned, L
+    0x00,  //  15   unassigned, L
+    0x00,  //  16   unassigned, L
+    0x00,  //  17   unassigned, L
+    0x00,  //  18   unassigned, L
+    0x00,  //  19   unassigned, L
+    0x00,  //  20   unassigned, L
+    0x00,  //  21   unassigned, L
+    0x00,  //  22   unassigned, L
+    0x00,  //  23   unassigned, L
+    0x00,  //  24   unassigned, L
+    0x00,  //  25   unassigned, L
+    0x00,  //  26   unassigned, L
+    0x00,  //  27   unassigned, L
+    0x00,  //  28   unassigned, L
+    0x00,  //  29   unassigned, L
+    0x00,  //  30   unassigned, L
+    0x00,  //  31   unassigned, L
+    0x00,  //  32   unassigned, L
+    0x00,  //  33   unassigned, L
+    0x00,  //  34   unassigned, L
+    0x00,  //  35   unassigned, L
+    0x00,  //  36   unassigned, L
+    0x00,  //  37   unassigned, L
+    0x00,  //  38   unassigned, L
+    0x00,  //  39   unassigned, L
+    0x00,  //  40   unassigned, L
+    0x00,  //  41   unassigned, L
+    0x00,  //  42   unassigned, L
+    0x00,  //  43   unassigned, L
+    0x00,  //  44   unassigned, L
+    0x00,  //  45   unassigned, L
+    0x00,  //  46   unassigned, L
+    0x00,  //  47   unassigned, L
+    0x20,  //  48   unassigned, L
+    0x20,  //  49   unassigned, L
+    0x20,  //  50   unassigned, L
+    0x20,  //  51   unassigned, L
+    0x20,  //  52   unassigned, L
+    0x20,  //  53   unassigned, L
+    0x20,  //  54   unassigned, L
+    0x20,  //  55   unassigned, L
+    0x20,  //  56   unassigned, L
+    0x20,  //  57   unassigned, L
+    0x00,  //  58   unassigned, L
+    0x00,  //  59   unassigned, L
+    0x00,  //  60   unassigned, L
+    0x00,  //  61   unassigned, L
+    0x00,  //  62   unassigned, L
+    0x00,  //  63   unassigned, L
+    0x00,  //  64   unassigned, L
+    0x32,  //  65   unassigned, L
+    0x32,  //  66   unassigned, L
+    0x32,  //  67   unassigned, L
+    0x32,  //  68   unassigned, L
+    0x32,  //  69   unassigned, L
+    0x32,  //  70   unassigned, L
+    0x32,  //  71   unassigned, L
+    0x32,  //  72   unassigned, L
+    0x32,  //  73   unassigned, L
+    0x32,  //  74   unassigned, L
+    0x32,  //  75   unassigned, L
+    0x32,  //  76   unassigned, L
+    0x32,  //  77   unassigned, L
+    0x32,  //  78   unassigned, L
+    0x32,  //  79   unassigned, L
+    0x32,  //  80   unassigned, L
+    0x32,  //  81   unassigned, L
+    0x32,  //  82   unassigned, L
+    0x32,  //  83   unassigned, L
+    0x32,  //  84   unassigned, L
+    0x32,  //  85   unassigned, L
+    0x32,  //  86   unassigned, L
+    0x32,  //  87   unassigned, L
+    0x32,  //  88   unassigned, L
+    0x32,  //  89   unassigned, L
+    0x32,  //  90   unassigned, L
+    0x00,  //  91   unassigned, L
+    0x00,  //  92   unassigned, L
+    0x00,  //  93   unassigned, L
+    0x00,  //  94   unassigned, L
+    0x20,  //  95   unassigned, L
+    0x00,  //  96   unassigned, L
+    0x31,  //  97   unassigned, L
+    0x31,  //  98   unassigned, L
+    0x31,  //  99   unassigned, L
+    0x31,  // 100   unassigned, L
+    0x31,  // 101   unassigned, L
+    0x31,  // 102   unassigned, L
+    0x31,  // 103   unassigned, L
+    0x31,  // 104   unassigned, L
+    0x31,  // 105   unassigned, L
+    0x31,  // 106   unassigned, L
+    0x31,  // 107   unassigned, L
+    0x31,  // 108   unassigned, L
+    0x31,  // 109   unassigned, L
+    0x31,  // 110   unassigned, L
+    0x31,  // 111   unassigned, L
+    0x31,  // 112   unassigned, L
+    0x31,  // 113   unassigned, L
+    0x31,  // 114   unassigned, L
+    0x31,  // 115   unassigned, L
+    0x31,  // 116   unassigned, L
+    0x31,  // 117   unassigned, L
+    0x31,  // 118   unassigned, L
+    0x31,  // 119   unassigned, L
+    0x31,  // 120   unassigned, L
+    0x31,  // 121   unassigned, L
+    0x31,  // 122   unassigned, L
+    0x00,  // 123   unassigned, L
+    0x00,  // 124   unassigned, L
+    0x00,  // 125   unassigned, L
+    0x00,  // 126   unassigned, L
+    0x00,  // 127   unassigned, L
+    0x00,  // 128   unassigned, L
+    0x00,  // 129   unassigned, L
+    0x00,  // 130   unassigned, L
+    0x00,  // 131   unassigned, L
+    0x00,  // 132   unassigned, L
+    0x00,  // 133   unassigned, L
+    0x00,  // 134   unassigned, L
+    0x00,  // 135   unassigned, L
+    0x00,  // 136   unassigned, L
+    0x00,  // 137   unassigned, L
+    0x00,  // 138   unassigned, L
+    0x00,  // 139   unassigned, L
+    0x00,  // 140   unassigned, L
+    0x00,  // 141   unassigned, L
+    0x00,  // 142   unassigned, L
+    0x00,  // 143   unassigned, L
+    0x00,  // 144   unassigned, L
+    0x00,  // 145   unassigned, L
+    0x00,  // 146   unassigned, L
+    0x00,  // 147   unassigned, L
+    0x00,  // 148   unassigned, L
+    0x00,  // 149   unassigned, L
+    0x00,  // 150   unassigned, L
+    0x00,  // 151   unassigned, L
+    0x00,  // 152   unassigned, L
+    0x00,  // 153   unassigned, L
+    0x00,  // 154   unassigned, L
+    0x00,  // 155   unassigned, L
+    0x00,  // 156   unassigned, L
+    0x00,  // 157   unassigned, L
+    0x00,  // 158   unassigned, L
+    0x00,  // 159   unassigned, L
+    0x00,  // 160   unassigned, L
+    0x00,  // 161   unassigned, L
+    0x00,  // 162   unassigned, L
+    0x00,  // 163   unassigned, L
+    0x00,  // 164   unassigned, L
+    0x00,  // 165   unassigned, L
+    0x00,  // 166   unassigned, L
+    0x00,  // 167   unassigned, L
+    0x00,  // 168   unassigned, L
+    0x00,  // 169   unassigned, L
+    0x31,  // 170   unassigned, L
+    0x00,  // 171   unassigned, L
+    0x00,  // 172   unassigned, L
+    0x00,  // 173   unassigned, L
+    0x00,  // 174   unassigned, L
+    0x00,  // 175   unassigned, L
+    0x00,  // 176   unassigned, L
+    0x00,  // 177   unassigned, L
+    0x00,  // 178   unassigned, L
+    0x00,  // 179   unassigned, L
+    0x00,  // 180   unassigned, L
+    0x31,  // 181   unassigned, L
+    0x00,  // 182   unassigned, L
+    0x20,  // 183   unassigned, L
+    0x00,  // 184   unassigned, L
+    0x00,  // 185   unassigned, L
+    0x31,  // 186   unassigned, L
+    0x00,  // 187   unassigned, L
+    0x00,  // 188   unassigned, L
+    0x00,  // 189   unassigned, L
+    0x00,  // 190   unassigned, L
+    0x00,  // 191   unassigned, L
+    0x32,  // 192   unassigned, L
+    0x32,  // 193   unassigned, L
+    0x32,  // 194   unassigned, L
+    0x32,  // 195   unassigned, L
+    0x32,  // 196   unassigned, L
+    0x32,  // 197   unassigned, L
+    0x32,  // 198   unassigned, L
+    0x32,  // 199   unassigned, L
+    0x32,  // 200   unassigned, L
+    0x32,  // 201   unassigned, L
+    0x32,  // 202   unassigned, L
+    0x32,  // 203   unassigned, L
+    0x32,  // 204   unassigned, L
+    0x32,  // 205   unassigned, L
+    0x32,  // 206   unassigned, L
+    0x32,  // 207   unassigned, L
+    0x32,  // 208   unassigned, L
+    0x32,  // 209   unassigned, L
+    0x32,  // 210   unassigned, L
+    0x32,  // 211   unassigned, L
+    0x32,  // 212   unassigned, L
+    0x32,  // 213   unassigned, L
+    0x32,  // 214   unassigned, L
+    0x00,  // 215   unassigned, L
+    0x32,  // 216   unassigned, L
+    0x32,  // 217   unassigned, L
+    0x32,  // 218   unassigned, L
+    0x32,  // 219   unassigned, L
+    0x32,  // 220   unassigned, L
+    0x32,  // 221   unassigned, L
+    0x32,  // 222   unassigned, L
+    0x31,  // 223   unassigned, L
+    0x31,  // 224   unassigned, L
+    0x31,  // 225   unassigned, L
+    0x31,  // 226   unassigned, L
+    0x31,  // 227   unassigned, L
+    0x31,  // 228   unassigned, L
+    0x31,  // 229   unassigned, L
+    0x31,  // 230   unassigned, L
+    0x31,  // 231   unassigned, L
+    0x31,  // 232   unassigned, L
+    0x31,  // 233   unassigned, L
+    0x31,  // 234   unassigned, L
+    0x31,  // 235   unassigned, L
+    0x31,  // 236   unassigned, L
+    0x31,  // 237   unassigned, L
+    0x31,  // 238   unassigned, L
+    0x31,  // 239   unassigned, L
+    0x31,  // 240   unassigned, L
+    0x31,  // 241   unassigned, L
+    0x31,  // 242   unassigned, L
+    0x31,  // 243   unassigned, L
+    0x31,  // 244   unassigned, L
+    0x31,  // 245   unassigned, L
+    0x31,  // 246   unassigned, L
+    0x00,  // 247   unassigned, L
+    0x31,  // 248   unassigned, L
+    0x31,  // 249   unassigned, L
+    0x31,  // 250   unassigned, L
+    0x31,  // 251   unassigned, L
+    0x31,  // 252   unassigned, L
+    0x31,  // 253   unassigned, L
+    0x31,  // 254   unassigned, L
+    0x31   // 255   unassigned, L
   };
 
   // In all, the character property tables require 1024 bytes.
 
     static {
         
-    }        
+    }
 }
 

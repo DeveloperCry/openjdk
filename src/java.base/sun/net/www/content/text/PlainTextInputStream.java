@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,7 +39,7 @@ public class PlainTextInputStream extends FilterInputStream {
 
     /**
      * Calls FilterInputStream's constructor.
-     * @param an InputStream
+     * @param is an InputStream
      */
     PlainTextInputStream(InputStream is) {
         super(is);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -82,6 +82,7 @@ class PollingWatchService
     /**
      * Register the given file with this watch service
      */
+    @SuppressWarnings("removal")
     @Override
     WatchKey register(final Path path,
                       WatchEvent.Kind<?>[] events,
@@ -149,8 +150,8 @@ class PollingWatchService
                 });
         } catch (PrivilegedActionException pae) {
             Throwable cause = pae.getCause();
-            if (cause != null && cause instanceof IOException)
-                throw (IOException)cause;
+            if (cause instanceof IOException ioe)
+                throw ioe;
             throw new AssertionError(pae);
         }
     }
@@ -194,6 +195,7 @@ class PollingWatchService
 
     }
 
+    @SuppressWarnings("removal")
     @Override
     void implClose() throws IOException {
         synchronized (map) {

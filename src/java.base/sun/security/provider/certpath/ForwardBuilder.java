@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -668,7 +668,7 @@ class ForwardBuilder extends Builder {
      * Verifies a matching certificate.
      *
      * This method executes the validation steps in the PKIX path
-     * validation algorithm <draft-ietf-pkix-new-part1-08.txt> which were
+     * validation algorithm, RFC 5280, which were
      * not satisfied by the selection criteria used by getCertificates()
      * to find the certs and only the steps that can be executed in a
      * forward direction (target to trust anchor). Those steps that can

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,20 @@
 
 package sun.net.util;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
+import java.security.PrivilegedActionException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class IPAddressUtil {
     private static final int INADDR4SZ = 4;
@@ -187,7 +199,7 @@ public class IPAddressUtil {
             }
             if (ch == '.' && ((j + INADDR4SZ) <= INADDR16SZ)) {
                 String ia4 = src.substring(curtok, srcb_length);
-                /* check this IPv4 address has 3 dots, ie. A.B.C.D */
+                /* check this IPv4 address has 3 dots, i.e. A.B.C.D */
                 int dot_count = 0, index=0;
                 while ((index = ia4.indexOf ('.', index)) != -1) {
                     dot_count ++;
@@ -289,6 +301,78 @@ public class IPAddressUtil {
             return true;
         }
         return false;
+    }
+    /**
+     * Mapping from unscoped local Inet(6)Address to the same address
+     * including the correct scope-id, determined from NetworkInterface.
+     */
+    private static final ConcurrentHashMap<InetAddress,InetAddress>
+        cache = new ConcurrentHashMap<>();
+
+    /**
+     * Returns a scoped version of the supplied local, link-local ipv6 address
+     * if that scope-id can be determined from local NetworkInterfaces.
+     * If the address already has a scope-id or if the address is not local, ipv6
+     * or link local, then the original address is returned.
+     *
+     * @param address
+     * @exception SocketException if the given ipv6 link local address is found
+     *            on more than one local interface
+     * @return
+     */
+    public static InetAddress toScopedAddress(InetAddress address)
+        throws SocketException {
+
+        if (address instanceof Inet6Address && address.isLinkLocalAddress()
+            && ((Inet6Address) address).getScopeId() == 0) {
+
+            InetAddress cached = null;
+            try {
+                cached = cache.computeIfAbsent(address, k -> findScopedAddress(k));
+            } catch (UncheckedIOException e) {
+                throw (SocketException)e.getCause();
+            }
+            return cached != null ? cached : address;
+        } else {
+            return address;
+        }
+    }
+
+    /**
+     * Same as above for InetSocketAddress
+     */
+    public static InetSocketAddress toScopedAddress(InetSocketAddress address)
+        throws SocketException {
+        InetAddress addr;
+        InetAddress orig = address.getAddress();
+        if ((addr = toScopedAddress(orig)) == orig) {
+            return address;
+        } else {
+            return new InetSocketAddress(addr, address.getPort());
+        }
+    }
+
+    @SuppressWarnings("removal")
+    private static InetAddress findScopedAddress(InetAddress address) {
+        PrivilegedExceptionAction<List<InetAddress>> pa = () -> NetworkInterface.networkInterfaces()
+                .flatMap(NetworkInterface::inetAddresses)
+                .filter(a -> (a instanceof Inet6Address)
+                        && address.equals(a)
+                        && ((Inet6Address) a).getScopeId() != 0)
+                .toList();
+        List<InetAddress> result;
+        try {
+            result = AccessController.doPrivileged(pa);
+            var sz = result.size();
+            if (sz == 0)
+                return null;
+            if (sz > 1)
+                throw new UncheckedIOException(new SocketException(
+                    "Duplicate link local addresses: must specify scope-id"));
+            return result.get(0);
+        } catch (PrivilegedActionException pae) {
+            return null;
+        }
     }
 
     // See java.net.URI for more details on how to generate these
@@ -467,5 +551,4 @@ public class IPAddressUtil {
         }
         return null;
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,7 +65,7 @@ import java.util.Objects;
  *     will be replaced by the character(s) whose encoding would result
  *     in those consecutive bytes.
  *     The encoding scheme used to decode these characters may be specified,
- *     or if unspecified, the default encoding of the platform will be used.
+ *     or if unspecified, the default charset will be used.
  * </ul>
  * <p>
  * There are two possible ways in which this decoder could deal with
@@ -74,6 +74,8 @@ import java.util.Objects;
  * Which approach the decoder takes is left to the
  * implementation.
  *
+ * @see Charset#defaultCharset()
+ *
  * @author  Mark Chamness
  * @author  Michael McCloskey
  * @since   1.2
@@ -81,17 +83,22 @@ import java.util.Objects;
 
 public class URLDecoder {
 
-    // The platform default encoding
+    /**
+     * Do not call.
+     */
+    private URLDecoder() {}
+
+    // The default charset
     static String dfltEncName = URLEncoder.dfltEncName;
 
     /**
      * Decodes a {@code x-www-form-urlencoded} string.
-     * The platform's default encoding is used to determine what characters
+     * The default charset is used to determine what characters
      * are represented by any consecutive sequences of the form
      * "<i>{@code %xy}</i>".
      * @param s the {@code String} to decode
-     * @deprecated The resulting string may vary depending on the platform's
-     *          default encoding. Instead, use the decode(String,String) method
+     * @deprecated The resulting string may vary depending on the
+     *          default charset. Instead, use the decode(String,String) method
      *          to specify the encoding.
      * @return the newly decoded {@code String}
      */
@@ -103,7 +110,7 @@ public class URLDecoder {
         try {
             str = decode(s, dfltEncName);
         } catch (UnsupportedEncodingException e) {
-            // The system should always have the platform default
+            // The system should always have the default charset
         }
 
         return str;
@@ -115,7 +122,7 @@ public class URLDecoder {
      *
      * <p>
      * This method behaves the same as {@linkplain decode(String s, Charset charset)}
-     * except that it will {@linkplain java.nio.charset.Charset#forName look up the charset}
+     * except that it will {@linkplain Charset#forName look up the charset}
      * using the given encoding name.
      *
      * @implNote This implementation will throw an {@link java.lang.IllegalArgumentException}
@@ -133,7 +140,7 @@ public class URLDecoder {
      * @since 1.4
      */
     public static String decode(String s, String enc) throws UnsupportedEncodingException {
-        if (enc.length() == 0) {
+        if (enc.isEmpty()) {
             throw new UnsupportedEncodingException ("URLDecoder: empty string enc parameter");
         }
 
@@ -147,7 +154,7 @@ public class URLDecoder {
 
     /**
      * Decodes an {@code application/x-www-form-urlencoded} string using
-     * a specific {@linkplain java.nio.charset.Charset Charset}.
+     * a specific {@linkplain Charset Charset}.
      * The supplied charset is used to determine
      * what characters are represented by any consecutive sequences of the
      * form "<i>{@code %xy}</i>".
@@ -167,7 +174,7 @@ public class URLDecoder {
      * @throws NullPointerException if {@code s} or {@code charset} is {@code null}
      * @throws IllegalArgumentException if the implementation encounters illegal
      * characters
-     * @see URLEncoder#encode(java.lang.String, java.nio.charset.Charset)
+     * @see URLEncoder#encode(java.lang.String, Charset)
      * @since 10
      */
     public static String decode(String s, Charset charset) {

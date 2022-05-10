@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,8 +63,8 @@ class BreakDictionary {
     //=========================================================================
 
     /**
-      * The version of the dictionary that was read in.
-      */
+     * The version of the dictionary that was read in.
+     */
     private static int supportedVersion = 1;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -77,7 +77,9 @@ import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import jdk.internal.util.ArraysSupport;
 import sun.nio.ch.FileChannelImpl;
+import sun.nio.cs.UTF_8;
 import sun.nio.fs.AbstractFileSystemProvider;
 
 /**
@@ -91,6 +93,9 @@ import sun.nio.fs.AbstractFileSystemProvider;
  */
 
 public final class Files {
+    // buffer size used for reading and writing
+    private static final int BUFFER_SIZE = 8192;
+
     private Files() { }
 
     /**
@@ -203,6 +208,10 @@ public final class Files {
      *          if {@code options} contains an invalid combination of options
      * @throws  UnsupportedOperationException
      *          if an unsupported option is specified
+     * @throws  FileAlreadyExistsException
+     *          If a file of that name already exists and the {@link
+     *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
+     *          <i>(optional specific exception)</i>
      * @throws  IOException
      *          if an I/O error occurs
      * @throws  SecurityException
@@ -344,9 +353,10 @@ public final class Files {
      *          if an unsupported open option is specified or the array contains
      *          attributes that cannot be set atomically when creating the file
      * @throws  FileAlreadyExistsException
-     *          if a file of that name already exists and the {@link
+     *          If a file of that name already exists and the {@link
      *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
-     *          <i>(optional specific exception)</i>
+     *          and the file is being opened for writing <i>(optional specific
+     *          exception)</i>
      * @throws  IOException
      *          if an I/O error occurs
      * @throws  SecurityException
@@ -390,9 +400,10 @@ public final class Files {
      * @throws  UnsupportedOperationException
      *          if an unsupported open option is specified
      * @throws  FileAlreadyExistsException
-     *          if a file of that name already exists and the {@link
+     *          If a file of that name already exists and the {@link
      *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
-     *          <i>(optional specific exception)</i>
+     *          and the file is being opened for writing <i>(optional specific
+     *          exception)</i>
      * @throws  IOException
      *          if an I/O error occurs
      * @throws  SecurityException
@@ -632,7 +643,7 @@ public final class Files {
      *          if the array contains an attribute that cannot be set atomically
      *          when creating the file
      * @throws  FileAlreadyExistsException
-     *          if a file of that name already exists
+     *          If a file of that name already exists
      *          <i>(optional specific exception)</i>
      * @throws  IOException
      *          if an I/O error occurs or the parent directory does not exist
@@ -1192,8 +1203,8 @@ public final class Files {
      * which case the method completes without copying the file. File attributes
      * are not required to be copied to the target file. If symbolic links are
      * supported, and the file is a symbolic link, then the final target of the
-     * link is copied. If the file is a directory then it creates an empty
-     * directory in the target location (entries in the directory are not
+     * link is copied. If the file is a directory then an empty directory is
+     * created in the target location (entries in the directory are not
      * copied). This method can be used with the {@link #walkFileTree
      * walkFileTree} method to copy a directory and all entries in the directory,
      * or an entire <i>file-tree</i> where required.
@@ -1531,12 +1542,87 @@ public final class Files {
     }
 
     /**
-     * Tells whether or not a file is considered <em>hidden</em>. The exact
-     * definition of hidden is platform or provider dependent. On UNIX for
-     * example a file is considered to be hidden if its name begins with a
-     * period character ('.'). On Windows a file is considered hidden if it
-     * isn't a directory and the DOS {@link DosFileAttributes#isHidden hidden}
-     * attribute is set.
+     * Finds and returns the position of the first mismatched byte in the content
+     * of two files, or {@code -1L} if there is no mismatch. The position will be
+     * in the inclusive range of {@code 0L} up to the size (in bytes) of the
+     * smaller file.
+     *
+     * <p> Two files are considered to match if they satisfy one of the following
+     * conditions:
+     * <ul>
+     * <li> The two paths locate the {@linkplain #isSameFile(Path, Path) same file},
+     *      even if two {@linkplain Path#equals(Object) equal} paths locate a file
+     *      that does not exist, or </li>
+     * <li> The two files are the same size, and every byte in the first file
+     *      is identical to the corresponding byte in the second file. </li>
+     * </ul>
+     *
+     * <p> Otherwise there is a mismatch between the two files and the value
+     * returned by this method is:
+     * <ul>
+     * <li> The position of the first mismatched byte, or </li>
+     * <li> The size of the smaller file (in bytes) when the files are of different
+     *      sizes and every byte of the smaller file is identical to the
+     *      corresponding byte of the larger file. </li>
+     * </ul>
+     *
+     * <p> This method may not be atomic with respect to other file system
+     * operations. This method is always <i>reflexive</i> (for {@code Path f},
+     * {@code mismatch(f,f)} returns {@code -1L}). If the file system and files
+     * remain static, then this method is <i>symmetric</i> (for two {@code Paths f}
+     * and {@code g}, {@code mismatch(f,g)} will return the same value as
+     * {@code mismatch(g,f)}).
+     *
+     * @param   path
+     *          the path to the first file
+     * @param   path2
+     *          the path to the second file
+     *
+     * @return  the position of the first mismatch or {@code -1L} if no mismatch
+     *
+     * @throws  IOException
+     *          if an I/O error occurs
+     * @throws  SecurityException
+     *          In the case of the default provider, and a security manager is
+     *          installed, the {@link SecurityManager#checkRead(String) checkRead}
+     *          method is invoked to check read access to both files.
+     *
+     * @since 12
+     */
+    public static long mismatch(Path path, Path path2) throws IOException {
+        if (isSameFile(path, path2)) {
+            return -1;
+        }
+        byte[] buffer1 = new byte[BUFFER_SIZE];
+        byte[] buffer2 = new byte[BUFFER_SIZE];
+        try (InputStream in1 = Files.newInputStream(path);
+             InputStream in2 = Files.newInputStream(path2);) {
+            long totalRead = 0;
+            while (true) {
+                int nRead1 = in1.readNBytes(buffer1, 0, BUFFER_SIZE);
+                int nRead2 = in2.readNBytes(buffer2, 0, BUFFER_SIZE);
+
+                int i = Arrays.mismatch(buffer1, 0, nRead1, buffer2, 0, nRead2);
+                if (i > -1) {
+                    return totalRead + i;
+                }
+                if (nRead1 < BUFFER_SIZE) {
+                    // we've reached the end of the files, but found no mismatch
+                    return -1;
+                }
+                totalRead += nRead1;
+            }
+        }
+    }
+
+    /**
+     * Tells whether or not a file is considered <em>hidden</em>.
+     *
+     * @apiNote
+     * The exact definition of hidden is platform or provider dependent. On UNIX
+     * for example a file is considered to be hidden if its name begins with a
+     * period character ('.'). On Windows a file is considered hidden if the DOS
+     * {@link DosFileAttributes#isHidden hidden} attribute is set.
      *
      * <p> Depending on the implementation this method may require to access
      * the file system to determine if the file is considered hidden.
@@ -1565,6 +1651,7 @@ public final class Files {
             loadInstalledDetectors();
 
         // creates the default file type detector
+        @SuppressWarnings("removal")
         private static FileTypeDetector createDefaultFileTypeDetector() {
             return AccessController
                 .doPrivileged(new PrivilegedAction<>() {
@@ -1574,6 +1661,7 @@ public final class Files {
         }
 
         // loads all installed file type detectors
+        @SuppressWarnings("removal")
         private static List<FileTypeDetector> loadInstalledDetectors() {
             return AccessController
                 .doPrivileged(new PrivilegedAction<>() {
@@ -1753,7 +1841,7 @@ public final class Files {
      *          installed, its {@link SecurityManager#checkRead(String) checkRead}
      *          method is invoked to check read access to the file. If this
      *          method is invoked to read security sensitive attributes then the
-     *          security manager may be invoke to check for additional permissions.
+     *          security manager may be invoked to check for additional permissions.
      */
     public static <A extends BasicFileAttributes> A readAttributes(Path path,
                                                                    Class<A> type,
@@ -1987,7 +2075,7 @@ public final class Files {
      *          installed, its {@link SecurityManager#checkRead(String) checkRead}
      *          method denies read access to the file. If this method is invoked
      *          to read security sensitive attributes then the security manager
-     *          may be invoke to check for additional permissions.
+     *          may be invoked to check for additional permissions.
      */
     public static Map<String,Object> readAttributes(Path path, String attributes,
                                                     LinkOption... options)
@@ -2426,6 +2514,7 @@ public final class Files {
      *          read access to the file.
      *
      * @see #notExists
+     * @see FileSystemProvider#checkAccess
      */
     public static boolean exists(Path path, LinkOption... options) {
         if (options.length == 0) {
@@ -2715,40 +2804,37 @@ public final class Files {
         try (FileTreeWalker walker = new FileTreeWalker(options, maxDepth)) {
             FileTreeWalker.Event ev = walker.walk(start);
             do {
-                FileVisitResult result;
-                switch (ev.type()) {
-                    case ENTRY :
+                FileVisitResult result = switch (ev.type()) {
+                    case ENTRY -> {
                         IOException ioe = ev.ioeException();
                         if (ioe == null) {
                             assert ev.attributes() != null;
-                            result = visitor.visitFile(ev.file(), ev.attributes());
+                            yield visitor.visitFile(ev.file(), ev.attributes());
                         } else {
-                            result = visitor.visitFileFailed(ev.file(), ioe);
+                            yield visitor.visitFileFailed(ev.file(), ioe);
                         }
-                        break;
-
-                    case START_DIRECTORY :
-                        result = visitor.preVisitDirectory(ev.file(), ev.attributes());
+                    }
+                    case START_DIRECTORY -> {
+                        var res = visitor.preVisitDirectory(ev.file(), ev.attributes());
 
                         // if SKIP_SIBLINGS and SKIP_SUBTREE is returned then
                         // there shouldn't be any more events for the current
                         // directory.
-                        if (result == FileVisitResult.SKIP_SUBTREE ||
-                            result == FileVisitResult.SKIP_SIBLINGS)
+                        if (res == FileVisitResult.SKIP_SUBTREE ||
+                            res == FileVisitResult.SKIP_SIBLINGS)
                             walker.pop();
-                        break;
-
-                    case END_DIRECTORY :
-                        result = visitor.postVisitDirectory(ev.file(), ev.ioeException());
+                        yield res;
+                    }
+                    case END_DIRECTORY -> {
+                        var res = visitor.postVisitDirectory(ev.file(), ev.ioeException());
 
                         // SKIP_SIBLINGS is a no-op for postVisitDirectory
-                        if (result == FileVisitResult.SKIP_SIBLINGS)
-                            result = FileVisitResult.CONTINUE;
-                        break;
-
-                    default :
-                        throw new AssertionError("Should not get here");
-                }
+                        if (res == FileVisitResult.SKIP_SIBLINGS)
+                            res = FileVisitResult.CONTINUE;
+                        yield res;
+                    }
+                    default -> throw new AssertionError("Should not get here");
+                };
 
                 if (Objects.requireNonNull(result) != FileVisitResult.CONTINUE) {
                     if (result == FileVisitResult.TERMINATE) {
@@ -2769,9 +2855,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <blockquote><pre>
-     * walkFileTree(start, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, visitor)
-     * </pre></blockquote>
+     * <blockquote>{@link
+     * walkFileTree(Path, Set<FileVisitOption>, int, FileVisitor<? super Path>)
+     * Files.walkFileTree(start, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, visitor)
+     * }</blockquote>
      * In other words, it does not follow symbolic links, and visits all levels
      * of the file tree.
      *
@@ -2802,8 +2889,6 @@ public final class Files {
 
     // -- Utility methods for simple usages --
 
-    // buffer size used for reading and writing
-    private static final int BUFFER_SIZE = 8192;
 
     /**
      * Opens a file for reading, returning a {@code BufferedReader} that may be
@@ -2847,9 +2932,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <pre>{@code
+     * <blockquote>{@link
+     * newBufferedReader(Path, Charset)
      * Files.newBufferedReader(path, StandardCharsets.UTF_8)
-     * }</pre>
+     * }</blockquote>
      *
      * @param   path
      *          the path to the file
@@ -2867,7 +2953,7 @@ public final class Files {
      * @since 1.8
      */
     public static BufferedReader newBufferedReader(Path path) throws IOException {
-        return newBufferedReader(path, StandardCharsets.UTF_8);
+        return newBufferedReader(path, UTF_8.INSTANCE);
     }
 
     /**
@@ -2901,6 +2987,10 @@ public final class Files {
      *          if an I/O error occurs opening or creating the file
      * @throws  UnsupportedOperationException
      *          if an unsupported option is specified
+     * @throws  FileAlreadyExistsException
+     *          If a file of that name already exists and the {@link
+     *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
+     *          <i>(optional specific exception)</i>
      * @throws  SecurityException
      *          In the case of the default provider, and a security manager is
      *          installed, the {@link SecurityManager#checkWrite(String) checkWrite}
@@ -2928,9 +3018,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <pre>{@code
+     * <blockquote>{@link
+     * newBufferedWriter(Path, Charset, OpenOption...)
      * Files.newBufferedWriter(path, StandardCharsets.UTF_8, options)
-     * }</pre>
+     * }</blockquote>
      *
      * @param   path
      *          the path to the file
@@ -2946,6 +3037,10 @@ public final class Files {
      *          if an I/O error occurs opening or creating the file
      * @throws  UnsupportedOperationException
      *          if an unsupported option is specified
+     * @throws  FileAlreadyExistsException
+     *          If a file of that name already exists and the {@link
+     *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
+     *          <i>(optional specific exception)</i>
      * @throws  SecurityException
      *          In the case of the default provider, and a security manager is
      *          installed, the {@link SecurityManager#checkWrite(String) checkWrite}
@@ -2959,7 +3054,7 @@ public final class Files {
     public static BufferedWriter newBufferedWriter(Path path, OpenOption... options)
         throws IOException
     {
-        return newBufferedWriter(path, StandardCharsets.UTF_8, options);
+        return newBufferedWriter(path, UTF_8.INSTANCE, options);
     }
 
     /**
@@ -2992,7 +3087,7 @@ public final class Files {
      * it to a file:
      * <pre>
      *     Path path = ...
-     *     URI u = URI.create("http://java.sun.com/");
+     *     URI u = URI.create("http://www.example.com/");
      *     try (InputStream in = u.toURL().openStream()) {
      *         Files.copy(in, path);
      *     }
@@ -3016,7 +3111,7 @@ public final class Files {
      * @throws  DirectoryNotEmptyException
      *          the {@code REPLACE_EXISTING} option is specified but the file
      *          cannot be replaced because it is a non-empty directory
-     *          <i>(optional specific exception)</i>     *
+     *          <i>(optional specific exception)</i>
      * @throws  UnsupportedOperationException
      *          if {@code options} contains a copy option that is not supported
      * @throws  SecurityException
@@ -3120,16 +3215,8 @@ public final class Files {
         }
     }
 
-    /**
-     * The maximum size of array to allocate.
-     * Some VMs reserve some header words in an array.
-     * Attempts to allocate larger arrays may result in
-     * OutOfMemoryError: Requested array size exceeds VM limit
-     */
-    private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
-
-    private static final jdk.internal.misc.JavaLangAccess JLA =
-            jdk.internal.misc.SharedSecrets.getJavaLangAccess();
+    private static final jdk.internal.access.JavaLangAccess JLA =
+            jdk.internal.access.SharedSecrets.getJavaLangAccess();
 
     /**
      * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
@@ -3164,13 +3251,10 @@ public final class Files {
                 break;
 
             // one more byte was read; need to allocate a larger buffer
-            if (capacity <= MAX_BUFFER_SIZE - capacity) {
-                capacity = Math.max(capacity << 1, BUFFER_SIZE);
-            } else {
-                if (capacity == MAX_BUFFER_SIZE)
-                    throw new OutOfMemoryError("Required array size too large");
-                capacity = MAX_BUFFER_SIZE;
-            }
+            capacity = Math.max(ArraysSupport.newLength(capacity,
+                                                        1,       /* minimum growth */
+                                                        capacity /* preferred growth */),
+                                BUFFER_SIZE);
             buf = Arrays.copyOf(buf, capacity);
             buf[nread++] = (byte)n;
         }
@@ -3207,7 +3291,7 @@ public final class Files {
             if (sbc instanceof FileChannelImpl)
                 ((FileChannelImpl) sbc).setUninterruptible();
             long size = sbc.size();
-            if (size > (long) MAX_BUFFER_SIZE)
+            if (size > (long) Integer.MAX_VALUE)
                 throw new OutOfMemoryError("Required array size too large");
             return read(in, (int)size);
         }
@@ -3219,8 +3303,8 @@ public final class Files {
      * The method ensures that the file is closed when all content have been read
      * or an I/O error, or other runtime exception, is thrown.
      *
-     * <p> This method is equivalent to:
-     * {@code readString(path, StandardCharsets.UTF_8) }
+     * <p> This method is equivalent to: {@link readString(Path, Charset)
+     * readString(path, StandardCharsets.UTF_8)}.
      *
      * @param   path the path to the file
      *
@@ -3239,7 +3323,7 @@ public final class Files {
      * @since 11
      */
     public static String readString(Path path) throws IOException {
-        return readString(path, StandardCharsets.UTF_8);
+        return readString(path, UTF_8.INSTANCE);
     }
 
     /**
@@ -3281,6 +3365,8 @@ public final class Files {
         Objects.requireNonNull(cs);
 
         byte[] ba = readAllBytes(path);
+        if (path.getClass().getModule() != Object.class.getModule())
+            ba = ba.clone();
         return JLA.newStringNoRepl(ba, cs);
     }
 
@@ -3342,9 +3428,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <pre>{@code
+     * <blockquote>{@link
+     * readAllLines(Path, Charset)
      * Files.readAllLines(path, StandardCharsets.UTF_8)
-     * }</pre>
+     * }</blockquote>
      *
      * @param   path
      *          the path to the file
@@ -3364,7 +3451,7 @@ public final class Files {
      * @since 1.8
      */
     public static List<String> readAllLines(Path path) throws IOException {
-        return readAllLines(path, StandardCharsets.UTF_8);
+        return readAllLines(path, UTF_8.INSTANCE);
     }
 
     /**
@@ -3405,6 +3492,10 @@ public final class Files {
      *          if an I/O error occurs writing to or creating the file
      * @throws  UnsupportedOperationException
      *          if an unsupported option is specified
+     * @throws  FileAlreadyExistsException
+     *          If a file of that name already exists and the {@link
+     *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
+     *          <i>(optional specific exception)</i>
      * @throws  SecurityException
      *          In the case of the default provider, and a security manager is
      *          installed, the {@link SecurityManager#checkWrite(String) checkWrite}
@@ -3469,6 +3560,10 @@ public final class Files {
      *          text cannot be encoded using the specified charset
      * @throws  UnsupportedOperationException
      *          if an unsupported option is specified
+     * @throws  FileAlreadyExistsException
+     *          If a file of that name already exists and the {@link
+     *          StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified
+     *          <i>(optional specific exception)</i>
      * @throws  SecurityException
      *          In the case of the default provider, and a security manager is
      *          installed, the {@link SecurityManager#checkWrite(String) checkWrite}
@@ -3484,8 +3579,8 @@ public final class Files {
         // ensure lines is not null before opening file
         Objects.requireNonNull(lines);
         CharsetEncoder encoder = cs.newEncoder();
-        OutputStream out = newOutputStream(path, options);
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, encoder))) {
+        try (OutputStream out = newOutputStream(path, options);
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, encoder))) {
             for (CharSequence line: lines) {
                 writer.append(line);
                 writer.newLine();
@@ -3500,9 +3595,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <pre>{@code
-     * Files.write(path, lines, StandardCharsets.UTF_8, options);
-     * }</pre>
+     * <blockquote>{@link
+     * write(Path, Iterable<? extends CharSequence>, Charset, OpenOption...)
+     * Files.write(path, lines, StandardCharsets.UTF_8, options)
+     * }</blockquote>
      *
      * @param   path
      *          the path to the file
@@ -3535,7 +3631,7 @@ public final class Files {
                              OpenOption... options)
         throws IOException
     {
-        return write(path, lines, StandardCharsets.UTF_8, options);
+        return write(path, lines, UTF_8.INSTANCE, options);
     }
 
     /**
@@ -3543,8 +3639,9 @@ public final class Files {
      * Characters are encoded into bytes using the
      * {@link StandardCharsets#UTF_8 UTF-8} {@link Charset charset}.
      *
-     * <p> This method is equivalent to:
-     * {@code writeString(path, test, StandardCharsets.UTF_8, options) }
+     * <p> This method is equivalent to: {@link
+     * writeString(Path, CharSequence, Charset, OpenOption...)
+     * writeString(path, csq, StandardCharsets.UTF_8, options)}.
      *
      * @param   path
      *          the path to the file
@@ -3575,7 +3672,7 @@ public final class Files {
     public static Path writeString(Path path, CharSequence csq, OpenOption... options)
             throws IOException
     {
-        return writeString(path, csq, StandardCharsets.UTF_8, options);
+        return writeString(path, csq, UTF_8.INSTANCE, options);
     }
 
     /**
@@ -3633,6 +3730,8 @@ public final class Files {
         Objects.requireNonNull(cs);
 
         byte[] bytes = JLA.getBytesNoRepl(String.valueOf(csq), cs);
+        if (path.getClass().getModule() != Object.class.getModule())
+            bytes = bytes.clone();
         write(path, bytes, options);
 
         return path;
@@ -3839,9 +3938,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <blockquote><pre>
-     * walk(start, Integer.MAX_VALUE, options)
-     * </pre></blockquote>
+     * <blockquote>{@link
+     * walk(Path, int, FileVisitOption...)
+     * Files.walk(start, Integer.MAX_VALUE, options)
+     * }</blockquote>
      * In other words, it visits all levels of the file tree.
      *
      * <p> The returned stream contains references to one or more open directories.
@@ -4050,9 +4150,11 @@ public final class Files {
             // FileChannel.size() may in certain circumstances return zero
             // for a non-zero length file so disallow this case.
             if (length > 0 && length <= Integer.MAX_VALUE) {
-                Spliterator<String> s = new FileChannelLinesSpliterator(fc, cs, 0, (int) length);
-                return StreamSupport.stream(s, false)
-                        .onClose(Files.asUncheckedRunnable(fc));
+                FileChannelLinesSpliterator fcls =
+                    new FileChannelLinesSpliterator(fc, cs, 0, (int) length);
+                return StreamSupport.stream(fcls, false)
+                        .onClose(Files.asUncheckedRunnable(fc))
+                        .onClose(() -> fcls.close());
             }
         } catch (Error|RuntimeException|IOException e) {
             try {
@@ -4098,9 +4200,10 @@ public final class Files {
      *
      * <p> This method works as if invoking it were equivalent to evaluating the
      * expression:
-     * <pre>{@code
+     * <blockquote>{@link
+     * lines(Path, Charset)
      * Files.lines(path, StandardCharsets.UTF_8)
-     * }</pre>
+     * }</blockquote>
      *
      * @apiNote
      * This method must be used within a try-with-resources statement or similar
@@ -4122,6 +4225,6 @@ public final class Files {
      * @since 1.8
      */
     public static Stream<String> lines(Path path) throws IOException {
-        return lines(path, StandardCharsets.UTF_8);
+        return lines(path, UTF_8.INSTANCE);
     }
 }

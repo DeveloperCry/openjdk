@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,7 +69,7 @@ public class OIDName implements GeneralNameInterface {
      */
     public OIDName(String name) throws IOException {
         try {
-            oid = new ObjectIdentifier(name);
+            oid = ObjectIdentifier.of(name);
         } catch (Exception e) {
             throw new IOException("Unable to create OIDName: " + e);
         }
@@ -156,7 +156,7 @@ public class OIDName implements GeneralNameInterface {
         else if (this.equals((OIDName)inputName))
             constraintType = NAME_MATCH;
         else
-            //widens and narrows not defined in RFC2459 for OIDName (aka registeredID)
+            //widens and narrows not defined in RFC 5280 for OIDName (aka registeredID)
             throw new UnsupportedOperationException("Narrowing and widening are not supported for OIDNames");
         return constraintType;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ package jdk.internal.util.jar;
 
 public class InvalidJarIndexError extends Error {
 
+    @java.io.Serial
     static final long serialVersionUID = 0L;
 
     /**

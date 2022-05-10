@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -119,12 +119,12 @@ import java.util.Objects;
  * For most applications written today, the ISO-8601 rules are entirely suitable.
  * However, any application that makes use of historical dates, and requires them
  * to be accurate will find the ISO-8601 approach unsuitable.
- *
  * <p>
  * This is a <a href="{@docRoot}/java.base/java/lang/doc-files/ValueBased.html">value-based</a>
- * class; use of identity-sensitive operations (including reference equality
- * ({@code ==}), identity hash code, or synchronization) on instances of
- * {@code Year} may have unpredictable results and should be avoided.
+ * class; programmers should treat instances that are
+ * {@linkplain #equals(Object) equal} as interchangeable and should not
+ * use instances for synchronization, or unpredictable behavior may
+ * occur. For example, in a future release, synchronization may fail.
  * The {@code equals} method should be used for comparisons.
  *
  * @implSpec
@@ -132,6 +132,7 @@ import java.util.Objects;
  *
  * @since 1.8
  */
+@jdk.internal.ValueBased
 public final class Year
         implements Temporal, TemporalAdjuster, Comparable<Year>, Serializable {
 
@@ -147,12 +148,14 @@ public final class Year
     /**
      * Serialization version.
      */
+    @java.io.Serial
     private static final long serialVersionUID = -23038383694477807L;
     /**
      * Parser.
      */
     private static final DateTimeFormatter PARSER = new DateTimeFormatterBuilder()
-        .appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+        .parseLenient()
+        .appendValue(YEAR, 1, 10, SignStyle.NORMAL)
         .toFormatter();
 
     /**
@@ -267,7 +270,6 @@ public final class Year
      * Obtains an instance of {@code Year} from a text string such as {@code 2007}.
      * <p>
      * The string must represent a valid year.
-     * Years outside the range 0000 to 9999 must be prefixed by the plus or minus symbol.
      *
      * @param text  the text to parse such as "2007", not null
      * @return the parsed year, not null
@@ -494,13 +496,13 @@ public final class Year
      */
     @Override
     public long getLong(TemporalField field) {
-        if (field instanceof ChronoField) {
-            switch ((ChronoField) field) {
-                case YEAR_OF_ERA: return (year < 1 ? 1 - year : year);
-                case YEAR: return year;
-                case ERA: return (year < 1 ? 0 : 1);
-            }
-            throw new UnsupportedTemporalTypeException("Unsupported field: " + field);
+        if (field instanceof ChronoField chronoField) {
+            return switch (chronoField) {
+                case YEAR_OF_ERA -> year < 1 ? 1 - year : year;
+                case YEAR -> year;
+                case ERA -> year < 1 ? 0 : 1;
+                default -> throw new UnsupportedTemporalTypeException("Unsupported field: " + field);
+            };
         }
         return field.getFrom(this);
     }
@@ -617,15 +619,14 @@ public final class Year
      */
     @Override
     public Year with(TemporalField field, long newValue) {
-        if (field instanceof ChronoField) {
-            ChronoField f = (ChronoField) field;
-            f.checkValidValue(newValue);
-            switch (f) {
-                case YEAR_OF_ERA: return Year.of((int) (year < 1 ? 1 - newValue : newValue));
-                case YEAR: return Year.of((int) newValue);
-                case ERA: return (getLong(ERA) == newValue ? this : Year.of(1 - year));
-            }
-            throw new UnsupportedTemporalTypeException("Unsupported field: " + field);
+        if (field instanceof ChronoField chronoField) {
+            chronoField.checkValidValue(newValue);
+            return switch (chronoField) {
+                case YEAR_OF_ERA -> Year.of((int) (year < 1 ? 1 - newValue : newValue));
+                case YEAR -> Year.of((int) newValue);
+                case ERA -> getLong(ERA) == newValue ? this : Year.of(1 - year);
+                default -> throw new UnsupportedTemporalTypeException("Unsupported field: " + field);
+            };
         }
         return field.adjustInto(this, newValue);
     }
@@ -706,15 +707,15 @@ public final class Year
      */
     @Override
     public Year plus(long amountToAdd, TemporalUnit unit) {
-        if (unit instanceof ChronoUnit) {
-            switch ((ChronoUnit) unit) {
-                case YEARS: return plusYears(amountToAdd);
-                case DECADES: return plusYears(Math.multiplyExact(amountToAdd, 10));
-                case CENTURIES: return plusYears(Math.multiplyExact(amountToAdd, 100));
-                case MILLENNIA: return plusYears(Math.multiplyExact(amountToAdd, 1000));
-                case ERAS: return with(ERA, Math.addExact(getLong(ERA), amountToAdd));
-            }
-            throw new UnsupportedTemporalTypeException("Unsupported unit: " + unit);
+        if (unit instanceof ChronoUnit chronoUnit) {
+            return switch (chronoUnit) {
+                case YEARS     -> plusYears(amountToAdd);
+                case DECADES   -> plusYears(Math.multiplyExact(amountToAdd, 10));
+                case CENTURIES -> plusYears(Math.multiplyExact(amountToAdd, 100));
+                case MILLENNIA -> plusYears(Math.multiplyExact(amountToAdd, 1000));
+                case ERAS      -> with(ERA, Math.addExact(getLong(ERA), amountToAdd));
+                default -> throw new UnsupportedTemporalTypeException("Unsupported unit: " + unit);
+            };
         }
         return unit.addTo(this, amountToAdd);
     }
@@ -912,16 +913,16 @@ public final class Year
     @Override
     public long until(Temporal endExclusive, TemporalUnit unit) {
         Year end = Year.from(endExclusive);
-        if (unit instanceof ChronoUnit) {
+        if (unit instanceof ChronoUnit chronoUnit) {
             long yearsUntil = ((long) end.year) - year;  // no overflow
-            switch ((ChronoUnit) unit) {
-                case YEARS: return yearsUntil;
-                case DECADES: return yearsUntil / 10;
-                case CENTURIES: return yearsUntil / 100;
-                case MILLENNIA: return yearsUntil / 1000;
-                case ERAS: return end.getLong(ERA) - getLong(ERA);
-            }
-            throw new UnsupportedTemporalTypeException("Unsupported unit: " + unit);
+            return switch (chronoUnit) {
+                case YEARS     -> yearsUntil;
+                case DECADES   -> yearsUntil / 10;
+                case CENTURIES -> yearsUntil / 100;
+                case MILLENNIA -> yearsUntil / 1000;
+                case ERAS      -> end.getLong(ERA) - getLong(ERA);
+                default -> throw new UnsupportedTemporalTypeException("Unsupported unit: " + unit);
+            };
         }
         return unit.between(this, end);
     }
@@ -1088,7 +1089,7 @@ public final class Year
     //-----------------------------------------------------------------------
     /**
      * Writes the object using a
-     * <a href="../../serialized-form.html#java.time.Ser">dedicated serialized form</a>.
+     * <a href="{@docRoot}/serialized-form.html#java.time.Ser">dedicated serialized form</a>.
      * @serialData
      * <pre>
      *  out.writeByte(11);  // identifies a Year
@@ -1097,6 +1098,7 @@ public final class Year
      *
      * @return the instance of {@code Ser}, not null
      */
+    @java.io.Serial
     private Object writeReplace() {
         return new Ser(Ser.YEAR_TYPE, this);
     }
@@ -1107,6 +1109,7 @@ public final class Year
      * @param s the stream to read
      * @throws InvalidObjectException always
      */
+    @java.io.Serial
     private void readObject(ObjectInputStream s) throws InvalidObjectException {
         throw new InvalidObjectException("Deserialization via serialization delegate");
     }

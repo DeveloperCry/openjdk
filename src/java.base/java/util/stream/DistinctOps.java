@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -170,8 +170,7 @@ final class DistinctOps {
 
                         @Override
                         public void accept(T t) {
-                            if (!seen.contains(t)) {
-                                seen.add(t);
+                            if (seen.add(t)) {
                                 downstream.accept(t);
                             }
                         }

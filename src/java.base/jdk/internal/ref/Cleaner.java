@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -136,6 +136,7 @@ public class Cleaner
     /**
      * Runs this cleaner, if it has not been run before.
      */
+    @SuppressWarnings("removal")
     public void clean() {
         if (!remove(this))
             return;

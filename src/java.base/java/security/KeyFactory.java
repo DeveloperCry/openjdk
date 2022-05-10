@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -313,10 +313,9 @@ public class KeyFactory {
                 Service s = serviceIterator.next();
                 try {
                     Object obj = s.newInstance(null);
-                    if (obj instanceof KeyFactorySpi == false) {
+                    if (!(obj instanceof KeyFactorySpi spi)) {
                         continue;
                     }
-                    KeyFactorySpi spi = (KeyFactorySpi)obj;
                     provider = s.getProvider();
                     this.spi = spi;
                     return spi;
@@ -337,7 +336,7 @@ public class KeyFactory {
      *
      * @return the public key.
      *
-     * @exception InvalidKeySpecException if the given key specification
+     * @throws    InvalidKeySpecException if the given key specification
      * is inappropriate for this key factory to produce a public key.
      */
     public final PublicKey generatePublic(KeySpec keySpec)
@@ -375,7 +374,7 @@ public class KeyFactory {
      *
      * @return the private key.
      *
-     * @exception InvalidKeySpecException if the given key specification
+     * @throws    InvalidKeySpecException if the given key specification
      * is inappropriate for this key factory to produce a private key.
      */
     public final PrivateKey generatePrivate(KeySpec keySpec)
@@ -423,7 +422,7 @@ public class KeyFactory {
      * @return the underlying key specification (key material) in an instance
      * of the requested specification class.
      *
-     * @exception InvalidKeySpecException if the requested key specification is
+     * @throws    InvalidKeySpecException if the requested key specification is
      * inappropriate for the given key, or the given key cannot be processed
      * (e.g., the given key has an unrecognized algorithm or format).
      */
@@ -462,7 +461,7 @@ public class KeyFactory {
      *
      * @return the translated key.
      *
-     * @exception InvalidKeyException if the given key cannot be processed
+     * @throws    InvalidKeyException if the given key cannot be processed
      * by this key factory.
      */
     public final Key translateKey(Key key) throws InvalidKeyException {

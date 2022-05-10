@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 package java.io;
 
 import java.util.*;
-import java.io.File;
-import jdk.internal.misc.SharedSecrets;
+
+import jdk.internal.access.SharedSecrets;
 
 /**
  * This class holds a set of filenames to be deleted on VM exit through a shutdown hook.

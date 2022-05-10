@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -99,6 +99,7 @@ public final class LoggerFinderLoader {
                 GetPropertyAction.privilegedGetProperty("jdk.logger.finder.singleton"));
     }
 
+    @SuppressWarnings("removal")
     private static Iterator<System.LoggerFinder> findLoggerFinderProviders() {
         final Iterator<System.LoggerFinder> iterator;
         if (System.getSecurityManager() == null) {
@@ -163,6 +164,7 @@ public final class LoggerFinderLoader {
         return result;
     }
 
+    @SuppressWarnings("removal")
     private static System.LoggerFinder loadDefaultImplementation() {
         final SecurityManager sm = System.getSecurityManager();
         final Iterator<DefaultLoggerFinder> iterator;
@@ -199,6 +201,7 @@ public final class LoggerFinderLoader {
     }
 
     public static System.LoggerFinder getLoggerFinder() {
+        @SuppressWarnings("removal")
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(LOGGERFINDER_PERMISSION);

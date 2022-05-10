@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,13 +56,14 @@ final class ProxyClassesDumper {
 
     private final Path dumpDir;
 
+    @SuppressWarnings("removal")
     public static ProxyClassesDumper getInstance(String path) {
         if (null == path) {
             return null;
         }
         try {
             path = path.trim();
-            final Path dir = Path.of(path.length() == 0 ? "." : path);
+            final Path dir = Path.of(path.isEmpty() ? "." : path);
             AccessController.doPrivileged(new PrivilegedAction<>() {
                     @Override
                     public Void run() {

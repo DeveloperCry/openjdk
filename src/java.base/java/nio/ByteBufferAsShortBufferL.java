@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsShortBufferL                  // package-private
     extends ShortBuffer
@@ -40,11 +41,11 @@ class ByteBufferAsShortBufferL                  // package-private
 
 
 
-    ByteBufferAsShortBufferL(ByteBuffer bb) {   // package-private
+    ByteBufferAsShortBufferL(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
         super(-1, 0,
               bb.remaining() >> 1,
-              bb.remaining() >> 1);
+              bb.remaining() >> 1, segment);
         this.bb = bb;
         // enforce limit == capacity
         int cap = this.capacity();
@@ -59,10 +60,10 @@ class ByteBufferAsShortBufferL                  // package-private
 
     ByteBufferAsShortBufferL(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
+        super(mark, pos, lim, cap, segment);
         this.bb = bb;
         address = addr;
         assert address >= bb.address;
@@ -79,10 +80,20 @@ class ByteBufferAsShortBufferL                  // package-private
     public ShortBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsShortBufferL(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsShortBufferL(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public ShortBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsShortBufferL(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public ShortBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsShortBufferL                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public ShortBuffer asReadOnlyBuffer() {
@@ -101,7 +112,7 @@ class ByteBufferAsShortBufferL                  // package-private
                                                  this.position(),
                                                  this.limit(),
                                                  this.capacity(),
-                                                 address);
+                                                 address, segment);
 
 
 
@@ -119,13 +130,13 @@ class ByteBufferAsShortBufferL                  // package-private
     }
 
     public short get() {
-        short x = UNSAFE.getShortUnaligned(bb.hb, byteOffset(nextGetIndex()),
+        short x = SCOPED_MEMORY_ACCESS.getShortUnaligned(scope(), bb.hb, byteOffset(nextGetIndex()),
             false);
         return (x);
     }
 
     public short get(int i) {
-        short x = UNSAFE.getShortUnaligned(bb.hb, byteOffset(checkIndex(i)),
+        short x = SCOPED_MEMORY_ACCESS.getShortUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)),
             false);
         return (x);
     }
@@ -143,7 +154,7 @@ class ByteBufferAsShortBufferL                  // package-private
     public ShortBuffer put(short x) {
 
         short y = (x);
-        UNSAFE.putShortUnaligned(bb.hb, byteOffset(nextPutIndex()), y,
+        SCOPED_MEMORY_ACCESS.putShortUnaligned(scope(), bb.hb, byteOffset(nextPutIndex()), y,
             false);
         return this;
 
@@ -154,7 +165,7 @@ class ByteBufferAsShortBufferL                  // package-private
     public ShortBuffer put(int i, short x) {
 
         short y = (x);
-        UNSAFE.putShortUnaligned(bb.hb, byteOffset(checkIndex(i)), y,
+        SCOPED_MEMORY_ACCESS.putShortUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)), y,
             false);
         return this;
 
@@ -191,8 +202,6 @@ class ByteBufferAsShortBufferL                  // package-private
     public boolean isReadOnly() {
         return false;
     }
-
-
 
 
 

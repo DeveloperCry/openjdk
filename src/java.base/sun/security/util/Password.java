@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,6 @@ import java.io.*;
 import java.nio.*;
 import java.nio.charset.*;
 import java.util.Arrays;
-import jdk.internal.misc.SharedSecrets;
 
 /**
  * A utility class for reading passwords
@@ -140,7 +139,7 @@ public class Password {
     private static byte[] convertToBytes(char[] pass) {
         if (enc == null) {
             synchronized (Password.class) {
-                enc = SharedSecrets.getJavaIOAccess()
+                enc = System.console()
                         .charset()
                         .newEncoder()
                         .onMalformedInput(CodingErrorAction.REPLACE)

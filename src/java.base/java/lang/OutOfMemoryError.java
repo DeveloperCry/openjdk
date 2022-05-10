@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,10 +35,10 @@ package java.lang;
  * boolean, boolean) suppression were disabled and/or the stack trace was not
  * writable}.
  *
- * @author  unascribed
  * @since   1.0
  */
 public class OutOfMemoryError extends VirtualMachineError {
+    @java.io.Serial
     private static final long serialVersionUID = 8228564086184010517L;
 
     /**

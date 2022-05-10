@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,13 +24,20 @@
  */
 package java.lang.invoke;
 
+import jdk.internal.access.JavaNioAccess;
+import jdk.internal.access.SharedSecrets;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.Unsafe;
 import jdk.internal.util.Preconditions;
 import jdk.internal.vm.annotation.ForceInline;
 
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 import static java.lang.invoke.MethodHandleStatics.UNSAFE;
 
@@ -38,7 +45,11 @@ import static java.lang.invoke.MethodHandleStatics.UNSAFE;
 
 final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
 
+    static final JavaNioAccess NIO_ACCESS = SharedSecrets.getJavaNioAccess();
+
     static final int ALIGN = Long.BYTES - 1;
+    
+    static final ScopedMemoryAccess SCOPED_MEMORY_ACCESS = ScopedMemoryAccess.getScopedMemoryAccess();
 
     @ForceInline
     static long convEndian(boolean big, long n) {
@@ -49,8 +60,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
     private static abstract class ByteArrayViewVarHandle extends VarHandle {
         final boolean be;
 
-        ByteArrayViewVarHandle(VarForm form, boolean be) {
-            super(form);
+        ByteArrayViewVarHandle(VarForm form, boolean be, boolean exact) {
+            super(form, exact);
             this.be = be;
         }
     }
@@ -58,17 +69,35 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
     static final class ArrayHandle extends ByteArrayViewVarHandle {
 
         ArrayHandle(boolean be) {
-            super(ArrayHandle.FORM, be);
+            this(be, false);
+        }
+
+        private ArrayHandle(boolean be, boolean exact) {
+            super(ArrayHandle.FORM, be, exact);
         }
 
         @Override
-        final MethodType accessModeTypeUncached(AccessMode accessMode) {
-            return accessMode.at.accessModeType(byte[].class, long.class, int.class);
+        public ArrayHandle withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new ArrayHandle(be, true);
+        }
+
+        @Override
+        public ArrayHandle withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new ArrayHandle(be, false);
+        }
+
+        @Override
+        final MethodType accessModeTypeUncached(AccessType at) {
+            return at.accessModeType(byte[].class, long.class, int.class);
         }
 
         @ForceInline
         static int index(byte[] ba, int index) {
-            return Preconditions.checkIndex(index, ba.length - ALIGN, null);
+            return Preconditions.checkIndex(index, ba.length - ALIGN, Preconditions.AIOOBE_FORMATTER);
         }
 
         @ForceInline
@@ -80,7 +109,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long get(ArrayHandle handle, Object oba, int index) {
+        static long get(VarHandle ob, Object oba, int index) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.getLongUnaligned(
                     ba,
@@ -89,7 +119,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static void set(ArrayHandle handle, Object oba, int index, long value) {
+        static void set(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             UNSAFE.putLongUnaligned(
                     ba,
@@ -99,7 +130,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getVolatile(ArrayHandle handle, Object oba, int index) {
+        static long getVolatile(VarHandle ob, Object oba, int index) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getLongVolatile(
@@ -108,7 +140,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static void setVolatile(ArrayHandle handle, Object oba, int index, long value) {
+        static void setVolatile(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             UNSAFE.putLongVolatile(
                     ba,
@@ -117,7 +150,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAcquire(ArrayHandle handle, Object oba, int index) {
+        static long getAcquire(VarHandle ob, Object oba, int index) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getLongAcquire(
@@ -126,7 +160,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static void setRelease(ArrayHandle handle, Object oba, int index, long value) {
+        static void setRelease(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             UNSAFE.putLongRelease(
                     ba,
@@ -135,7 +170,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getOpaque(ArrayHandle handle, Object oba, int index) {
+        static long getOpaque(VarHandle ob, Object oba, int index) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getLongOpaque(
@@ -144,7 +180,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static void setOpaque(ArrayHandle handle, Object oba, int index, long value) {
+        static void setOpaque(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             UNSAFE.putLongOpaque(
                     ba,
@@ -153,7 +190,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static boolean compareAndSet(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static boolean compareAndSet(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.compareAndSetLong(
                     ba,
@@ -162,7 +200,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long compareAndExchange(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static long compareAndExchange(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.compareAndExchangeLong(
@@ -172,7 +211,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long compareAndExchangeAcquire(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static long compareAndExchangeAcquire(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.compareAndExchangeLongAcquire(
@@ -182,7 +222,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long compareAndExchangeRelease(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static long compareAndExchangeRelease(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.compareAndExchangeLongRelease(
@@ -192,7 +233,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetPlain(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static boolean weakCompareAndSetPlain(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.weakCompareAndSetLongPlain(
                     ba,
@@ -201,7 +243,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static boolean weakCompareAndSet(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static boolean weakCompareAndSet(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.weakCompareAndSetLong(
                     ba,
@@ -210,7 +253,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetAcquire(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static boolean weakCompareAndSetAcquire(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.weakCompareAndSetLongAcquire(
                     ba,
@@ -219,7 +263,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static boolean weakCompareAndSetRelease(ArrayHandle handle, Object oba, int index, long expected, long value) {
+        static boolean weakCompareAndSetRelease(VarHandle ob, Object oba, int index, long expected, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return UNSAFE.weakCompareAndSetLongRelease(
                     ba,
@@ -228,7 +273,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndSet(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndSet(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getAndSetLong(
@@ -238,7 +284,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndSetAcquire(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndSetAcquire(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getAndSetLongAcquire(
@@ -248,7 +295,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndSetRelease(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndSetRelease(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             return convEndian(handle.be,
                               UNSAFE.getAndSetLongRelease(
@@ -258,7 +306,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndAdd(ArrayHandle handle, Object oba, int index, long delta) {
+        static long getAndAdd(VarHandle ob, Object oba, int index, long delta) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndAddLong(
@@ -271,7 +320,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndAddAcquire(ArrayHandle handle, Object oba, int index, long delta) {
+        static long getAndAddAcquire(VarHandle ob, Object oba, int index, long delta) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndAddLongAcquire(
@@ -284,7 +334,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndAddRelease(ArrayHandle handle, Object oba, int index, long delta) {
+        static long getAndAddRelease(VarHandle ob, Object oba, int index, long delta) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndAddLongRelease(
@@ -309,7 +360,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOr(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseOr(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseOrLong(
@@ -322,7 +374,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOrRelease(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseOrRelease(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseOrLongRelease(
@@ -335,7 +388,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOrAcquire(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseOrAcquire(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseOrLongAcquire(
@@ -360,7 +414,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAnd(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseAnd(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseAndLong(
@@ -373,7 +428,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAndRelease(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseAndRelease(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseAndLongRelease(
@@ -386,7 +442,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAndAcquire(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseAndAcquire(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseAndLongAcquire(
@@ -411,7 +468,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseXor(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseXor(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseXorLong(
@@ -424,7 +482,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseXorRelease(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseXorRelease(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseXorLongRelease(
@@ -437,7 +496,8 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseXorAcquire(ArrayHandle handle, Object oba, int index, long value) {
+        static long getAndBitwiseXorAcquire(VarHandle ob, Object oba, int index, long value) {
+            ArrayHandle handle = (ArrayHandle)ob;
             byte[] ba = (byte[]) oba;
             if (handle.be == BE) {
                 return UNSAFE.getAndBitwiseXorLongAcquire(
@@ -468,24 +528,50 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
     static final class ByteBufferHandle extends ByteArrayViewVarHandle {
 
         ByteBufferHandle(boolean be) {
-            super(ByteBufferHandle.FORM, be);
+            this(be, false);
+        }
+
+        private ByteBufferHandle(boolean be, boolean exact) {
+            super(ByteBufferHandle.FORM, be, exact);
         }
 
         @Override
-        final MethodType accessModeTypeUncached(AccessMode accessMode) {
-            return accessMode.at.accessModeType(ByteBuffer.class, long.class, int.class);
+        public ByteBufferHandle withInvokeExactBehavior() {
+            return hasInvokeExactBehavior()
+                ? this
+                : new ByteBufferHandle(be, true);
+        }
+
+        @Override
+        public ByteBufferHandle withInvokeBehavior() {
+            return !hasInvokeExactBehavior()
+                ? this
+                : new ByteBufferHandle(be, false);
+        }
+
+        @Override
+        final MethodType accessModeTypeUncached(AccessType at) {
+            return at.accessModeType(ByteBuffer.class, long.class, int.class);
         }
 
         @ForceInline
         static int index(ByteBuffer bb, int index) {
+            MemorySegmentProxy segmentProxy = NIO_ACCESS.bufferSegment(bb);
             return Preconditions.checkIndex(index, UNSAFE.getInt(bb, BUFFER_LIMIT) - ALIGN, null);
+        }
+
+        @ForceInline
+        static Scope scope(ByteBuffer bb) {
+            MemorySegmentProxy segmentProxy = NIO_ACCESS.bufferSegment(bb);
+            return segmentProxy != null ?
+                    segmentProxy.scope() : null;
         }
 
         @ForceInline
         static int indexRO(ByteBuffer bb, int index) {
             if (UNSAFE.getBoolean(bb, BYTE_BUFFER_IS_READ_ONLY))
                 throw new ReadOnlyBufferException();
-            return Preconditions.checkIndex(index, UNSAFE.getInt(bb, BUFFER_LIMIT) - ALIGN, null);
+            return index(bb, index);
         }
 
         @ForceInline
@@ -497,189 +583,209 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long get(ByteBufferHandle handle, Object obb, int index) {
+        static long get(VarHandle ob, Object obb, int index) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.getLongUnaligned(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     ((long) index(bb, index)) + UNSAFE.getLong(bb, BUFFER_ADDRESS),
                     handle.be);
         }
 
         @ForceInline
-        static void set(ByteBufferHandle handle, Object obb, int index, long value) {
+        static void set(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            UNSAFE.putLongUnaligned(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     ((long) indexRO(bb, index)) + UNSAFE.getLong(bb, BUFFER_ADDRESS),
                     value,
                     handle.be);
         }
 
         @ForceInline
-        static long getVolatile(ByteBufferHandle handle, Object obb, int index) {
+        static long getVolatile(VarHandle ob, Object obb, int index) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getLongVolatile(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getLongVolatile(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, index(bb, index))));
         }
 
         @ForceInline
-        static void setVolatile(ByteBufferHandle handle, Object obb, int index, long value) {
+        static void setVolatile(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            UNSAFE.putLongVolatile(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            SCOPED_MEMORY_ACCESS.putLongVolatile(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, value));
         }
 
         @ForceInline
-        static long getAcquire(ByteBufferHandle handle, Object obb, int index) {
+        static long getAcquire(VarHandle ob, Object obb, int index) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getLongAcquire(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getLongAcquire(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, index(bb, index))));
         }
 
         @ForceInline
-        static void setRelease(ByteBufferHandle handle, Object obb, int index, long value) {
+        static void setRelease(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            UNSAFE.putLongRelease(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            SCOPED_MEMORY_ACCESS.putLongRelease(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, value));
         }
 
         @ForceInline
-        static long getOpaque(ByteBufferHandle handle, Object obb, int index) {
+        static long getOpaque(VarHandle ob, Object obb, int index) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getLongOpaque(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getLongOpaque(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, index(bb, index))));
         }
 
         @ForceInline
-        static void setOpaque(ByteBufferHandle handle, Object obb, int index, long value) {
+        static void setOpaque(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            UNSAFE.putLongOpaque(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            SCOPED_MEMORY_ACCESS.putLongOpaque(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, value));
         }
 
         @ForceInline
-        static boolean compareAndSet(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static boolean compareAndSet(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.compareAndSetLong(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.compareAndSetLong(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, expected), convEndian(handle.be, value));
         }
 
         @ForceInline
-        static long compareAndExchange(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static long compareAndExchange(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.compareAndExchangeLong(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.compareAndExchangeLong(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, expected), convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static long compareAndExchangeAcquire(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static long compareAndExchangeAcquire(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.compareAndExchangeLongAcquire(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.compareAndExchangeLongAcquire(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, expected), convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static long compareAndExchangeRelease(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static long compareAndExchangeRelease(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.compareAndExchangeLongRelease(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.compareAndExchangeLongRelease(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, expected), convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static boolean weakCompareAndSetPlain(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static boolean weakCompareAndSetPlain(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.weakCompareAndSetLongPlain(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.weakCompareAndSetLongPlain(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, expected), convEndian(handle.be, value));
         }
 
         @ForceInline
-        static boolean weakCompareAndSet(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static boolean weakCompareAndSet(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.weakCompareAndSetLong(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.weakCompareAndSetLong(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, expected), convEndian(handle.be, value));
         }
 
         @ForceInline
-        static boolean weakCompareAndSetAcquire(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static boolean weakCompareAndSetAcquire(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.weakCompareAndSetLongAcquire(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.weakCompareAndSetLongAcquire(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, expected), convEndian(handle.be, value));
         }
 
         @ForceInline
-        static boolean weakCompareAndSetRelease(ByteBufferHandle handle, Object obb, int index, long expected, long value) {
+        static boolean weakCompareAndSetRelease(VarHandle ob, Object obb, int index, long expected, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
-            return UNSAFE.weakCompareAndSetLongRelease(
-                    UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+            return SCOPED_MEMORY_ACCESS.weakCompareAndSetLongRelease(scope(bb),
+                    UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                     address(bb, indexRO(bb, index)),
                     convEndian(handle.be, expected), convEndian(handle.be, value));
         }
 
         @ForceInline
-        static long getAndSet(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndSet(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getAndSetLong(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getAndSetLong(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static long getAndSetAcquire(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndSetAcquire(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getAndSetLongAcquire(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getAndSetLongAcquire(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static long getAndSetRelease(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndSetRelease(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             return convEndian(handle.be,
-                              UNSAFE.getAndSetLongRelease(
-                                      UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                              SCOPED_MEMORY_ACCESS.getAndSetLongRelease(scope(bb),
+                                      UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                                       address(bb, indexRO(bb, index)),
                                       convEndian(handle.be, value)));
         }
 
         @ForceInline
-        static long getAndAdd(ByteBufferHandle handle, Object obb, int index, long delta) {
+        static long getAndAdd(VarHandle ob, Object obb, int index, long delta) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndAddLong(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndAddLong(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         delta);
             } else {
@@ -688,11 +794,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndAddAcquire(ByteBufferHandle handle, Object obb, int index, long delta) {
+        static long getAndAddAcquire(VarHandle ob, Object obb, int index, long delta) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndAddLongAcquire(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndAddLongAcquire(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         delta);
             } else {
@@ -701,11 +808,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndAddRelease(ByteBufferHandle handle, Object obb, int index, long delta) {
+        static long getAndAddRelease(VarHandle ob, Object obb, int index, long delta) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndAddLongRelease(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndAddLongRelease(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         delta);
             } else {
@@ -716,10 +824,10 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         @ForceInline
         static long getAndAddConvEndianWithCAS(ByteBuffer bb, int index, long delta) {
             long nativeExpectedValue, expectedValue;
-            Object base = UNSAFE.getObject(bb, BYTE_BUFFER_HB);
+            Object base = UNSAFE.getReference(bb, BYTE_BUFFER_HB);
             long offset = address(bb, indexRO(bb, index));
             do {
-                nativeExpectedValue = UNSAFE.getLongVolatile(base, offset);
+                nativeExpectedValue = SCOPED_MEMORY_ACCESS.getLongVolatile(scope(bb), base, offset);
                 expectedValue = Long.reverseBytes(nativeExpectedValue);
             } while (!UNSAFE.weakCompareAndSetLong(base, offset,
                     nativeExpectedValue, Long.reverseBytes(expectedValue + delta)));
@@ -727,11 +835,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOr(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseOr(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseOrLong(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseOrLong(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -740,11 +849,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOrRelease(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseOrRelease(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseOrLongRelease(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseOrLongRelease(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -753,11 +863,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseOrAcquire(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseOrAcquire(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseOrLongAcquire(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseOrLongAcquire(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -768,10 +879,10 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         @ForceInline
         static long getAndBitwiseOrConvEndianWithCAS(ByteBuffer bb, int index, long value) {
             long nativeExpectedValue, expectedValue;
-            Object base = UNSAFE.getObject(bb, BYTE_BUFFER_HB);
+            Object base = UNSAFE.getReference(bb, BYTE_BUFFER_HB);
             long offset = address(bb, indexRO(bb, index));
             do {
-                nativeExpectedValue = UNSAFE.getLongVolatile(base, offset);
+                nativeExpectedValue = SCOPED_MEMORY_ACCESS.getLongVolatile(scope(bb), base, offset);
                 expectedValue = Long.reverseBytes(nativeExpectedValue);
             } while (!UNSAFE.weakCompareAndSetLong(base, offset,
                     nativeExpectedValue, Long.reverseBytes(expectedValue | value)));
@@ -779,11 +890,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAnd(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseAnd(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseAndLong(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseAndLong(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -792,11 +904,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAndRelease(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseAndRelease(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseAndLongRelease(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseAndLongRelease(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -805,11 +918,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseAndAcquire(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseAndAcquire(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseAndLongAcquire(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseAndLongAcquire(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -820,10 +934,10 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         @ForceInline
         static long getAndBitwiseAndConvEndianWithCAS(ByteBuffer bb, int index, long value) {
             long nativeExpectedValue, expectedValue;
-            Object base = UNSAFE.getObject(bb, BYTE_BUFFER_HB);
+            Object base = UNSAFE.getReference(bb, BYTE_BUFFER_HB);
             long offset = address(bb, indexRO(bb, index));
             do {
-                nativeExpectedValue = UNSAFE.getLongVolatile(base, offset);
+                nativeExpectedValue = SCOPED_MEMORY_ACCESS.getLongVolatile(scope(bb), base, offset);
                 expectedValue = Long.reverseBytes(nativeExpectedValue);
             } while (!UNSAFE.weakCompareAndSetLong(base, offset,
                     nativeExpectedValue, Long.reverseBytes(expectedValue & value)));
@@ -832,11 +946,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
 
 
         @ForceInline
-        static long getAndBitwiseXor(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseXor(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseXorLong(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseXorLong(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -845,11 +960,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseXorRelease(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseXorRelease(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseXorLongRelease(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseXorLongRelease(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -858,11 +974,12 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         }
 
         @ForceInline
-        static long getAndBitwiseXorAcquire(ByteBufferHandle handle, Object obb, int index, long value) {
+        static long getAndBitwiseXorAcquire(VarHandle ob, Object obb, int index, long value) {
+            ByteBufferHandle handle = (ByteBufferHandle)ob;
             ByteBuffer bb = (ByteBuffer) Objects.requireNonNull(obb);
             if (handle.be == BE) {
-                return UNSAFE.getAndBitwiseXorLongAcquire(
-                        UNSAFE.getObject(bb, BYTE_BUFFER_HB),
+                return SCOPED_MEMORY_ACCESS.getAndBitwiseXorLongAcquire(scope(bb),
+                        UNSAFE.getReference(bb, BYTE_BUFFER_HB),
                         address(bb, indexRO(bb, index)),
                         value);
             } else {
@@ -873,10 +990,10 @@ final class VarHandleByteArrayAsLongs extends VarHandleByteArrayBase {
         @ForceInline
         static long getAndBitwiseXorConvEndianWithCAS(ByteBuffer bb, int index, long value) {
             long nativeExpectedValue, expectedValue;
-            Object base = UNSAFE.getObject(bb, BYTE_BUFFER_HB);
+            Object base = UNSAFE.getReference(bb, BYTE_BUFFER_HB);
             long offset = address(bb, indexRO(bb, index));
             do {
-                nativeExpectedValue = UNSAFE.getLongVolatile(base, offset);
+                nativeExpectedValue = SCOPED_MEMORY_ACCESS.getLongVolatile(scope(bb), base, offset);
                 expectedValue = Long.reverseBytes(nativeExpectedValue);
             } while (!UNSAFE.weakCompareAndSetLong(base, offset,
                     nativeExpectedValue, Long.reverseBytes(expectedValue ^ value)));

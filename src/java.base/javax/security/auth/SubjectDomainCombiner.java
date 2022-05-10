@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,7 +39,14 @@ import java.lang.ref.WeakReference;
  * {@code SubjectDomainCombiner}.
  *
  * @since 1.4
+ * @deprecated This class is only useful in conjunction with
+ *       {@linkplain SecurityManager the Security Manager}, which is deprecated
+ *       and subject to removal in a future release. Consequently, this class
+ *       is also deprecated and subject to removal. There is no replacement for
+ *       the Security Manager or this class.
  */
+@SuppressWarnings("removal")
+@Deprecated(since="17", forRemoval=true)
 public class SubjectDomainCombiner implements java.security.DomainCombiner {
 
     private Subject subject;
@@ -57,7 +64,7 @@ public class SubjectDomainCombiner implements java.security.DomainCombiner {
      * {@code SubjectDomainCombiner}.
      *
      * @param subject the {@code Subject} to be associated with
-     *          with this {@code SubjectDomainCombiner}.
+     *          this {@code SubjectDomainCombiner}.
      */
     public SubjectDomainCombiner(Subject subject) {
         this.subject = subject;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,6 +63,12 @@ public interface PrivateKey extends Key, javax.security.auth.Destroyable {
     /**
      * The class fingerprint that is set to indicate serialization
      * compatibility with a previous version of the class.
+     *
+     * @deprecated A {@code serialVersionUID} field in an interface is
+     * ineffectual. Do not use; no replacement.
      */
+    @Deprecated
+    @SuppressWarnings("serial")
+    @java.io.Serial
     static final long serialVersionUID = 6034044314589513430L;
 }

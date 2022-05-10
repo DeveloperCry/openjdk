@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -112,12 +112,12 @@ import java.util.Objects;
  * It is intended that {@code ZonedDateTime} or {@code Instant} is used to model data
  * in simpler applications. This class may be used when modeling date-time concepts in
  * more detail, or when communicating to a database or in a network protocol.
- *
  * <p>
  * This is a <a href="{@docRoot}/java.base/java/lang/doc-files/ValueBased.html">value-based</a>
- * class; use of identity-sensitive operations (including reference equality
- * ({@code ==}), identity hash code, or synchronization) on instances of
- * {@code OffsetDateTime} may have unpredictable results and should be avoided.
+ * class; programmers should treat instances that are
+ * {@linkplain #equals(Object) equal} as interchangeable and should not
+ * use instances for synchronization, or unpredictable behavior may
+ * occur. For example, in a future release, synchronization may fail.
  * The {@code equals} method should be used for comparisons.
  *
  * @implSpec
@@ -125,6 +125,7 @@ import java.util.Objects;
  *
  * @since 1.8
  */
+@jdk.internal.ValueBased
 public final class OffsetDateTime
         implements Temporal, TemporalAdjuster, Comparable<OffsetDateTime>, Serializable {
 
@@ -184,6 +185,7 @@ public final class OffsetDateTime
     /**
      * Serialization version.
      */
+    @java.io.Serial
     private static final long serialVersionUID = 2287754244819255394L;
 
     /**
@@ -594,14 +596,13 @@ public final class OffsetDateTime
      */
     @Override
     public int get(TemporalField field) {
-        if (field instanceof ChronoField) {
-            switch ((ChronoField) field) {
-                case INSTANT_SECONDS:
-                    throw new UnsupportedTemporalTypeException("Invalid field 'InstantSeconds' for get() method, use getLong() instead");
-                case OFFSET_SECONDS:
-                    return getOffset().getTotalSeconds();
-            }
-            return dateTime.get(field);
+        if (field instanceof ChronoField chronoField) {
+            return switch (chronoField) {
+                case INSTANT_SECONDS -> throw new UnsupportedTemporalTypeException("Invalid field " +
+                                         "'InstantSeconds' for get() method, use getLong() instead");
+                case OFFSET_SECONDS -> getOffset().getTotalSeconds();
+                default -> dateTime.get(field);
+            };
         }
         return Temporal.super.get(field);
     }
@@ -631,12 +632,12 @@ public final class OffsetDateTime
      */
     @Override
     public long getLong(TemporalField field) {
-        if (field instanceof ChronoField) {
-            switch ((ChronoField) field) {
-                case INSTANT_SECONDS: return toEpochSecond();
-                case OFFSET_SECONDS: return getOffset().getTotalSeconds();
-            }
-            return dateTime.getLong(field);
+        if (field instanceof ChronoField chronoField) {
+            return switch (chronoField) {
+                case INSTANT_SECONDS -> toEpochSecond();
+                case OFFSET_SECONDS -> getOffset().getTotalSeconds();
+                default -> dateTime.getLong(field);
+            };
         }
         return field.getFrom(this);
     }
@@ -965,15 +966,13 @@ public final class OffsetDateTime
      */
     @Override
     public OffsetDateTime with(TemporalField field, long newValue) {
-        if (field instanceof ChronoField) {
-            ChronoField f = (ChronoField) field;
-            switch (f) {
-                case INSTANT_SECONDS: return ofInstant(Instant.ofEpochSecond(newValue, getNano()), offset);
-                case OFFSET_SECONDS: {
-                    return with(dateTime, ZoneOffset.ofTotalSeconds(f.checkValidIntValue(newValue)));
-                }
-            }
-            return with(dateTime.with(field, newValue), offset);
+        if (field instanceof ChronoField chronoField) {
+            return switch (chronoField) {
+                case INSTANT_SECONDS -> ofInstant(Instant.ofEpochSecond(newValue, getNano()), offset);
+                case OFFSET_SECONDS ->
+                     with(dateTime, ZoneOffset.ofTotalSeconds(chronoField.checkValidIntValue(newValue)));
+                default -> with(dateTime.with(field, newValue), offset);
+            };
         }
         return field.adjustInto(this, newValue);
     }
@@ -1654,8 +1653,14 @@ public final class OffsetDateTime
     public long until(Temporal endExclusive, TemporalUnit unit) {
         OffsetDateTime end = OffsetDateTime.from(endExclusive);
         if (unit instanceof ChronoUnit) {
-            end = end.withOffsetSameInstant(offset);
-            return dateTime.until(end.dateTime, unit);
+            OffsetDateTime start = this;
+            try {
+                end = end.withOffsetSameInstant(offset);
+            } catch (DateTimeException ex) {
+                // end may be out of valid range. Adjust to end's offset.
+                start = withOffsetSameInstant(end.offset);
+            }
+            return start.dateTime.until(end.dateTime, unit);
         }
         return unit.between(this, end);
     }
@@ -1873,11 +1878,9 @@ public final class OffsetDateTime
         if (this == obj) {
             return true;
         }
-        if (obj instanceof OffsetDateTime) {
-            OffsetDateTime other = (OffsetDateTime) obj;
-            return dateTime.equals(other.dateTime) && offset.equals(other.offset);
-        }
-        return false;
+        return (obj instanceof OffsetDateTime other)
+                && dateTime.equals(other.dateTime)
+                && offset.equals(other.offset);
     }
 
     /**
@@ -1894,7 +1897,7 @@ public final class OffsetDateTime
     /**
      * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30+01:00}.
      * <p>
-     * The output will be one of the following ISO-8601 formats:
+     * The output will be one of the following formats:
      * <ul>
      * <li>{@code uuuu-MM-dd'T'HH:mmXXXXX}</li>
      * <li>{@code uuuu-MM-dd'T'HH:mm:ssXXXXX}</li>
@@ -1903,7 +1906,8 @@ public final class OffsetDateTime
      * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSSXXXXX}</li>
      * </ul>
      * The format used will be the shortest that outputs the full value of
-     * the time where the omitted parts are implied to be zero.
+     * the time where the omitted parts are implied to be zero. The output
+     * is compatible with ISO 8601 if the seconds in the offset are zero.
      *
      * @return a string representation of this date-time, not null
      */
@@ -1915,16 +1919,17 @@ public final class OffsetDateTime
     //-----------------------------------------------------------------------
     /**
      * Writes the object using a
-     * <a href="../../serialized-form.html#java.time.Ser">dedicated serialized form</a>.
+     * <a href="{@docRoot}/serialized-form.html#java.time.Ser">dedicated serialized form</a>.
      * @serialData
      * <pre>
      *  out.writeByte(10);  // identifies an OffsetDateTime
-     *  // the <a href="../../serialized-form.html#java.time.LocalDateTime">datetime</a> excluding the one byte header
-     *  // the <a href="../../serialized-form.html#java.time.ZoneOffset">offset</a> excluding the one byte header
+     *  // the <a href="{@docRoot}/serialized-form.html#java.time.LocalDateTime">datetime</a> excluding the one byte header
+     *  // the <a href="{@docRoot}/serialized-form.html#java.time.ZoneOffset">offset</a> excluding the one byte header
      * </pre>
      *
      * @return the instance of {@code Ser}, not null
      */
+    @java.io.Serial
     private Object writeReplace() {
         return new Ser(Ser.OFFSET_DATE_TIME_TYPE, this);
     }
@@ -1935,6 +1940,7 @@ public final class OffsetDateTime
      * @param s the stream to read
      * @throws InvalidObjectException always
      */
+    @java.io.Serial
     private void readObject(ObjectInputStream s) throws InvalidObjectException {
         throw new InvalidObjectException("Deserialization via serialization delegate");
     }

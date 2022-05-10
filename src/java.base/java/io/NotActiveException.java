@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,11 +28,11 @@ package java.io;
 /**
  * Thrown when serialization or deserialization is not active.
  *
- * @author  unascribed
  * @since   1.1
  */
 public class NotActiveException extends ObjectStreamException {
 
+    @java.io.Serial
     private static final long serialVersionUID = -3893467273049808895L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,9 +47,9 @@ public class ECPublicKeySpec implements KeySpec {
      * @param w the public point.
      * @param params the associated elliptic curve domain
      * parameters.
-     * @exception NullPointerException if {@code w}
+     * @throws    NullPointerException if {@code w}
      * or {@code params} is null.
-     * @exception IllegalArgumentException if {@code w}
+     * @throws    IllegalArgumentException if {@code w}
      * is point at infinity, i.e. ECPoint.POINT_INFINITY
      */
     public ECPublicKeySpec(ECPoint w, ECParameterSpec params) {

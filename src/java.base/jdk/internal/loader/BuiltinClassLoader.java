@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -57,10 +57,11 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Stream;
 
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 import jdk.internal.misc.VM;
 import jdk.internal.module.ModulePatcher.PatchedModuleReader;
 import jdk.internal.module.Resources;
+import jdk.internal.vm.annotation.Stable;
 import sun.security.util.LazyCodeSourcePermissionCollection;
 
 
@@ -103,8 +104,7 @@ public class BuiltinClassLoader
     private final BuiltinClassLoader parent;
 
     // the URL class path, or null if there is no class path
-    private final URLClassPath ucp;
-
+    private @Stable URLClassPath ucp;
 
     /**
      * A module defined/loaded by a built-in class loader.
@@ -115,14 +115,18 @@ public class BuiltinClassLoader
     private static class LoadedModule {
         private final BuiltinClassLoader loader;
         private final ModuleReference mref;
-        private final URL codeSourceURL;          // may be null
+        private final URI uri;                      // may be null
+        private @Stable URL codeSourceURL;          // may be null
 
         LoadedModule(BuiltinClassLoader loader, ModuleReference mref) {
             URL url = null;
-            if (mref.location().isPresent()) {
-                try {
-                    url = mref.location().get().toURL();
-                } catch (MalformedURLException | IllegalArgumentException e) { }
+            this.uri = mref.location().orElse(null);
+
+            // for non-jrt schemes we need to resolve the codeSourceURL
+            // eagerly during bootstrap since the handler might be
+            // overridden
+            if (uri != null && !"jrt".equals(uri.getScheme())) {
+                url = createURL(uri);
             }
             this.loader = loader;
             this.mref = mref;
@@ -132,13 +136,45 @@ public class BuiltinClassLoader
         BuiltinClassLoader loader() { return loader; }
         ModuleReference mref() { return mref; }
         String name() { return mref.descriptor().name(); }
-        URL codeSourceURL() { return codeSourceURL; }
+
+        URL codeSourceURL() {
+            URL url = codeSourceURL;
+            if (url == null && uri != null) {
+                codeSourceURL = url = createURL(uri);
+            }
+            return url;
+        }
+
+        private URL createURL(URI uri) {
+            URL url = null;
+            try {
+                url = uri.toURL();
+            } catch (MalformedURLException | IllegalArgumentException e) {
+            }
+            return url;
+        }
     }
 
-
     // maps package name to loaded module for modules in the boot layer
-    private static final Map<String, LoadedModule> packageToModule
-        = new ConcurrentHashMap<>(1024);
+    private static final Map<String, LoadedModule> packageToModule;
+    static {
+        ArchivedClassLoaders archivedClassLoaders = ArchivedClassLoaders.get();
+        if (archivedClassLoaders != null) {
+            @SuppressWarnings("unchecked")
+            Map<String, LoadedModule> map
+                = (Map<String, LoadedModule>) archivedClassLoaders.packageToModule();
+            packageToModule = map;
+        } else {
+            packageToModule = new ConcurrentHashMap<>(1024);
+        }
+    }
+
+    /**
+     * Invoked by ArchivedClassLoaders to archive the package-to-module map.
+     */
+    static Map<String, ?> packageToModule() {
+        return packageToModule;
+    }
 
     // maps a module name to a module reference
     private final Map<String, ModuleReference> nameToModule;
@@ -160,8 +196,23 @@ public class BuiltinClassLoader
         this.parent = parent;
         this.ucp = ucp;
 
-        this.nameToModule = new ConcurrentHashMap<>();
+        this.nameToModule = new ConcurrentHashMap<>(32);
         this.moduleToReader = new ConcurrentHashMap<>();
+    }
+
+    /**
+     * Appends to the given file path to the class path.
+     */
+    void appendClassPath(String path) {
+        // assert ucp != null;
+        ucp.addFile(path);
+    }
+
+    /**
+     * Sets the class path, called to reset the class path during -Xshare:dump
+     */
+    void setClassPath(URLClassPath ucp) {
+        this.ucp = ucp;
     }
 
     /**
@@ -177,22 +228,23 @@ public class BuiltinClassLoader
      * types in the module visible.
      */
     public void loadModule(ModuleReference mref) {
-        String mn = mref.descriptor().name();
+        ModuleDescriptor descriptor = mref.descriptor();
+        String mn = descriptor.name();
         if (nameToModule.putIfAbsent(mn, mref) != null) {
             throw new InternalError(mn + " already defined to this loader");
         }
 
         LoadedModule loadedModule = new LoadedModule(this, mref);
-        for (String pn : mref.descriptor().packages()) {
+        for (String pn : descriptor.packages()) {
             LoadedModule other = packageToModule.putIfAbsent(pn, loadedModule);
             if (other != null) {
                 throw new InternalError(pn + " in modules " + mn + " and "
-                                        + other.mref().descriptor().name());
+                                        + other.name());
             }
         }
 
         // clear resources cache if VM is already initialized
-        if (VM.isModuleSystemInited() && resourceCache != null) {
+        if (resourceCache != null && VM.isModuleSystemInited()) {
             resourceCache = null;
         }
     }
@@ -236,6 +288,7 @@ public class BuiltinClassLoader
      * Returns an input stream to a resource of the given name in a module
      * defined to this class loader.
      */
+    @SuppressWarnings("removal")
     public InputStream findResourceAsStream(String mn, String name)
         throws IOException
     {
@@ -383,12 +436,16 @@ public class BuiltinClassLoader
      *
      * The cache used by this method avoids repeated searching of all modules.
      */
+    @SuppressWarnings("removal")
     private List<URL> findMiscResource(String name) throws IOException {
         SoftReference<Map<String, List<URL>>> ref = this.resourceCache;
         Map<String, List<URL>> map = (ref != null) ? ref.get() : null;
         if (map == null) {
-            map = new ConcurrentHashMap<>();
-            this.resourceCache = new SoftReference<>(map);
+            // only cache resources after VM is fully initialized
+            if (VM.isModuleSystemInited()) {
+                map = new ConcurrentHashMap<>();
+                this.resourceCache = new SoftReference<>(map);
+            }
         } else {
             List<URL> urls = map.get(name);
             if (urls != null)
@@ -423,7 +480,7 @@ public class BuiltinClassLoader
         }
 
         // only cache resources after VM is fully initialized
-        if (VM.isModuleSystemInited()) {
+        if (map != null) {
             map.putIfAbsent(name, urls);
         }
 
@@ -433,6 +490,7 @@ public class BuiltinClassLoader
     /**
      * Returns the URL to a resource in a module or {@code null} if not found.
      */
+    @SuppressWarnings("removal")
     private URL findResource(ModuleReference mref, String name) throws IOException {
         URI u;
         if (System.getSecurityManager() == null) {
@@ -472,6 +530,7 @@ public class BuiltinClassLoader
     /**
      * Returns a URL to a resource on the class path.
      */
+    @SuppressWarnings("removal")
     private URL findResourceOnClassPath(String name) {
         if (hasClassPath()) {
             if (System.getSecurityManager() == null) {
@@ -489,6 +548,7 @@ public class BuiltinClassLoader
     /**
      * Returns the URLs of all resources of the given name on the class path.
      */
+    @SuppressWarnings("removal")
     private Enumeration<URL> findResourcesOnClassPath(String name) {
         if (hasClassPath()) {
             if (System.getSecurityManager() == null) {
@@ -636,7 +696,7 @@ public class BuiltinClassLoader
      * binary name. This method returns {@code null} when the class is not
      * found.
      */
-    protected Class<?> loadClassOrNull(String cn) {
+    protected final Class<?> loadClassOrNull(String cn) {
         return loadClassOrNull(cn, false);
     }
 
@@ -675,6 +735,7 @@ public class BuiltinClassLoader
      *
      * @return the resulting Class or {@code null} if not found
      */
+    @SuppressWarnings("removal")
     private Class<?> findClassInModuleOrNull(LoadedModule loadedModule, String cn) {
         if (System.getSecurityManager() == null) {
             return defineClass(cn, loadedModule);
@@ -689,6 +750,7 @@ public class BuiltinClassLoader
      *
      * @return the resulting Class or {@code null} if not found
      */
+    @SuppressWarnings("removal")
     private Class<?> findClassOnClassPathOrNull(String cn) {
         String path = cn.replace('.', '/').concat(".class");
         if (System.getSecurityManager() == null) {
@@ -1016,5 +1078,10 @@ public class BuiltinClassLoader
      */
     private static URL checkURL(URL url) {
         return URLClassPath.checkURL(url);
+    }
+
+    // Called from VM only, during -Xshare:dump
+    private void resetArchivedStates() {
+        ucp = null;
     }
 }

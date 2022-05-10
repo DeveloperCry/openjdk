@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,7 +28,6 @@ package java.io;
 /**
  * Constants written into the Object Serialization Stream.
  *
- * @author  unascribed
  * @since 1.1
  */
 public interface ObjectStreamConstants {
@@ -201,7 +200,7 @@ public interface ObjectStreamConstants {
                     new SerializablePermission("enableSubclassImplementation");
 
     /**
-     * Enable setting the process-wide serial filter.
+     * Enable setting the system-wide serial filter.
      *
      * @see java.io.ObjectInputFilter.Config#setSerialFilter(ObjectInputFilter)
      * @since 9

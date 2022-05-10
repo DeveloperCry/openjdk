@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,9 +30,9 @@ package java.lang;
  *
  * @see ModuleLayer
  * @since 9
- * @spec JPMS
  */
 public class LayerInstantiationException extends RuntimeException {
+    @java.io.Serial
     private static final long serialVersionUID = -906239691613568347L;
 
     /**

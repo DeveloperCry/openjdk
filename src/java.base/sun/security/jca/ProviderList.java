@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -71,12 +71,13 @@ public final class ProviderList {
     static final ProviderList EMPTY = new ProviderList(PC0, true);
 
     // list of all jdk.security.provider.preferred entries
-    static private PreferredList preferredPropList = null;
+    private static PreferredList preferredPropList = null;
 
     // dummy provider object to use during initialization
     // used to avoid explicit null checks in various places
     private static final Provider EMPTY_PROVIDER =
         new Provider("##Empty##", "1.0", "initialization in progress") {
+            @java.io.Serial
             private static final long serialVersionUID = 1151354171352296389L;
             // override getService() to return null slightly faster
             public Service getService(String type, String algorithm) {
@@ -86,6 +87,7 @@ public final class ProviderList {
 
     // construct a ProviderList from the security properties
     // (static provider configuration in the java.security file)
+    @SuppressWarnings("removal")
     static ProviderList fromSecurityProperties() {
         // doPrivileged() because of Security.getProperty()
         return AccessController.doPrivileged(
@@ -175,9 +177,11 @@ public final class ProviderList {
 
         while ((entry = Security.getProperty("security.provider." + i)) != null) {
             entry = entry.trim();
-            if (entry.length() == 0) {
-                System.err.println("invalid entry for " +
+            if (entry.isEmpty()) {
+                if (debug != null) {
+                    debug.println("empty entry for " +
                                    "security.provider." + i);
+                }
                 break;
             }
             int k = entry.indexOf(' ');
@@ -200,7 +204,7 @@ public final class ProviderList {
 
         // Load config entries for use when getInstance is called
         entry = Security.getProperty("jdk.security.provider.preferred");
-        if (entry != null && (entry = entry.trim()).length() > 0) {
+        if (entry != null && !(entry = entry.trim()).isEmpty()) {
             String[] entries = entry.split(",");
             if (ProviderList.preferredPropList == null) {
                 ProviderList.preferredPropList = new PreferredList();

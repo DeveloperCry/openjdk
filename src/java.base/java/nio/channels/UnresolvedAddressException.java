@@ -41,6 +41,7 @@ public class UnresolvedAddressException
     extends IllegalArgumentException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 6136959093620794148L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,6 +35,7 @@ import java.security.cert.*;
  */
 public class ValidatorException extends CertificateException {
 
+    @java.io.Serial
     private static final long serialVersionUID = -2836879718282292155L;
 
     public static final Object T_NO_TRUST_ANCHOR =
@@ -61,6 +62,7 @@ public class ValidatorException extends CertificateException {
     public static final Object T_UNTRUSTED_CERT =
         "Untrusted certificate";
 
+    @SuppressWarnings("serial") // Not statically typed as Serializable
     private Object type;
     private X509Certificate cert;
 

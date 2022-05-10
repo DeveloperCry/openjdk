@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateException;
 import java.util.*;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import sun.security.pkcs.EncryptedPrivateKeyInfo;
 import sun.security.util.PolicyUtil;
@@ -232,6 +234,28 @@ abstract class DomainKeyStore extends KeyStoreSpi {
         }
 
         return date;
+    }
+
+    @Override
+    public Set<KeyStore.Entry.Attribute> engineGetAttributes(String alias) {
+
+        AbstractMap.SimpleEntry<String, Collection<KeyStore>> pair =
+                getKeystoresForReading(alias);
+        Set<KeyStore.Entry.Attribute> result = Collections.emptySet();
+
+        try {
+            String entryAlias = pair.getKey();
+            for (KeyStore keystore : pair.getValue()) {
+                result = keystore.getAttributes(entryAlias);
+                if (result != null) {
+                    break;
+                }
+            }
+        } catch (KeyStoreException e) {
+            throw new IllegalStateException(e);
+        }
+
+        return result;
     }
 
     /**
@@ -768,7 +792,7 @@ abstract class DomainKeyStore extends KeyStoreSpi {
 
         try (InputStreamReader configurationReader =
             new InputStreamReader(
-                PolicyUtil.getInputStream(configuration.toURL()), "UTF-8")) {
+                PolicyUtil.getInputStream(configuration.toURL()), UTF_8)) {
             parser.read(configurationReader);
             domains = parser.getDomainEntries();
 
@@ -882,7 +906,7 @@ abstract class DomainKeyStore extends KeyStoreSpi {
 /*
  * Utility class that holds the components used to construct a KeyStore.Builder
  */
-class KeyStoreBuilderComponents {
+static class KeyStoreBuilderComponents {
     String name;
     String type;
     Provider provider;

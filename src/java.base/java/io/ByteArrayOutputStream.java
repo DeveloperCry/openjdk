@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,8 @@ package java.io;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
+
+import jdk.internal.util.ArraysSupport;
 
 /**
  * This class implements an output stream in which the data is
@@ -84,48 +86,20 @@ public class ByteArrayOutputStream extends OutputStream {
      * at least the number of elements specified by the minimum
      * capacity argument.
      *
-     * @param  minCapacity the desired minimum capacity
-     * @throws OutOfMemoryError if {@code minCapacity < 0}.  This is
-     * interpreted as a request for the unsatisfiably large capacity
+     * @param  minCapacity the desired minimum capacity.
+     * @throws OutOfMemoryError if {@code minCapacity < 0} and
+     * {@code minCapacity - buf.length > 0}.  This is interpreted as a
+     * request for the unsatisfiably large capacity.
      * {@code (long) Integer.MAX_VALUE + (minCapacity - Integer.MAX_VALUE)}.
      */
     private void ensureCapacity(int minCapacity) {
         // overflow-conscious code
-        if (minCapacity - buf.length > 0)
-            grow(minCapacity);
-    }
-
-    /**
-     * The maximum size of array to allocate.
-     * Some VMs reserve some header words in an array.
-     * Attempts to allocate larger arrays may result in
-     * OutOfMemoryError: Requested array size exceeds VM limit
-     */
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-
-    /**
-     * Increases the capacity to ensure that it can hold at least the
-     * number of elements specified by the minimum capacity argument.
-     *
-     * @param minCapacity the desired minimum capacity
-     */
-    private void grow(int minCapacity) {
-        // overflow-conscious code
         int oldCapacity = buf.length;
-        int newCapacity = oldCapacity << 1;
-        if (newCapacity - minCapacity < 0)
-            newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacity(minCapacity);
-        buf = Arrays.copyOf(buf, newCapacity);
-    }
-
-    private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow
-            throw new OutOfMemoryError();
-        return (minCapacity > MAX_ARRAY_SIZE) ?
-            Integer.MAX_VALUE :
-            MAX_ARRAY_SIZE;
+        int minGrowth = minCapacity - oldCapacity;
+        if (minGrowth > 0) {
+            buf = Arrays.copyOf(buf, ArraysSupport.newLength(oldCapacity,
+                    minGrowth, oldCapacity /* preferred growth */));
+        }
     }
 
     /**
@@ -151,7 +125,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * {@code len} is negative, or {@code len} is greater than
      * {@code b.length - off}
      */
-    public synchronized void write(byte b[], int off, int len) {
+    public synchronized void write(byte[] b, int off, int len) {
         Objects.checkFromIndexSize(off, len, b.length);
         ensureCapacity(count + len);
         System.arraycopy(b, off, buf, count, len);
@@ -170,7 +144,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @throws  NullPointerException if {@code b} is {@code null}.
      * @since   11
      */
-    public void writeBytes(byte b[]) {
+    public void writeBytes(byte[] b) {
         write(b, 0, b.length);
     }
 
@@ -224,16 +198,17 @@ public class ByteArrayOutputStream extends OutputStream {
 
     /**
      * Converts the buffer's contents into a string decoding bytes using the
-     * platform's default character set. The length of the new {@code String}
-     * is a function of the character set, and hence may not be equal to the
+     * default charset. The length of the new {@code String}
+     * is a function of the charset, and hence may not be equal to the
      * size of the buffer.
      *
      * <p> This method always replaces malformed-input and unmappable-character
-     * sequences with the default replacement string for the platform's
-     * default character set. The {@linkplain java.nio.charset.CharsetDecoder}
+     * sequences with the default replacement string for the
+     * default charset. The {@linkplain java.nio.charset.CharsetDecoder}
      * class should be used when more control over the decoding process is
      * required.
      *
+     * @see Charset#defaultCharset()
      * @return String decoded from the buffer's contents.
      * @since  1.1
      */
@@ -243,10 +218,10 @@ public class ByteArrayOutputStream extends OutputStream {
 
     /**
      * Converts the buffer's contents into a string by decoding the bytes using
-     * the named {@link java.nio.charset.Charset charset}.
+     * the named {@link Charset charset}.
      *
      * <p> This method is equivalent to {@code #toString(charset)} that takes a
-     * {@link java.nio.charset.Charset charset}.
+     * {@link Charset charset}.
      *
      * <p> An invocation of this method of the form
      *
@@ -266,7 +241,7 @@ public class ByteArrayOutputStream extends OutputStream {
      *
      *
      * @param  charsetName  the name of a supported
-     *         {@link java.nio.charset.Charset charset}
+     *         {@link Charset charset}
      * @return String decoded from the buffer's contents.
      * @throws UnsupportedEncodingException
      *         If the named charset is not supported
@@ -280,7 +255,7 @@ public class ByteArrayOutputStream extends OutputStream {
 
     /**
      * Converts the buffer's contents into a string by decoding the bytes using
-     * the specified {@link java.nio.charset.Charset charset}. The length of the new
+     * the specified {@link Charset charset}. The length of the new
      * {@code String} is a function of the charset, and hence may not be equal
      * to the length of the byte array.
      *
@@ -289,7 +264,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
      *
-     * @param      charset  the {@linkplain java.nio.charset.Charset charset}
+     * @param      charset  the {@linkplain Charset charset}
      *             to be used to decode the {@code bytes}
      * @return     String decoded from the buffer's contents.
      * @since      10
@@ -312,14 +287,14 @@ public class ByteArrayOutputStream extends OutputStream {
      * As of JDK&nbsp;1.1, the preferred way to do this is via the
      * {@link #toString(String charsetName)} or {@link #toString(Charset charset)}
      * method, which takes an encoding-name or charset argument,
-     * or the {@code toString()} method, which uses the platform's default
-     * character encoding.
+     * or the {@code toString()} method, which uses the default charset.
      *
      * @param      hibyte    the high byte of each resulting Unicode character.
      * @return     the current contents of the output stream, as a string.
      * @see        java.io.ByteArrayOutputStream#size()
      * @see        java.io.ByteArrayOutputStream#toString(String)
      * @see        java.io.ByteArrayOutputStream#toString()
+     * @see        Charset#defaultCharset()
      */
     @Deprecated
     public synchronized String toString(int hibyte) {

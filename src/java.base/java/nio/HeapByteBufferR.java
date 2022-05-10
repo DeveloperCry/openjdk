@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
 
@@ -44,7 +47,7 @@ class HeapByteBufferR
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(byte[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,7 +59,7 @@ class HeapByteBufferR
 
     */
 
-    HeapByteBufferR(int cap, int lim) {            // package-private
+    HeapByteBufferR(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
 
 
@@ -65,12 +68,12 @@ class HeapByteBufferR
 
 
 
-        super(cap, lim);
+        super(cap, lim, segment);
         this.isReadOnly = true;
 
     }
 
-    HeapByteBufferR(byte[] buf, int off, int len) { // package-private
+    HeapByteBufferR(byte[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
 
 
@@ -79,14 +82,14 @@ class HeapByteBufferR
 
 
 
-        super(buf, off, len);
+        super(buf, off, len, segment);
         this.isReadOnly = true;
 
     }
 
     protected HeapByteBufferR(byte[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
 
@@ -96,33 +99,33 @@ class HeapByteBufferR
 
 
 
-        super(buf, mark, pos, lim, cap, off);
+        super(buf, mark, pos, lim, cap, off, segment);
         this.isReadOnly = true;
 
     }
 
     public ByteBuffer slice() {
-        return new HeapByteBufferR(hb,
-                                        -1,
-                                        0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
-    }
-
-
-    ByteBuffer slice(int pos, int lim) {
-        assert (pos >= 0);
-        assert (pos <= lim);
-        int rem = lim - pos;
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapByteBufferR(hb,
                                         -1,
                                         0,
                                         rem,
                                         rem,
-                                        pos + offset);
+                                        pos + offset, segment);
     }
 
+    @Override
+    public ByteBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapByteBufferR(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public ByteBuffer duplicate() {
         return new HeapByteBufferR(hb,
@@ -130,7 +133,7 @@ class HeapByteBufferR
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public ByteBuffer asReadOnlyBuffer() {
@@ -145,6 +148,16 @@ class HeapByteBufferR
         return duplicate();
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -218,6 +231,8 @@ class HeapByteBufferR
 
 
 
+
+
         throw new ReadOnlyBufferException();
 
     }
@@ -228,17 +243,21 @@ class HeapByteBufferR
 
 
 
+        throw new ReadOnlyBufferException();
+
+    }
+
+    public ByteBuffer put(int index, ByteBuffer src, int offset, int length) {
 
 
 
 
 
+        throw new ReadOnlyBufferException();
 
+    }
 
-
-
-
-
+    public ByteBuffer put(int index, byte[] src, int offset, int length) {
 
 
 
@@ -250,7 +269,33 @@ class HeapByteBufferR
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public ByteBuffer compact() {
+
+
+
+
 
 
 
@@ -311,21 +356,22 @@ class HeapByteBufferR
     }
 
     public CharBuffer asCharBuffer() {
-        int size = this.remaining() >> 1;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 1;
+        long addr = address + pos;
         return (bigEndian
                 ? (CharBuffer)(new ByteBufferAsCharBufferRB(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr))
+                                                               addr, segment))
                 : (CharBuffer)(new ByteBufferAsCharBufferRL(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr)));
+                                                               addr, segment)));
     }
 
 
@@ -362,21 +408,22 @@ class HeapByteBufferR
     }
 
     public ShortBuffer asShortBuffer() {
-        int size = this.remaining() >> 1;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 1;
+        long addr = address + pos;
         return (bigEndian
                 ? (ShortBuffer)(new ByteBufferAsShortBufferRB(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr))
+                                                                 addr, segment))
                 : (ShortBuffer)(new ByteBufferAsShortBufferRL(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr)));
+                                                                 addr, segment)));
     }
 
 
@@ -413,21 +460,22 @@ class HeapByteBufferR
     }
 
     public IntBuffer asIntBuffer() {
-        int size = this.remaining() >> 2;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 2;
+        long addr = address + pos;
         return (bigEndian
                 ? (IntBuffer)(new ByteBufferAsIntBufferRB(this,
                                                              -1,
                                                              0,
                                                              size,
                                                              size,
-                                                             addr))
+                                                             addr, segment))
                 : (IntBuffer)(new ByteBufferAsIntBufferRL(this,
                                                              -1,
                                                              0,
                                                              size,
                                                              size,
-                                                             addr)));
+                                                             addr, segment)));
     }
 
 
@@ -464,21 +512,22 @@ class HeapByteBufferR
     }
 
     public LongBuffer asLongBuffer() {
-        int size = this.remaining() >> 3;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 3;
+        long addr = address + pos;
         return (bigEndian
                 ? (LongBuffer)(new ByteBufferAsLongBufferRB(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr))
+                                                               addr, segment))
                 : (LongBuffer)(new ByteBufferAsLongBufferRL(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr)));
+                                                               addr, segment)));
     }
 
 
@@ -519,21 +568,22 @@ class HeapByteBufferR
     }
 
     public FloatBuffer asFloatBuffer() {
-        int size = this.remaining() >> 2;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 2;
+        long addr = address + pos;
         return (bigEndian
                 ? (FloatBuffer)(new ByteBufferAsFloatBufferRB(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr))
+                                                                 addr, segment))
                 : (FloatBuffer)(new ByteBufferAsFloatBufferRL(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr)));
+                                                                 addr, segment)));
     }
 
 
@@ -574,25 +624,23 @@ class HeapByteBufferR
     }
 
     public DoubleBuffer asDoubleBuffer() {
-        int size = this.remaining() >> 3;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 3;
+        long addr = address + pos;
         return (bigEndian
                 ? (DoubleBuffer)(new ByteBufferAsDoubleBufferRB(this,
                                                                    -1,
                                                                    0,
                                                                    size,
                                                                    size,
-                                                                   addr))
+                                                                   addr, segment))
                 : (DoubleBuffer)(new ByteBufferAsDoubleBufferRL(this,
                                                                    -1,
                                                                    0,
                                                                    size,
                                                                    size,
-                                                                   addr)));
+                                                                   addr, segment)));
     }
-
-
-
 
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,9 +25,20 @@
 
 package java.security;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.ref.Reference;
+
+import jdk.internal.vm.annotation.Hidden;
 import sun.security.util.Debug;
+import sun.security.util.SecurityConstants;
 import jdk.internal.reflect.CallerSensitive;
 import jdk.internal.reflect.Reflection;
+import jdk.internal.vm.annotation.DontInline;
+import jdk.internal.vm.annotation.ForceInline;
+import jdk.internal.vm.annotation.ReservedStackAccess;
 
 /**
  * <p> The AccessController class is used for access control operations
@@ -260,8 +271,14 @@ import jdk.internal.reflect.Reflection;
  * @author Li Gong
  * @author Roland Schemers
  * @since 1.2
+ * @deprecated This class is only useful in conjunction with
+ *       {@linkplain SecurityManager the Security Manager}, which is deprecated
+ *       and subject to removal in a future release. Consequently, this class
+ *       is also deprecated and subject to removal. There is no replacement for
+ *       the Security Manager or this class.
  */
 
+@Deprecated(since="17", forRemoval=true)
 public final class AccessController {
 
     /**
@@ -287,7 +304,7 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method.
      *
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction,AccessControlContext)
      * @see #doPrivileged(PrivilegedExceptionAction)
@@ -296,7 +313,10 @@ public final class AccessController {
      */
 
     @CallerSensitive
-    public static native <T> T doPrivileged(PrivilegedAction<T> action);
+    public static <T> T doPrivileged(PrivilegedAction<T> action)
+    {
+        return executePrivileged(action, null, Reflection.getCallerClass());
+    }
 
     /**
      * Performs the specified {@code PrivilegedAction} with privileges
@@ -316,7 +336,7 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method.
      *
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction)
      * @see java.security.DomainCombiner
@@ -325,10 +345,12 @@ public final class AccessController {
      */
     @CallerSensitive
     public static <T> T doPrivilegedWithCombiner(PrivilegedAction<T> action) {
+        @SuppressWarnings("removal")
         AccessControlContext acc = getStackAccessControlContext();
         if (acc == null) {
             return AccessController.doPrivileged(action);
         }
+        @SuppressWarnings("removal")
         DomainCombiner dc = acc.getAssignedCombiner();
         return AccessController.doPrivileged(action,
                                              preserveCombiner(dc, Reflection.getCallerClass()));
@@ -363,14 +385,19 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method.
      *
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
      */
     @CallerSensitive
-    public static native <T> T doPrivileged(PrivilegedAction<T> action,
-                                            AccessControlContext context);
+    public static <T> T doPrivileged(PrivilegedAction<T> action,
+                                     @SuppressWarnings("removal") AccessControlContext context)
+    {
+        Class<?> caller = Reflection.getCallerClass();
+        context = checkContext(context, caller);
+        return executePrivileged(action, context, caller);
+    }
 
 
     /**
@@ -419,13 +446,16 @@ public final class AccessController {
      */
     @CallerSensitive
     public static <T> T doPrivileged(PrivilegedAction<T> action,
-        AccessControlContext context, Permission... perms) {
+            @SuppressWarnings("removal") AccessControlContext context,
+            Permission... perms) {
 
+        @SuppressWarnings("removal")
         AccessControlContext parent = getContext();
         if (perms == null) {
             throw new NullPointerException("null permissions parameter");
         }
-        Class <?> caller = Reflection.getCallerClass();
+        Class<?> caller = Reflection.getCallerClass();
+        @SuppressWarnings("removal")
         DomainCombiner dc = (context == null) ? null : context.getCombiner();
         return AccessController.doPrivileged(action, createWrapper(dc,
             caller, parent, context, perms));
@@ -482,9 +512,12 @@ public final class AccessController {
      */
     @CallerSensitive
     public static <T> T doPrivilegedWithCombiner(PrivilegedAction<T> action,
-        AccessControlContext context, Permission... perms) {
+            @SuppressWarnings("removal") AccessControlContext context,
+            Permission... perms) {
 
+        @SuppressWarnings("removal")
         AccessControlContext parent = getContext();
+        @SuppressWarnings("removal")
         DomainCombiner dc = parent.getCombiner();
         if (dc == null && context != null) {
             dc = context.getCombiner();
@@ -492,7 +525,7 @@ public final class AccessController {
         if (perms == null) {
             throw new NullPointerException("null permissions parameter");
         }
-        Class <?> caller = Reflection.getCallerClass();
+        Class<?> caller = Reflection.getCallerClass();
         return AccessController.doPrivileged(action, createWrapper(dc, caller,
             parent, context, perms));
     }
@@ -515,9 +548,9 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method
      *
-     * @exception PrivilegedActionException if the specified action's
+     * @throws    PrivilegedActionException if the specified action's
      *         {@code run} method threw a <i>checked</i> exception
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
@@ -525,10 +558,21 @@ public final class AccessController {
      * @see java.security.DomainCombiner
      */
     @CallerSensitive
-    public static native <T> T
+    public static <T> T
         doPrivileged(PrivilegedExceptionAction<T> action)
-        throws PrivilegedActionException;
-
+        throws PrivilegedActionException
+    {
+        @SuppressWarnings("removal")
+        AccessControlContext context = null;
+        Class<?> caller = Reflection.getCallerClass();
+        try {
+            return executePrivileged(action, context, caller);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw wrapException(e);
+        }
+    }
 
     /**
      * Performs the specified {@code PrivilegedExceptionAction} with
@@ -548,9 +592,9 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method
      *
-     * @exception PrivilegedActionException if the specified action's
+     * @throws    PrivilegedActionException if the specified action's
      *         {@code run} method threw a <i>checked</i> exception
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
@@ -562,10 +606,12 @@ public final class AccessController {
     public static <T> T doPrivilegedWithCombiner(PrivilegedExceptionAction<T> action)
         throws PrivilegedActionException
     {
+        @SuppressWarnings("removal")
         AccessControlContext acc = getStackAccessControlContext();
         if (acc == null) {
             return AccessController.doPrivileged(action);
         }
+        @SuppressWarnings("removal")
         DomainCombiner dc = acc.getAssignedCombiner();
         return AccessController.doPrivileged(action,
                                              preserveCombiner(dc, Reflection.getCallerClass()));
@@ -574,6 +620,7 @@ public final class AccessController {
     /**
      * preserve the combiner across the doPrivileged call
      */
+    @SuppressWarnings("removal")
     private static AccessControlContext preserveCombiner(DomainCombiner combiner,
                                                          Class<?> caller)
     {
@@ -583,16 +630,17 @@ public final class AccessController {
     /**
      * Create a wrapper to contain the limited privilege scope data.
      */
+    @SuppressWarnings("removal")
     private static AccessControlContext
         createWrapper(DomainCombiner combiner, Class<?> caller,
                       AccessControlContext parent, AccessControlContext context,
                       Permission[] perms)
     {
-        ProtectionDomain callerPD = getCallerPD(caller);
+        ProtectionDomain callerPD = getProtectionDomain(caller);
         // check if caller is authorized to create context
-        if (context != null && !context.isAuthorized() &&
-            System.getSecurityManager() != null &&
-            !callerPD.impliesCreateAccessControlContext())
+        if (System.getSecurityManager() != null &&
+            context != null && !context.isAuthorized() &&
+            !callerPD.implies(SecurityConstants.CREATE_ACC_PERMISSION))
         {
             return getInnocuousAcc();
         } else {
@@ -604,24 +652,17 @@ public final class AccessController {
     private static class AccHolder {
         // An AccessControlContext with no granted permissions.
         // Only initialized on demand when getInnocuousAcc() is called.
+        @SuppressWarnings("removal")
         static final AccessControlContext innocuousAcc =
             new AccessControlContext(new ProtectionDomain[] {
                                      new ProtectionDomain(null, null) });
     }
+    @SuppressWarnings("removal")
     private static AccessControlContext getInnocuousAcc() {
         return AccHolder.innocuousAcc;
     }
 
-    private static ProtectionDomain getCallerPD(final Class <?> caller) {
-        ProtectionDomain callerPd = doPrivileged
-            (new PrivilegedAction<>() {
-            public ProtectionDomain run() {
-                return caller.getProtectionDomain();
-            }
-        });
-
-        return callerPd;
-    }
+    private static native ProtectionDomain getProtectionDomain(final Class<?> caller);
 
     /**
      * Performs the specified {@code PrivilegedExceptionAction} with
@@ -652,19 +693,140 @@ public final class AccessController {
      *
      * @return the value returned by the action's {@code run} method
      *
-     * @exception PrivilegedActionException if the specified action's
+     * @throws    PrivilegedActionException if the specified action's
      *         {@code run} method threw a <i>checked</i> exception
-     * @exception NullPointerException if the action is {@code null}
+     * @throws    NullPointerException if the action is {@code null}
      *
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedAction,AccessControlContext)
      */
     @CallerSensitive
-    public static native <T> T
+    public static <T> T
         doPrivileged(PrivilegedExceptionAction<T> action,
-                     AccessControlContext context)
-        throws PrivilegedActionException;
+                     @SuppressWarnings("removal") AccessControlContext context)
+        throws PrivilegedActionException
+    {
+        Class<?> caller = Reflection.getCallerClass();
+        context = checkContext(context, caller);
+        try {
+            return executePrivileged(action, context, caller);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw wrapException(e);
+        }
+    }
 
+    @SuppressWarnings("removal")
+    private static AccessControlContext checkContext(AccessControlContext context,
+        Class<?> caller)
+    {
+        // check if caller is authorized to create context
+        if (System.getSecurityManager() != null &&
+            context != null && !context.isAuthorized() &&
+            context != getInnocuousAcc())
+        {
+            ProtectionDomain callerPD = getProtectionDomain(caller);
+            if (callerPD != null && !callerPD.implies(SecurityConstants.CREATE_ACC_PERMISSION)) {
+                return getInnocuousAcc();
+            }
+        }
+        return context;
+    }
+
+    /**
+     * The value needs to be physically located in the frame, so that it
+     * can be found by a stack walk.
+     */
+    @Hidden
+    private static native void ensureMaterializedForStackWalk(Object o);
+
+    /**
+     * Sanity check that the caller context is indeed privileged.
+     *
+     * Used by executePrivileged to make sure the frame is properly
+     * recognized by the VM.
+     */
+    private static boolean isPrivileged() {
+        @SuppressWarnings("removal")
+        AccessControlContext ctx = getStackAccessControlContext();
+        return ctx == null || ctx.isPrivileged();
+    }
+
+    /**
+     * Execute the action as privileged.
+     *
+     * The VM recognizes this method as special, so any changes to the
+     * name or signature require corresponding changes in
+     * getStackAccessControlContext().
+     */
+    @Hidden
+    @ForceInline
+    private static <T> T
+        executePrivileged(PrivilegedAction<T> action,
+                          @SuppressWarnings("removal") AccessControlContext context,
+                          Class<?> caller)
+    {
+        // Ensure context has a physical value in the frame
+        if (context != null) {
+            ensureMaterializedForStackWalk(context);
+        }
+
+        assert isPrivileged(); // sanity check invariant
+        T result = action.run();
+        assert isPrivileged(); // sanity check invariant
+
+        // Keep these alive across the run() call so they can be
+        // retrieved by getStackAccessControlContext().
+        Reference.reachabilityFence(context);
+        Reference.reachabilityFence(caller);
+        return result;
+    }
+
+    /**
+     * Execute the action as privileged.
+     *
+     * The VM recognizes this method as special, so any changes to the
+     * name or signature require corresponding changes in
+     * getStackAccessControlContext().
+     */
+    @Hidden
+    @ForceInline
+    private static <T> T
+        executePrivileged(PrivilegedExceptionAction<T> action,
+                          @SuppressWarnings("removal") AccessControlContext context,
+                          Class<?> caller)
+        throws Exception
+    {
+        // Ensure context has a physical value in the frame
+        if (context != null) {
+            ensureMaterializedForStackWalk(context);
+        }
+
+        assert isPrivileged(); // sanity check invariant
+        T result = action.run();
+        assert isPrivileged(); // sanity check invariant
+
+        // Keep these alive across the run() call so they can be
+        // retrieved by getStackAccessControlContext().
+        Reference.reachabilityFence(context);
+        Reference.reachabilityFence(caller);
+        return result;
+    }
+
+
+    /**
+     * Wrap an exception.  The annotations are used in a best effort to
+     * avoid StackOverflowError in the caller.  Inlining the callees as
+     * well and tail-call elimination could also help here, but are not
+     * needed for correctness, only quality of implementation.
+     */
+    @Hidden
+    @ForceInline
+    @ReservedStackAccess
+    private static PrivilegedActionException wrapException(Exception e) {
+        return new PrivilegedActionException(e);
+    }
 
     /**
      * Performs the specified {@code PrivilegedExceptionAction} with
@@ -714,14 +876,17 @@ public final class AccessController {
      */
     @CallerSensitive
     public static <T> T doPrivileged(PrivilegedExceptionAction<T> action,
-                                     AccessControlContext context, Permission... perms)
+            @SuppressWarnings("removal") AccessControlContext context,
+            Permission... perms)
         throws PrivilegedActionException
     {
+        @SuppressWarnings("removal")
         AccessControlContext parent = getContext();
         if (perms == null) {
             throw new NullPointerException("null permissions parameter");
         }
-        Class <?> caller = Reflection.getCallerClass();
+        Class<?> caller = Reflection.getCallerClass();
+        @SuppressWarnings("removal")
         DomainCombiner dc = (context == null) ? null : context.getCombiner();
         return AccessController.doPrivileged(action, createWrapper(dc, caller, parent, context, perms));
     }
@@ -779,11 +944,13 @@ public final class AccessController {
      */
     @CallerSensitive
     public static <T> T doPrivilegedWithCombiner(PrivilegedExceptionAction<T> action,
-                                                 AccessControlContext context,
+                                                 @SuppressWarnings("removal") AccessControlContext context,
                                                  Permission... perms)
         throws PrivilegedActionException
     {
+        @SuppressWarnings("removal")
         AccessControlContext parent = getContext();
+        @SuppressWarnings("removal")
         DomainCombiner dc = parent.getCombiner();
         if (dc == null && context != null) {
             dc = context.getCombiner();
@@ -791,7 +958,7 @@ public final class AccessController {
         if (perms == null) {
             throw new NullPointerException("null permissions parameter");
         }
-        Class <?> caller = Reflection.getCallerClass();
+        Class<?> caller = Reflection.getCallerClass();
         return AccessController.doPrivileged(action, createWrapper(dc, caller,
             parent, context, perms));
     }
@@ -806,6 +973,7 @@ public final class AccessController {
      *         null if there was only privileged system code.
      */
 
+    @SuppressWarnings("removal")
     private static native AccessControlContext getStackAccessControlContext();
 
 
@@ -815,6 +983,7 @@ public final class AccessController {
      * AccessControlContext can use it.
      */
 
+    @SuppressWarnings("removal")
     static native AccessControlContext getInheritedAccessControlContext();
 
     /**
@@ -828,6 +997,7 @@ public final class AccessController {
      * @return the AccessControlContext based on the current context.
      */
 
+    @SuppressWarnings("removal")
     public static AccessControlContext getContext()
     {
         AccessControlContext acc = getStackAccessControlContext();
@@ -851,13 +1021,14 @@ public final class AccessController {
      *
      * @param perm the requested permission.
      *
-     * @exception AccessControlException if the specified permission
+     * @throws    AccessControlException if the specified permission
      *            is not permitted, based on the current security policy.
-     * @exception NullPointerException if the specified permission
+     * @throws    NullPointerException if the specified permission
      *            is {@code null} and is checked based on the
      *            security policy currently in effect.
      */
 
+    @SuppressWarnings("removal")
     public static void checkPermission(Permission perm)
         throws AccessControlException
     {

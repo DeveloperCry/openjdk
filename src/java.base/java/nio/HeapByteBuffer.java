@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
  * A read/write HeapByteBuffer.
@@ -44,7 +47,7 @@ class HeapByteBuffer
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(byte[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,9 +59,9 @@ class HeapByteBuffer
 
     */
 
-    HeapByteBuffer(int cap, int lim) {            // package-private
+    HeapByteBuffer(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
-        super(-1, 0, lim, cap, new byte[cap], 0);
+        super(-1, 0, lim, cap, new byte[cap], 0, segment);
         /*
         hb = new byte[cap];
         offset = 0;
@@ -70,9 +73,9 @@ class HeapByteBuffer
 
     }
 
-    HeapByteBuffer(byte[] buf, int off, int len) { // package-private
+    HeapByteBuffer(byte[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
-        super(-1, off, off + len, buf.length, buf, 0);
+        super(-1, off, off + len, buf.length, buf, 0, segment);
         /*
         hb = buf;
         offset = 0;
@@ -86,10 +89,10 @@ class HeapByteBuffer
 
     protected HeapByteBuffer(byte[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap, buf, off);
+        super(mark, pos, lim, cap, buf, off, segment);
         /*
         hb = buf;
         offset = off;
@@ -102,27 +105,27 @@ class HeapByteBuffer
     }
 
     public ByteBuffer slice() {
-        return new HeapByteBuffer(hb,
-                                        -1,
-                                        0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
-    }
-
-
-    ByteBuffer slice(int pos, int lim) {
-        assert (pos >= 0);
-        assert (pos <= lim);
-        int rem = lim - pos;
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapByteBuffer(hb,
                                         -1,
                                         0,
                                         rem,
                                         rem,
-                                        pos + offset);
+                                        pos + offset, segment);
     }
 
+    @Override
+    public ByteBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapByteBuffer(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public ByteBuffer duplicate() {
         return new HeapByteBuffer(hb,
@@ -130,7 +133,7 @@ class HeapByteBuffer
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public ByteBuffer asReadOnlyBuffer() {
@@ -140,7 +143,7 @@ class HeapByteBuffer
                                      this.position(),
                                      this.limit(),
                                      this.capacity(),
-                                     offset);
+                                     offset, segment);
 
 
 
@@ -173,11 +176,21 @@ class HeapByteBuffer
 
 
     public ByteBuffer get(byte[] dst, int offset, int length) {
-        checkBounds(offset, length, dst.length);
-        if (length > remaining())
+        checkScope();
+        Objects.checkFromIndexSize(offset, length, dst.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferUnderflowException();
-        System.arraycopy(hb, ix(position()), dst, offset, length);
-        position(position() + length);
+        System.arraycopy(hb, ix(pos), dst, offset, length);
+        position(pos + length);
+        return this;
+    }
+
+    public ByteBuffer get(int index, byte[] dst, int offset, int length) {
+        checkScope();
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, dst.length);
+        System.arraycopy(hb, ix(index), dst, offset, length);
         return this;
     }
 
@@ -211,11 +224,13 @@ class HeapByteBuffer
 
     public ByteBuffer put(byte[] src, int offset, int length) {
 
-        checkBounds(offset, length, src.length);
-        if (length > remaining())
+        checkScope();
+        Objects.checkFromIndexSize(offset, length, src.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferOverflowException();
-        System.arraycopy(src, offset, hb, ix(position()), length);
-        position(position() + length);
+        System.arraycopy(src, offset, hb, ix(pos), length);
+        position(pos + length);
         return this;
 
 
@@ -224,36 +239,66 @@ class HeapByteBuffer
 
     public ByteBuffer put(ByteBuffer src) {
 
-        if (src instanceof HeapByteBuffer) {
-            if (src == this)
-                throw createSameBufferException();
-            HeapByteBuffer sb = (HeapByteBuffer)src;
-            int n = sb.remaining();
-            if (n > remaining())
-                throw new BufferOverflowException();
-            System.arraycopy(sb.hb, sb.ix(sb.position()),
-                             hb, ix(position()), n);
-            sb.position(sb.position() + n);
-            position(position() + n);
-        } else if (src.isDirect()) {
-            int n = src.remaining();
-            if (n > remaining())
-                throw new BufferOverflowException();
-            src.get(hb, ix(position()), n);
-            position(position() + n);
-        } else {
-            super.put(src);
-        }
+        checkScope();
+        super.put(src);
         return this;
 
 
 
     }
 
+    public ByteBuffer put(int index, ByteBuffer src, int offset, int length) {
+
+        checkScope();
+        super.put(index, src, offset, length);
+        return this;
+
+
+
+    }
+
+    public ByteBuffer put(int index, byte[] src, int offset, int length) {
+
+        checkScope();
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, src.length);
+        System.arraycopy(src, offset, hb, ix(index), length);
+        return this;
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public ByteBuffer compact() {
 
-        System.arraycopy(hb, ix(position()), hb, ix(0), remaining());
-        position(remaining());
+        int pos = position();
+        int lim = limit();
+        assert (pos <= lim);
+        int rem = (pos <= lim ? lim - pos : 0);
+        System.arraycopy(hb, ix(pos), hb, ix(0), rem);
+        position(rem);
         limit(capacity());
         discardMark();
         return this;
@@ -283,18 +328,18 @@ class HeapByteBuffer
 
 
     public char getChar() {
-        return UNSAFE.getCharUnaligned(hb, byteOffset(nextGetIndex(2)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getCharUnaligned(scope(), hb, byteOffset(nextGetIndex(2)), bigEndian);
     }
 
     public char getChar(int i) {
-        return UNSAFE.getCharUnaligned(hb, byteOffset(checkIndex(i, 2)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getCharUnaligned(scope(), hb, byteOffset(checkIndex(i, 2)), bigEndian);
     }
 
 
 
     public ByteBuffer putChar(char x) {
 
-        UNSAFE.putCharUnaligned(hb, byteOffset(nextPutIndex(2)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putCharUnaligned(scope(), hb, byteOffset(nextPutIndex(2)), x, bigEndian);
         return this;
 
 
@@ -303,7 +348,7 @@ class HeapByteBuffer
 
     public ByteBuffer putChar(int i, char x) {
 
-        UNSAFE.putCharUnaligned(hb, byteOffset(checkIndex(i, 2)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putCharUnaligned(scope(), hb, byteOffset(checkIndex(i, 2)), x, bigEndian);
         return this;
 
 
@@ -311,21 +356,22 @@ class HeapByteBuffer
     }
 
     public CharBuffer asCharBuffer() {
-        int size = this.remaining() >> 1;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 1;
+        long addr = address + pos;
         return (bigEndian
                 ? (CharBuffer)(new ByteBufferAsCharBufferB(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr))
+                                                               addr, segment))
                 : (CharBuffer)(new ByteBufferAsCharBufferL(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr)));
+                                                               addr, segment)));
     }
 
 
@@ -334,18 +380,18 @@ class HeapByteBuffer
 
 
     public short getShort() {
-        return UNSAFE.getShortUnaligned(hb, byteOffset(nextGetIndex(2)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getShortUnaligned(scope(), hb, byteOffset(nextGetIndex(2)), bigEndian);
     }
 
     public short getShort(int i) {
-        return UNSAFE.getShortUnaligned(hb, byteOffset(checkIndex(i, 2)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getShortUnaligned(scope(), hb, byteOffset(checkIndex(i, 2)), bigEndian);
     }
 
 
 
     public ByteBuffer putShort(short x) {
 
-        UNSAFE.putShortUnaligned(hb, byteOffset(nextPutIndex(2)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putShortUnaligned(scope(), hb, byteOffset(nextPutIndex(2)), x, bigEndian);
         return this;
 
 
@@ -354,7 +400,7 @@ class HeapByteBuffer
 
     public ByteBuffer putShort(int i, short x) {
 
-        UNSAFE.putShortUnaligned(hb, byteOffset(checkIndex(i, 2)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putShortUnaligned(scope(), hb, byteOffset(checkIndex(i, 2)), x, bigEndian);
         return this;
 
 
@@ -362,21 +408,22 @@ class HeapByteBuffer
     }
 
     public ShortBuffer asShortBuffer() {
-        int size = this.remaining() >> 1;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 1;
+        long addr = address + pos;
         return (bigEndian
                 ? (ShortBuffer)(new ByteBufferAsShortBufferB(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr))
+                                                                 addr, segment))
                 : (ShortBuffer)(new ByteBufferAsShortBufferL(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr)));
+                                                                 addr, segment)));
     }
 
 
@@ -385,18 +432,18 @@ class HeapByteBuffer
 
 
     public int getInt() {
-        return UNSAFE.getIntUnaligned(hb, byteOffset(nextGetIndex(4)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), hb, byteOffset(nextGetIndex(4)), bigEndian);
     }
 
     public int getInt(int i) {
-        return UNSAFE.getIntUnaligned(hb, byteOffset(checkIndex(i, 4)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), hb, byteOffset(checkIndex(i, 4)), bigEndian);
     }
 
 
 
     public ByteBuffer putInt(int x) {
 
-        UNSAFE.putIntUnaligned(hb, byteOffset(nextPutIndex(4)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), hb, byteOffset(nextPutIndex(4)), x, bigEndian);
         return this;
 
 
@@ -405,7 +452,7 @@ class HeapByteBuffer
 
     public ByteBuffer putInt(int i, int x) {
 
-        UNSAFE.putIntUnaligned(hb, byteOffset(checkIndex(i, 4)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), hb, byteOffset(checkIndex(i, 4)), x, bigEndian);
         return this;
 
 
@@ -413,21 +460,22 @@ class HeapByteBuffer
     }
 
     public IntBuffer asIntBuffer() {
-        int size = this.remaining() >> 2;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 2;
+        long addr = address + pos;
         return (bigEndian
                 ? (IntBuffer)(new ByteBufferAsIntBufferB(this,
                                                              -1,
                                                              0,
                                                              size,
                                                              size,
-                                                             addr))
+                                                             addr, segment))
                 : (IntBuffer)(new ByteBufferAsIntBufferL(this,
                                                              -1,
                                                              0,
                                                              size,
                                                              size,
-                                                             addr)));
+                                                             addr, segment)));
     }
 
 
@@ -436,18 +484,18 @@ class HeapByteBuffer
 
 
     public long getLong() {
-        return UNSAFE.getLongUnaligned(hb, byteOffset(nextGetIndex(8)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), hb, byteOffset(nextGetIndex(8)), bigEndian);
     }
 
     public long getLong(int i) {
-        return UNSAFE.getLongUnaligned(hb, byteOffset(checkIndex(i, 8)), bigEndian);
+        return SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), hb, byteOffset(checkIndex(i, 8)), bigEndian);
     }
 
 
 
     public ByteBuffer putLong(long x) {
 
-        UNSAFE.putLongUnaligned(hb, byteOffset(nextPutIndex(8)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), hb, byteOffset(nextPutIndex(8)), x, bigEndian);
         return this;
 
 
@@ -456,7 +504,7 @@ class HeapByteBuffer
 
     public ByteBuffer putLong(int i, long x) {
 
-        UNSAFE.putLongUnaligned(hb, byteOffset(checkIndex(i, 8)), x, bigEndian);
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), hb, byteOffset(checkIndex(i, 8)), x, bigEndian);
         return this;
 
 
@@ -464,21 +512,22 @@ class HeapByteBuffer
     }
 
     public LongBuffer asLongBuffer() {
-        int size = this.remaining() >> 3;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 3;
+        long addr = address + pos;
         return (bigEndian
                 ? (LongBuffer)(new ByteBufferAsLongBufferB(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr))
+                                                               addr, segment))
                 : (LongBuffer)(new ByteBufferAsLongBufferL(this,
                                                                -1,
                                                                0,
                                                                size,
                                                                size,
-                                                               addr)));
+                                                               addr, segment)));
     }
 
 
@@ -487,12 +536,12 @@ class HeapByteBuffer
 
 
     public float getFloat() {
-        int x = UNSAFE.getIntUnaligned(hb, byteOffset(nextGetIndex(4)), bigEndian);
+        int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), hb, byteOffset(nextGetIndex(4)), bigEndian);
         return Float.intBitsToFloat(x);
     }
 
     public float getFloat(int i) {
-        int x = UNSAFE.getIntUnaligned(hb, byteOffset(checkIndex(i, 4)), bigEndian);
+        int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), hb, byteOffset(checkIndex(i, 4)), bigEndian);
         return Float.intBitsToFloat(x);
     }
 
@@ -501,7 +550,7 @@ class HeapByteBuffer
     public ByteBuffer putFloat(float x) {
 
         int y = Float.floatToRawIntBits(x);
-        UNSAFE.putIntUnaligned(hb, byteOffset(nextPutIndex(4)), y, bigEndian);
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), hb, byteOffset(nextPutIndex(4)), y, bigEndian);
         return this;
 
 
@@ -511,7 +560,7 @@ class HeapByteBuffer
     public ByteBuffer putFloat(int i, float x) {
 
         int y = Float.floatToRawIntBits(x);
-        UNSAFE.putIntUnaligned(hb, byteOffset(checkIndex(i, 4)), y, bigEndian);
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), hb, byteOffset(checkIndex(i, 4)), y, bigEndian);
         return this;
 
 
@@ -519,21 +568,22 @@ class HeapByteBuffer
     }
 
     public FloatBuffer asFloatBuffer() {
-        int size = this.remaining() >> 2;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 2;
+        long addr = address + pos;
         return (bigEndian
                 ? (FloatBuffer)(new ByteBufferAsFloatBufferB(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr))
+                                                                 addr, segment))
                 : (FloatBuffer)(new ByteBufferAsFloatBufferL(this,
                                                                  -1,
                                                                  0,
                                                                  size,
                                                                  size,
-                                                                 addr)));
+                                                                 addr, segment)));
     }
 
 
@@ -542,12 +592,12 @@ class HeapByteBuffer
 
 
     public double getDouble() {
-        long x = UNSAFE.getLongUnaligned(hb, byteOffset(nextGetIndex(8)), bigEndian);
+        long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), hb, byteOffset(nextGetIndex(8)), bigEndian);
         return Double.longBitsToDouble(x);
     }
 
     public double getDouble(int i) {
-        long x = UNSAFE.getLongUnaligned(hb, byteOffset(checkIndex(i, 8)), bigEndian);
+        long x = SCOPED_MEMORY_ACCESS.getLongUnaligned(scope(), hb, byteOffset(checkIndex(i, 8)), bigEndian);
         return Double.longBitsToDouble(x);
     }
 
@@ -556,7 +606,7 @@ class HeapByteBuffer
     public ByteBuffer putDouble(double x) {
 
         long y = Double.doubleToRawLongBits(x);
-        UNSAFE.putLongUnaligned(hb, byteOffset(nextPutIndex(8)), y, bigEndian);
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), hb, byteOffset(nextPutIndex(8)), y, bigEndian);
         return this;
 
 
@@ -566,7 +616,7 @@ class HeapByteBuffer
     public ByteBuffer putDouble(int i, double x) {
 
         long y = Double.doubleToRawLongBits(x);
-        UNSAFE.putLongUnaligned(hb, byteOffset(checkIndex(i, 8)), y, bigEndian);
+        SCOPED_MEMORY_ACCESS.putLongUnaligned(scope(), hb, byteOffset(checkIndex(i, 8)), y, bigEndian);
         return this;
 
 
@@ -574,25 +624,23 @@ class HeapByteBuffer
     }
 
     public DoubleBuffer asDoubleBuffer() {
-        int size = this.remaining() >> 3;
-        long addr = address + position();
+        int pos = position();
+        int size = (limit() - pos) >> 3;
+        long addr = address + pos;
         return (bigEndian
                 ? (DoubleBuffer)(new ByteBufferAsDoubleBufferB(this,
                                                                    -1,
                                                                    0,
                                                                    size,
                                                                    size,
-                                                                   addr))
+                                                                   addr, segment))
                 : (DoubleBuffer)(new ByteBufferAsDoubleBufferL(this,
                                                                    -1,
                                                                    0,
                                                                    size,
                                                                    size,
-                                                                   addr)));
+                                                                   addr, segment)));
     }
-
-
-
 
 
 

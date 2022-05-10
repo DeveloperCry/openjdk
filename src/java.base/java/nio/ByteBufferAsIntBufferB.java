@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsIntBufferB                  // package-private
     extends IntBuffer
@@ -40,11 +41,11 @@ class ByteBufferAsIntBufferB                  // package-private
 
 
 
-    ByteBufferAsIntBufferB(ByteBuffer bb) {   // package-private
+    ByteBufferAsIntBufferB(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
         super(-1, 0,
               bb.remaining() >> 2,
-              bb.remaining() >> 2);
+              bb.remaining() >> 2, segment);
         this.bb = bb;
         // enforce limit == capacity
         int cap = this.capacity();
@@ -59,10 +60,10 @@ class ByteBufferAsIntBufferB                  // package-private
 
     ByteBufferAsIntBufferB(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
+        super(mark, pos, lim, cap, segment);
         this.bb = bb;
         address = addr;
         assert address >= bb.address;
@@ -79,10 +80,20 @@ class ByteBufferAsIntBufferB                  // package-private
     public IntBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsIntBufferB(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsIntBufferB(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public IntBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsIntBufferB(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public IntBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsIntBufferB                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public IntBuffer asReadOnlyBuffer() {
@@ -101,7 +112,7 @@ class ByteBufferAsIntBufferB                  // package-private
                                                  this.position(),
                                                  this.limit(),
                                                  this.capacity(),
-                                                 address);
+                                                 address, segment);
 
 
 
@@ -119,13 +130,13 @@ class ByteBufferAsIntBufferB                  // package-private
     }
 
     public int get() {
-        int x = UNSAFE.getIntUnaligned(bb.hb, byteOffset(nextGetIndex()),
+        int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), bb.hb, byteOffset(nextGetIndex()),
             true);
         return (x);
     }
 
     public int get(int i) {
-        int x = UNSAFE.getIntUnaligned(bb.hb, byteOffset(checkIndex(i)),
+        int x = SCOPED_MEMORY_ACCESS.getIntUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)),
             true);
         return (x);
     }
@@ -143,7 +154,7 @@ class ByteBufferAsIntBufferB                  // package-private
     public IntBuffer put(int x) {
 
         int y = (x);
-        UNSAFE.putIntUnaligned(bb.hb, byteOffset(nextPutIndex()), y,
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), bb.hb, byteOffset(nextPutIndex()), y,
             true);
         return this;
 
@@ -154,7 +165,7 @@ class ByteBufferAsIntBufferB                  // package-private
     public IntBuffer put(int i, int x) {
 
         int y = (x);
-        UNSAFE.putIntUnaligned(bb.hb, byteOffset(checkIndex(i)), y,
+        SCOPED_MEMORY_ACCESS.putIntUnaligned(scope(), bb.hb, byteOffset(checkIndex(i)), y,
             true);
         return this;
 
@@ -191,8 +202,6 @@ class ByteBufferAsIntBufferB                  // package-private
     public boolean isReadOnly() {
         return false;
     }
-
-
 
 
 

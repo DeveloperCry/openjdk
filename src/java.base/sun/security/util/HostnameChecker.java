@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,6 +31,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.security.cert.*;
+import java.text.Normalizer;
 import java.util.*;
 import javax.security.auth.x500.X500Principal;
 import javax.net.ssl.SNIHostName;
@@ -92,6 +93,10 @@ public class HostnameChecker {
      */
     public void match(String expectedName, X509Certificate cert,
                       boolean chainsToPublicCA) throws CertificateException {
+        if (expectedName == null) {
+            throw new CertificateException("Hostname or IP address is " +
+                    "undefined.");
+        }
         if (isIpAddress(expectedName)) {
            matchIP(expectedName, cert);
         } else {
@@ -213,8 +218,12 @@ public class HostnameChecker {
                                                     (X500Name.commonName_oid);
         if (derValue != null) {
             try {
-                if (isMatched(expectedName, derValue.getAsString(),
-                              chainsToPublicCA)) {
+                String cname = derValue.getAsString();
+                if (!Normalizer.isNormalized(cname, Normalizer.Form.NFKC)) {
+                    throw new CertificateException("Not a formal name "
+                            + cname);
+                }
+                if (isMatched(expectedName, cname, chainsToPublicCA)) {
                     return;
                 }
             } catch (IOException e) {
@@ -233,6 +242,7 @@ public class HostnameChecker {
      *
      * This method is currently used from within JSSE, do not remove.
      */
+    @SuppressWarnings("deprecation")
     public static X500Name getSubjectX500Name(X509Certificate cert)
             throws CertificateParsingException {
         try {
@@ -244,8 +254,7 @@ public class HostnameChecker {
                 return new X500Name(subjectX500.getEncoded());
             }
         } catch (IOException e) {
-            throw(CertificateParsingException)
-                new CertificateParsingException().initCause(e);
+            throw new CertificateParsingException(e);
         }
     }
 

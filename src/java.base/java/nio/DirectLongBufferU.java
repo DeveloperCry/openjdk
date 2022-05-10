@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -44,9 +47,6 @@ class DirectLongBufferU
 {
 
 
-
-    // Cached array base offset
-    private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(long[].class);
 
     // Cached unaligned-access capability
     protected static final boolean UNALIGNED = Bits.unaligned();
@@ -182,19 +182,41 @@ class DirectLongBufferU
 
 
 
+
+
+
+
+
+
+
+
+
+
     // For duplicates and slices
     //
     DirectLongBufferU(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+
+
+                               MemorySegmentProxy segment)
     {
 
-        super(mark, pos, lim, cap);
-        address = db.address() + off;
+        super(mark, pos, lim, cap,
 
 
 
-        att = db;
+              segment);
+        address = ((Buffer)db).address + off;
+
+
+
+        Object attachment = db.attachment();
+        att = (attachment == null ? db : attachment);
+
+
+
+
 
 
 
@@ -209,21 +231,37 @@ class DirectLongBufferU
     public LongBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 3);
         assert (off >= 0);
-        return new DirectLongBufferU(this, -1, 0, rem, rem, off);
+        return new DirectLongBufferU(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+
+
+
+                                              segment);
     }
 
+    @Override
+    public LongBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectLongBufferU(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 3,
 
 
 
 
-
-
-
-
+                                              segment);
+    }
 
     public LongBuffer duplicate() {
         return new DirectLongBufferU(this,
@@ -231,7 +269,12 @@ class DirectLongBufferU
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+
+
+
+                                              segment);
     }
 
     public LongBuffer asReadOnlyBuffer() {
@@ -241,7 +284,12 @@ class DirectLongBufferU
                                            this.position(),
                                            this.limit(),
                                            this.capacity(),
-                                           0);
+                                           0,
+
+
+
+
+                                           segment);
 
 
 
@@ -250,6 +298,17 @@ class DirectLongBufferU
 
 
     public long address() {
+        Scope scope = scope();
+        if (scope != null) {
+            if (scope.ownerThread() == null) {
+                throw new UnsupportedOperationException("ByteBuffer derived from shared segments not supported");
+            }
+            try {
+                scope.checkValidState();
+            } catch (Scope.ScopedAccessError e) {
+                throw new IllegalStateException("This segment is already closed");
+            }
+        }
         return address;
     }
 
@@ -259,7 +318,7 @@ class DirectLongBufferU
 
     public long get() {
         try {
-            return ((UNSAFE.getLong(ix(nextGetIndex()))));
+            return ((SCOPED_MEMORY_ACCESS.getLong(scope(), null, ix(nextGetIndex()))));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -267,7 +326,7 @@ class DirectLongBufferU
 
     public long get(int i) {
         try {
-            return ((UNSAFE.getLong(ix(checkIndex(i)))));
+            return ((SCOPED_MEMORY_ACCESS.getLong(scope(), null, ix(checkIndex(i)))));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -283,53 +342,11 @@ class DirectLongBufferU
 
 
 
-    public LongBuffer get(long[] dst, int offset, int length) {
-
-        if (((long)length << 3) > Bits.JNI_COPY_TO_ARRAY_THRESHOLD) {
-            checkBounds(offset, length, dst.length);
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-            if (length > rem)
-                throw new BufferUnderflowException();
-
-            long dstOffset = ARRAY_BASE_OFFSET + ((long)offset << 3);
-            try {
-
-                if (order() != ByteOrder.nativeOrder())
-                    UNSAFE.copySwapMemory(null,
-                                          ix(pos),
-                                          dst,
-                                          dstOffset,
-                                          (long)length << 3,
-                                          (long)1 << 3);
-                else
-
-                    UNSAFE.copyMemory(null,
-                                      ix(pos),
-                                      dst,
-                                      dstOffset,
-                                      (long)length << 3);
-            } finally {
-                Reference.reachabilityFence(this);
-            }
-            position(pos + length);
-        } else {
-            super.get(dst, offset, length);
-        }
-        return this;
-
-
-
-    }
-
-
 
     public LongBuffer put(long x) {
 
         try {
-            UNSAFE.putLong(ix(nextPutIndex()), ((x)));
+            SCOPED_MEMORY_ACCESS.putLong(scope(), null, ix(nextPutIndex()), ((x)));
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -342,96 +359,9 @@ class DirectLongBufferU
     public LongBuffer put(int i, long x) {
 
         try {
-            UNSAFE.putLong(ix(checkIndex(i)), ((x)));
+            SCOPED_MEMORY_ACCESS.putLong(scope(), null, ix(checkIndex(i)), ((x)));
         } finally {
             Reference.reachabilityFence(this);
-        }
-        return this;
-
-
-
-    }
-
-    public LongBuffer put(LongBuffer src) {
-
-        if (src instanceof DirectLongBufferU) {
-            if (src == this)
-                throw createSameBufferException();
-            DirectLongBufferU sb = (DirectLongBufferU)src;
-
-            int spos = sb.position();
-            int slim = sb.limit();
-            assert (spos <= slim);
-            int srem = (spos <= slim ? slim - spos : 0);
-
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-
-            if (srem > rem)
-                throw new BufferOverflowException();
-            try {
-                UNSAFE.copyMemory(sb.ix(spos), ix(pos), (long)srem << 3);
-            } finally {
-                Reference.reachabilityFence(sb);
-                Reference.reachabilityFence(this);
-            }
-            sb.position(spos + srem);
-            position(pos + srem);
-        } else if (src.hb != null) {
-
-            int spos = src.position();
-            int slim = src.limit();
-            assert (spos <= slim);
-            int srem = (spos <= slim ? slim - spos : 0);
-
-            put(src.hb, src.offset + spos, srem);
-            src.position(spos + srem);
-
-        } else {
-            super.put(src);
-        }
-        return this;
-
-
-
-    }
-
-    public LongBuffer put(long[] src, int offset, int length) {
-
-        if (((long)length << 3) > Bits.JNI_COPY_FROM_ARRAY_THRESHOLD) {
-            checkBounds(offset, length, src.length);
-            int pos = position();
-            int lim = limit();
-            assert (pos <= lim);
-            int rem = (pos <= lim ? lim - pos : 0);
-            if (length > rem)
-                throw new BufferOverflowException();
-
-            long srcOffset = ARRAY_BASE_OFFSET + ((long)offset << 3);
-            try {
-
-                if (order() != ByteOrder.nativeOrder())
-                    UNSAFE.copySwapMemory(src,
-                                          srcOffset,
-                                          null,
-                                          ix(pos),
-                                          (long)length << 3,
-                                          (long)1 << 3);
-                else
-
-                    UNSAFE.copyMemory(src,
-                                      srcOffset,
-                                      null,
-                                      ix(pos),
-                                      (long)length << 3);
-            } finally {
-                Reference.reachabilityFence(this);
-            }
-            position(pos + length);
-        } else {
-            super.put(src, offset, length);
         }
         return this;
 
@@ -446,7 +376,9 @@ class DirectLongBufferU
         assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         try {
-            UNSAFE.copyMemory(ix(pos), ix(0), (long)rem << 3);
+            // null is passed as destination Scope to avoid checking scope() twice
+            SCOPED_MEMORY_ACCESS.copyMemory(scope(), null, null,
+                    ix(pos), null, ix(0), (long)rem << 3);
         } finally {
             Reference.reachabilityFence(this);
         }
@@ -466,8 +398,6 @@ class DirectLongBufferU
     public boolean isReadOnly() {
         return false;
     }
-
-
 
 
 

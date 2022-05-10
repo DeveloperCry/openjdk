@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -62,9 +62,10 @@ public class KeyStoreDelegator extends KeyStoreSpi {
         Class<? extends KeyStoreSpi> secondaryKeyStore) {
 
         // Check whether compatibility mode has been disabled
-        compatModeEnabled = "true".equalsIgnoreCase(
-            AccessController.doPrivileged((PrivilegedAction<String>) () ->
-                Security.getProperty(KEYSTORE_TYPE_COMPAT)));
+        @SuppressWarnings("removal")
+        var prop = AccessController.doPrivileged((PrivilegedAction<String>) () ->
+                        Security.getProperty(KEYSTORE_TYPE_COMPAT));
+        compatModeEnabled = "true".equalsIgnoreCase(prop);
 
         if (compatModeEnabled) {
             this.primaryType = primaryType;
@@ -126,6 +127,11 @@ public class KeyStoreDelegator extends KeyStoreSpi {
     @Override
     public void engineDeleteEntry(String alias) throws KeyStoreException {
         keystore.engineDeleteEntry(alias);
+    }
+
+    @Override
+    public Set<KeyStore.Entry.Attribute> engineGetAttributes(String alias) {
+        return keystore.engineGetAttributes(alias);
     }
 
     @Override
@@ -217,9 +223,9 @@ public class KeyStoreDelegator extends KeyStoreSpi {
             try {
                 @SuppressWarnings("deprecation")
                 KeyStoreSpi tmp = primaryKeyStore.newInstance();
+                tmp.engineLoad(bufferedStream, password);
                 keystore = tmp;
                 type = primaryType;
-                keystore.engineLoad(bufferedStream, password);
 
             } catch (Exception e) {
 
@@ -236,11 +242,11 @@ public class KeyStoreDelegator extends KeyStoreSpi {
                     }
 
                     @SuppressWarnings("deprecation")
-                    KeyStoreSpi tmp= secondaryKeyStore.newInstance();
+                    KeyStoreSpi tmp = secondaryKeyStore.newInstance();
+                    bufferedStream.reset();
+                    tmp.engineLoad(bufferedStream, password);
                     keystore = tmp;
                     type = secondaryType;
-                    bufferedStream.reset();
-                    keystore.engineLoad(bufferedStream, password);
 
                     if (debug != null) {
                         debug.println("WARNING: switching from " +
@@ -269,6 +275,8 @@ public class KeyStoreDelegator extends KeyStoreSpi {
                         throw (CertificateException)e;
                     } else if (e instanceof NoSuchAlgorithmException) {
                         throw (NoSuchAlgorithmException)e;
+                    } else if (e instanceof RuntimeException){
+                        throw (RuntimeException)e;
                     }
                 }
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -182,11 +185,21 @@ class DirectShortBufferRS
 
 
 
+
+
+
+
+
+
+
     // For duplicates and slices
     //
     DirectShortBufferRS(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+
+
+                               MemorySegmentProxy segment)
     {
 
 
@@ -196,7 +209,16 @@ class DirectShortBufferRS
 
 
 
-        super(db, mark, pos, lim, cap, off);
+
+
+
+
+
+        super(db, mark, pos, lim, cap, off,
+
+
+
+              segment);
         this.isReadOnly = true;
 
     }
@@ -209,21 +231,37 @@ class DirectShortBufferRS
     public ShortBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 1);
         assert (off >= 0);
-        return new DirectShortBufferRS(this, -1, 0, rem, rem, off);
+        return new DirectShortBufferRS(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+
+
+
+                                              segment);
     }
 
+    @Override
+    public ShortBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectShortBufferRS(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 1,
 
 
 
 
-
-
-
-
+                                              segment);
+    }
 
     public ShortBuffer duplicate() {
         return new DirectShortBufferRS(this,
@@ -231,7 +269,12 @@ class DirectShortBufferRS
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+
+
+
+                                              segment);
     }
 
     public ShortBuffer asReadOnlyBuffer() {
@@ -243,40 +286,14 @@ class DirectShortBufferRS
 
 
 
+
+
+
+
+
         return duplicate();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -352,94 +369,9 @@ class DirectShortBufferRS
 
     }
 
-    public ShortBuffer put(ShortBuffer src) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
-    public ShortBuffer put(short[] src, int offset, int length) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
     public ShortBuffer compact() {
+
+
 
 
 
@@ -466,8 +398,6 @@ class DirectShortBufferRS
     public boolean isReadOnly() {
         return true;
     }
-
-
 
 
 

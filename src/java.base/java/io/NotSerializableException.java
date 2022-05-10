@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,11 +30,11 @@ package java.io;
  * The serialization runtime or the class of the instance can throw
  * this exception. The argument should be the name of the class.
  *
- * @author  unascribed
  * @since   1.1
  */
 public class NotSerializableException extends ObjectStreamException {
 
+    @java.io.Serial
     private static final long serialVersionUID = 2906642554793891381L;
 
     /**

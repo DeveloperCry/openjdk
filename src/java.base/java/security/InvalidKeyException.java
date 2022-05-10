@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,6 +36,7 @@ package java.security;
 
 public class InvalidKeyException extends KeyException {
 
+    @java.io.Serial
     private static final long serialVersionUID = 5698479920593359816L;
 
     /**

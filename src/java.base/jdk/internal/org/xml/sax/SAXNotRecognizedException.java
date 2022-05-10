@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,6 +73,7 @@ public class SAXNotRecognizedException extends SAXException
     }
 
     // Added serialVersionUID to preserve binary compatibility
+    @java.io.Serial
     static final long serialVersionUID = 5440506620509557213L;
 }
 

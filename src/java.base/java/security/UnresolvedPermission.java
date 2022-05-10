@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -107,6 +107,7 @@ public final class UnresolvedPermission extends Permission
 implements java.io.Serializable
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -4821973115467008846L;
 
     private static final sun.security.util.Debug debug =
@@ -186,8 +187,8 @@ implements java.io.Serializable
                 while (i < certs.length) {
                     count++;
                     while (((i+1) < certs.length) &&
-                           ((X509Certificate)certs[i]).getIssuerDN().equals(
-                               ((X509Certificate)certs[i+1]).getSubjectDN())) {
+                           ((X509Certificate)certs[i]).getIssuerX500Principal().equals(
+                               ((X509Certificate)certs[i+1]).getSubjectX500Principal())) {
                         i++;
                     }
                     i++;
@@ -206,8 +207,8 @@ implements java.io.Serializable
                     while (i < certs.length) {
                         signerCerts.add(certs[i]);
                         while (((i+1) < certs.length) &&
-                            ((X509Certificate)certs[i]).getIssuerDN().equals(
-                              ((X509Certificate)certs[i+1]).getSubjectDN())) {
+                            ((X509Certificate)certs[i]).getIssuerX500Principal().equals(
+                              ((X509Certificate)certs[i+1]).getSubjectX500Principal())) {
                             i++;
                         }
                         i++;
@@ -333,9 +334,8 @@ implements java.io.Serializable
         if (obj == this)
             return true;
 
-        if (! (obj instanceof UnresolvedPermission))
+        if (!(obj instanceof UnresolvedPermission that))
             return false;
-        UnresolvedPermission that = (UnresolvedPermission) obj;
 
         // check type
         if (!this.type.equals(that.type)) {
@@ -520,7 +520,11 @@ implements java.io.Serializable
      * {@code int} specifying the length of the certificate encoding,
      * followed by the certificate encoding itself which is written out as an
      * array of bytes.
+     *
+     * @param  oos the {@code ObjectOutputStream} to which data is written
+     * @throws IOException if an I/O error occurs
      */
+    @java.io.Serial
     private void writeObject(java.io.ObjectOutputStream oos)
         throws IOException
     {
@@ -548,7 +552,12 @@ implements java.io.Serializable
 
     /**
      * Restores this object from a stream (i.e., deserializes it).
+     *
+     * @param  ois the {@code ObjectInputStream} from which data is read
+     * @throws IOException if an I/O error occurs
+     * @throws ClassNotFoundException if a serialized class cannot be loaded
      */
+    @java.io.Serial
     private void readObject(java.io.ObjectInputStream ois)
         throws IOException, ClassNotFoundException
     {
@@ -591,7 +600,7 @@ implements java.io.Serializable
                 cfs.put(certType, cf);
             }
             // parse the certificate
-            byte[] encoded = IOUtils.readNBytes(ois, ois.readInt());
+            byte[] encoded = IOUtils.readExactlyNBytes(ois, ois.readInt());
             ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
             try {
                 certList.add(cf.generateCertificate(bais));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -317,7 +317,7 @@ class Iocp extends AsynchronousChannelGroupImpl {
                         myGroupAndInvokeCount.resetInvokeCount();
 
                     // wait for I/O completion event
-                    // A error here is fatal (thread will not be replaced)
+                    // An error here is fatal (thread will not be replaced)
                     replaceMe = false;
                     try {
                         getQueuedCompletionStatus(port, ioResult);

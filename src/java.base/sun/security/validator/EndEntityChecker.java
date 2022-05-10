@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,7 +28,7 @@ package sun.security.validator;
 import java.util.*;
 
 import java.security.cert.*;
-
+import sun.security.util.KnownOIDs;
 import sun.security.x509.NetscapeCertTypeExtension;
 
 /**
@@ -53,10 +53,6 @@ import sun.security.x509.NetscapeCertTypeExtension;
  * are relaxed compared to standard code signing checks in order to
  * allow these certificates to pass.
  *
- * <li>Plugin code signing. WebStart and Plugin require their own variant
- * which is equivalent to VAR_CODE_SIGNING with additional checks for
- * compatibility/special cases. See also PKIXValidator.
- *
  * <li>TSA Server (see RFC 3161, section 2.3).
  *
  * </ul>
@@ -71,24 +67,32 @@ class EndEntityChecker {
     private static final String OID_EXTENDED_KEY_USAGE =
                                 SimpleValidator.OID_EXTENDED_KEY_USAGE;
 
-    private static final String OID_EKU_TLS_SERVER = "1.3.6.1.5.5.7.3.1";
+    private static final String OID_EKU_TLS_SERVER =
+            KnownOIDs.serverAuth.value();
 
-    private static final String OID_EKU_TLS_CLIENT = "1.3.6.1.5.5.7.3.2";
+    private static final String OID_EKU_TLS_CLIENT =
+            KnownOIDs.clientAuth.value();
 
-    private static final String OID_EKU_CODE_SIGNING = "1.3.6.1.5.5.7.3.3";
+    private static final String OID_EKU_CODE_SIGNING =
+            KnownOIDs.codeSigning.value();
 
-    private static final String OID_EKU_TIME_STAMPING = "1.3.6.1.5.5.7.3.8";
+    private static final String OID_EKU_TIME_STAMPING =
+            KnownOIDs.KP_TimeStamping.value();
 
-    private static final String OID_EKU_ANY_USAGE = "2.5.29.37.0";
+    private static final String OID_EKU_ANY_USAGE =
+            KnownOIDs.anyExtendedKeyUsage.value();
 
     // the Netscape Server-Gated-Cryptography EKU extension OID
-    private static final String OID_EKU_NS_SGC = "2.16.840.1.113730.4.1";
+    private static final String OID_EKU_NS_SGC =
+            KnownOIDs.NETSCAPE_ExportApproved.value();
 
     // the Microsoft Server-Gated-Cryptography EKU extension OID
-    private static final String OID_EKU_MS_SGC = "1.3.6.1.4.1.311.10.3.3";
+    private static final String OID_EKU_MS_SGC =
+            KnownOIDs.MICROSOFT_ExportApproved.value();
 
     // the recognized extension OIDs
-    private static final String OID_SUBJECT_ALT_NAME = "2.5.29.17";
+    private static final String OID_SUBJECT_ALT_NAME =
+            KnownOIDs.SubjectAlternativeName.value();
 
     private static final String NSCT_SSL_CLIENT =
                                 NetscapeCertTypeExtension.SSL_CLIENT;
@@ -101,6 +105,7 @@ class EndEntityChecker {
 
     // bit numbers in the key usage extension
     private static final int KU_SIGNATURE = 0;
+    private static final int KU_NON_REPUDIATION = 1;
     private static final int KU_KEY_ENCIPHERMENT = 2;
     private static final int KU_KEY_AGREEMENT = 4;
 
@@ -147,8 +152,6 @@ class EndEntityChecker {
         } else if (variant.equals(Validator.VAR_CODE_SIGNING)) {
             checkCodeSigning(chain[0], exts);
         } else if (variant.equals(Validator.VAR_JCE_SIGNING)) {
-            checkCodeSigning(chain[0], exts);
-        } else if (variant.equals(Validator.VAR_PLUGIN_CODE_SIGNING)) {
             checkCodeSigning(chain[0], exts);
         } else if (variant.equals(Validator.VAR_TSA_SERVER)) {
             checkTSAServer(chain[0], exts);
@@ -354,9 +357,11 @@ class EndEntityChecker {
      */
     private void checkTSAServer(X509Certificate cert, Set<String> exts)
             throws CertificateException {
-        if (checkKeyUsage(cert, KU_SIGNATURE) == false) {
+        // KU and EKU should be consistent
+        if (!checkKeyUsage(cert, KU_SIGNATURE)
+                && !checkKeyUsage(cert, KU_NON_REPUDIATION)) {
             throw new ValidatorException
-                ("KeyUsage does not allow digital signatures",
+                ("KeyUsage does not allow digital signatures or non repudiation",
                 ValidatorException.T_EE_EXTENSIONS, cert);
         }
 

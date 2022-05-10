@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -148,9 +148,9 @@ class CalendarBuilder {
 
     public String toString() {
         StringJoiner sj = new StringJoiner(",", "CalendarBuilder:[", "]");
-        for (int i = 0; i < field.length; i++) {
+        for (int i = 0; i < MAX_FIELD; i++) {
             if (isSet(i)) {
-                sj.add(i + "=" + field[MAX_FIELD + i]);
+                sj.add(i + "=" + field[i] + ":" + field[MAX_FIELD + i]);
             }
         }
         return sj.toString();

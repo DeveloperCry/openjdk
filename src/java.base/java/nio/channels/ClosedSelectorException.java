@@ -41,6 +41,7 @@ public class ClosedSelectorException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 6466297122317847835L;
 
     /**

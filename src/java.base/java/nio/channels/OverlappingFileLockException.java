@@ -43,6 +43,7 @@ public class OverlappingFileLockException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 2047812138163068433L;
 
     /**

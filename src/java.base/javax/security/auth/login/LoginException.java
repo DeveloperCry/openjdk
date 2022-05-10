@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ package javax.security.auth.login;
 
 public class LoginException extends java.security.GeneralSecurityException {
 
+    @java.io.Serial
     private static final long serialVersionUID = -4679091624035232488L;
 
     /**

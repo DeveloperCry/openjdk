@@ -43,6 +43,7 @@ public class ClosedByInterruptException
     extends AsynchronousCloseException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -4488191543534286750L;
 
     /**

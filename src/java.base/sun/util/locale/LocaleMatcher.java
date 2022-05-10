@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,7 +36,6 @@ import static java.util.Locale.LanguageRange.*;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Implementation for BCP47 Locale matching
@@ -84,7 +83,7 @@ public final class LocaleMatcher {
             for (LanguageRange lr : priorityList) {
                 String range = lr.getRange();
                 if (range.startsWith("*-")
-                    || range.indexOf("-*") != -1) { // Extended range
+                    || range.contains("-*")) { // Extended range
                     if (mode == AUTOSELECT_FILTERING) {
                         return filterExtended(priorityList, tags);
                     } else if (mode == MAP_EXTENDED_RANGES) {
@@ -184,7 +183,7 @@ public final class LocaleMatcher {
             Collection<String> tags) {
         Set<String> distinctTags = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         return tags.stream().filter(x -> distinctTags.add(x))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -402,7 +401,7 @@ public final class LocaleMatcher {
             }
 
             String rangeForRegex = range.replace("*", "\\p{Alnum}*");
-            while (rangeForRegex.length() > 0) {
+            while (!rangeForRegex.isEmpty()) {
                 for (String tag : tags) {
                     // change to lowercase for case-insensitive matching
                     String lowerCaseTag = tag.toLowerCase(Locale.ROOT);
@@ -437,7 +436,7 @@ public final class LocaleMatcher {
             }
 
             String rangeForRegex = range.replace("*", "\\p{Alnum}*");
-            while (rangeForRegex.length() > 0) {
+            while (!rangeForRegex.isEmpty()) {
                 if (tag.matches(rangeForRegex)) {
                     return true;
                 }
@@ -591,7 +590,7 @@ public final class LocaleMatcher {
     private static String[] getEquivalentsForLanguage(String range) {
         String r = range;
 
-        while (r.length() > 0) {
+        while (!r.isEmpty()) {
             if (LocaleEquivalentMaps.singleEquivMap.containsKey(r)) {
                 String equiv = LocaleEquivalentMaps.singleEquivMap.get(r);
                 // Return immediately for performance if the first matching
@@ -680,7 +679,7 @@ public final class LocaleMatcher {
             String r = range;
             boolean hasEquivalent = false;
 
-            while (r.length() > 0) {
+            while (!r.isEmpty()) {
                 if (keyMap.containsKey(r)) {
                     hasEquivalent = true;
                     List<String> equivalents = map.get(keyMap.get(r));

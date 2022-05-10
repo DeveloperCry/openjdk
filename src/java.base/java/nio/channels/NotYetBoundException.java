@@ -41,6 +41,7 @@ public class NotYetBoundException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 4640999303950202242L;
 
     /**

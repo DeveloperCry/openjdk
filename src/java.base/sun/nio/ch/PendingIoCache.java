@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -143,7 +143,6 @@ class PendingIoCache {
         // simulate the failure of all pending I/O operations.
         for (Long ov: pendingIoMap.keySet()) {
             PendingFuture<?,?> result = pendingIoMap.get(ov);
-            assert !result.isDone();
 
             // make I/O port aware of the stale OVERLAPPED structure
             Iocp iocp = (Iocp)((Groupable)result.channel()).group();

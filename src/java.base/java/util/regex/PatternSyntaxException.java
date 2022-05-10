@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,14 +29,13 @@ package java.util.regex;
  * Unchecked exception thrown to indicate a syntax error in a
  * regular-expression pattern.
  *
- * @author  unascribed
  * @since 1.4
- * @spec JSR-51
  */
 
 public class PatternSyntaxException
     extends IllegalArgumentException
 {
+    @java.io.Serial
     private static final long serialVersionUID = -3864639126226059218L;
 
     private final String desc;
@@ -108,7 +107,9 @@ public class PatternSyntaxException
         sb.append(pattern);
         if (index >= 0 && pattern != null && index < pattern.length()) {
             sb.append(System.lineSeparator());
-            for (int i = 0; i < index; i++) sb.append(' ');
+            for (int i = 0; i < index; i++) {
+                sb.append((pattern.charAt(i) == '\t') ? '\t' : ' ');
+            }
             sb.append('^');
         }
         return sb.toString();

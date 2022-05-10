@@ -41,6 +41,7 @@ public class WritePendingException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 7031871839266032276L;
 
     /**

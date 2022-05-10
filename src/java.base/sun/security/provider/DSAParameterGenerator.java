@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -187,7 +187,6 @@ public class DSAParameterGenerator extends AlgorithmParameterGeneratorSpi {
             hashObj = MessageDigest.getInstance(hashAlg);
         } catch (NoSuchAlgorithmException nsae) {
             // should never happen
-            nsae.printStackTrace();
         }
 
         /* Step 3, 4: Useful variables */

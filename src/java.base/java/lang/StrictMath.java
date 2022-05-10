@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,7 +27,7 @@ package java.lang;
 
 import java.util.Random;
 import jdk.internal.math.DoubleConsts;
-import jdk.internal.HotSpotIntrinsicCandidate;
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 /**
  * The class {@code StrictMath} contains methods for performing basic
@@ -40,7 +40,7 @@ import jdk.internal.HotSpotIntrinsicCandidate;
  * algorithms are available from the well-known network library
  * {@code netlib} as the package "Freely Distributable Math
  * Library," <a
- * href="ftp://ftp.netlib.org/fdlibm.tar">{@code fdlibm}</a>. These
+ * href="https://www.netlib.org/fdlibm/">{@code fdlibm}</a>. These
  * algorithms, which are written in the C programming language, are
  * then to be understood as executed with all floating-point
  * operations following the rules of Java floating-point arithmetic.
@@ -66,19 +66,21 @@ import jdk.internal.HotSpotIntrinsicCandidate;
  * will not overflow the range of values of the computation.
  * The best practice is to choose the primitive type and algorithm to avoid
  * overflow. In cases where the size is {@code int} or {@code long} and
- * overflow errors need to be detected, the methods {@code addExact},
- * {@code subtractExact}, {@code multiplyExact}, and {@code toIntExact}
- * throw an {@code ArithmeticException} when the results overflow.
- * For other arithmetic operations such as divide, absolute value,
- * increment by one, decrement by one, and negation overflow occurs only with
- * a specific minimum or maximum value and should be checked against
- * the minimum or maximum as appropriate.
+ * overflow errors need to be detected, the methods whose names end with
+ * {@code Exact} throw an {@code ArithmeticException} when the results overflow.
  *
- * @author  unascribed
+ * <h2><a id=Ieee754RecommendedOps>IEEE 754 Recommended
+ * Operations</a></h2>
+ *
+ * The {@link java.lang.Math Math} class discusses how the shared
+ * quality of implementation criteria for selected {@code Math} and
+ * {@code StrictMath} methods <a
+ * href="Math.html#Ieee754RecommendedOps">relate to the IEEE 754
+ * recommended operations</a>.
+ *
  * @author  Joseph D. Darcy
  * @since   1.3
  */
-
 public final class StrictMath {
 
     /**
@@ -127,7 +129,9 @@ public final class StrictMath {
     /**
      * Returns the trigonometric cosine of an angle. Special cases:
      * <ul><li>If the argument is NaN or an infinity, then the
-     * result is NaN.</ul>
+     * result is NaN.
+     * <li>If the argument is zero, then the result is {@code 1.0}.
+     * </ul>
      *
      * @param   a   an angle, in radians.
      * @return  the cosine of the argument.
@@ -163,7 +167,9 @@ public final class StrictMath {
      * Returns the arc cosine of a value; the returned angle is in the
      * range 0.0 through <i>pi</i>.  Special case:
      * <ul><li>If the argument is NaN or its absolute value is greater
-     * than 1, then the result is NaN.</ul>
+     * than 1, then the result is NaN.
+     * <li>If the argument is {@code 1.0}, the result is positive zero.
+     * </ul>
      *
      * @param   a   the value whose arc cosine is to be returned.
      * @return  the arc cosine of the argument.
@@ -175,7 +181,11 @@ public final class StrictMath {
      * range -<i>pi</i>/2 through <i>pi</i>/2.  Special cases:
      * <ul><li>If the argument is NaN, then the result is NaN.
      * <li>If the argument is zero, then the result is a zero with the
-     * same sign as the argument.</ul>
+     * same sign as the argument.
+     * <li>If the argument is {@linkplain Double#isInfinite infinite},
+     * then the result is the closest value to <i>pi</i>/2 with the
+     * same sign as the input.
+     * </ul>
      *
      * @param   a   the value whose arc tangent is to be returned.
      * @return  the arc tangent of the argument.
@@ -191,10 +201,8 @@ public final class StrictMath {
      * @return  the measurement of the angle {@code angdeg}
      *          in radians.
      */
-    public static strictfp double toRadians(double angdeg) {
-        // Do not delegate to Math.toRadians(angdeg) because
-        // this method has the strictfp modifier.
-        return angdeg * DEGREES_TO_RADIANS;
+    public static double toRadians(double angdeg) {
+        return Math.toRadians(angdeg);
     }
 
     /**
@@ -208,10 +216,8 @@ public final class StrictMath {
      * @return  the measurement of the angle {@code angrad}
      *          in degrees.
      */
-    public static strictfp double toDegrees(double angrad) {
-        // Do not delegate to Math.toDegrees(angrad) because
-        // this method has the strictfp modifier.
-        return angrad * RADIANS_TO_DEGREES;
+    public static double toDegrees(double angrad) {
+        return Math.toDegrees(angrad);
     }
 
     /**
@@ -221,7 +227,9 @@ public final class StrictMath {
      * <li>If the argument is positive infinity, then the result is
      * positive infinity.
      * <li>If the argument is negative infinity, then the result is
-     * positive zero.</ul>
+     * positive zero.
+     * <li>If the argument is zero, then the result is {@code 1.0}.
+     * </ul>
      *
      * @param   a   the exponent to raise <i>e</i> to.
      * @return  the value <i>e</i><sup>{@code a}</sup>,
@@ -239,7 +247,10 @@ public final class StrictMath {
      * <li>If the argument is positive infinity, then the result is
      * positive infinity.
      * <li>If the argument is positive zero or negative zero, then the
-     * result is negative infinity.</ul>
+     * result is negative infinity.
+     * <li>If the argument is {@code 1.0}, then the result is positive
+     * zero.
+     * </ul>
      *
      * @param   a   a value
      * @return  the value ln&nbsp;{@code a}, the natural logarithm of
@@ -257,8 +268,10 @@ public final class StrictMath {
      * positive infinity.
      * <li>If the argument is positive zero or negative zero, then the
      * result is negative infinity.
-     * <li> If the argument is equal to 10<sup><i>n</i></sup> for
-     * integer <i>n</i>, then the result is <i>n</i>.
+     * <li>If the argument is equal to 10<sup><i>n</i></sup> for
+     * integer <i>n</i>, then the result is <i>n</i>. In particular,
+     * if the argument is {@code 1.0} (10<sup>0</sup>), then the
+     * result is positive zero.
      * </ul>
      *
      * @param   a   a value
@@ -283,7 +296,7 @@ public final class StrictMath {
      * @param   a   a value.
      * @return  the positive square root of {@code a}.
      */
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     public static native double sqrt(double a);
 
     /**
@@ -451,19 +464,6 @@ public final class StrictMath {
          * away any fractional portion of a since ulp(twoToThe52) ==
          * 1.0; subtracting out twoToThe52 from this sum will then be
          * exact and leave the rounded integer portion of a.
-         *
-         * This method does *not* need to be declared strictfp to get
-         * fully reproducible results.  Whether or not a method is
-         * declared strictfp can only make a difference in the
-         * returned result if some operation would overflow or
-         * underflow with strictfp semantics.  The operation
-         * (twoToThe52 + a ) cannot overflow since large values of a
-         * are screened out; the add cannot underflow since twoToThe52
-         * is too large.  The subtraction ((twoToThe52 + a ) -
-         * twoToThe52) will be exact as discussed above and thus
-         * cannot overflow or meaningfully underflow.  Finally, the
-         * last multiply in the return statement is by plus or minus
-         * 1.0, which is exact too.
          */
         double twoToThe52 = (double)(1L << 52); // 2^52
         double sign = Math.copySign(1.0, a); // preserve sign info
@@ -517,6 +517,15 @@ public final class StrictMath {
      * closest to -<i>pi</i>/4.
      * <li>If both arguments are negative infinity, then the result is the
      * {@code double} value closest to -3*<i>pi</i>/4.</ul>
+     *
+     * @apiNote
+     * For <i>y</i> with a positive sign and finite nonzero
+     * <i>x</i>, the exact mathematical value of {@code atan2} is
+     * equal to:
+     * <ul>
+     * <li>If <i>x</i> {@literal >} 0, atan(abs(<i>y</i>/<i>x</i>))
+     * <li>If <i>x</i> {@literal <} 0, &pi; - atan(abs(<i>y</i>/<i>x</i>))
+     * </ul>
      *
      * @param   y   the ordinate coordinate
      * @param   x   the abscissa coordinate
@@ -642,6 +651,16 @@ public final class StrictMath {
      * floor}. A value is a fixed point of a one-argument
      * method if and only if the result of applying the method to the
      * value is equal to the value.)
+     *
+     * @apiNote
+     * The special cases definitions of this method differ from the
+     * special case definitions of the IEEE 754 recommended {@code
+     * pow} operation for &plusmn;{@code 1.0} raised to an infinite
+     * power. This method treats such cases as indeterminate and
+     * specifies a NaN is returned. The IEEE 754 specification treats
+     * the infinite power as a large integer (large-magnitude
+     * floating-point numbers are numerically integers, specifically
+     * even integers) and therefore specifies {@code 1.0} be returned.
      *
      * @param   a   base.
      * @param   b   the exponent.
@@ -835,8 +854,272 @@ public final class StrictMath {
     }
 
     /**
-     * Returns the value of the {@code long} argument;
-     * throwing an exception if the value overflows an {@code int}.
+     * Returns the quotient of the arguments, throwing an exception if the
+     * result overflows an {@code int}.  Such overflow occurs in this method if
+     * {@code x} is {@link Integer#MIN_VALUE} and {@code y} is {@code -1}.
+     * In contrast, if {@code Integer.MIN_VALUE / -1} were evaluated directly,
+     * the result would be {@code Integer.MIN_VALUE} and no exception would be
+     * thrown.
+     * <p>
+     * If {@code y} is zero, an {@code ArithmeticException} is thrown
+     * (JLS {@jls 15.17.2}).
+     * <p>
+     * The built-in remainder operator "{@code %}" is a suitable counterpart
+     * both for this method and for the built-in division operator "{@code /}".
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the quotient {@code x / y}
+     * @throws ArithmeticException if {@code y} is zero or the quotient
+     * overflows an int
+     * @jls 15.17.2 Division Operator /
+     * @see Math#divideExact(int,int)
+     * @since 18
+     */
+    public static int divideExact(int x, int y) {
+        return Math.divideExact(x, y);
+    }
+
+    /**
+     * Returns the quotient of the arguments, throwing an exception if the
+     * result overflows a {@code long}.  Such overflow occurs in this method if
+     * {@code x} is {@link Long#MIN_VALUE} and {@code y} is {@code -1}.
+     * In contrast, if {@code Long.MIN_VALUE / -1} were evaluated directly,
+     * the result would be {@code Long.MIN_VALUE} and no exception would be
+     * thrown.
+     * <p>
+     * If {@code y} is zero, an {@code ArithmeticException} is thrown
+     * (JLS {@jls 15.17.2}).
+     * <p>
+     * The built-in remainder operator "{@code %}" is a suitable counterpart
+     * both for this method and for the built-in division operator "{@code /}".
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the quotient {@code x / y}
+     * @throws ArithmeticException if {@code y} is zero or the quotient
+     * overflows a long
+     * @jls 15.17.2 Division Operator /
+     * @see Math#divideExact(long,long)
+     * @since 18
+     */
+    public static long divideExact(long x, long y) {
+        return Math.divideExact(x, y);
+    }
+
+    /**
+     * Returns the largest (closest to positive infinity)
+     * {@code int} value that is less than or equal to the algebraic quotient.
+     * This method is identical to {@link #floorDiv(int,int)} except that it
+     * throws an {@code ArithmeticException} when the dividend is
+     * {@linkplain Integer#MIN_VALUE Integer.MIN_VALUE} and the divisor is
+     * {@code -1} instead of ignoring the integer overflow and returning
+     * {@code Integer.MIN_VALUE}.
+     * <p>
+     * The floor modulus method {@link #floorMod(int,int)} is a suitable
+     * counterpart both for this method and for the {@link #floorDiv(int,int)}
+     * method.
+     * <p>
+     * See {@link Math#floorDiv(int, int) Math.floorDiv} for examples and
+     * a comparison to the integer division {@code /} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the largest (closest to positive infinity)
+     * {@code int} value that is less than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero, or the
+     * dividend {@code x} is {@code Integer.MIN_VALUE} and the divisor {@code y}
+     * is {@code -1}.
+     * @see Math#floorDiv(int, int)
+     * @since 18
+     */
+    public static int floorDivExact(int x, int y) {
+        return Math.floorDivExact(x, y);
+    }
+
+    /**
+     * Returns the largest (closest to positive infinity)
+     * {@code long} value that is less than or equal to the algebraic quotient.
+     * This method is identical to {@link #floorDiv(long,long)} except that it
+     * throws an {@code ArithmeticException} when the dividend is
+     * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is
+     * {@code -1} instead of ignoring the integer overflow and returning
+     * {@code Long.MIN_VALUE}.
+     * <p>
+     * The floor modulus method {@link #floorMod(long,long)} is a suitable
+     * counterpart both for this method and for the {@link #floorDiv(long,long)}
+     * method.
+     * <p>
+     * For examples, see {@link Math#floorDiv(int, int) Math.floorDiv}.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the largest (closest to positive infinity)
+     * {@code long} value that is less than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero, or the
+     * dividend {@code x} is {@code Long.MIN_VALUE} and the divisor {@code y}
+     * is {@code -1}.
+     * @see Math#floorDiv(int, int)
+     * @see Math#floorDiv(long,long)
+     * @since 18
+     */
+    public static long floorDivExact(long x, long y) {
+        return Math.floorDivExact(x, y);
+    }
+
+    /**
+     * Returns the smallest (closest to negative infinity)
+     * {@code int} value that is greater than or equal to the algebraic quotient.
+     * This method is identical to {@link #ceilDiv(int,int)} except that it
+     * throws an {@code ArithmeticException} when the dividend is
+     * {@linkplain Integer#MIN_VALUE Integer.MIN_VALUE} and the divisor is
+     * {@code -1} instead of ignoring the integer overflow and returning
+     * {@code Integer.MIN_VALUE}.
+     * <p>
+     * The ceil modulus method {@link #ceilMod(int,int)} is a suitable
+     * counterpart both for this method and for the {@link #ceilDiv(int,int)}
+     * method.
+     * <p>
+     * See {@link Math#ceilDiv(int, int) Math.ceilDiv} for examples and
+     * a comparison to the integer division {@code /} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the smallest (closest to negative infinity)
+     * {@code int} value that is greater than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero, or the
+     * dividend {@code x} is {@code Integer.MIN_VALUE} and the divisor {@code y}
+     * is {@code -1}.
+     * @see Math#ceilDiv(int, int)
+     * @since 18
+     */
+    public static int ceilDivExact(int x, int y) {
+        return Math.ceilDivExact(x, y);
+    }
+
+    /**
+     * Returns the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * This method is identical to {@link #ceilDiv(long,long)} except that it
+     * throws an {@code ArithmeticException} when the dividend is
+     * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is
+     * {@code -1} instead of ignoring the integer overflow and returning
+     * {@code Long.MIN_VALUE}.
+     * <p>
+     * The ceil modulus method {@link #ceilMod(long,long)} is a suitable
+     * counterpart both for this method and for the {@link #ceilDiv(long,long)}
+     * method.
+     * <p>
+     * For examples, see {@link Math#ceilDiv(int, int) Math.ceilDiv}.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero, or the
+     * dividend {@code x} is {@code Long.MIN_VALUE} and the divisor {@code y}
+     * is {@code -1}.
+     * @see Math#ceilDiv(int, int)
+     * @see Math#ceilDiv(long,long)
+     * @since 18
+     */
+    public static long ceilDivExact(long x, long y) {
+        return Math.ceilDivExact(x, y);
+    }
+
+    /**
+     * Returns the argument incremented by one,
+     * throwing an exception if the result overflows an {@code int}.
+     * The overflow only occurs for {@linkplain Integer#MAX_VALUE the maximum value}.
+     *
+     * @param a the value to increment
+     * @return the result
+     * @throws ArithmeticException if the result overflows an int
+     * @see Math#incrementExact(int)
+     * @since 14
+     */
+    public static int incrementExact(int a) {
+        return Math.incrementExact(a);
+    }
+
+    /**
+     * Returns the argument incremented by one,
+     * throwing an exception if the result overflows a {@code long}.
+     * The overflow only occurs for {@linkplain Long#MAX_VALUE the maximum value}.
+     *
+     * @param a the value to increment
+     * @return the result
+     * @throws ArithmeticException if the result overflows a long
+     * @see Math#incrementExact(long)
+     * @since 14
+     */
+    public static long incrementExact(long a) {
+        return Math.incrementExact(a);
+    }
+
+    /**
+     * Returns the argument decremented by one,
+     * throwing an exception if the result overflows an {@code int}.
+     * The overflow only occurs for {@linkplain Integer#MIN_VALUE the minimum value}.
+     *
+     * @param a the value to decrement
+     * @return the result
+     * @throws ArithmeticException if the result overflows an int
+     * @see Math#decrementExact(int)
+     * @since 14
+     */
+    public static int decrementExact(int a) {
+        return Math.decrementExact(a);
+    }
+
+    /**
+     * Returns the argument decremented by one,
+     * throwing an exception if the result overflows a {@code long}.
+     * The overflow only occurs for {@linkplain Long#MIN_VALUE the minimum value}.
+     *
+     * @param a the value to decrement
+     * @return the result
+     * @throws ArithmeticException if the result overflows a long
+     * @see Math#decrementExact(long)
+     * @since 14
+     */
+    public static long decrementExact(long a) {
+        return Math.decrementExact(a);
+    }
+
+    /**
+     * Returns the negation of the argument,
+     * throwing an exception if the result overflows an {@code int}.
+     * The overflow only occurs for {@linkplain Integer#MIN_VALUE the minimum value}.
+     *
+     * @param a the value to negate
+     * @return the result
+     * @throws ArithmeticException if the result overflows an int
+     * @see Math#negateExact(int)
+     * @since 14
+     */
+    public static int negateExact(int a) {
+        return Math.negateExact(a);
+    }
+
+    /**
+     * Returns the negation of the argument,
+     * throwing an exception if the result overflows a {@code long}.
+     * The overflow only occurs for {@linkplain Long#MIN_VALUE the minimum value}.
+     *
+     * @param a the value to negate
+     * @return the result
+     * @throws ArithmeticException if the result overflows a long
+     * @see Math#negateExact(long)
+     * @since 14
+     */
+    public static long negateExact(long a) {
+        return Math.negateExact(a);
+    }
+
+    /**
+     * Returns the value of the {@code long} argument, throwing an exception
+     * if the value overflows an {@code int}.
      *
      * @param value the long value
      * @return the argument as an int
@@ -868,6 +1151,7 @@ public final class StrictMath {
      * @param x the first value
      * @param y the second value
      * @return the result
+     * @see #unsignedMultiplyHigh
      * @see Math#multiplyHigh(long,long)
      * @since 9
      */
@@ -876,12 +1160,27 @@ public final class StrictMath {
     }
 
     /**
+     * Returns as a {@code long} the most significant 64 bits of the unsigned
+     * 128-bit product of two unsigned 64-bit factors.
+     *
+     * @param x the first value
+     * @param y the second value
+     * @return the result
+     * @see #multiplyHigh
+     * @see Math#unsignedMultiplyHigh(long,long)
+     * @since 18
+     */
+    public static long unsignedMultiplyHigh(long x, long y) {
+        return Math.unsignedMultiplyHigh(x, y);
+    }
+
+    /**
      * Returns the largest (closest to positive infinity)
      * {@code int} value that is less than or equal to the algebraic quotient.
-     * There is one special case, if the dividend is the
+     * There is one special case: if the dividend is
      * {@linkplain Integer#MIN_VALUE Integer.MIN_VALUE} and the divisor is {@code -1},
      * then integer overflow occurs and
-     * the result is equal to the {@code Integer.MIN_VALUE}.
+     * the result is equal to {@code Integer.MIN_VALUE}.
      * <p>
      * See {@link Math#floorDiv(int, int) Math.floorDiv} for examples and
      * a comparison to the integer division {@code /} operator.
@@ -902,7 +1201,7 @@ public final class StrictMath {
     /**
      * Returns the largest (closest to positive infinity)
      * {@code long} value that is less than or equal to the algebraic quotient.
-     * There is one special case, if the dividend is the
+     * There is one special case: if the dividend is
      * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is {@code -1},
      * then integer overflow occurs and
      * the result is equal to {@code Long.MIN_VALUE}.
@@ -913,7 +1212,7 @@ public final class StrictMath {
      * @param x the dividend
      * @param y the divisor
      * @return the largest (closest to positive infinity)
-     * {@code int} value that is less than or equal to the algebraic quotient.
+     * {@code long} value that is less than or equal to the algebraic quotient.
      * @throws ArithmeticException if the divisor {@code y} is zero
      * @see Math#floorDiv(long, int)
      * @see Math#floor(double)
@@ -926,10 +1225,10 @@ public final class StrictMath {
     /**
      * Returns the largest (closest to positive infinity)
      * {@code long} value that is less than or equal to the algebraic quotient.
-     * There is one special case, if the dividend is the
+     * There is one special case: if the dividend is
      * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is {@code -1},
      * then integer overflow occurs and
-     * the result is equal to the {@code Long.MIN_VALUE}.
+     * the result is equal to {@code Long.MIN_VALUE}.
      * <p>
      * See {@link Math#floorDiv(int, int) Math.floorDiv} for examples and
      * a comparison to the integer division {@code /} operator.
@@ -950,13 +1249,14 @@ public final class StrictMath {
     /**
      * Returns the floor modulus of the {@code int} arguments.
      * <p>
-     * The floor modulus is {@code x - (floorDiv(x, y) * y)},
-     * has the same sign as the divisor {@code y}, and
+     * The floor modulus is {@code r = x - (floorDiv(x, y) * y)},
+     * has the same sign as the divisor {@code y} or is zero, and
      * is in the range of {@code -abs(y) < r < +abs(y)}.
+     *
      * <p>
      * The relationship between {@code floorDiv} and {@code floorMod} is such that:
      * <ul>
-     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}
+     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}</li>
      * </ul>
      * <p>
      * See {@link Math#floorMod(int, int) Math.floorMod} for examples and
@@ -977,14 +1277,14 @@ public final class StrictMath {
     /**
      * Returns the floor modulus of the {@code long} and {@code int} arguments.
      * <p>
-     * The floor modulus is {@code x - (floorDiv(x, y) * y)},
-     * has the same sign as the divisor {@code y}, and
+     * The floor modulus is {@code r = x - (floorDiv(x, y) * y)},
+     * has the same sign as the divisor {@code y} or is zero, and
      * is in the range of {@code -abs(y) < r < +abs(y)}.
      *
      * <p>
      * The relationship between {@code floorDiv} and {@code floorMod} is such that:
      * <ul>
-     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}
+     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}</li>
      * </ul>
      * <p>
      * See {@link Math#floorMod(int, int) Math.floorMod} for examples and
@@ -1005,13 +1305,14 @@ public final class StrictMath {
     /**
      * Returns the floor modulus of the {@code long} arguments.
      * <p>
-     * The floor modulus is {@code x - (floorDiv(x, y) * y)},
-     * has the same sign as the divisor {@code y}, and
+     * The floor modulus is {@code r = x - (floorDiv(x, y) * y)},
+     * has the same sign as the divisor {@code y} or is zero, and
      * is in the range of {@code -abs(y) < r < +abs(y)}.
+     *
      * <p>
      * The relationship between {@code floorDiv} and {@code floorMod} is such that:
      * <ul>
-     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}
+     *   <li>{@code floorDiv(x, y) * y + floorMod(x, y) == x}</li>
      * </ul>
      * <p>
      * See {@link Math#floorMod(int, int) Math.floorMod} for examples and
@@ -1030,20 +1331,201 @@ public final class StrictMath {
     }
 
     /**
+     * Returns the smallest (closest to negative infinity)
+     * {@code int} value that is greater than or equal to the algebraic quotient.
+     * There is one special case: if the dividend is
+     * {@linkplain Integer#MIN_VALUE Integer.MIN_VALUE} and the divisor is {@code -1},
+     * then integer overflow occurs and
+     * the result is equal to {@code Integer.MIN_VALUE}.
+     * <p>
+     * See {@link Math#ceilDiv(int, int) Math.ceilDiv} for examples and
+     * a comparison to the integer division {@code /} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the smallest (closest to negative infinity)
+     * {@code int} value that is greater than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilDiv(int, int)
+     * @see Math#ceil(double)
+     * @since 18
+     */
+    public static int ceilDiv(int x, int y) {
+        return Math.ceilDiv(x, y);
+    }
+
+    /**
+     * Returns the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * There is one special case: if the dividend is
+     * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is {@code -1},
+     * then integer overflow occurs and
+     * the result is equal to {@code Long.MIN_VALUE}.
+     * <p>
+     * See {@link Math#ceilDiv(int, int) Math.ceilDiv} for examples and
+     * a comparison to the integer division {@code /} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilDiv(long, int)
+     * @see Math#ceil(double)
+     * @since 18
+     */
+    public static long ceilDiv(long x, int y) {
+        return Math.ceilDiv(x, y);
+    }
+
+    /**
+     * Returns the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * There is one special case: if the dividend is
+     * {@linkplain Long#MIN_VALUE Long.MIN_VALUE} and the divisor is {@code -1},
+     * then integer overflow occurs and
+     * the result is equal to {@code Long.MIN_VALUE}.
+     * <p>
+     * See {@link Math#ceilDiv(int, int) Math.ceilDiv} for examples and
+     * a comparison to the integer division {@code /} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the smallest (closest to negative infinity)
+     * {@code long} value that is greater than or equal to the algebraic quotient.
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilDiv(long, long)
+     * @see Math#ceil(double)
+     * @since 18
+     */
+    public static long ceilDiv(long x, long y) {
+        return Math.ceilDiv(x, y);
+    }
+
+    /**
+     * Returns the ceiling modulus of the {@code int} arguments.
+     * <p>
+     * The ceiling modulus is {@code r = x - (ceilDiv(x, y) * y)},
+     * has the opposite sign as the divisor {@code y} or is zero, and
+     * is in the range of {@code -abs(y) < r < +abs(y)}.
+     *
+     * <p>
+     * The relationship between {@code ceilDiv} and {@code ceilMod} is such that:
+     * <ul>
+     *   <li>{@code ceilDiv(x, y) * y + ceilMod(x, y) == x}</li>
+     * </ul>
+     * <p>
+     * See {@link Math#ceilMod(int, int) Math.ceilMod} for examples and
+     * a comparison to the {@code %} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the ceiling modulus {@code x - (ceilDiv(x, y) * y)}
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilMod(int, int)
+     * @see StrictMath#ceilDiv(int, int)
+     * @since 18
+     */
+    public static int ceilMod(int x, int y) {
+        return Math.ceilMod(x , y);
+    }
+
+    /**
+     * Returns the ceiling modulus of the {@code long} and {@code int} arguments.
+     * <p>
+     * The ceiling modulus is {@code r = x - (ceilDiv(x, y) * y)},
+     * has the opposite sign as the divisor {@code y} or is zero, and
+     * is in the range of {@code -abs(y) < r < +abs(y)}.
+     *
+     * <p>
+     * The relationship between {@code ceilDiv} and {@code ceilMod} is such that:
+     * <ul>
+     *   <li>{@code ceilDiv(x, y) * y + ceilMod(x, y) == x}</li>
+     * </ul>
+     * <p>
+     * See {@link Math#ceilMod(int, int) Math.ceilMod} for examples and
+     * a comparison to the {@code %} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the ceiling modulus {@code x - (ceilDiv(x, y) * y)}
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilMod(long, int)
+     * @see StrictMath#ceilDiv(long, int)
+     * @since 18
+     */
+    public static int ceilMod(long x, int y) {
+        return Math.ceilMod(x , y);
+    }
+
+    /**
+     * Returns the ceiling modulus of the {@code long} arguments.
+     * <p>
+     * The ceiling modulus is {@code r = x - (ceilDiv(x, y) * y)},
+     * has the opposite sign as the divisor {@code y} or is zero, and
+     * is in the range of {@code -abs(y) < r < +abs(y)}.
+     *
+     * <p>
+     * The relationship between {@code ceilDiv} and {@code ceilMod} is such that:
+     * <ul>
+     *   <li>{@code ceilDiv(x, y) * y + ceilMod(x, y) == x}</li>
+     * </ul>
+     * <p>
+     * See {@link Math#ceilMod(int, int) Math.ceilMod} for examples and
+     * a comparison to the {@code %} operator.
+     *
+     * @param x the dividend
+     * @param y the divisor
+     * @return the ceiling modulus {@code x - (ceilDiv(x, y) * y)}
+     * @throws ArithmeticException if the divisor {@code y} is zero
+     * @see Math#ceilMod(long, long)
+     * @see StrictMath#ceilDiv(long, long)
+     * @since 18
+     */
+    public static long ceilMod(long x, long y) {
+        return Math.ceilMod(x, y);
+    }
+
+    /**
      * Returns the absolute value of an {@code int} value.
      * If the argument is not negative, the argument is returned.
      * If the argument is negative, the negation of the argument is returned.
      *
-     * <p>Note that if the argument is equal to the value of
-     * {@link Integer#MIN_VALUE}, the most negative representable
-     * {@code int} value, the result is that same value, which is
-     * negative.
+     * <p>Note that if the argument is equal to the value of {@link
+     * Integer#MIN_VALUE}, the most negative representable {@code int}
+     * value, the result is that same value, which is negative. In
+     * contrast, the {@link StrictMath#absExact(int)} method throws an
+     * {@code ArithmeticException} for this value.
      *
      * @param   a   the  argument whose absolute value is to be determined.
      * @return  the absolute value of the argument.
+     * @see Math#absExact(int)
      */
     public static int abs(int a) {
         return Math.abs(a);
+    }
+
+    /**
+     * Returns the mathematical absolute value of an {@code int} value
+     * if it is exactly representable as an {@code int}, throwing
+     * {@code ArithmeticException} if the result overflows the
+     * positive {@code int} range.
+     *
+     * <p>Since the range of two's complement integers is asymmetric
+     * with one additional negative value (JLS {@jls 4.2.1}), the
+     * mathematical absolute value of {@link Integer#MIN_VALUE}
+     * overflows the positive {@code int} range, so an exception is
+     * thrown for that argument.
+     *
+     * @param  a  the argument whose absolute value is to be determined
+     * @return the absolute value of the argument, unless overflow occurs
+     * @throws ArithmeticException if the argument is {@link Integer#MIN_VALUE}
+     * @see Math#abs(int)
+     * @see Math#absExact(int)
+     * @since 15
+     */
+    public static int absExact(int a) {
+        return Math.absExact(a);
     }
 
     /**
@@ -1051,16 +1533,41 @@ public final class StrictMath {
      * If the argument is not negative, the argument is returned.
      * If the argument is negative, the negation of the argument is returned.
      *
-     * <p>Note that if the argument is equal to the value of
-     * {@link Long#MIN_VALUE}, the most negative representable
-     * {@code long} value, the result is that same value, which
-     * is negative.
+     * <p>Note that if the argument is equal to the value of {@link
+     * Long#MIN_VALUE}, the most negative representable {@code long}
+     * value, the result is that same value, which is negative. In
+     * contrast, the {@link StrictMath#absExact(long)} method throws
+     * an {@code ArithmeticException} for this value.
      *
      * @param   a   the  argument whose absolute value is to be determined.
      * @return  the absolute value of the argument.
+     * @see Math#absExact(long)
      */
     public static long abs(long a) {
         return Math.abs(a);
+    }
+
+    /**
+     * Returns the mathematical absolute value of an {@code long} value
+     * if it is exactly representable as an {@code long}, throwing
+     * {@code ArithmeticException} if the result overflows the
+     * positive {@code long} range.
+     *
+     * <p>Since the range of two's complement integers is asymmetric
+     * with one additional negative value (JLS {@jls 4.2.1}), the
+     * mathematical absolute value of {@link Long#MIN_VALUE} overflows
+     * the positive {@code long} range, so an exception is thrown for
+     * that argument.
+     *
+     * @param  a  the argument whose absolute value is to be determined
+     * @return the absolute value of the argument, unless overflow occurs
+     * @throws ArithmeticException if the argument is {@link Long#MIN_VALUE}
+     * @see Math#abs(long)
+     * @see Math#absExact(long)
+     * @since 15
+     */
+    public static long absExact(long a) {
+        return Math.absExact(a);
     }
 
     /**
@@ -1121,7 +1628,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the larger of {@code a} and {@code b}.
      */
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     public static int max(int a, int b) {
         return Math.max(a, b);
     }
@@ -1135,7 +1642,7 @@ public final class StrictMath {
      * @param   a   an argument.
      * @param   b   another argument.
      * @return  the larger of {@code a} and {@code b}.
-        */
+     */
     public static long max(long a, long b) {
         return Math.max(a, b);
     }
@@ -1154,6 +1661,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the larger of {@code a} and {@code b}.
      */
+    @IntrinsicCandidate
     public static float max(float a, float b) {
         return Math.max(a, b);
     }
@@ -1172,6 +1680,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the larger of {@code a} and {@code b}.
      */
+    @IntrinsicCandidate
     public static double max(double a, double b) {
         return Math.max(a, b);
     }
@@ -1186,7 +1695,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the smaller of {@code a} and {@code b}.
      */
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     public static int min(int a, int b) {
         return Math.min(a, b);
     }
@@ -1219,6 +1728,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the smaller of {@code a} and {@code b.}
      */
+    @IntrinsicCandidate
     public static float min(float a, float b) {
         return Math.min(a, b);
     }
@@ -1237,6 +1747,7 @@ public final class StrictMath {
      * @param   b   another argument.
      * @return  the smaller of {@code a} and {@code b}.
      */
+    @IntrinsicCandidate
     public static double min(double a, double b) {
         return Math.min(a, b);
     }
@@ -1538,6 +2049,7 @@ public final class StrictMath {
      * <li> If either argument is NaN and neither argument is infinite,
      * then the result is NaN.
      *
+     * <li> If both arguments are zero, the result is positive zero.
      * </ul>
      *
      * @param x a value
@@ -1878,20 +2390,17 @@ public final class StrictMath {
     }
 
     /**
-     * Returns {@code d} &times;
-     * 2<sup>{@code scaleFactor}</sup> rounded as if performed
-     * by a single correctly rounded floating-point multiply to a
-     * member of the double value set.  See the Java
-     * Language Specification for a discussion of floating-point
-     * value sets.  If the exponent of the result is between {@link
-     * Double#MIN_EXPONENT} and {@link Double#MAX_EXPONENT}, the
-     * answer is calculated exactly.  If the exponent of the result
-     * would be larger than {@code Double.MAX_EXPONENT}, an
-     * infinity is returned.  Note that if the result is subnormal,
-     * precision may be lost; that is, when {@code scalb(x, n)}
-     * is subnormal, {@code scalb(scalb(x, n), -n)} may not equal
-     * <i>x</i>.  When the result is non-NaN, the result has the same
-     * sign as {@code d}.
+     * Returns {@code d} &times; 2<sup>{@code scaleFactor}</sup>
+     * rounded as if performed by a single correctly rounded
+     * floating-point multiply.  If the exponent of the result is
+     * between {@link Double#MIN_EXPONENT} and {@link
+     * Double#MAX_EXPONENT}, the answer is calculated exactly.  If the
+     * exponent of the result would be larger than {@code
+     * Double.MAX_EXPONENT}, an infinity is returned.  Note that if
+     * the result is subnormal, precision may be lost; that is, when
+     * {@code scalb(x, n)} is subnormal, {@code scalb(scalb(x, n),
+     * -n)} may not equal <i>x</i>.  When the result is non-NaN, the
+     * result has the same sign as {@code d}.
      *
      * <p>Special cases:
      * <ul>
@@ -1912,20 +2421,17 @@ public final class StrictMath {
     }
 
     /**
-     * Returns {@code f} &times;
-     * 2<sup>{@code scaleFactor}</sup> rounded as if performed
-     * by a single correctly rounded floating-point multiply to a
-     * member of the float value set.  See the Java
-     * Language Specification for a discussion of floating-point
-     * value sets.  If the exponent of the result is between {@link
-     * Float#MIN_EXPONENT} and {@link Float#MAX_EXPONENT}, the
-     * answer is calculated exactly.  If the exponent of the result
-     * would be larger than {@code Float.MAX_EXPONENT}, an
-     * infinity is returned.  Note that if the result is subnormal,
-     * precision may be lost; that is, when {@code scalb(x, n)}
-     * is subnormal, {@code scalb(scalb(x, n), -n)} may not equal
-     * <i>x</i>.  When the result is non-NaN, the result has the same
-     * sign as {@code f}.
+     * Returns {@code f} &times; 2<sup>{@code scaleFactor}</sup>
+     * rounded as if performed by a single correctly rounded
+     * floating-point multiply.  If the exponent of the result is
+     * between {@link Float#MIN_EXPONENT} and {@link
+     * Float#MAX_EXPONENT}, the answer is calculated exactly.  If the
+     * exponent of the result would be larger than {@code
+     * Float.MAX_EXPONENT}, an infinity is returned.  Note that if the
+     * result is subnormal, precision may be lost; that is, when
+     * {@code scalb(x, n)} is subnormal, {@code scalb(scalb(x, n),
+     * -n)} may not equal <i>x</i>.  When the result is non-NaN, the
+     * result has the same sign as {@code f}.
      *
      * <p>Special cases:
      * <ul>

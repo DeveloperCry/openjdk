@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1591,7 +1591,7 @@ public abstract class Parser {
                             str = name(false);
                             //          PI target name may not be empty string [#2.6]
                             //          PI target name 'XML' is reserved [#2.6]
-                            if ((str.length() == 0)
+                            if ((str.isEmpty())
                                     || (mXml.name.equals(str.toLowerCase()) == true)) {
                                 panic(FAULT);
                             }
@@ -1993,19 +1993,17 @@ public abstract class Parser {
                             try {
                                 int i = Integer.parseInt(
                                         new String(mBuff, idx + 1, mBuffIdx - idx), 10);
-                                if (i >= 0xffff) {
-                                    panic(FAULT);
+                                //          Restore the buffer offset
+                                mBuffIdx = idx - 1;
+                                for(char character : Character.toChars(i)) {
+                                    if (character == ' ' || mInp.next != null) {
+                                        bappend(character, flag);
+                                    } else {
+                                        bappend(character);
+                                    }
                                 }
-                                ch = (char) i;
                             } catch (NumberFormatException nfe) {
                                 panic(FAULT);
-                            }
-                            //          Restore the buffer offset
-                            mBuffIdx = idx - 1;
-                            if (ch == ' ' || mInp.next != null) {
-                                bappend(ch, flag);
-                            } else {
-                                bappend(ch);
                             }
                             st = -1;
                             break;
@@ -2034,19 +2032,17 @@ public abstract class Parser {
                             try {
                                 int i = Integer.parseInt(
                                         new String(mBuff, idx + 1, mBuffIdx - idx), 16);
-                                if (i >= 0xffff) {
-                                    panic(FAULT);
+                                //          Restore the buffer offset
+                                mBuffIdx = idx - 1;
+                                for(char character : Character.toChars(i)) {
+                                    if (character == ' ' || mInp.next != null) {
+                                        bappend(character, flag);
+                                    } else {
+                                        bappend(character);
+                                    }
                                 }
-                                ch = (char) i;
                             } catch (NumberFormatException nfe) {
                                 panic(FAULT);
-                            }
-                            //          Restore the buffer offset
-                            mBuffIdx = idx - 1;
-                            if (ch == ' ' || mInp.next != null) {
-                                bappend(ch, flag);
-                            } else {
-                                bappend(ch);
                             }
                             st = -1;
                             break;
@@ -2991,7 +2987,7 @@ public abstract class Parser {
     private Reader utf16(InputStream is)
             throws Exception {
         if (mChIdx != 0) {
-            //The bom method has read ONE byte into the buffer.
+            // The bom method has read ONE byte into the buffer.
             byte b0 = (byte)mChars[0];
             if (b0 == 0x00 || b0 == 0x3C) {
                 int b1 = is.read();
@@ -3008,9 +3004,9 @@ public abstract class Parser {
                     mChars[mChIdx++] = (char)(b2);
                     return new ReaderUTF16(is, 'l');
                 } else {
-                    /**not every InputStream supports reset, so we have to remember
+                    /* not every InputStream supports reset, so we have to remember
                      * the state for further parsing
-                    **/
+                     */
                     mChars[0] = (char)(b0);
                     mChars[mChIdx++] = (char)(b1);
                     mChars[mChIdx++] = (char)(b2);

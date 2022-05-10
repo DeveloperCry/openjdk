@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -182,11 +185,21 @@ class DirectIntBufferRU
 
 
 
+
+
+
+
+
+
+
     // For duplicates and slices
     //
     DirectIntBufferRU(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+
+
+                               MemorySegmentProxy segment)
     {
 
 
@@ -196,7 +209,16 @@ class DirectIntBufferRU
 
 
 
-        super(db, mark, pos, lim, cap, off);
+
+
+
+
+
+        super(db, mark, pos, lim, cap, off,
+
+
+
+              segment);
         this.isReadOnly = true;
 
     }
@@ -209,21 +231,37 @@ class DirectIntBufferRU
     public IntBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 2);
         assert (off >= 0);
-        return new DirectIntBufferRU(this, -1, 0, rem, rem, off);
+        return new DirectIntBufferRU(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+
+
+
+                                              segment);
     }
 
+    @Override
+    public IntBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectIntBufferRU(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 2,
 
 
 
 
-
-
-
-
+                                              segment);
+    }
 
     public IntBuffer duplicate() {
         return new DirectIntBufferRU(this,
@@ -231,7 +269,12 @@ class DirectIntBufferRU
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+
+
+
+                                              segment);
     }
 
     public IntBuffer asReadOnlyBuffer() {
@@ -243,40 +286,14 @@ class DirectIntBufferRU
 
 
 
+
+
+
+
+
         return duplicate();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -352,94 +369,9 @@ class DirectIntBufferRU
 
     }
 
-    public IntBuffer put(IntBuffer src) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
-    public IntBuffer put(int[] src, int offset, int length) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
     public IntBuffer compact() {
+
+
 
 
 
@@ -466,8 +398,6 @@ class DirectIntBufferRU
     public boolean isReadOnly() {
         return true;
     }
-
-
 
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 
 package jdk.internal.loader;
 
-import jdk.internal.misc.JavaLangAccess;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.JavaLangAccess;
+import jdk.internal.access.SharedSecrets;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Iterator;
@@ -346,6 +346,7 @@ public abstract class AbstractClassLoaderValue<CLV extends AbstractClassLoaderVa
         }
 
         static class RecursiveInvocationException extends IllegalStateException {
+            @java.io.Serial
             private static final long serialVersionUID = 1L;
 
             RecursiveInvocationException() {

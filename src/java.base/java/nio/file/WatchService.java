@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -143,7 +143,7 @@ public interface WatchService
      * specified wait time if none are yet present.
      *
      * @param   timeout
-     *          how to wait before giving up, in units of unit
+     *          how long to wait before giving up, in units of unit
      * @param   unit
      *          a {@code TimeUnit} determining how to interpret the timeout
      *          parameter

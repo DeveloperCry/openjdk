@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,9 +26,8 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  *
- * Copyright (C) 1991-2016 Unicode, Inc. All rights reserved.
- * Distributed under the Terms of Use in 
- * http://www.unicode.org/copyright.html.
+ * Copyright (c) 1991-2020 Unicode, Inc. All rights reserved.
+ * Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of the Unicode data files and any associated documentation
@@ -37,14 +36,11 @@
  * without restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, and/or sell copies of
  * the Data Files or Software, and to permit persons to whom the Data Files
- * or Software are furnished to do so, provided that
- * (a) this copyright and permission notice appear with all copies 
- * of the Data Files or Software,
- * (b) this copyright and permission notice appear in associated 
- * documentation, and
- * (c) there is clear notice in each modified Data File or in the Software
- * as well as in the documentation associated with the Data File(s) or
- * Software that the data or software has been modified.
+ * or Software are furnished to do so, provided that either
+ * (a) this copyright and permission notice appear with all copies
+ * of the Data Files or Software, or
+ * (b) this copyright and permission notice appear in associated
+ * Documentation.
  *
  * THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -70,139 +66,50 @@ import sun.util.resources.TimeZoneNamesBundle;
 public class TimeZoneNames extends TimeZoneNamesBundle {
     @Override
     protected final Object[][] getContents() {
+        final String[] ETC_UTC = new String[] {
+               "",
+               "UTC",
+               "",
+               "",
+               "",
+               "",
+            };
         final Object[][] data = new Object[][] {
-            { "UTC",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.Asia/Calcutta", "Kolkata" },
-            { "timezone.excity.America/Scoresbysund", "Ittoqqortoormiit" },
-            { "timezone.excity.America/Kentucky/Monticello", "Monticello, Kentucky" },
-            { "timezone.excity.America/Indiana/Vevay", "Vevay, Indiana" },
-            { "timezone.excity.Asia/Katmandu", "Kathmandu" },
-            { "timezone.excity.Atlantic/St_Helena", "St. Helena" },
-            { "timezone.excity.America/Godthab", "Nuuk" },
-            { "Europe/Astrakhan",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.Pacific/Ponape", "Pohnpei" },
-            { "timezone.excity.America/St_Johns", "St. John\u2019s" },
-            { "timezone.excity.America/St_Barthelemy", "St. Barthelemy" },
-            { "timezone.excity.America/St_Kitts", "St. Kitts" },
-            { "Asia/Srednekolymsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.America/Coral_Harbour", "Atikokan" },
-            { "timezone.excity.Etc/Unknown", "Unknown" },
-            { "Europe/Saratov",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.Africa/Asmera", "Asmara" },
-            { "timezone.excity.Atlantic/Faeroe", "Faroe" },
+            { "UTC", ETC_UTC },
+            { "Etc/UTC", ETC_UTC },
+            { "timezone.excity.Asia/Macau", "Macao" },
             { "timezone.excity.Asia/Saigon", "Ho Chi Minh" },
-            { "Asia/Famagusta",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Antarctica/Palmer",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Etc/UTC",
-                new String[] {
-                    "",
-                    "UTC",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.America/Indiana/Winamac", "Winamac, Indiana" },
-            { "timezone.excity.America/North_Dakota/New_Salem", "New Salem, North Dakota" },
-            { "timezone.excity.America/Indiana/Vincennes", "Vincennes, Indiana" },
-            { "timezone.excity.America/Indiana/Petersburg", "Petersburg, Indiana" },
-            { "timezone.excity.Pacific/Truk", "Chuuk" },
-            { "timezone.excity.America/North_Dakota/Beulah", "Beulah, North Dakota" },
+            { "timezone.excity.Etc/Unknown", "Unknown" },
             { "timezone.excity.Asia/Rangoon", "Yangon" },
-            { "timezone.excity.Antarctica/DumontDUrville", "Dumont d\u2019Urville" },
-            { "timezone.excity.America/Indiana/Knox", "Knox, Indiana" },
-            { "timezone.excity.America/Lower_Princes", "Lower Prince\u2019s Quarter" },
-            { "Pacific/Bougainville",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "Europe/Ulyanovsk",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "America/Punta_Arenas",
-                new String[] {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                }
-            },
-            { "timezone.excity.America/St_Thomas", "St. Thomas" },
-            { "timezone.excity.America/Indiana/Marengo", "Marengo, Indiana" },
-            { "timezone.excity.America/St_Vincent", "St. Vincent" },
+            { "timezone.excity.Pacific/Truk", "Chuuk" },
+            { "timezone.excity.Africa/Asmera", "Asmara" },
+            { "timezone.excity.Asia/Calcutta", "Kolkata" },
+            { "timezone.excity.Asia/Katmandu", "Kathmandu" },
+            { "timezone.excity.Pacific/Ponape", "Pohnpei" },
+            { "timezone.excity.America/Godthab", "Nuuk" },
+            { "timezone.excity.Atlantic/Faeroe", "Faroe" },
+            { "timezone.excity.America/St_Johns", "St. John\u2019s" },
+            { "timezone.excity.America/St_Kitts", "St. Kitts" },
             { "timezone.excity.America/St_Lucia", "St. Lucia" },
-            { "timezone.excity.America/North_Dakota/Center", "Center, North Dakota" },
+            { "timezone.excity.America/St_Thomas", "St. Thomas" },
+            { "timezone.excity.America/St_Vincent", "St. Vincent" },
+            { "timezone.excity.Atlantic/St_Helena", "St. Helena" },
+            { "timezone.excity.America/Indiana/Knox", "Knox, Indiana" },
+            { "timezone.excity.America/Scoresbysund", "Ittoqqortoormiit" },
+            { "timezone.excity.America/Coral_Harbour", "Atikokan" },
+            { "timezone.excity.America/Indiana/Vevay", "Vevay, Indiana" },
+            { "timezone.excity.America/Lower_Princes", "Lower Prince\u2019s Quarter" },
+            { "timezone.excity.America/St_Barthelemy", "St. Barthelemy" },
+            { "timezone.excity.America/Indiana/Marengo", "Marengo, Indiana" },
+            { "timezone.excity.America/Indiana/Winamac", "Winamac, Indiana" },
             { "timezone.excity.America/Indiana/Tell_City", "Tell City, Indiana" },
+            { "timezone.excity.America/Indiana/Vincennes", "Vincennes, Indiana" },
+            { "timezone.excity.Antarctica/DumontDUrville", "Dumont d\u2019Urville" },
+            { "timezone.excity.America/Indiana/Petersburg", "Petersburg, Indiana" },
+            { "timezone.excity.America/Kentucky/Monticello", "Monticello, Kentucky" },
+            { "timezone.excity.America/North_Dakota/Beulah", "Beulah, North Dakota" },
+            { "timezone.excity.America/North_Dakota/Center", "Center, North Dakota" },
+            { "timezone.excity.America/North_Dakota/New_Salem", "New Salem, North Dakota" },
         };
         return data;
     }

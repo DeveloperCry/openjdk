@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,8 +47,7 @@ package java.util;
  * @author      Mark Davis
  * @since       1.1
  */
-public
-class MissingResourceException extends RuntimeException {
+public class MissingResourceException extends RuntimeException {
 
     /**
      * Constructs a MissingResourceException with the specified information.
@@ -108,6 +107,7 @@ class MissingResourceException extends RuntimeException {
     //============ privates ============
 
     // serialization compatibility with JDK1.1
+    @java.io.Serial
     private static final long serialVersionUID = -4876345176062000401L;
 
     /**

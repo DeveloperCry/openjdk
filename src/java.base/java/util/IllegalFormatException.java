@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,6 +35,7 @@ package java.util;
  */
 public class IllegalFormatException extends IllegalArgumentException {
 
+    @java.io.Serial
     private static final long serialVersionUID = 18830826L;
 
     // package-private to prevent explicit instantiation

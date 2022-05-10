@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,7 +64,7 @@ public final class Resources {
         if (index == -1 || index == name.length()-1) {
             return "";
         } else {
-            return name.substring(0, index).replace("/", ".");
+            return name.substring(0, index).replace('/', '.');
         }
     }
 
@@ -78,7 +78,7 @@ public final class Resources {
         String s = dir.relativize(file)
                       .toString()
                       .replace(File.separatorChar, '/');
-        if (s.length() > 0 && Files.isDirectory(file))
+        if (!s.isEmpty() && Files.isDirectory(file))
             s += "/";
         return s;
     }

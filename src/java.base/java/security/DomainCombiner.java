@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -77,7 +77,13 @@ package java.security;
  * @see AccessController
  * @see AccessControlContext
  * @since 1.3
+ * @deprecated This class is only useful in conjunction with
+ *       {@linkplain SecurityManager the Security Manager}, which is deprecated
+ *       and subject to removal in a future release. Consequently, this class
+ *       is also deprecated and subject to removal. There is no replacement for
+ *       the Security Manager or this class.
  */
+@Deprecated(since="17", forRemoval=true)
 public interface DomainCombiner {
 
     /**

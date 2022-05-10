@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -296,9 +296,9 @@ public class CertPathValidator {
      * @param certPath the {@code CertPath} to be validated
      * @param params the algorithm parameters
      * @return the result of the validation algorithm
-     * @exception CertPathValidatorException if the {@code CertPath}
+     * @throws    CertPathValidatorException if the {@code CertPath}
      * does not validate
-     * @exception InvalidAlgorithmParameterException if the specified
+     * @throws    InvalidAlgorithmParameterException if the specified
      * parameters or the type of the specified {@code CertPath} are
      * inappropriate for this {@code CertPathValidator}
      */
@@ -329,6 +329,7 @@ public class CertPathValidator {
      * {@literal "PKIX"} if no such property exists.
      */
     public static final String getDefaultType() {
+        @SuppressWarnings("removal")
         String cpvtype =
             AccessController.doPrivileged(new PrivilegedAction<>() {
                 public String run() {

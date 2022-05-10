@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -80,7 +80,7 @@ public final class Era {
         this.since = since;
         this.localTime = localTime;
         Gregorian gcal = CalendarSystem.getGregorianCalendar();
-        BaseCalendar.Date d = (BaseCalendar.Date) gcal.newCalendarDate(null);
+        BaseCalendar.Date d = gcal.newCalendarDate(null);
         gcal.getCalendarDate(since, d);
         sinceDate = new ImmutableGregorianDate(d);
     }

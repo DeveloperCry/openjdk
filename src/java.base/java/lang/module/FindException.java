@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,10 +33,10 @@ package java.lang.module;
  * reasons.
  *
  * @since 9
- * @spec JPMS
  */
 
 public class FindException extends RuntimeException {
+    @java.io.Serial
     private static final long serialVersionUID = -5817081036963388391L;
 
     /**

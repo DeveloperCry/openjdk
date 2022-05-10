@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,6 +43,7 @@ package java.lang;
  * @since   1.0
  */
 public class Exception extends Throwable {
+    @java.io.Serial
     static final long serialVersionUID = -3387516993124229948L;
 
     /**

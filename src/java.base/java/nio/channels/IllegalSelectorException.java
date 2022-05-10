@@ -42,6 +42,7 @@ public class IllegalSelectorException
     extends IllegalArgumentException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -8406323347253320987L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,7 +35,7 @@ import static sun.invoke.util.Wrapper.*;
 class TypeConvertingMethodAdapter extends MethodVisitor {
 
     TypeConvertingMethodAdapter(MethodVisitor mv) {
-        super(Opcodes.ASM5, mv);
+        super(Opcodes.ASM7, mv);
     }
 
     private static final int NUM_WRAPPERS = Wrapper.COUNT;

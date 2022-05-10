@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ import java.net.SocketException;
  */
 public
 class ConnectionResetException extends SocketException {
+    @java.io.Serial
     private static final long serialVersionUID = -7633185991801851556L;
 
     public ConnectionResetException(String msg) {

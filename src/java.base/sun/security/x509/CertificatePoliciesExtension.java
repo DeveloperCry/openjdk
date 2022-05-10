@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,7 +45,7 @@ import sun.security.util.DerOutputStream;
  * certificate.
  * <p>
  * Optional qualifiers are not supported in this implementation, as they are
- * not recommended by RFC2459.
+ * not recommended by RFC 5280.
  *
  * The ASN.1 syntax for this is (IMPLICIT tagging is defined in the
  * module definition):

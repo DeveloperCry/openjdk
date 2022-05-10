@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -138,6 +138,11 @@ public class FileURLConnection extends URLConnection {
         }
     }
 
+    public Map<String,List<String>> getHeaderFields() {
+        initializeHeaders();
+        return super.getHeaderFields();
+    }
+
     public String getHeaderField(String name) {
         initializeHeaders();
         return super.getHeaderField(name);
@@ -193,7 +198,7 @@ public class FileURLConnection extends URLConnection {
                     throw new FileNotFoundException(filename);
                 }
 
-                Collections.sort(files, Collator.getInstance());
+                files.sort(Collator.getInstance());
 
                 for (int i = 0 ; i < files.size() ; i++) {
                     String fileName = files.get(i);

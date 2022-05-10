@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,14 +48,15 @@ public class JIS_X_0201 extends Charset implements HistoricallyNamedCharset
     }
 
     public CharsetDecoder newDecoder() {
-        return new SingleByte.Decoder(this, b2c, true);
+        return new SingleByte.Decoder(this, Holder.b2c, true, false);
     }
 
     public CharsetEncoder newEncoder() {
-        return new SingleByte.Encoder(this, c2b, c2bIndex, true);
+        return new SingleByte.Encoder(this, Holder.c2b, Holder.c2bIndex, true);
     }
 
-    private final static String b2cTable = 
+    private static class Holder {
+        private static final String b2cTable = 
         "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" +      // 0x80 - 0x87
         "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" +      // 0x88 - 0x8f
         "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" +      // 0x90 - 0x97
@@ -90,18 +91,19 @@ public class JIS_X_0201 extends Charset implements HistoricallyNamedCharset
         "\u0078\u0079\u007A\u007B\u007C\u007D\u007E\u007F" ;      // 0x78 - 0x7f
 
 
-    private final static char[] b2c = b2cTable.toCharArray();
-    private final static char[] c2b = new char[0x300];
-    private final static char[] c2bIndex = new char[0x100];
+        private static final char[] b2c = b2cTable.toCharArray();
+        private static final char[] c2b = new char[0x300];
+        private static final char[] c2bIndex = new char[0x100];
 
-    static {
-        char[] b2cMap = b2c;
-        char[] c2bNR = null;
-        // non-roundtrip c2b only entries
+        static {
+            char[] b2cMap = b2c;
+            char[] c2bNR = null;
+            // non-roundtrip c2b only entries
         c2bNR = new char[4];
         c2bNR[0] = 0x7e; c2bNR[1] = 0x203e;
         c2bNR[2] = 0x5c; c2bNR[3] = 0xa5;
 
-        SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+            SingleByte.initC2B(b2cMap, c2bNR, c2b, c2bIndex);
+        }
     }
 }

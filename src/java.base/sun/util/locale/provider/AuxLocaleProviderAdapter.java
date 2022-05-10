@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -186,6 +186,7 @@ public abstract class AuxLocaleProviderAdapter extends LocaleProviderAdapter {
      * A dummy locale service provider that indicates there is no
      * provider available
      */
+    @SuppressWarnings("removal")
     private static final NullProvider NULL_PROVIDER = AccessController.doPrivileged(
         (PrivilegedAction<NullProvider>) () -> new NullProvider());
 

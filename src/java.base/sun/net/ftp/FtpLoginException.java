@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ import java.io.IOException;
  * @author      Jonathan Payne
  */
 public class FtpLoginException extends IOException {
+    @java.io.Serial
     private static final long serialVersionUID = 2218162403237941536L;
 
     public FtpLoginException(String s) {

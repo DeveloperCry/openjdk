@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,8 @@
 
 package java.security;
 
+import java.io.IOException;
+
 /**
  * A GuardedObject is an object that is used to protect access to
  * another object.
@@ -49,10 +51,20 @@ package java.security;
 
 public class GuardedObject implements java.io.Serializable {
 
+    @java.io.Serial
     private static final long serialVersionUID = -5240450096227834308L;
 
-    private Object object; // the object we are guarding
-    private Guard guard;   // the guard
+    /**
+     * The object we are guarding.
+     */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
+    private Object object;
+
+    /**
+     * The guard object.
+     */
+    @SuppressWarnings("serial") // Not statically typed as Serializable
+    private Guard guard;
 
     /**
      * Constructs a GuardedObject using the specified object and guard.
@@ -76,7 +88,7 @@ public class GuardedObject implements java.io.Serializable {
      *
      * @return the guarded object.
      *
-     * @exception SecurityException if access to the guarded object is
+     * @throws    SecurityException if access to the guarded object is
      * denied.
      */
     public Object getObject()
@@ -91,9 +103,13 @@ public class GuardedObject implements java.io.Serializable {
     /**
      * Writes this object out to a stream (i.e., serializes it).
      * We check the guard if there is one.
+     *
+     * @param  oos the {@code ObjectOutputStream} to which data is written
+     * @throws IOException if an I/O error occurs
      */
+    @java.io.Serial
     private void writeObject(java.io.ObjectOutputStream oos)
-        throws java.io.IOException
+        throws IOException
     {
         if (guard != null)
             guard.checkGuard(object);

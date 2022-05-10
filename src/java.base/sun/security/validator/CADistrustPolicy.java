@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -70,6 +70,7 @@ enum CADistrustPolicy {
     // The policies set in the jdk.security.caDistrustPolicies property.
     static final EnumSet<CADistrustPolicy> POLICIES = parseProperty();
     private static EnumSet<CADistrustPolicy> parseProperty() {
+        @SuppressWarnings("removal")
         String property = AccessController.doPrivileged(
             new PrivilegedAction<>() {
                 @Override

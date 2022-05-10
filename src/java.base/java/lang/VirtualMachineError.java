@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,17 +34,18 @@ package java.lang;
  * @since   1.0
  */
 public abstract class VirtualMachineError extends Error {
+    @java.io.Serial
     private static final long serialVersionUID = 4161983926571568670L;
 
     /**
-     * Constructs a <code>VirtualMachineError</code> with no detail message.
+     * Constructs a {@code VirtualMachineError} with no detail message.
      */
     public VirtualMachineError() {
         super();
     }
 
     /**
-     * Constructs a <code>VirtualMachineError</code> with the specified
+     * Constructs a {@code VirtualMachineError} with the specified
      * detail message.
      *
      * @param   message   the detail message.

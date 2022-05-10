@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,6 @@ package java.lang;
  * Thrown to indicate that a method has been called by an inappropriate caller.
  *
  * @since 9
- * @spec JPMS
  * @see StackWalker#getCallerClass
  */
 public class IllegalCallerException extends RuntimeException {
@@ -72,5 +71,6 @@ public class IllegalCallerException extends RuntimeException {
         super(cause);
     }
 
+    @java.io.Serial
     static final long serialVersionUID = -2349421918363102232L;
 }

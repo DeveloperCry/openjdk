@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,12 +30,15 @@ package java.nio;
 
 
 
+import java.lang.ref.Reference;
 
 
 
 
 
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.util.ArraysSupport;
 
 /**
@@ -50,14 +53,14 @@ import jdk.internal.util.ArraysSupport;
  *   {@link #put(double) <i>put</i>} methods that read and write
  *   single doubles; </p></li>
  *
- *   <li><p> Relative {@link #get(double[]) <i>bulk get</i>}
+ *   <li><p> Absolute and relative {@link #get(double[]) <i>bulk get</i>}
  *   methods that transfer contiguous sequences of doubles from this buffer
- *   into an array; and</p></li>
+ *   into an array;</p></li>
  *
- *   <li><p> Relative {@link #put(double[]) <i>bulk put</i>}
+ *   <li><p> Absolute and relative {@link #put(double[]) <i>bulk put</i>}
  *   methods that transfer contiguous sequences of doubles from a
  *   double array or some other double
- *   buffer into this buffer;&#32;and </p></li>
+ *   buffer into this buffer;</p></li>
  *
 
 
@@ -212,6 +215,8 @@ import jdk.internal.util.ArraysSupport;
 
 
 
+
+
  *
 
 
@@ -263,6 +268,8 @@ public abstract class DoubleBuffer
     extends Buffer
     implements Comparable<DoubleBuffer>
 {
+    // Cached array base offset
+    private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(double[].class);
 
     // These fields are declared here rather than in Heap-X-Buffer in order to
     // reduce the number of virtual method invocations needed to access these
@@ -276,17 +283,25 @@ public abstract class DoubleBuffer
     // backing array, and array offset
     //
     DoubleBuffer(int mark, int pos, int lim, int cap,   // package-private
-                 double[] hb, int offset)
+                 double[] hb, int offset, MemorySegmentProxy segment)
     {
-        super(mark, pos, lim, cap);
+        super(mark, pos, lim, cap, segment);
         this.hb = hb;
         this.offset = offset;
     }
 
     // Creates a new buffer with the given mark, position, limit, and capacity
     //
-    DoubleBuffer(int mark, int pos, int lim, int cap) { // package-private
-        this(mark, pos, lim, cap, null, 0);
+    DoubleBuffer(int mark, int pos, int lim, int cap, MemorySegmentProxy segment) { // package-private
+        this(mark, pos, lim, cap, null, 0, segment);
+    }
+
+    // Creates a new buffer with given base, address and capacity
+    //
+    DoubleBuffer(double[] hb, long addr, int cap, MemorySegmentProxy segment) { // package-private
+        super(addr, cap, segment);
+        this.hb = hb;
+        this.offset = 0;
     }
 
     @Override
@@ -345,7 +360,7 @@ public abstract class DoubleBuffer
     public static DoubleBuffer allocate(int capacity) {
         if (capacity < 0)
             throw createCapacityException(capacity);
-        return new HeapDoubleBuffer(capacity, capacity);
+        return new HeapDoubleBuffer(capacity, capacity, null);
     }
 
     /**
@@ -390,7 +405,7 @@ public abstract class DoubleBuffer
                                     int offset, int length)
     {
         try {
-            return new HeapDoubleBuffer(array, offset, length);
+            return new HeapDoubleBuffer(array, offset, length, null);
         } catch (IllegalArgumentException x) {
             throw new IndexOutOfBoundsException();
         }
@@ -515,6 +530,13 @@ public abstract class DoubleBuffer
 
 
 
+
+
+
+
+
+
+
     /**
      * Creates a new double buffer whose content is a shared subsequence of
      * this buffer's content.
@@ -543,6 +565,46 @@ public abstract class DoubleBuffer
      */
     @Override
     public abstract DoubleBuffer slice();
+
+    /**
+     * Creates a new double buffer whose content is a shared subsequence of
+     * this buffer's content.
+     *
+     * <p> The content of the new buffer will start at position {@code index}
+     * in this buffer, and will contain {@code length} elements. Changes to
+     * this buffer's content will be visible in the new buffer, and vice versa;
+     * the two buffers' position, limit, and mark values will be independent.
+     *
+     * <p> The new buffer's position will be zero, its capacity and its limit
+     * will be {@code length}, its mark will be undefined, and its byte order
+     * will be
+
+
+
+     * identical to that of this buffer.
+
+     * The new buffer will be direct if, and only if, this buffer is direct,
+     * and it will be read-only if, and only if, this buffer is read-only. </p>
+     *
+     * @param   index
+     *          The position in this buffer at which the content of the new
+     *          buffer will start; must be non-negative and no larger than
+     *          {@link #limit() limit()}
+     *
+     * @param   length
+     *          The number of elements the new buffer will contain; must be
+     *          non-negative and no larger than {@code limit() - index}
+     *
+     * @return  The new buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If {@code index} is negative or greater than {@code limit()},
+     *          {@code length} is negative, or {@code length > limit() - index}
+     *
+     * @since 13
+     */
+    @Override
+    public abstract DoubleBuffer slice(int index, int length);
 
     /**
      * Creates a new double buffer that shares this buffer's content.
@@ -730,12 +792,14 @@ public abstract class DoubleBuffer
      *          parameters do not hold
      */
     public DoubleBuffer get(double[] dst, int offset, int length) {
-        checkBounds(offset, length, dst.length);
-        if (length > remaining())
+        Objects.checkFromIndexSize(offset, length, dst.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferUnderflowException();
-        int end = offset + length;
-        for (int i = offset; i < end; i++)
-            dst[i] = get();
+
+        getArray(pos, dst, offset, length);
+
+        position(pos + length);
         return this;
     }
 
@@ -762,6 +826,123 @@ public abstract class DoubleBuffer
         return get(dst, 0, dst.length);
     }
 
+    /**
+     * Absolute bulk <i>get</i> method.
+     *
+     * <p> This method transfers {@code length} doubles from this
+     * buffer into the given array, starting at the given index in this
+     * buffer and at the given offset in the array.  The position of this
+     * buffer is unchanged.
+     *
+     * <p> An invocation of this method of the form
+     * <code>src.get(index,&nbsp;dst,&nbsp;offset,&nbsp;length)</code>
+     * has exactly the same effect as the following loop except that it first
+     * checks the consistency of the supplied parameters and it is potentially
+     * much more efficient:
+     *
+     * <pre>{@code
+     *     for (int i = offset, j = index; i < offset + length; i++, j++)
+     *         dst[i] = src.get(j);
+     * }</pre>
+     *
+     * @param  index
+     *         The index in this buffer from which the first double will be
+     *         read; must be non-negative and less than {@code limit()}
+     *
+     * @param  dst
+     *         The destination array
+     *
+     * @param  offset
+     *         The offset within the array of the first double to be
+     *         written; must be non-negative and less than
+     *         {@code dst.length}
+     *
+     * @param  length
+     *         The number of doubles to be written to the given array;
+     *         must be non-negative and no larger than the smaller of
+     *         {@code limit() - index} and {@code dst.length - offset}
+     *
+     * @return  This buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If the preconditions on the {@code index}, {@code offset}, and
+     *          {@code length} parameters do not hold
+     *
+     * @since 13
+     */
+    public DoubleBuffer get(int index, double[] dst, int offset, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, dst.length);
+
+        getArray(index, dst, offset, length);
+
+        return this;
+    }
+
+    /**
+     * Absolute bulk <i>get</i> method.
+     *
+     * <p> This method transfers doubles from this buffer into the given
+     * destination array.  The position of this buffer is unchanged.  An
+     * invocation of this method of the form
+     * <code>src.get(index,&nbsp;dst)</code> behaves in exactly the same
+     * way as the invocation:
+     *
+     * <pre>
+     *     src.get(index, dst, 0, dst.length) </pre>
+     *
+     * @param  index
+     *         The index in this buffer from which the first double will be
+     *         read; must be non-negative and less than {@code limit()}
+     *
+     * @param  dst
+     *         The destination array
+     *
+     * @return  This buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If {@code index} is negative, not smaller than {@code limit()},
+     *          or {@code limit() - index < dst.length}
+     *
+     * @since 13
+     */
+    public DoubleBuffer get(int index, double[] dst) {
+        return get(index, dst, 0, dst.length);
+    }
+
+    private DoubleBuffer getArray(int index, double[] dst, int offset, int length) {
+        if (
+
+
+
+            ((long)length << 3) > Bits.JNI_COPY_TO_ARRAY_THRESHOLD) {
+            long bufAddr = address + ((long)index << 3);
+            long dstOffset =
+                ARRAY_BASE_OFFSET + ((long)offset << 3);
+            long len = (long)length << 3;
+
+            try {
+
+                if (order() != ByteOrder.nativeOrder())
+                    SCOPED_MEMORY_ACCESS.copySwapMemory(
+                            scope(), null, base(), bufAddr,
+                            dst, dstOffset, len, Double.BYTES);
+                else
+
+                    SCOPED_MEMORY_ACCESS.copyMemory(
+                            scope(), null, base(), bufAddr,
+                            dst, dstOffset, len);
+            } finally {
+                Reference.reachabilityFence(this);
+            }
+        } else {
+            int end = offset + length;
+            for (int i = offset, j = index; i < end; i++, j++) {
+                dst[i] = get(j);
+            }
+        }
+        return this;
+    }
 
     // -- Bulk put operations --
 
@@ -788,7 +969,10 @@ public abstract class DoubleBuffer
      *         dst.put(src.get()); </pre>
      *
      * except that it first checks that there is sufficient space in this
-     * buffer and it is potentially much more efficient.
+     * buffer and it is potentially much more efficient.  If this buffer and
+     * the source buffer share the same backing array or memory, then the
+     * result will be as if the source elements were first copied to an
+     * intermediate location before being written into this buffer.
      *
      * @param  src
      *         The source buffer from which doubles are to be read;
@@ -811,12 +995,128 @@ public abstract class DoubleBuffer
             throw createSameBufferException();
         if (isReadOnly())
             throw new ReadOnlyBufferException();
-        int n = src.remaining();
-        if (n > remaining())
+
+        int srcPos = src.position();
+        int srcLim = src.limit();
+        int srcRem = (srcPos <= srcLim ? srcLim - srcPos : 0);
+        int pos = position();
+        int lim = limit();
+        int rem = (pos <= lim ? lim - pos : 0);
+
+        if (srcRem > rem)
             throw new BufferOverflowException();
-        for (int i = 0; i < n; i++)
-            put(src.get());
+
+        putBuffer(pos, src, srcPos, srcRem);
+
+        position(pos + srcRem);
+        src.position(srcPos + srcRem);
+
         return this;
+    }
+
+    /**
+     * Absolute bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
+     *
+     * <p> This method transfers {@code length} doubles into this buffer from
+     * the given source buffer, starting at the given {@code offset} in the
+     * source buffer and the given {@code index} in this buffer. The positions
+     * of both buffers are unchanged.
+     *
+     * <p> In other words, an invocation of this method of the form
+     * <code>dst.put(index,&nbsp;src,&nbsp;offset,&nbsp;length)</code>
+     * has exactly the same effect as the loop
+     *
+     * <pre>{@code
+     * for (int i = offset, j = index; i < offset + length; i++, j++)
+     *     dst.put(j, src.get(i));
+     * }</pre>
+     *
+     * except that it first checks the consistency of the supplied parameters
+     * and it is potentially much more efficient.  If this buffer and
+     * the source buffer share the same backing array or memory, then the
+     * result will be as if the source elements were first copied to an
+     * intermediate location before being written into this buffer.
+     *
+     * @param index
+     *        The index in this buffer at which the first double will be
+     *        written; must be non-negative and less than {@code limit()}
+     *
+     * @param src
+     *        The buffer from which doubles are to be read
+     *
+     * @param offset
+     *        The index within the source buffer of the first double to be
+     *        read; must be non-negative and less than {@code src.limit()}
+     *
+     * @param length
+     *        The number of doubles to be read from the given buffer;
+     *        must be non-negative and no larger than the smaller of
+     *        {@code limit() - index} and {@code src.limit() - offset}
+     *
+     * @return This buffer
+     *
+     * @throws IndexOutOfBoundsException
+     *         If the preconditions on the {@code index}, {@code offset}, and
+     *         {@code length} parameters do not hold
+     *
+     * @throws ReadOnlyBufferException
+     *         If this buffer is read-only
+     *
+     * @since 16
+     */
+    public DoubleBuffer put(int index, DoubleBuffer src, int offset, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, src.limit());
+        if (isReadOnly())
+            throw new ReadOnlyBufferException();
+
+        putBuffer(index, src, offset, length);
+
+        return this;
+    }
+
+    void putBuffer(int pos, DoubleBuffer src, int srcPos, int n) {
+
+        Object srcBase = src.base();
+
+
+
+        assert srcBase != null || src.isDirect();
+
+
+            Object base = base();
+            assert base != null || isDirect();
+
+            long srcAddr = src.address + ((long)srcPos << 3);
+            long addr = address + ((long)pos << 3);
+            long len = (long)n << 3;
+
+            try {
+
+                if (this.order() != src.order())
+                    SCOPED_MEMORY_ACCESS.copySwapMemory(
+                            src.scope(), scope(), srcBase, srcAddr,
+                            base, addr, len, Double.BYTES);
+                else
+
+                    SCOPED_MEMORY_ACCESS.copyMemory(
+                            src.scope(), scope(), srcBase, srcAddr,
+                            base, addr, len);
+            } finally {
+                Reference.reachabilityFence(src);
+                Reference.reachabilityFence(this);
+            }
+
+
+
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -840,7 +1140,7 @@ public abstract class DoubleBuffer
      *
      * <pre>{@code
      *     for (int i = off; i < off + len; i++)
-     *         dst.put(a[i]);
+     *         dst.put(src[i]);
      * }</pre>
      *
      * except that it first checks that there is sufficient space in this
@@ -851,12 +1151,12 @@ public abstract class DoubleBuffer
      *
      * @param  offset
      *         The offset within the array of the first double to be read;
-     *         must be non-negative and no larger than {@code array.length}
+     *         must be non-negative and no larger than {@code src.length}
      *
      * @param  length
      *         The number of doubles to be read from the given array;
      *         must be non-negative and no larger than
-     *         {@code array.length - offset}
+     *         {@code src.length - offset}
      *
      * @return  This buffer
      *
@@ -871,12 +1171,16 @@ public abstract class DoubleBuffer
      *          If this buffer is read-only
      */
     public DoubleBuffer put(double[] src, int offset, int length) {
-        checkBounds(offset, length, src.length);
-        if (length > remaining())
+        if (isReadOnly())
+            throw new ReadOnlyBufferException();
+        Objects.checkFromIndexSize(offset, length, src.length);
+        int pos = position();
+        if (length > limit() - pos)
             throw new BufferOverflowException();
-        int end = offset + length;
-        for (int i = offset; i < end; i++)
-            this.put(src[i]);
+
+        putArray(pos, src, offset, length);
+
+        position(pos + length);
         return this;
     }
 
@@ -904,6 +1208,132 @@ public abstract class DoubleBuffer
      */
     public final DoubleBuffer put(double[] src) {
         return put(src, 0, src.length);
+    }
+
+    /**
+     * Absolute bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
+     *
+     * <p> This method transfers {@code length} doubles from the given
+     * array, starting at the given offset in the array and at the given index
+     * in this buffer.  The position of this buffer is unchanged.
+     *
+     * <p> An invocation of this method of the form
+     * <code>dst.put(index,&nbsp;src,&nbsp;offset,&nbsp;length)</code>
+     * has exactly the same effect as the following loop except that it first
+     * checks the consistency of the supplied parameters and it is potentially
+     * much more efficient:
+     *
+     * <pre>{@code
+     *     for (int i = offset, j = index; i < offset + length; i++, j++)
+     *         dst.put(j, src[i]);
+     * }</pre>
+     *
+     * @param  index
+     *         The index in this buffer at which the first double will be
+     *         written; must be non-negative and less than {@code limit()}
+     *
+     * @param  src
+     *         The array from which doubles are to be read
+     *
+     * @param  offset
+     *         The offset within the array of the first double to be read;
+     *         must be non-negative and less than {@code src.length}
+     *
+     * @param  length
+     *         The number of doubles to be read from the given array;
+     *         must be non-negative and no larger than the smaller of
+     *         {@code limit() - index} and {@code src.length - offset}
+     *
+     * @return  This buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If the preconditions on the {@code index}, {@code offset}, and
+     *          {@code length} parameters do not hold
+     *
+     * @throws  ReadOnlyBufferException
+     *          If this buffer is read-only
+     *
+     * @since 13
+     */
+    public DoubleBuffer put(int index, double[] src, int offset, int length) {
+        if (isReadOnly())
+            throw new ReadOnlyBufferException();
+        Objects.checkFromIndexSize(index, length, limit());
+        Objects.checkFromIndexSize(offset, length, src.length);
+
+        putArray(index, src, offset, length);
+
+        return this;
+    }
+
+    /**
+     * Absolute bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
+     *
+     * <p> This method copies doubles into this buffer from the given source
+     * array.  The position of this buffer is unchanged.  An invocation of this
+     * method of the form <code>dst.put(index,&nbsp;src)</code>
+     * behaves in exactly the same way as the invocation:
+     *
+     * <pre>
+     *     dst.put(index, src, 0, src.length); </pre>
+     *
+     * @param  index
+     *         The index in this buffer at which the first double will be
+     *         written; must be non-negative and less than {@code limit()}
+     *
+     * @param  src
+     *         The array from which doubles are to be read
+     *
+     * @return  This buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If {@code index} is negative, not smaller than {@code limit()},
+     *          or {@code limit() - index < src.length}
+     *
+     * @throws  ReadOnlyBufferException
+     *          If this buffer is read-only
+     *
+     * @since 13
+     */
+    public DoubleBuffer put(int index, double[] src) {
+        return put(index, src, 0, src.length);
+    }
+
+    private DoubleBuffer putArray(int index, double[] src, int offset, int length) {
+
+        if (
+
+
+
+            ((long)length << 3) > Bits.JNI_COPY_FROM_ARRAY_THRESHOLD) {
+            long bufAddr = address + ((long)index << 3);
+            long srcOffset =
+                ARRAY_BASE_OFFSET + ((long)offset << 3);
+            long len = (long)length << 3;
+
+            try {
+
+                if (order() != ByteOrder.nativeOrder())
+                    SCOPED_MEMORY_ACCESS.copySwapMemory(
+                            null, scope(), src, srcOffset,
+                            base(), bufAddr, len, Double.BYTES);
+                else
+
+                    SCOPED_MEMORY_ACCESS.copyMemory(
+                            null, scope(), src, srcOffset,
+                            base(), bufAddr, len);
+            } finally {
+                Reference.reachabilityFence(this);
+            }
+        } else {
+            int end = offset + length;
+            for (int i = offset, j = index; i < end; i++, j++)
+                this.put(j, src[i]);
+        }
+        return this;
+
+
+
     }
 
 
@@ -1216,22 +1646,31 @@ public abstract class DoubleBuffer
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Returns a string summarizing the state of this buffer.
      *
      * @return  A summary string
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(getClass().getName());
-        sb.append("[pos=");
-        sb.append(position());
-        sb.append(" lim=");
-        sb.append(limit());
-        sb.append(" cap=");
-        sb.append(capacity());
-        sb.append("]");
-        return sb.toString();
+        return getClass().getName()
+                 + "[pos=" + position()
+                 + " lim=" + limit()
+                 + " cap=" + capacity()
+                 + "]";
     }
 
 
@@ -1302,11 +1741,15 @@ public abstract class DoubleBuffer
         if (!(ob instanceof DoubleBuffer))
             return false;
         DoubleBuffer that = (DoubleBuffer)ob;
-        if (this.remaining() != that.remaining())
+        int thisPos = this.position();
+        int thisRem = this.limit() - thisPos;
+        int thatPos = that.position();
+        int thatRem = that.limit() - thatPos;
+        if (thisRem < 0 || thisRem != thatRem)
             return false;
-        return BufferMismatch.mismatch(this, this.position(),
-                                       that, that.position(),
-                                       this.remaining()) < 0;
+        return BufferMismatch.mismatch(this, thisPos,
+                                       that, thatPos,
+                                       thisRem) < 0;
     }
 
     /**
@@ -1333,13 +1776,20 @@ public abstract class DoubleBuffer
      *          is less than, equal to, or greater than the given buffer
      */
     public int compareTo(DoubleBuffer that) {
-        int i = BufferMismatch.mismatch(this, this.position(),
-                                        that, that.position(),
-                                        Math.min(this.remaining(), that.remaining()));
+        int thisPos = this.position();
+        int thisRem = this.limit() - thisPos;
+        int thatPos = that.position();
+        int thatRem = that.limit() - thatPos;
+        int length = Math.min(thisRem, thatRem);
+        if (length < 0)
+            return -1;
+        int i = BufferMismatch.mismatch(this, thisPos,
+                                        that, thatPos,
+                                        length);
         if (i >= 0) {
-            return compare(this.get(this.position() + i), that.get(that.position() + i));
+            return compare(this.get(thisPos + i), that.get(thatPos + i));
         }
-        return this.remaining() - that.remaining();
+        return thisRem - thatRem;
     }
 
     private static int compare(double x, double y) {
@@ -1378,14 +1828,33 @@ public abstract class DoubleBuffer
      * @since 11
      */
     public int mismatch(DoubleBuffer that) {
-        int length = Math.min(this.remaining(), that.remaining());
-        int r = BufferMismatch.mismatch(this, this.position(),
-                                        that, that.position(),
+        int thisPos = this.position();
+        int thisRem = this.limit() - thisPos;
+        int thatPos = that.position();
+        int thatRem = that.limit() - thatPos;
+        int length = Math.min(thisRem, thatRem);
+        if (length < 0)
+            return -1;
+        int r = BufferMismatch.mismatch(this, thisPos,
+                                        that, thatPos,
                                         length);
-        return (r == -1 && this.remaining() != that.remaining()) ? length : r;
+        return (r == -1 && thisRem != thatRem) ? length : r;
     }
 
     // -- Other char stuff --
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1597,6 +2066,17 @@ public abstract class DoubleBuffer
      * @return  This buffer's byte order
      */
     public abstract ByteOrder order();
+
+
+
+
+
+
+
+
+
+
+
 
 
 

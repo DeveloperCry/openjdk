@@ -41,6 +41,7 @@ public class InterruptedByTimeoutException
     extends java.io.IOException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -4268008601014042947L;
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -307,6 +307,7 @@ public class SAXParseException extends SAXException {
     private int columnNumber;
 
     // Added serialVersionUID to preserve binary compatibility
+    @java.io.Serial
     static final long serialVersionUID = -5651165872476709336L;
 }
 

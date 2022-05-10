@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -225,10 +225,6 @@ import java.util.Objects;
  * <p>
  * Calling {@link SecureRandom#generateSeed(int)} will directly read
  * from this system default entropy source.
- * <p>
- * This implementation has passed all tests included in the 20151104 version of
- * <a href="http://csrc.nist.gov/groups/STM/cavp/documents/drbg/drbgtestvectors.zip">
- * The DRBG Test Vectors</a>.
  *
  * @since 9
  */

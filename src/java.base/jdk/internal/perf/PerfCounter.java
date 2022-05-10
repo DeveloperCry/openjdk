@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,6 +48,7 @@ import java.security.AccessController;
  *
  */
 public class PerfCounter {
+    @SuppressWarnings("removal")
     private static final Perf perf =
         AccessController.doPrivileged(new Perf.GetPerfAction());
 

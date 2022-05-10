@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,11 +25,13 @@
 
 package java.util.zip;
 
+import java.lang.ref.Reference;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
 import sun.nio.ch.DirectBuffer;
-import jdk.internal.HotSpotIntrinsicCandidate;
+import jdk.internal.util.Preconditions;
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 /**
  * A class that can be used to compute the CRC-32 of a data stream.
@@ -40,8 +42,7 @@ import jdk.internal.HotSpotIntrinsicCandidate;
  * @author      David Connelly
  * @since 1.1
  */
-public
-class CRC32 implements Checksum {
+public class CRC32 implements Checksum {
     private int crc;
 
     /**
@@ -73,9 +74,7 @@ class CRC32 implements Checksum {
         if (b == null) {
             throw new NullPointerException();
         }
-        if (off < 0 || len < 0 || off > b.length - len) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+        Preconditions.checkFromIndexSize(len, off, b.length, Preconditions.AIOOBE_FORMATTER);
         crc = updateBytes(crc, b, off, len);
     }
 
@@ -96,8 +95,12 @@ class CRC32 implements Checksum {
         int rem = limit - pos;
         if (rem <= 0)
             return;
-        if (buffer instanceof DirectBuffer) {
-            crc = updateByteBuffer(crc, ((DirectBuffer)buffer).address(), pos, rem);
+        if (buffer.isDirect()) {
+            try {
+                crc = updateByteBuffer(crc, ((DirectBuffer)buffer).address(), pos, rem);
+            } finally {
+                Reference.reachabilityFence(buffer);
+            }
         } else if (buffer.hasArray()) {
             crc = updateBytes(crc, buffer.array(), pos + buffer.arrayOffset(), rem);
         } else {
@@ -127,7 +130,7 @@ class CRC32 implements Checksum {
         return (long)crc & 0xffffffffL;
     }
 
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     private static native int update(int crc, int b);
 
     private static int updateBytes(int crc, byte[] b, int off, int len) {
@@ -135,7 +138,7 @@ class CRC32 implements Checksum {
         return updateBytes0(crc, b, off, len);
     }
 
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     private static native int updateBytes0(int crc, byte[] b, int off, int len);
 
     private static void updateBytesCheck(byte[] b, int off, int len) {
@@ -144,15 +147,8 @@ class CRC32 implements Checksum {
         }
 
         Objects.requireNonNull(b);
-
-        if (off < 0 || off >= b.length) {
-            throw new ArrayIndexOutOfBoundsException(off);
-        }
-
-        int endIndex = off + len - 1;
-        if (endIndex < 0 || endIndex >= b.length) {
-            throw new ArrayIndexOutOfBoundsException(endIndex);
-        }
+        Preconditions.checkIndex(off, b.length, Preconditions.AIOOBE_FORMATTER);
+        Preconditions.checkIndex(off + len - 1, b.length, Preconditions.AIOOBE_FORMATTER);
     }
 
     private static int updateByteBuffer(int alder, long addr,
@@ -161,7 +157,7 @@ class CRC32 implements Checksum {
         return updateByteBuffer0(alder, addr, off, len);
     }
 
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     private static native int updateByteBuffer0(int alder, long addr,
                                                 int off, int len);
 

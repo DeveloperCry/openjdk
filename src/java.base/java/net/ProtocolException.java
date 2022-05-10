@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,8 +34,8 @@ import java.io.IOException;
  * @author  Chris Warth
  * @since   1.0
  */
-public
-class ProtocolException extends IOException {
+public class ProtocolException extends IOException {
+    @java.io.Serial
     private static final long serialVersionUID = -6098449442062388080L;
 
     /**

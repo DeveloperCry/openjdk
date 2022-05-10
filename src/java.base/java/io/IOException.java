@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,13 +30,12 @@ package java.io;
  * class is the general class of exceptions produced by failed or
  * interrupted I/O operations.
  *
- * @author  unascribed
  * @see     java.io.InputStream
  * @see     java.io.OutputStream
  * @since   1.0
  */
-public
-class IOException extends Exception {
+public class IOException extends Exception {
+    @java.io.Serial
     static final long serialVersionUID = 7818375828146090155L;
 
     /**

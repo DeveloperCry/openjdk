@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsFloatBufferRB                  // package-private
     extends ByteBufferAsFloatBufferB
@@ -40,7 +41,7 @@ class ByteBufferAsFloatBufferRB                  // package-private
 
 
 
-    ByteBufferAsFloatBufferRB(ByteBuffer bb) {   // package-private
+    ByteBufferAsFloatBufferRB(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
 
 
@@ -53,13 +54,13 @@ class ByteBufferAsFloatBufferRB                  // package-private
 
 
 
-        super(bb);
+        super(bb, segment);
 
     }
 
     ByteBufferAsFloatBufferRB(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
 
@@ -67,7 +68,7 @@ class ByteBufferAsFloatBufferRB                  // package-private
 
 
 
-        super(bb, mark, pos, lim, cap, addr);
+        super(bb, mark, pos, lim, cap, addr, segment);
 
     }
 
@@ -79,10 +80,20 @@ class ByteBufferAsFloatBufferRB                  // package-private
     public FloatBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsFloatBufferRB(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsFloatBufferRB(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public FloatBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsFloatBufferRB(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public FloatBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsFloatBufferRB                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public FloatBuffer asReadOnlyBuffer() {
@@ -191,8 +202,6 @@ class ByteBufferAsFloatBufferRB                  // package-private
     public boolean isReadOnly() {
         return true;
     }
-
-
 
 
 

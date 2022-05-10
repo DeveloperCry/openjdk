@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,7 +37,7 @@ public class CLDRBaseLocaleDataMetaInfo implements LocaleDataMetaInfo {
 
     static {
         resourceNameToLocales.put("AvailableLocales",
-              " en en-US en-US-POSIX");
+              " en en-Latn-US en-US en-US-POSIX");
         parentLocalesMap.put(Locale.forLanguageTag("es-419"),
              new String[] {
                  "", "es-AR", "es-BO", "es-BR", "es-BZ", "es-CL", "es-CO", "es-CR", 
@@ -46,95 +46,248 @@ public class CLDRBaseLocaleDataMetaInfo implements LocaleDataMetaInfo {
              });
         parentLocalesMap.put(Locale.ROOT,
              new String[] {
-                 "", "az-Arab", "az-Cyrl", "bm-Nkoo", "bs-Cyrl", "en-Dsrt", "en-Shaw", 
-                 "ha-Arab", "iu-Latn", "mn-Mong", "ms-Arab", "pa-Arab", "shi-Latn", 
-                 "sr-Latn", "uz-Arab", "uz-Cyrl", "vai-Latn", "yue-Hans", "zh-Hant", 
-             });
-        parentLocalesMap.put(Locale.forLanguageTag("en-001"),
-             new String[] {
-                 "", "en-150", "en-AG", "en-AI", "en-AU", "en-BB", "en-BE", "en-BM", 
-                 "en-BS", "en-BW", "en-BZ", "en-CA", "en-CC", "en-CK", "en-CM", "en-CX", 
-                 "en-CY", "en-DG", "en-DM", "en-ER", "en-FJ", "en-FK", "en-FM", "en-GB", 
-                 "en-GD", "en-GG", "en-GH", "en-GI", "en-GM", "en-GY", "en-HK", "en-IE", 
-                 "en-IL", "en-IM", "en-IN", "en-IO", "en-JE", "en-JM", "en-KE", "en-KI", 
-                 "en-KN", "en-KY", "en-LC", "en-LR", "en-LS", "en-MG", "en-MO", "en-MS", 
-                 "en-MT", "en-MU", "en-MW", "en-MY", "en-NA", "en-NF", "en-NG", "en-NR", 
-                 "en-NU", "en-NZ", "en-PG", "en-PH", "en-PK", "en-PN", "en-PW", "en-RW", 
-                 "en-SB", "en-SC", "en-SD", "en-SG", "en-SH", "en-SL", "en-SS", "en-SX", 
-                 "en-SZ", "en-TC", "en-TK", "en-TO", "en-TT", "en-TV", "en-TZ", "en-UG", 
-                 "en-VC", "en-VG", "en-VU", "en-WS", "en-ZA", "en-ZM", "en-ZW", 
+                 "", "az-Arab", "az-Cyrl", "blt-Latn", "bm-Nkoo", "bs-Cyrl", "byn-Latn", 
+                 "cu-Glag", "dje-Arab", "dyo-Arab", "en-Dsrt", "en-Shaw", "ff-Adlm", 
+                 "ff-Arab", "ha-Arab", "hi-Latn", "iu-Latn", "kk-Arab", "ks-Deva", 
+                 "ku-Arab", "ky-Arab", "ky-Latn", "ml-Arab", "mn-Mong", "mni-Mtei", 
+                 "ms-Arab", "pa-Arab", "sat-Deva", "sd-Deva", "sd-Khoj", "sd-Sind", 
+                 "shi-Latn", "so-Arab", "sr-Latn", "sw-Arab", "tg-Arab", "ug-Cyrl", 
+                 "uz-Arab", "uz-Cyrl", "vai-Latn", "wo-Arab", "yo-Arab", "yue-Hans", 
+                 "zh-Hant", 
              });
         parentLocalesMap.put(Locale.forLanguageTag("zh-Hant-HK"),
              new String[] {
                  "", "zh-Hant-MO", 
              });
+        parentLocalesMap.put(Locale.forLanguageTag("en-001"),
+             new String[] {
+                 "", "en-150", "en-AG", "en-AI", "en-AU", "en-BB", "en-BM", "en-BS", 
+                 "en-BW", "en-BZ", "en-CA", "en-CC", "en-CK", "en-CM", "en-CX", "en-CY", 
+                 "en-DG", "en-DM", "en-ER", "en-FJ", "en-FK", "en-FM", "en-GB", "en-GD", 
+                 "en-GG", "en-GH", "en-GI", "en-GM", "en-GY", "en-HK", "en-IE", "en-IL", 
+                 "en-IM", "en-IN", "en-IO", "en-JE", "en-JM", "en-KE", "en-KI", "en-KN", 
+                 "en-KY", "en-LC", "en-LR", "en-LS", "en-MG", "en-MO", "en-MS", "en-MT", 
+                 "en-MU", "en-MW", "en-MY", "en-NA", "en-NF", "en-NG", "en-NR", "en-NU", 
+                 "en-NZ", "en-PG", "en-PH", "en-PK", "en-PN", "en-PW", "en-RW", "en-SB", 
+                 "en-SC", "en-SD", "en-SG", "en-SH", "en-SL", "en-SS", "en-SX", "en-SZ", 
+                 "en-TC", "en-TK", "en-TO", "en-TT", "en-TV", "en-TZ", "en-UG", "en-VC", 
+                 "en-VG", "en-VU", "en-WS", "en-ZA", "en-ZM", "en-ZW", 
+             });
         parentLocalesMap.put(Locale.forLanguageTag("pt-PT"),
              new String[] {
-                 "", "pt-AO", "pt-CH", "pt-CV", "pt-GQ", "pt-GW", "pt-LU", "pt-MO", 
-                 "pt-MZ", "pt-ST", "pt-TL", 
+                 "", "pt-AO", "pt-CH", "pt-CV", "pt-FR", "pt-GQ", "pt-GW", "pt-LU", 
+                 "pt-MO", "pt-MZ", "pt-ST", "pt-TL", 
+             });
+        parentLocalesMap.put(Locale.forLanguageTag("no"),
+             new String[] {
+                 "", "nb", "nn", 
              });
         parentLocalesMap.put(Locale.forLanguageTag("en-150"),
              new String[] {
-                 "", "en-AT", "en-CH", "en-DE", "en-DK", "en-FI", "en-NL", "en-SE", 
-                 "en-SI", 
+                 "", "en-AT", "en-BE", "en-CH", "en-DE", "en-DK", "en-FI", "en-NL", 
+                 "en-SE", "en-SI", 
              });
-                languageAliasMap.put("pa-PK", "pa-Arab-PK");
-                languageAliasMap.put("zh-hakka", "hak");
-                languageAliasMap.put("i-ami", "ami");
-                languageAliasMap.put("ug-Arab-CN", "ug-CN");
-                languageAliasMap.put("aa-SAAHO", "ssy");
-                languageAliasMap.put("ha-Latn-GH", "ha-GH");
-                languageAliasMap.put("zh-xiang", "hsn");
-                languageAliasMap.put("kk-Cyrl-KZ", "kk-KZ");
-                languageAliasMap.put("zh-CN", "zh-Hans-CN");
-                languageAliasMap.put("scc", "sr");
-                languageAliasMap.put("i-tay", "tay");
-                languageAliasMap.put("sgn-CH-DE", "sgg");
-                languageAliasMap.put("yue-HK", "yue-Hant-HK");
-                languageAliasMap.put("mo", "ro-MD");
-                languageAliasMap.put("bs-BA", "bs-Latn-BA");
-                languageAliasMap.put("scr", "hr");
-                languageAliasMap.put("sr-XK", "sr-Cyrl-XK");
-                languageAliasMap.put("i-tsu", "tsu");
-                languageAliasMap.put("zh-SG", "zh-Hans-SG");
-                languageAliasMap.put("i-klingon", "tlh");
-                languageAliasMap.put("zh-min-nan", "nan");
-                languageAliasMap.put("zh-guoyu", "zh");
-                languageAliasMap.put("ks-Arab-IN", "ks-IN");
-                languageAliasMap.put("i-pwn", "pwn");
-                languageAliasMap.put("az-AZ", "az-Latn-AZ");
-                languageAliasMap.put("sgn-BE-NL", "vgt");
-                languageAliasMap.put("zh-MO", "zh-Hant-MO");
-                languageAliasMap.put("ky-Cyrl-KG", "ky-KG");
-                languageAliasMap.put("jw", "jv");
-                languageAliasMap.put("ms-Latn-MY", "ms-MY");
-                languageAliasMap.put("sr-ME", "sr-Latn-ME");
-                languageAliasMap.put("i-navajo", "nv");
-                languageAliasMap.put("sh", "sr-Latn");
-                languageAliasMap.put("pa-IN", "pa-Guru-IN");
-                languageAliasMap.put("tzm-Latn-MA", "tzm-MA");
-                languageAliasMap.put("i-bnn", "bnn");
-                languageAliasMap.put("i-tao", "tao");
-                languageAliasMap.put("sr-BA", "sr-Cyrl-BA");
-                languageAliasMap.put("uz-AF", "uz-Arab-AF");
-                languageAliasMap.put("uz-UZ", "uz-Latn-UZ");
-                languageAliasMap.put("zh-HK", "zh-Hant-HK");
-                languageAliasMap.put("zh-TW", "zh-Hant-TW");
-                languageAliasMap.put("cnr", "sr-ME");
-                languageAliasMap.put("sr-RS", "sr-Cyrl-RS");
-                languageAliasMap.put("mn-Cyrl-MN", "mn-MN");
-                languageAliasMap.put("ms-Latn-SG", "ms-SG");
-                languageAliasMap.put("shi-MA", "shi-Tfng-MA");
-                languageAliasMap.put("ha-Latn-NE", "ha-NE");
-                languageAliasMap.put("ha-Latn-NG", "ha-NG");
-                languageAliasMap.put("ms-Latn-BN", "ms-BN");
-                languageAliasMap.put("i-hak", "hak");
-                languageAliasMap.put("sgn-BE-FR", "sfb");
-                languageAliasMap.put("art-lojban", "jbo");
-                languageAliasMap.put("i-lux", "lb");
-                languageAliasMap.put("vai-LR", "vai-Vaii-LR");
-                languageAliasMap.put("yue-CN", "yue-Hans-CN");
-                languageAliasMap.put("tl", "fil");
+        languageAliasMap.put("zh-cmn-Hant", "zh-Hant");
+        languageAliasMap.put("mwj", "vaj");
+        languageAliasMap.put("zh-cmn-Hans", "zh-Hans");
+        languageAliasMap.put("tdu", "dtp");
+        languageAliasMap.put("pmc", "huw");
+        languageAliasMap.put("sgn-PT", "psr");
+        languageAliasMap.put("leg", "enl");
+        languageAliasMap.put("ccq", "rki");
+        languageAliasMap.put("sca", "hle");
+        languageAliasMap.put("scc", "sr");
+        languageAliasMap.put("und-nynorsk", "und");
+        languageAliasMap.put("sgn-CH-DE", "sgg");
+        languageAliasMap.put("und-arevmda", "und");
+        languageAliasMap.put("en-GB-oed", "en-GB-oxendict");
+        languageAliasMap.put("pmu", "phr");
+        languageAliasMap.put("baz", "nvo");
+        languageAliasMap.put("jar", "jgk");
+        languageAliasMap.put("yos", "zom");
+        languageAliasMap.put("mgx", "jbk");
+        languageAliasMap.put("scr", "hr");
+        languageAliasMap.put("gli", "kzk");
+        languageAliasMap.put("ktr", "dtp");
+        languageAliasMap.put("dwl", "dbt");
+        languageAliasMap.put("myd", "aog");
+        languageAliasMap.put("i-klingon", "tlh");
+        languageAliasMap.put("kdv", "zkd");
+        languageAliasMap.put("i-pwn", "pwn");
+        languageAliasMap.put("myt", "mry");
+        languageAliasMap.put("sum", "ulw");
+        languageAliasMap.put("sul", "sgd");
+        languageAliasMap.put("zh-gan", "gan");
+        languageAliasMap.put("aam", "aas");
+        languageAliasMap.put("i-navajo", "nv");
+        languageAliasMap.put("btb", "beb");
+        languageAliasMap.put("tgg", "bjp");
+        languageAliasMap.put("zh-yue", "yue");
+        languageAliasMap.put("sh", "sr-Latn");
+        languageAliasMap.put("ppa", "bfy");
+        languageAliasMap.put("sgn-CO", "csn");
+        languageAliasMap.put("i-default", "en-x-i-default");
+        languageAliasMap.put("kvs", "gdj");
+        languageAliasMap.put("und-xiang", "und");
+        languageAliasMap.put("thc", "tpo");
+        languageAliasMap.put("ibi", "opa");
+        languageAliasMap.put("nln", "azd");
+        languageAliasMap.put("sgn-BE-FR", "sfb");
+        languageAliasMap.put("ppr", "lcq");
+        languageAliasMap.put("asd", "snz");
+        languageAliasMap.put("nlr", "nrk");
+        languageAliasMap.put("i-enochian", "und-x-i-enochian");
+        languageAliasMap.put("sgn-BR", "bzs");
+        languageAliasMap.put("tl", "fil");
+        languageAliasMap.put("ybd", "rki");
+        languageAliasMap.put("sgn-SE", "swl");
+        languageAliasMap.put("sgn-DK", "dsl");
+        languageAliasMap.put("thw", "ola");
+        languageAliasMap.put("kwq", "yam");
+        languageAliasMap.put("thx", "oyb");
+        languageAliasMap.put("kgc", "tdf");
+        languageAliasMap.put("kgd", "ncq");
+        languageAliasMap.put("jeg", "oyb");
+        languageAliasMap.put("kgh", "kml");
+        languageAliasMap.put("lii", "raq");
+        languageAliasMap.put("dit", "dif");
+        languageAliasMap.put("tid", "itd");
+        languageAliasMap.put("sgn-DE", "gsg");
+        languageAliasMap.put("tie", "ras");
+        languageAliasMap.put("kxe", "tvd");
+        languageAliasMap.put("sgl", "isk");
+        languageAliasMap.put("kxl", "kru");
+        languageAliasMap.put("djl", "dze");
+        languageAliasMap.put("elp", "amq");
+        languageAliasMap.put("hrr", "jal");
+        languageAliasMap.put("sgn-US", "ase");
+        languageAliasMap.put("adp", "dz");
+        languageAliasMap.put("und-hakka", "und");
+        languageAliasMap.put("aue", "ktz");
+        languageAliasMap.put("nns", "nbr");
+        languageAliasMap.put("pry", "prt");
+        languageAliasMap.put("xba", "cax");
+        languageAliasMap.put("xrq", "dmw");
+        languageAliasMap.put("nnx", "ngv");
+        languageAliasMap.put("cel-gaulish", "xtg");
+        languageAliasMap.put("dkl", "aqd");
+        languageAliasMap.put("sgn-FR", "fsl");
+        languageAliasMap.put("bgm", "bcg");
+        languageAliasMap.put("zh-min", "nan-x-zh-min");
+        languageAliasMap.put("xsj", "suj");
+        languageAliasMap.put("tkk", "twm");
+        languageAliasMap.put("yuu", "yug");
+        languageAliasMap.put("kzh", "dgl");
+        languageAliasMap.put("kzj", "dtp");
+        languageAliasMap.put("sgn-ES", "ssp");
+        languageAliasMap.put("gav", "dev");
+        languageAliasMap.put("pcr", "adx");
+        languageAliasMap.put("yen", "ynq");
+        languageAliasMap.put("kzt", "dtp");
+        languageAliasMap.put("bhk", "fbl");
+        languageAliasMap.put("sgn-GR", "gss");
+        languageAliasMap.put("gbc", "wny");
+        languageAliasMap.put("cjr", "mom");
+        languageAliasMap.put("llo", "ngt");
+        languageAliasMap.put("mnt", "wnn");
+        languageAliasMap.put("i-hak", "hak");
+        languageAliasMap.put("sgn-GB", "bfi");
+        languageAliasMap.put("unp", "wro");
+        languageAliasMap.put("aa-saaho", "ssy");
+        languageAliasMap.put("cka", "cmr");
+        languageAliasMap.put("tlw", "weo");
+        languageAliasMap.put("und-hepburn-heploc", "und-alalc97");
+        languageAliasMap.put("mof", "xnt");
+        languageAliasMap.put("agp", "apf");
+        languageAliasMap.put("lmm", "rmx");
+        languageAliasMap.put("nad", "xny");
+        languageAliasMap.put("uok", "ema");
+        languageAliasMap.put("skk", "oyb");
+        languageAliasMap.put("und-bokmal", "und");
+        languageAliasMap.put("puz", "pub");
+        languageAliasMap.put("tmp", "tyj");
+        languageAliasMap.put("bjd", "drl");
+        languageAliasMap.put("gti", "nyc");
+        languageAliasMap.put("sgn-ZA", "sfs");
+        languageAliasMap.put("zir", "scv");
+        languageAliasMap.put("sgn-IT", "ise");
+        languageAliasMap.put("bjq", "bzc");
+        languageAliasMap.put("tne", "kak");
+        languageAliasMap.put("tnf", "fa-AF");
+        languageAliasMap.put("nbf", "nru");
+        languageAliasMap.put("sgn-IE", "isg");
+        languageAliasMap.put("bkb", "ebk");
+        languageAliasMap.put("und-arevela", "und");
+        languageAliasMap.put("zh-min-nan", "nan");
+        languageAliasMap.put("zh-guoyu", "zh");
+        languageAliasMap.put("i-mingo", "see-x-i-mingo");
+        languageAliasMap.put("cmk", "xch");
+        languageAliasMap.put("ayx", "nun");
+        languageAliasMap.put("sgn-JP", "jsl");
+        languageAliasMap.put("hy-arevmda", "hyw");
+        languageAliasMap.put("sgn-BE-NL", "vgt");
+        languageAliasMap.put("nbx", "ekc");
+        languageAliasMap.put("guv", "duz");
+        languageAliasMap.put("oun", "vaj");
+        languageAliasMap.put("ais", "ami");
+        languageAliasMap.put("jw", "jv");
+        languageAliasMap.put("und-aaland", "und-AX");
+        languageAliasMap.put("izi", "eza");
+        languageAliasMap.put("ncp", "kdz");
+        languageAliasMap.put("cnr", "sr-ME");
+        languageAliasMap.put("yiy", "yrm");
+        languageAliasMap.put("nts", "pij");
+        languageAliasMap.put("art-lojban", "jbo");
+        languageAliasMap.put("und-lojban", "und");
+        languageAliasMap.put("i-lux", "lb");
+        languageAliasMap.put("gfx", "vaj");
+        languageAliasMap.put("zh-hakka", "hak");
+        languageAliasMap.put("i-ami", "ami");
+        languageAliasMap.put("zh-xiang", "hsn");
+        languageAliasMap.put("koj", "kwv");
+        languageAliasMap.put("daf", "dnj");
+        languageAliasMap.put("coy", "pij");
+        languageAliasMap.put("ggo", "esg");
+        languageAliasMap.put("ggn", "gvr");
+        languageAliasMap.put("mst", "mry");
+        languageAliasMap.put("xia", "acn");
+        languageAliasMap.put("dap", "njz");
+        languageAliasMap.put("ggr", "gtu");
+        languageAliasMap.put("i-tay", "tay");
+        languageAliasMap.put("rmr", "emx");
+        languageAliasMap.put("drh", "mn");
+        languageAliasMap.put("mo", "ro");
+        languageAliasMap.put("drr", "kzk");
+        languageAliasMap.put("sgn-MX", "mfs");
+        languageAliasMap.put("wgw", "wgb");
+        languageAliasMap.put("drw", "fa-AF");
+        languageAliasMap.put("ill", "ilm");
+        languageAliasMap.put("kpp", "jkm");
+        languageAliasMap.put("i-tsu", "tsu");
+        languageAliasMap.put("ilw", "gal");
+        languageAliasMap.put("cqu", "quh");
+        languageAliasMap.put("tsf", "taj");
+        languageAliasMap.put("zh-wuu", "wuu");
+        languageAliasMap.put("sgn-NL", "dse");
+        languageAliasMap.put("yma", "lrr");
+        languageAliasMap.put("gio", "aou");
+        languageAliasMap.put("meg", "cir");
+        languageAliasMap.put("sgn-NO", "nsi");
+        languageAliasMap.put("xkh", "waw");
+        languageAliasMap.put("sgn-NI", "ncs");
+        languageAliasMap.put("zh-cmn", "zh");
+        languageAliasMap.put("ymt", "mtm");
+        languageAliasMap.put("i-bnn", "bnn");
+        languageAliasMap.put("i-tao", "tao");
+        languageAliasMap.put("sap", "aqt");
+        languageAliasMap.put("wit", "nol");
+        languageAliasMap.put("wiw", "nwo");
+        languageAliasMap.put("krm", "bmf");
+        languageAliasMap.put("nxu", "bpp");
+        languageAliasMap.put("dud", "uth");
+        languageAliasMap.put("duj", "dwu");
+        languageAliasMap.put("mwd", "dmw");
+        languageAliasMap.put("und-saaho", "und");
     }
 
     private static class TZCanonicalIDMapHolder {
@@ -228,6 +381,7 @@ public class CLDRBaseLocaleDataMetaInfo implements LocaleDataMetaInfo {
             tzCanonicalIDMap.put("brfen", "America/Noronha");
             tzCanonicalIDMap.put("Brazil/DeNoronha", "America/Noronha");
             tzCanonicalIDMap.put("glgoh", "America/Godthab");
+            tzCanonicalIDMap.put("America/Nuuk", "America/Godthab");
             tzCanonicalIDMap.put("jmkin", "America/Jamaica");
             tzCanonicalIDMap.put("Jamaica", "America/Jamaica");
             tzCanonicalIDMap.put("aumel", "Australia/Melbourne");
@@ -451,6 +605,7 @@ public class CLDRBaseLocaleDataMetaInfo implements LocaleDataMetaInfo {
             tzCanonicalIDMap.put("bzbze", "America/Belize");
             tzCanonicalIDMap.put("eslpa", "Atlantic/Canary");
             tzCanonicalIDMap.put("brssa", "America/Bahia");
+            tzCanonicalIDMap.put("kzksn", "Asia/Qostanay");
             tzCanonicalIDMap.put("aedxb", "Asia/Dubai");
             tzCanonicalIDMap.put("aqrot", "Antarctica/Rothera");
             tzCanonicalIDMap.put("vavat", "Europe/Vatican");

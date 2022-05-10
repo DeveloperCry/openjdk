@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2004, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,11 @@ import java.io.IOException;
  * @since 1.5
  */
 public abstract class CacheResponse {
+
+    /**
+     * Constructor for subclasses to call.
+     */
+    public CacheResponse() {}
 
     /**
      * Returns the response headers as a Map.

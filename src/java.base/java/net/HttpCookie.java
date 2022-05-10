@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,11 +32,10 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import jdk.internal.misc.JavaNetHttpCookieAccess;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.JavaNetHttpCookieAccess;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * An HttpCookie object represents an HTTP cookie, which carries state
@@ -142,8 +141,15 @@ public final class HttpCookie implements Cloneable {
     }
 
     private HttpCookie(String name, String value, String header) {
+        this(name, value, header, System.currentTimeMillis());
+    }
+
+    /**
+     * Package private for testing purposes.
+     */
+    HttpCookie(String name, String value, String header, long creationTime) {
         name = name.trim();
-        if (name.length() == 0 || !isToken(name) || name.charAt(0) == '$') {
+        if (name.isEmpty() || !isToken(name) || name.charAt(0) == '$') {
             throw new IllegalArgumentException("Illegal cookie name");
         }
 
@@ -152,7 +158,7 @@ public final class HttpCookie implements Cloneable {
         toDiscard = false;
         secure = false;
 
-        whenCreated = System.currentTimeMillis();
+        whenCreated = creationTime;
         portlist = null;
         this.header = header;
     }
@@ -468,7 +474,7 @@ public final class HttpCookie implements Cloneable {
 
     /**
      * Returns {@code true} if sending this cookie should be restricted to a
-     * secure protocol, or {@code false} if the it can be sent using any
+     * secure protocol, or {@code false} if it can be sent using any
      * protocol.
      *
      * @return  {@code false} if the cookie can be sent over any standard
@@ -660,7 +666,7 @@ public final class HttpCookie implements Cloneable {
         int domainLength = domain.length();
         int lengthDiff = host.length() - domainLength;
         if (lengthDiff == 0) {
-            // if the host name and the domain name are just string-compare euqal
+            // if the host name and the domain name are just string-compare equal
             return host.equalsIgnoreCase(domain);
         }
         else if (lengthDiff > 0) {
@@ -709,11 +715,10 @@ public final class HttpCookie implements Cloneable {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        if (!(obj instanceof HttpCookie))
+        if (!(obj instanceof HttpCookie other))
             return false;
-        HttpCookie other = (HttpCookie)obj;
 
-        // One http cookie equals to another cookie (RFC 2965 sec. 3.3.3) if:
+        // One http cookie is equal to another cookie (RFC 2965 sec. 3.3.3) if:
         //   1. they come from same domain (case-insensitive),
         //   2. have same name (case-insensitive),
         //   3. and have same path (case-sensitive).
@@ -755,6 +760,11 @@ public final class HttpCookie implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+    // ---------------- Package private operations --------------
+
+    long getCreationTime() {
+        return whenCreated;
     }
 
     // ---------------- Private operations --------------
@@ -1068,13 +1078,13 @@ public final class HttpCookie implements Cloneable {
         int version = 0;
 
         header = header.toLowerCase();
-        if (header.indexOf("expires=") != -1) {
+        if (header.contains("expires=")) {
             // only netscape cookie using 'expires'
             version = 0;
-        } else if (header.indexOf("version=") != -1) {
+        } else if (header.contains("version=")) {
             // version is mandatory for rfc 2965/2109 cookie
             version = 1;
-        } else if (header.indexOf("max-age") != -1) {
+        } else if (header.contains("max-age")) {
             // rfc 2965/2109 use 'max-age'
             version = 1;
         } else if (startsWithIgnoreCase(header, SET_COOKIE2)) {
@@ -1120,7 +1130,7 @@ public final class HttpCookie implements Cloneable {
      * Split cookie header string according to rfc 2965:
      *   1) split where it is a comma;
      *   2) but not the comma surrounding by double-quotes, which is the comma
-     *      inside port list or embeded URIs.
+     *      inside port list or embedded URIs.
      *
      * @param  header
      *         the cookie header string to split

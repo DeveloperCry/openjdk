@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,8 +31,12 @@ package sun.nio.ch;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.net.StandardSocketOptions;
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.channels.spi.*;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
@@ -55,16 +59,17 @@ class PipeImpl
     private static final Random RANDOM_NUMBER_GENERATOR = new SecureRandom();
 
     // Source and sink channels
-    private SourceChannel source;
-    private SinkChannel sink;
+    private final SourceChannelImpl source;
+    private final SinkChannelImpl sink;
 
-    private class Initializer
+    private static class Initializer
         implements PrivilegedExceptionAction<Void>
     {
 
         private final SelectorProvider sp;
-
-        private IOException ioe = null;
+        private IOException ioe;
+        SourceChannelImpl source;
+        SinkChannelImpl sink;
 
         private Initializer(SelectorProvider sp) {
             this.sp = sp;
@@ -103,23 +108,20 @@ class PipeImpl
                 ServerSocketChannel ssc = null;
                 SocketChannel sc1 = null;
                 SocketChannel sc2 = null;
+                // Loopback address
+                SocketAddress sa = null;
 
                 try {
                     // Create secret with a backing array.
                     ByteBuffer secret = ByteBuffer.allocate(NUM_SECRET_BYTES);
                     ByteBuffer bb = ByteBuffer.allocate(NUM_SECRET_BYTES);
 
-                    // Loopback address
-                    InetAddress lb = InetAddress.getLoopbackAddress();
-                    assert(lb.isLoopbackAddress());
-                    InetSocketAddress sa = null;
                     for(;;) {
                         // Bind ServerSocketChannel to a port on the loopback
                         // address
                         if (ssc == null || !ssc.isOpen()) {
-                            ssc = ServerSocketChannel.open();
-                            ssc.socket().bind(new InetSocketAddress(lb, 0));
-                            sa = new InetSocketAddress(lb, ssc.socket().getLocalPort());
+                            ssc = createListener();
+                            sa = ssc.getLocalAddress();
                         }
 
                         // Establish connection (assume connections are eagerly
@@ -166,20 +168,47 @@ class PipeImpl
         }
     }
 
-    PipeImpl(final SelectorProvider sp) throws IOException {
-        try {
-            AccessController.doPrivileged(new Initializer(sp));
-        } catch (PrivilegedActionException x) {
-            throw (IOException)x.getCause();
-        }
+    /**
+     * Creates a Pipe implementation that supports buffering.
+     */
+    PipeImpl(SelectorProvider sp) throws IOException {
+        this(sp, true);
     }
 
-    public SourceChannel source() {
+    /**
+     * Creates Pipe implementation that supports optionally buffering.
+     *
+     * @implNote Uses a loopback connection. When buffering is
+     * disabled then it sets TCP_NODELAY on the sink channel.
+     */
+    @SuppressWarnings("removal")
+    PipeImpl(SelectorProvider sp, boolean buffering) throws IOException {
+        Initializer initializer = new Initializer(sp);
+        try {
+            AccessController.doPrivileged(initializer);
+            SinkChannelImpl sink = initializer.sink;
+            if (sink.isNetSocket() && !buffering) {
+                sink.setOption(StandardSocketOptions.TCP_NODELAY, true);
+            }
+        } catch (PrivilegedActionException pae) {
+            throw (IOException) pae.getCause();
+        }
+        this.source = initializer.source;
+        this.sink = initializer.sink;
+    }
+
+    public SourceChannelImpl source() {
         return source;
     }
 
-    public SinkChannel sink() {
+    public SinkChannelImpl sink() {
         return sink;
     }
 
+    private static ServerSocketChannel createListener() throws IOException {
+        ServerSocketChannel listener = ServerSocketChannel.open();
+        InetAddress lb = InetAddress.getLoopbackAddress();
+        listener.bind(new InetSocketAddress(lb, 0));
+        return listener;
+    }
 }

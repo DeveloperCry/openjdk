@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -90,11 +90,6 @@ abstract class UnicodeDecoder extends CharsetDecoder {
                 }
 
                 char c = decode(b1, b2);
-
-                if (c == REVERSED_MARK) {
-                    // A reversed BOM cannot occur within middle of stream
-                    return CoderResult.malformedForLength(2);
-                }
 
                 // Surrogates
                 if (Character.isSurrogate(c)) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,9 @@ package java.nio;
 
 import java.io.FileDescriptor;
 import java.lang.ref.Reference;
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.VM;
 import jdk.internal.ref.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -182,11 +185,21 @@ class DirectCharBufferRS
 
 
 
+
+
+
+
+
+
+
     // For duplicates and slices
     //
     DirectCharBufferRS(DirectBuffer db,         // package-private
-                               int mark, int pos, int lim, int cap,
-                               int off)
+                               int mark, int pos, int lim, int cap, int off,
+
+
+
+                               MemorySegmentProxy segment)
     {
 
 
@@ -196,7 +209,16 @@ class DirectCharBufferRS
 
 
 
-        super(db, mark, pos, lim, cap, off);
+
+
+
+
+
+        super(db, mark, pos, lim, cap, off,
+
+
+
+              segment);
         this.isReadOnly = true;
 
     }
@@ -209,21 +231,37 @@ class DirectCharBufferRS
     public CharBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         int off = (pos << 1);
         assert (off >= 0);
-        return new DirectCharBufferRS(this, -1, 0, rem, rem, off);
+        return new DirectCharBufferRS(this,
+                                              -1,
+                                              0,
+                                              rem, 
+                                              rem,
+                                              off,
+
+
+
+
+                                              segment);
     }
 
+    @Override
+    public CharBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new DirectCharBufferRS(this,
+                                              -1,
+                                              0,
+                                              length,
+                                              length,
+                                              index << 1,
 
 
 
 
-
-
-
-
+                                              segment);
+    }
 
     public CharBuffer duplicate() {
         return new DirectCharBufferRS(this,
@@ -231,7 +269,12 @@ class DirectCharBufferRS
                                               this.position(),
                                               this.limit(),
                                               this.capacity(),
-                                              0);
+                                              0,
+
+
+
+
+                                              segment);
     }
 
     public CharBuffer asReadOnlyBuffer() {
@@ -243,40 +286,14 @@ class DirectCharBufferRS
 
 
 
+
+
+
+
+
         return duplicate();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -352,94 +369,9 @@ class DirectCharBufferRS
 
     }
 
-    public CharBuffer put(CharBuffer src) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
-    public CharBuffer put(char[] src, int offset, int length) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        throw new ReadOnlyBufferException();
-
-    }
-
     public CharBuffer compact() {
+
+
 
 
 
@@ -471,8 +403,7 @@ class DirectCharBufferRS
 
 
     public String toString(int start, int end) {
-        if ((end > limit()) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, limit());
         try {
             int len = end - start;
             char[] ca = new char[len];
@@ -497,14 +428,13 @@ class DirectCharBufferRS
         pos = (pos <= lim ? pos : lim);
         int len = lim - pos;
 
-        if ((start < 0) || (end > len) || (start > end))
-            throw new IndexOutOfBoundsException();
+        Objects.checkFromToIndex(start, end, len);
         return new DirectCharBufferRS(this,
                                             -1,
                                             pos + start,
                                             pos + end,
                                             capacity(),
-                                            offset);
+                                            offset, segment);
     }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,6 +36,7 @@ import java.security.PrivilegedAction;
 class Reflect {
     private Reflect() {}
 
+    @SuppressWarnings("removal")
     private static void setAccessible(final AccessibleObject ao) {
         AccessController.doPrivileged(new PrivilegedAction<Object>() {
                 @Override

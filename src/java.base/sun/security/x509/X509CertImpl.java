@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,7 +34,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.*;
-import java.security.spec.AlgorithmParameterSpec;
 import java.security.cert.*;
 import java.security.cert.Certificate;
 import java.util.*;
@@ -42,9 +41,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.security.auth.x500.X500Principal;
 
-import java.util.Base64;
 import sun.security.util.*;
 import sun.security.provider.X509Factory;
+
+import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * The X509CertImpl class represents an X.509 certificate. These certificates
@@ -63,22 +63,18 @@ import sun.security.provider.X509Factory;
  * direct knowledge of each other.  CA certificates are either signed by
  * themselves, or by some other CA such as a "root" CA.
  *
- * <P>RFC 1422 is very informative, though it does not describe much
- * of the recent work being done with X.509 certificates.  That includes
- * a 1996 version (X.509v3) and a variety of enhancements being made to
- * facilitate an explosion of personal certificates used as "Internet
- * Drivers' Licences", or with SET for credit card transactions.
- *
- * <P>More recent work includes the IETF PKIX Working Group efforts,
- * especially RFC2459.
+ * <P> Standards relating to X.509 Public Key Infrastructure for the Internet
+ * can be referenced in RFC 5280.
  *
  * @author Dave Brownell
  * @author Amit Kapoor
  * @author Hemma Prafullchandra
  * @see X509CertInfo
  */
+@SuppressWarnings("serial") // See writeReplace method in Certificate
 public class X509CertImpl extends X509Certificate implements DerEncoder {
 
+    @java.io.Serial
     private static final long serialVersionUID = -3457612960190864406L;
 
     private static final char DOT = '.';
@@ -130,14 +126,6 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     protected X509CertInfo      info = null;
     protected AlgorithmId       algId = null;
     protected byte[]            signature = null;
-
-    // recognized extension OIDS
-    private static final String KEY_USAGE_OID = "2.5.29.15";
-    private static final String EXTENDED_KEY_USAGE_OID = "2.5.29.37";
-    private static final String BASIC_CONSTRAINT_OID = "2.5.29.19";
-    private static final String SUBJECT_ALT_NAME_OID = "2.5.29.17";
-    private static final String ISSUER_ALT_NAME_OID = "2.5.29.18";
-    private static final String AUTH_INFO_ACCESS_OID = "1.3.6.1.5.5.7.1.1";
 
     // number of standard key usage bits.
     private static final int NUM_STANDARD_KEY_USAGE = 9;
@@ -255,7 +243,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
         DerValue der = null;
         String line = null;
         BufferedReader certBufferedReader =
-            new BufferedReader(new InputStreamReader(in, "ASCII"));
+            new BufferedReader(new InputStreamReader(in, US_ASCII));
         try {
             line = certBufferedReader.readLine();
         } catch (IOException ioe1) {
@@ -288,6 +276,9 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     /**
      * Construct an initialized X509 Certificate. The certificate is stored
      * in raw form and has to be signed to be useful.
+     *
+     * The ALGORITHM_ID attribute will be rewritten when signed. The initial
+     * value is ignored.
      *
      * @param certInfo the X509CertificateInfo which the Certificate is to be
      *             created from.
@@ -430,7 +421,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
         // Verify the signature ...
         Signature sigVerf = null;
         String sigName = algId.getName();
-        if (sigProvider.length() == 0) {
+        if (sigProvider.isEmpty()) {
             sigVerf = Signature.getInstance(sigName);
         } else {
             sigVerf = Signature.getInstance(sigName, sigProvider);
@@ -521,15 +512,14 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      * @param algorithm the name of the signature algorithm used.
      *
      * @exception InvalidKeyException on incorrect key.
-     * @exception NoSuchAlgorithmException on unsupported signature
-     * algorithms.
+     * @exception NoSuchAlgorithmException on unsupported signature algorithms.
      * @exception NoSuchProviderException if there's no default provider.
      * @exception SignatureException on signature errors.
      * @exception CertificateException on encoding errors.
      */
     public void sign(PrivateKey key, String algorithm)
-    throws CertificateException, NoSuchAlgorithmException,
-        InvalidKeyException, NoSuchProviderException, SignatureException {
+            throws CertificateException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchProviderException, SignatureException {
         sign(key, algorithm, null);
     }
 
@@ -541,85 +531,32 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      *
      * @param key the private key used for signing.
      * @param algorithm the name of the signature algorithm used.
-     * @param provider the name of the provider.
+     * @param provider (optional) the name of the provider.
      *
-     * @exception NoSuchAlgorithmException on unsupported signature
-     * algorithms.
+     * @exception NoSuchAlgorithmException on unsupported signature algorithms.
      * @exception InvalidKeyException on incorrect key.
      * @exception NoSuchProviderException on incorrect provider.
      * @exception SignatureException on signature errors.
      * @exception CertificateException on encoding errors.
      */
     public void sign(PrivateKey key, String algorithm, String provider)
-    throws CertificateException, NoSuchAlgorithmException,
-        InvalidKeyException, NoSuchProviderException, SignatureException {
-        try {
-            sign(key, null, algorithm, provider);
-        } catch (InvalidAlgorithmParameterException e) {
-            // should not happen; re-throw just in case
-            throw new SignatureException(e);
-        }
-    }
-
-    /**
-     * Creates an X.509 certificate, and signs it using the given key
-     * (associating a signature algorithm and an X.500 name), signature
-     * parameters, and security provider. If the given provider name
-     * is null or empty, the implementation look up will be based on
-     * provider configurations.
-     * This operation is used to implement the certificate generation
-     * functionality of a certificate authority.
-     *
-     * @param key the private key used for signing
-     * @param signingParams the parameters used for signing
-     * @param algorithm the name of the signature algorithm used
-     * @param provider the name of the provider, may be null
-     *
-     * @exception NoSuchAlgorithmException on unsupported signature
-     *            algorithms
-     * @exception InvalidKeyException on incorrect key
-     * @exception InvalidAlgorithmParameterException on invalid signature
-     *            parameters
-     * @exception NoSuchProviderException on incorrect provider
-     * @exception SignatureException on signature errors
-     * @exception CertificateException on encoding errors
-     */
-    public void sign(PrivateKey key, AlgorithmParameterSpec signingParams,
-            String algorithm, String provider)
             throws CertificateException, NoSuchAlgorithmException,
-            InvalidKeyException, InvalidAlgorithmParameterException,
-            NoSuchProviderException, SignatureException {
+            InvalidKeyException, NoSuchProviderException, SignatureException {
         try {
             if (readOnly) {
                 throw new CertificateEncodingException(
                         "cannot over-write existing certificate");
             }
-            Signature sigEngine = null;
-            if ((provider == null) || (provider.length() == 0)) {
-                sigEngine = Signature.getInstance(algorithm);
-            } else {
-                sigEngine = Signature.getInstance(algorithm, provider);
-            }
+            Signature sigEngine = SignatureUtil.fromKey(
+                    algorithm, key, provider);
+            algId = SignatureUtil.fromSignature(sigEngine, key);
 
-            try {
-                SignatureUtil.initSignWithParam(sigEngine, key, signingParams,
-                        null);
-            } catch (UnsupportedOperationException e) {
-                // for backward compatibility, only re-throw when
-                // parameters is not null
-                if (signingParams != null) throw e;
-            }
-
-            // in case the name is reset
-            if (signingParams != null) {
-                algId = AlgorithmId.get(sigEngine.getParameters());
-            } else {
-                algId = AlgorithmId.get(algorithm);
-            }
             DerOutputStream out = new DerOutputStream();
             DerOutputStream tmp = new DerOutputStream();
 
             // encode certificate info
+            info.set(X509CertInfo.ALGORITHM_ID,
+                    new CertificateAlgorithmId(algId));
             info.encode(tmp);
             byte[] rawCert = tmp.toByteArray();
 
@@ -638,7 +575,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
 
         } catch (IOException e) {
             throw new CertificateEncodingException(e.toString());
-      }
+        }
     }
 
     /**
@@ -918,7 +855,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
             SerialNumber ser = (SerialNumber)info.get(
                               CertificateSerialNumber.NAME + DOT +
                               CertificateSerialNumber.NUMBER);
-           return ser;
+            return ser;
         } catch (Exception e) {
             return null;
         }
@@ -930,6 +867,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      *
      * @return the subject name.
      */
+    @SuppressWarnings("deprecation")
     public Principal getSubjectDN() {
         if (info == null)
             return null;
@@ -966,6 +904,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      *
      * @return the issuer name.
      */
+    @SuppressWarnings("deprecation")
     public Principal getIssuerDN() {
         if (info == null)
             return null;
@@ -1091,13 +1030,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      *         null if no parameters are present.
      */
     public byte[] getSigAlgParams() {
-        if (algId == null)
-            return null;
-        try {
-            return algId.getEncodedParams();
-        } catch (IOException e) {
-            return null;
-        }
+        return algId == null ? null : algId.getEncodedParams();
     }
 
     /**
@@ -1432,7 +1365,7 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
      */
     public byte[] getExtensionValue(String oid) {
         try {
-            ObjectIdentifier findOID = new ObjectIdentifier(oid);
+            ObjectIdentifier findOID = ObjectIdentifier.of(oid);
             String extAlias = OIDMap.getName(findOID);
             Extension certExt = null;
             CertificateExtensions exts = (CertificateExtensions)info.get(
@@ -1506,24 +1439,45 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     }
 
     /**
-     * This method are the overridden implementation of
+     * This method is the overridden implementation of the
      * getExtendedKeyUsage method in X509Certificate in the Sun
      * provider. It is better performance-wise since it returns cached
      * values.
      */
+    @Override
     public synchronized List<String> getExtendedKeyUsage()
         throws CertificateParsingException {
         if (readOnly && extKeyUsage != null) {
             return extKeyUsage;
-        } else {
-            ExtendedKeyUsageExtension ext = getExtendedKeyUsageExtension();
-            if (ext == null) {
-                return null;
-            }
-            extKeyUsage =
-                Collections.unmodifiableList(ext.getExtendedKeyUsage());
-            return extKeyUsage;
         }
+        ExtendedKeyUsageExtension ext = (ExtendedKeyUsageExtension)
+            getExtensionIfParseable(PKIXExtensions.ExtendedKeyUsage_Id);
+        if (ext == null) {
+            return null;
+        }
+        extKeyUsage = Collections.unmodifiableList(ext.getExtendedKeyUsage());
+        return extKeyUsage;
+    }
+
+    /**
+     * Returns the extension identified by OID or null if it doesn't exist
+     * and is not unparseable.
+     *
+     * @throws CertificateParsingException if extension is unparseable
+     */
+    private Extension getExtensionIfParseable(ObjectIdentifier oid)
+            throws CertificateParsingException {
+        Extension ext = getExtension(oid);
+        if (ext == null) {
+            // check if unparseable
+            UnparseableExtension unparseableExt =
+                   (UnparseableExtension)getUnparseableExtension(oid);
+            if (unparseableExt != null) {
+                throw new CertificateParsingException(
+                        unparseableExt.exceptionMessage());
+            }
+        }
+        return ext;
     }
 
     /**
@@ -1535,7 +1489,8 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     public static List<String> getExtendedKeyUsage(X509Certificate cert)
         throws CertificateParsingException {
         try {
-            byte[] ext = cert.getExtensionValue(EXTENDED_KEY_USAGE_OID);
+            byte[] ext = cert.getExtensionValue
+                    (KnownOIDs.extendedKeyUsage.value());
             if (ext == null)
                 return null;
             DerValue val = new DerValue(ext);
@@ -1668,11 +1623,12 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     }
 
     /**
-     * This method are the overridden implementation of
+     * This method is the overridden implementation of the
      * getSubjectAlternativeNames method in X509Certificate in the Sun
      * provider. It is better performance-wise since it returns cached
      * values.
      */
+    @Override
     public synchronized Collection<List<?>> getSubjectAlternativeNames()
         throws CertificateParsingException {
         // return cached value if we can
@@ -1680,7 +1636,8 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
             return cloneAltNames(subjectAlternativeNames);
         }
         SubjectAlternativeNameExtension subjectAltNameExt =
-            getSubjectAlternativeNameExtension();
+            (SubjectAlternativeNameExtension)getExtensionIfParseable(
+                PKIXExtensions.SubjectAlternativeName_Id);
         if (subjectAltNameExt == null) {
             return null;
         }
@@ -1698,14 +1655,15 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
 
     /**
      * This static method is the default implementation of the
-     * getSubjectAlternaitveNames method in X509Certificate. A
+     * getSubjectAlternativeNames method in X509Certificate. A
      * X509Certificate provider generally should overwrite this to
      * provide among other things caching for better performance.
      */
     public static Collection<List<?>> getSubjectAlternativeNames(X509Certificate cert)
         throws CertificateParsingException {
         try {
-            byte[] ext = cert.getExtensionValue(SUBJECT_ALT_NAME_OID);
+            byte[] ext = cert.getExtensionValue
+                    (KnownOIDs.SubjectAlternativeName.value());
             if (ext == null) {
                 return null;
             }
@@ -1731,11 +1689,12 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     }
 
     /**
-     * This method are the overridden implementation of
+     * This method is the overridden implementation of the
      * getIssuerAlternativeNames method in X509Certificate in the Sun
      * provider. It is better performance-wise since it returns cached
      * values.
      */
+    @Override
     public synchronized Collection<List<?>> getIssuerAlternativeNames()
         throws CertificateParsingException {
         // return cached value if we can
@@ -1743,7 +1702,8 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
             return cloneAltNames(issuerAlternativeNames);
         }
         IssuerAlternativeNameExtension issuerAltNameExt =
-            getIssuerAlternativeNameExtension();
+            (IssuerAlternativeNameExtension)getExtensionIfParseable(
+                PKIXExtensions.IssuerAlternativeName_Id);
         if (issuerAltNameExt == null) {
             return null;
         }
@@ -1761,14 +1721,15 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
 
     /**
      * This static method is the default implementation of the
-     * getIssuerAlternaitveNames method in X509Certificate. A
+     * getIssuerAlternativeNames method in X509Certificate. A
      * X509Certificate provider generally should overwrite this to
      * provide among other things caching for better performance.
      */
     public static Collection<List<?>> getIssuerAlternativeNames(X509Certificate cert)
         throws CertificateParsingException {
         try {
-            byte[] ext = cert.getExtensionValue(ISSUER_ALT_NAME_OID);
+            byte[] ext = cert.getExtensionValue
+                    (KnownOIDs.IssuerAlternativeName.value());
             if (ext == null) {
                 return null;
             }
@@ -1975,41 +1936,57 @@ public class X509CertImpl extends X509Certificate implements DerEncoder {
     private ConcurrentHashMap<String,String> fingerprints =
             new ConcurrentHashMap<>(2);
 
-    public String getFingerprint(String algorithm) {
+    private String getFingerprint(String algorithm, Debug debug) {
         return fingerprints.computeIfAbsent(algorithm,
-            x -> getFingerprint(x, this));
+            x -> {
+                try {
+                    return getFingerprintInternal(x, getEncodedInternal(), debug);
+                } catch (CertificateEncodingException e) {
+                    if (debug != null) {
+                        debug.println("Cannot encode certificate: " + e);
+                    }
+                    return null;
+                }
+            });
+    }
+
+    private static String getFingerprintInternal(String algorithm,
+            byte[] encodedCert, Debug debug) {
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            byte[] digest = md.digest(encodedCert);
+            return HexFormat.of().withUpperCase().formatHex(digest);
+        } catch (NoSuchAlgorithmException e) {
+            if (debug != null) {
+                debug.println("Cannot create " + algorithm
+                    + " MessageDigest: " + e);
+            }
+            return null;
+        }
     }
 
     /**
-     * Gets the requested finger print of the certificate. The result
+     * Gets the requested fingerprint of the certificate. The result
      * only contains 0-9 and A-F. No small case, no colon.
+     *
+     * @param algorithm the MessageDigest algorithm
+     * @param cert the X509Certificate
+     * @return the fingerprint, or null if it cannot be calculated because
+     *     of an exception
      */
     public static String getFingerprint(String algorithm,
-            X509Certificate cert) {
-        try {
-            byte[] encCertInfo = cert.getEncoded();
-            MessageDigest md = MessageDigest.getInstance(algorithm);
-            byte[] digest = md.digest(encCertInfo);
-            StringBuilder sb = new StringBuilder(digest.length * 2);
-            for (int i = 0; i < digest.length; i++) {
-                byte2hex(digest[i], sb);
+            X509Certificate cert, Debug debug) {
+        if (cert instanceof X509CertImpl) {
+            return ((X509CertImpl)cert).getFingerprint(algorithm, debug);
+        } else {
+            try {
+                return getFingerprintInternal(algorithm, cert.getEncoded(), debug);
+            } catch (CertificateEncodingException e) {
+                if (debug != null) {
+                    debug.println("Cannot encode certificate: " + e);
+                }
+                return null;
             }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException | CertificateEncodingException e) {
-            // ignored
         }
-        return "";
-    }
-
-    /**
-     * Converts a byte to hex digit and writes to the supplied builder
-     */
-    private static void byte2hex(byte b, StringBuilder buf) {
-        char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
-                '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-        int high = ((b & 0xf0) >> 4);
-        int low = (b & 0x0f);
-        buf.append(hexChars[high])
-            .append(hexChars[low]);
     }
 }

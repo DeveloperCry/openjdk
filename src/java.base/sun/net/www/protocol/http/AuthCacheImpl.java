@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,8 +32,10 @@ import java.util.HashMap;
 /**
  * @author Michael McMahon
  */
-
 public class AuthCacheImpl implements AuthCache {
+    // No blocking IO is performed within the synchronized code blocks
+    // in this class, so there is no need to convert this class to using
+    // java.util.concurrent.locks
     HashMap<String,LinkedList<AuthCacheValue>> hashtable;
 
     public AuthCacheImpl () {
@@ -46,7 +48,6 @@ public class AuthCacheImpl implements AuthCache {
 
     // put a value in map according to primary key + secondary key which
     // is the path field of AuthenticationInfo
-
     public synchronized void put (String pkey, AuthCacheValue value) {
         LinkedList<AuthCacheValue> list = hashtable.get (pkey);
         String skey = value.getPath();
@@ -76,11 +77,10 @@ public class AuthCacheImpl implements AuthCache {
         }
         if (skey == null) {
             // list should contain only one element
-            return (AuthenticationInfo)list.get (0);
+            return list.get(0);
         }
-        ListIterator<AuthCacheValue> iter = list.listIterator();
-        while (iter.hasNext()) {
-            AuthenticationInfo inf = (AuthenticationInfo)iter.next();
+        for (AuthCacheValue authCacheValue : list) {
+            AuthenticationInfo inf = (AuthenticationInfo) authCacheValue;
             if (skey.startsWith (inf.path)) {
                 return inf;
             }

@@ -41,6 +41,7 @@ public class NonReadableChannelException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -3200915679294993514L;
 
     /**

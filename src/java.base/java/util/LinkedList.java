@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -87,13 +87,11 @@ public class LinkedList<E>
     transient int size = 0;
 
     /**
-     * 指向头的指针
      * Pointer to first node.
      */
     transient Node<E> first;
 
     /**
-     * 指向尾部的指针
      * Pointer to last node.
      */
     transient Node<E> last;
@@ -132,7 +130,7 @@ public class LinkedList<E>
         final Node<E> f = first;
         final Node<E> newNode = new Node<>(null, e, f);
         first = newNode;
-        if (f == null) //如果是第一次添加元素，那么f肯定为空，这个时候，指向first和last都应该指向相同的节点上面
+        if (f == null)
             last = newNode;
         else
             f.prev = newNode;
@@ -156,7 +154,6 @@ public class LinkedList<E>
     }
 
     /**
-     * 这个用于在指定的节点插入数据
      * Inserts element e before non-null Node succ.
      */
     void linkBefore(E e, Node<E> succ) {
@@ -173,7 +170,6 @@ public class LinkedList<E>
     }
 
     /**
-     * 这个用户删除第一个节点
      * Unlinks non-null first node f.
      */
     private E unlinkFirst(Node<E> f) {
@@ -193,7 +189,6 @@ public class LinkedList<E>
     }
 
     /**
-     * 用于删除最后一个节点
      * Unlinks non-null last node l.
      */
     private E unlinkLast(Node<E> l) {
@@ -363,7 +358,7 @@ public class LinkedList<E>
      */
     public boolean remove(Object o) {
         if (o == null) {
-            for (Node<E> x = first; x != null; x = x.next) {//从第一个节点开始查找，知道找到符合条件的为止，而且只删除第一个符合条件的节点
+            for (Node<E> x = first; x != null; x = x.next) {
                 if (x.item == null) {
                     unlink(x);
                     return true;
@@ -420,15 +415,15 @@ public class LinkedList<E>
             return false;
 
         Node<E> pred, succ;
-        if (index == size) {//先判断是不是在最后，是的话就在最后插入
+        if (index == size) {
             succ = null;
             pred = last;
-        } else {//如果不是，则需要找到位置，再插入
-            succ = node(index);//这里用了一个二分法的第一步，与size的一半进行比较
+        } else {
+            succ = node(index);
             pred = succ.prev;
         }
 
-        for (Object o : a) {//这里的算法很简单，就是在指定的位置将需要插入的集合重新link一次，向后link
+        for (Object o : a) {
             @SuppressWarnings("unchecked") E e = (E) o;
             Node<E> newNode = new Node<>(pred, e, null);
             if (pred == null)
@@ -454,7 +449,7 @@ public class LinkedList<E>
      * Removes all of the elements from this list.
      * The list will be empty after this call returns.
      */
-    public void clear() {//为了GC回收，需要将link拆解
+    public void clear() {
         // Clearing all of the links between nodes is "unnecessary", but:
         // - helps a generational GC if the discarded nodes inhabit
         //   more than one generation
@@ -1117,6 +1112,7 @@ public class LinkedList<E>
         return a;
     }
 
+    @java.io.Serial
     private static final long serialVersionUID = 876323262645176354L;
 
     /**
@@ -1127,6 +1123,7 @@ public class LinkedList<E>
      *             contains) is emitted (int), followed by all of its
      *             elements (each an Object) in the proper order.
      */
+    @java.io.Serial
     private void writeObject(java.io.ObjectOutputStream s)
         throws java.io.IOException {
         // Write out any hidden serialization magic
@@ -1145,6 +1142,7 @@ public class LinkedList<E>
      * (that is, deserializes it).
      */
     @SuppressWarnings("unchecked")
+    @java.io.Serial
     private void readObject(java.io.ObjectInputStream s)
         throws java.io.IOException, ClassNotFoundException {
         // Read in any hidden serialization magic

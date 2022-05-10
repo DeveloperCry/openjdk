@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2012, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static sun.security.provider.ByteArrayAccess.*;
-import jdk.internal.HotSpotIntrinsicCandidate;
+
+import jdk.internal.util.Preconditions;
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 /**
  * This class implements the Secure Hash Algorithm (SHA) developed by
@@ -62,7 +64,6 @@ public final class SHA extends DigestBase {
     public SHA() {
         super("SHA-1", 20, 64);
         state = new int[5];
-        W = new int[80];
         resetHashes();
     }
 
@@ -72,7 +73,7 @@ public final class SHA extends DigestBase {
     public Object clone() throws CloneNotSupportedException {
         SHA copy = (SHA) super.clone();
         copy.state = copy.state.clone();
-        copy.W = new int[80];
+        copy.W = null;
         return copy;
     }
 
@@ -83,7 +84,9 @@ public final class SHA extends DigestBase {
         // Load magic initialization constants.
         resetHashes();
         // clear out old data
-        Arrays.fill(W, 0);
+        if (W != null) {
+            Arrays.fill(W, 0);
+        }
     }
 
     private void resetHashes() {
@@ -132,20 +135,23 @@ public final class SHA extends DigestBase {
     private void implCompressCheck(byte[] buf, int ofs) {
         Objects.requireNonNull(buf);
 
-        // The checks performed by the method 'b2iBig64'
-        // are sufficient for the case when the method
-        // 'implCompressImpl' is replaced with a compiler
-        // intrinsic.
-        b2iBig64(buf, ofs, W);
+        // Checks similar to those performed by the method 'b2iBig64'
+        // are sufficient for the case when the method 'implCompress0' is
+        // replaced with a compiler intrinsic.
+        Preconditions.checkFromIndexSize(ofs, 64, buf.length, Preconditions.AIOOBE_FORMATTER);
     }
 
-    // The method 'implCompressImpl seems not to use its parameters.
+    // The method 'implCompress0 seems not to use its parameters.
     // The method can, however, be replaced with a compiler intrinsic
     // that operates directly on the array 'buf' (starting from
     // offset 'ofs') and not on array 'W', therefore 'buf' and 'ofs'
     // must be passed as parameter to the method.
-    @HotSpotIntrinsicCandidate
+    @IntrinsicCandidate
     private void implCompress0(byte[] buf, int ofs) {
+        if (W == null) {
+            W = new int[80];
+        }
+        b2iBig64(buf, ofs, W);
         // The first 16 ints have the byte stream, compute the rest of
         // the buffer
         for (int t = 16; t <= 79; t++) {

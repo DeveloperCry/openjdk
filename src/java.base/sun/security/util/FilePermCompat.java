@@ -28,11 +28,8 @@ package sun.security.util;
 import sun.security.action.GetPropertyAction;
 
 import java.io.FilePermission;
-import java.security.AccessController;
 import java.security.Permission;
-import java.security.PrivilegedAction;
-import java.security.Security;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * Take care of FilePermission compatibility after JDK-8164705.

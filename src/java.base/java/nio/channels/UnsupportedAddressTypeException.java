@@ -41,6 +41,7 @@ public class UnsupportedAddressTypeException
     extends IllegalArgumentException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = -2964323842829700493L;
 
     /**

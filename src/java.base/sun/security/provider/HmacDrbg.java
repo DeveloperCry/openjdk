@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandomParameters;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HexFormat;
 import java.util.List;
 
 public class HmacDrbg extends AbstractHashDrbg {
@@ -51,8 +52,8 @@ public class HmacDrbg extends AbstractHashDrbg {
 
     private void status() {
         if (debug != null) {
-            debug.println(this, "V = " + hex(v));
-            debug.println(this, "Key = " + hex(k));
+            debug.println(this, "V = " + HexFormat.of().formatHex(v));
+            debug.println(this, "Key = " + HexFormat.of().formatHex(k));
             debug.println(this, "reseed counter = " + reseedCounter);
         }
     }

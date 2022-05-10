@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
+
 /**
 
 
@@ -44,7 +47,7 @@ class HeapDoubleBufferR
     // Cached array base offset
     private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(double[].class);
 
-    // Cached array base offset
+    // Cached array index scale
     private static final long ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(double[].class);
 
     // For speed these fields are actually declared in X-Buffer;
@@ -56,7 +59,7 @@ class HeapDoubleBufferR
 
     */
 
-    HeapDoubleBufferR(int cap, int lim) {            // package-private
+    HeapDoubleBufferR(int cap, int lim, MemorySegmentProxy segment) {            // package-private
 
 
 
@@ -65,12 +68,12 @@ class HeapDoubleBufferR
 
 
 
-        super(cap, lim);
+        super(cap, lim, segment);
         this.isReadOnly = true;
 
     }
 
-    HeapDoubleBufferR(double[] buf, int off, int len) { // package-private
+    HeapDoubleBufferR(double[] buf, int off, int len, MemorySegmentProxy segment) { // package-private
 
 
 
@@ -79,14 +82,14 @@ class HeapDoubleBufferR
 
 
 
-        super(buf, off, len);
+        super(buf, off, len, segment);
         this.isReadOnly = true;
 
     }
 
     protected HeapDoubleBufferR(double[] buf,
                                    int mark, int pos, int lim, int cap,
-                                   int off)
+                                   int off, MemorySegmentProxy segment)
     {
 
 
@@ -96,33 +99,33 @@ class HeapDoubleBufferR
 
 
 
-        super(buf, mark, pos, lim, cap, off);
+        super(buf, mark, pos, lim, cap, off, segment);
         this.isReadOnly = true;
 
     }
 
     public DoubleBuffer slice() {
+        int pos = this.position();
+        int lim = this.limit();
+        int rem = (pos <= lim ? lim - pos : 0);
         return new HeapDoubleBufferR(hb,
                                         -1,
                                         0,
-                                        this.remaining(),
-                                        this.remaining(),
-                                        this.position() + offset);
+                                        rem,
+                                        rem,
+                                        pos + offset, segment);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public DoubleBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new HeapDoubleBufferR(hb,
+                                        -1,
+                                        0,
+                                        length,
+                                        length,
+                                        index + offset, segment);
+    }
 
     public DoubleBuffer duplicate() {
         return new HeapDoubleBufferR(hb,
@@ -130,7 +133,7 @@ class HeapDoubleBufferR
                                         this.position(),
                                         this.limit(),
                                         this.capacity(),
-                                        offset);
+                                        offset, segment);
     }
 
     public DoubleBuffer asReadOnlyBuffer() {
@@ -145,6 +148,16 @@ class HeapDoubleBufferR
         return duplicate();
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -218,6 +231,8 @@ class HeapDoubleBufferR
 
 
 
+
+
         throw new ReadOnlyBufferException();
 
     }
@@ -228,17 +243,21 @@ class HeapDoubleBufferR
 
 
 
+        throw new ReadOnlyBufferException();
+
+    }
+
+    public DoubleBuffer put(int index, DoubleBuffer src, int offset, int length) {
 
 
 
 
 
+        throw new ReadOnlyBufferException();
 
+    }
 
-
-
-
-
+    public DoubleBuffer put(int index, double[] src, int offset, int length) {
 
 
 
@@ -249,6 +268,28 @@ class HeapDoubleBufferR
         throw new ReadOnlyBufferException();
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public DoubleBuffer compact() {
 
@@ -258,9 +299,16 @@ class HeapDoubleBufferR
 
 
 
+
+
+
+
         throw new ReadOnlyBufferException();
 
     }
+
+
+
 
 
 

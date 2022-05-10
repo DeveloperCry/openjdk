@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,11 +29,11 @@ package java.io;
  * Thrown when control information that was read from an object stream
  * violates internal consistency checks.
  *
- * @author  unascribed
  * @since   1.1
  */
 public class StreamCorruptedException extends ObjectStreamException {
 
+    @java.io.Serial
     private static final long serialVersionUID = 8983558202217591746L;
 
     /**

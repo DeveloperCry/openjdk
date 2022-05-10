@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ package sun.util.locale;
 
 public class LocaleSyntaxException extends Exception {
 
+    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     private int index = -1;

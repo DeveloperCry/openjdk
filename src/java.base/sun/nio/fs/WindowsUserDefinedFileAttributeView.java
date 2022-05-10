@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,8 +51,17 @@ class WindowsUserDefinedFileAttributeView
             throw new NullPointerException("'name' is null");
         return file + ":" + name;
     }
+
     private String join(WindowsPath file, String name) throws WindowsException {
-        return join(file.getPathForWin32Calls(), name);
+        if (name == null)
+            throw new NullPointerException("'name' is null");
+        WindowsFileSystem wfs = file.getFileSystem();
+        WindowsPath namePath = WindowsPath.parse(wfs, name);
+        if (namePath.getRoot() != null)
+            throw new IllegalArgumentException("'name' has a root component");
+        if (namePath.getParent() != null)
+            throw new IllegalArgumentException("'name' has more than one element");
+        return join(file.getPathWithPrefixForWin32Calls(), name);
     }
 
     private final WindowsPath file;
@@ -91,6 +100,7 @@ class WindowsUserDefinedFileAttributeView
         return Collections.unmodifiableList(list);
     }
 
+    @SuppressWarnings("removal")
     @Override
     public List<String> list() throws IOException  {
         if (System.getSecurityManager() != null)
@@ -98,6 +108,7 @@ class WindowsUserDefinedFileAttributeView
         return listUsingStreamEnumeration();
     }
 
+    @SuppressWarnings("removal")
     @Override
     public int size(String name) throws IOException  {
         if (System.getSecurityManager() != null)
@@ -125,6 +136,7 @@ class WindowsUserDefinedFileAttributeView
         }
     }
 
+    @SuppressWarnings("removal")
     @Override
     public int read(String name, ByteBuffer dst) throws IOException {
         if (System.getSecurityManager() != null)
@@ -160,6 +172,7 @@ class WindowsUserDefinedFileAttributeView
         }
     }
 
+    @SuppressWarnings("removal")
     @Override
     public int write(String name, ByteBuffer src) throws IOException {
         if (System.getSecurityManager() != null)
@@ -216,6 +229,7 @@ class WindowsUserDefinedFileAttributeView
         }
     }
 
+    @SuppressWarnings("removal")
     @Override
     public void delete(String name) throws IOException {
         if (System.getSecurityManager() != null)

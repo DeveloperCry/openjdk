@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -126,8 +126,9 @@ public interface ToolProvider {
     default int run(PrintStream out, PrintStream err, String... args) {
         Objects.requireNonNull(out);
         Objects.requireNonNull(err);
+        Objects.requireNonNull(args);
         for (String arg : args) {
-            Objects.requireNonNull(args);
+            Objects.requireNonNull(arg);
         }
 
         PrintWriter outWriter = new PrintWriter(out);
@@ -153,6 +154,7 @@ public interface ToolProvider {
      *
      * @throws NullPointerException if {@code name} is {@code null}
      */
+    @SuppressWarnings("removal")
     static Optional<ToolProvider> findFirst(String name) {
         Objects.requireNonNull(name);
         ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();

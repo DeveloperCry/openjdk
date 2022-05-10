@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,6 +44,7 @@ import java.util.List;
 
 public final class Timestamp implements Serializable {
 
+    @java.io.Serial
     private static final long serialVersionUID = -5502683707821851294L;
 
     /**
@@ -122,16 +123,12 @@ public final class Timestamp implements Serializable {
      * @return true if the timestamp are considered equal, false otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj == null || (!(obj instanceof Timestamp))) {
-            return false;
-        }
-        Timestamp that = (Timestamp)obj;
-
-        if (this == that) {
+        if (this == obj) {
             return true;
         }
-        return (timestamp.equals(that.getTimestamp()) &&
-            signerCertPath.equals(that.getSignerCertPath()));
+        return obj instanceof Timestamp other
+                && (timestamp.equals(other.getTimestamp()) &&
+                signerCertPath.equals(other.getSignerCertPath()));
     }
 
     /**
@@ -154,7 +151,15 @@ public final class Timestamp implements Serializable {
         return sb.toString();
     }
 
-    // Explicitly reset hash code value to -1
+    /**
+     * Restores the state of this object from the stream, and explicitly
+     * resets hash code value to -1.
+     *
+     * @param  ois the {@code ObjectInputStream} from which data is read
+     * @throws IOException if an I/O error occurs
+     * @throws ClassNotFoundException if a serialized class cannot be loaded
+     */
+    @java.io.Serial
     private void readObject(ObjectInputStream ois)
         throws IOException, ClassNotFoundException {
         ois.defaultReadObject();

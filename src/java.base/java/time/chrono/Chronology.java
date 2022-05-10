@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -133,7 +133,7 @@ import java.util.Set;
  * <li> {@link #date(TemporalAccessor) date(TemporalAccessor)}
  * </ul>
  *
- * <h3 id="addcalendars">Adding New Calendars</h3>
+ * <h2 id="addcalendars">Adding New Calendars</h2>
  * The set of available chronologies can be extended by applications.
  * Adding a new calendar system requires the writing of an implementation of
  * {@code Chronology}, {@code ChronoLocalDate} and {@code Era}.

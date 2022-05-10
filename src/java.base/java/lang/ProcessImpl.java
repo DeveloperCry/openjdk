@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -44,8 +44,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jdk.internal.misc.JavaIOFileDescriptorAccess;
-import jdk.internal.misc.SharedSecrets;
+import jdk.internal.access.JavaIOFileDescriptorAccess;
+import jdk.internal.access.SharedSecrets;
 import jdk.internal.ref.CleanerFactory;
 import sun.security.action.GetBooleanAction;
 import sun.security.action.GetPropertyAction;
@@ -71,6 +71,7 @@ final class ProcessImpl extends Process {
      * to append to a file does not open the file in a manner that guarantees
      * that writes by the child process will be atomic.
      */
+    @SuppressWarnings("removal")
     private static FileOutputStream newFileOutputStream(File f, boolean append)
         throws IOException
     {
@@ -109,6 +110,7 @@ final class ProcessImpl extends Process {
         FileOutputStream f2 = null;
 
         try {
+            boolean forceNullOutputStream = false;
             long[] stdHandles;
             if (redirects == null) {
                 stdHandles = new long[] { -1L, -1L, -1L };
@@ -132,6 +134,9 @@ final class ProcessImpl extends Process {
                     stdHandles[1] = fdAccess.getHandle(FileDescriptor.out);
                 } else if (redirects[1] instanceof ProcessBuilder.RedirectPipeImpl) {
                     stdHandles[1] = fdAccess.getHandle(((ProcessBuilder.RedirectPipeImpl) redirects[1]).getFd());
+                    // Force getInputStream to return a null stream,
+                    // the handle is directly assigned to the next process.
+                    forceNullOutputStream = true;
                 } else {
                     f1 = newFileOutputStream(redirects[1].file(),
                                              redirects[1].append());
@@ -152,7 +157,7 @@ final class ProcessImpl extends Process {
             }
 
             Process p = new ProcessImpl(cmdarray, envblock, dir,
-                                   stdHandles, redirectErrorStream);
+                                   stdHandles, forceNullOutputStream, redirectErrorStream);
             if (redirects != null) {
                 // Copy the handles's if they are to be redirected to another process
                 if (stdHandles[0] >= 0
@@ -215,9 +220,9 @@ final class ProcessImpl extends Process {
     private static final char ESCAPE_VERIFICATION[][] = {
         // We guarantee the only command file execution for implicit [cmd.exe] run.
         //    http://technet.microsoft.com/en-us/library/bb490954.aspx
-        {' ', '\t', '<', '>', '&', '|', '^'},
-        {' ', '\t', '<', '>'},
-        {' ', '\t', '<', '>'},
+        {' ', '\t', '\"', '<', '>', '&', '|', '^'},
+        {' ', '\t', '\"', '<', '>'},
+        {' ', '\t', '\"', '<', '>'},
         {' ', '\t'}
     };
 
@@ -277,18 +282,27 @@ final class ProcessImpl extends Process {
     }
 
     /**
-     * Return the argument without quotes (1st and last) if present, else the arg.
+     * Return the argument without quotes (1st and last) if properly quoted, else the arg.
+     * A properly quoted string has first and last characters as quote and
+     * the last quote is not escaped.
      * @param str a string
-     * @return the string without 1st and last quotes
+     * @return the string without quotes
      */
     private static String unQuote(String str) {
-        int len = str.length();
-        return (len >= 2 && str.charAt(0) == DOUBLEQUOTE && str.charAt(len - 1) == DOUBLEQUOTE)
-                ? str.substring(1, len - 1)
-                : str;
+        if (!str.startsWith("\"") || !str.endsWith("\"") || str.length() < 2)
+            return str;    // no beginning or ending quote, or too short not quoted
+
+        if (str.endsWith("\\\"")) {
+            return str;    // not properly quoted, treat as unquoted
+        }
+        // Strip leading and trailing quotes
+        return str.substring(1, str.length() - 1);
     }
 
     private static boolean needsEscaping(int verificationType, String arg) {
+        if (arg.isEmpty())
+            return true;            // Empty string is to be quoted
+
         // Switch off MS heuristic for internal ["].
         // Please, use the explicit [cmd.exe] call
         // if you need the internal ["].
@@ -404,10 +418,12 @@ final class ProcessImpl extends Process {
     private InputStream stdout_stream;
     private InputStream stderr_stream;
 
+    @SuppressWarnings("removal")
     private ProcessImpl(String cmd[],
                         final String envblock,
                         final String path,
                         final long[] stdHandles,
+                        boolean forceNullOutputStream,
                         final boolean redirectErrorStream)
         throws IOException
     {
@@ -491,15 +507,17 @@ final class ProcessImpl extends Process {
             else {
                 FileDescriptor stdin_fd = new FileDescriptor();
                 fdAccess.setHandle(stdin_fd, stdHandles[0]);
+                fdAccess.registerCleanup(stdin_fd);
                 stdin_stream = new BufferedOutputStream(
                     new FileOutputStream(stdin_fd));
             }
 
-            if (stdHandles[1] == -1L)
+            if (stdHandles[1] == -1L || forceNullOutputStream)
                 stdout_stream = ProcessBuilder.NullInputStream.INSTANCE;
             else {
                 FileDescriptor stdout_fd = new FileDescriptor();
                 fdAccess.setHandle(stdout_fd, stdHandles[1]);
+                fdAccess.registerCleanup(stdout_fd);
                 stdout_stream = new BufferedInputStream(
                     new PipeInputStream(stdout_fd));
             }
@@ -509,6 +527,7 @@ final class ProcessImpl extends Process {
             else {
                 FileDescriptor stderr_fd = new FileDescriptor();
                 fdAccess.setHandle(stderr_fd, stdHandles[2]);
+                fdAccess.registerCleanup(stderr_fd);
                 stderr_stream = new PipeInputStream(stderr_fd);
             }
 
@@ -555,10 +574,14 @@ final class ProcessImpl extends Process {
         if (getExitCodeProcess(handle) != STILL_ACTIVE) return true;
         if (timeout <= 0) return false;
 
-        long deadline = System.nanoTime() + remainingNanos ;
+        long deadline = System.nanoTime() + remainingNanos;
         do {
             // Round up to next millisecond
             long msTimeout = TimeUnit.NANOSECONDS.toMillis(remainingNanos + 999_999L);
+            if (msTimeout < 0) {
+                // if wraps around then wait a long while
+                msTimeout = Integer.MAX_VALUE;
+            }
             waitForTimeoutInterruptibly(handle, msTimeout);
             if (Thread.interrupted())
                 throw new InterruptedException();
@@ -572,7 +595,7 @@ final class ProcessImpl extends Process {
     }
 
     private static native void waitForTimeoutInterruptibly(
-        long handle, long timeout);
+        long handle, long timeoutMillis);
 
     @Override
     public void destroy() {
@@ -587,6 +610,7 @@ final class ProcessImpl extends Process {
 
     @Override
     public ProcessHandle toHandle() {
+        @SuppressWarnings("removal")
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(new RuntimePermission("manageProcess"));

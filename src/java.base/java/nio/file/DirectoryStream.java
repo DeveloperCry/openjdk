@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,7 +65,7 @@ import java.io.IOException;
  * using the {@code Iterator}, behaves as if the end of stream has been reached.
  * Due to read-ahead, the {@code Iterator} may return one or more elements
  * after the directory stream has been closed. Once these buffered elements
- * have been read, then subsequent calls to the {@code hasNext} method returns
+ * have been read, then subsequent calls to the {@code hasNext} method return
  * {@code false}, and subsequent calls to the {@code next} method will throw
  * {@code NoSuchElementException}.
  *
@@ -103,7 +103,7 @@ import java.io.IOException;
  *               result.add(entry);
  *           }
  *       } catch (DirectoryIteratorException ex) {
- *           // I/O error encounted during the iteration, the cause is an IOException
+ *           // I/O error encountered during the iteration, the cause is an IOException
  *           throw ex.getCause();
  *       }
  *       return result;

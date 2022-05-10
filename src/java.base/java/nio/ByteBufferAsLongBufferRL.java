@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,9 @@
 
 package java.nio;
 
+import java.util.Objects;
+import jdk.internal.access.foreign.MemorySegmentProxy;
 import jdk.internal.misc.Unsafe;
-
 
 class ByteBufferAsLongBufferRL                  // package-private
     extends ByteBufferAsLongBufferL
@@ -40,7 +41,7 @@ class ByteBufferAsLongBufferRL                  // package-private
 
 
 
-    ByteBufferAsLongBufferRL(ByteBuffer bb) {   // package-private
+    ByteBufferAsLongBufferRL(ByteBuffer bb, MemorySegmentProxy segment) {   // package-private
 
 
 
@@ -53,13 +54,13 @@ class ByteBufferAsLongBufferRL                  // package-private
 
 
 
-        super(bb);
+        super(bb, segment);
 
     }
 
     ByteBufferAsLongBufferRL(ByteBuffer bb,
                                      int mark, int pos, int lim, int cap,
-                                     long addr)
+                                     long addr, MemorySegmentProxy segment)
     {
 
 
@@ -67,7 +68,7 @@ class ByteBufferAsLongBufferRL                  // package-private
 
 
 
-        super(bb, mark, pos, lim, cap, addr);
+        super(bb, mark, pos, lim, cap, addr, segment);
 
     }
 
@@ -79,10 +80,20 @@ class ByteBufferAsLongBufferRL                  // package-private
     public LongBuffer slice() {
         int pos = this.position();
         int lim = this.limit();
-        assert (pos <= lim);
         int rem = (pos <= lim ? lim - pos : 0);
         long addr = byteOffset(pos);
-        return new ByteBufferAsLongBufferRL(bb, -1, 0, rem, rem, addr);
+        return new ByteBufferAsLongBufferRL(bb, -1, 0, rem, rem, addr, segment);
+    }
+
+    @Override
+    public LongBuffer slice(int index, int length) {
+        Objects.checkFromIndexSize(index, length, limit());
+        return new ByteBufferAsLongBufferRL(bb,
+                                                    -1,
+                                                    0,
+                                                    length,
+                                                    length,
+                                                    byteOffset(index), segment);
     }
 
     public LongBuffer duplicate() {
@@ -91,7 +102,7 @@ class ByteBufferAsLongBufferRL                  // package-private
                                                     this.position(),
                                                     this.limit(),
                                                     this.capacity(),
-                                                    address);
+                                                    address, segment);
     }
 
     public LongBuffer asReadOnlyBuffer() {
@@ -191,8 +202,6 @@ class ByteBufferAsLongBufferRL                  // package-private
     public boolean isReadOnly() {
         return true;
     }
-
-
 
 
 

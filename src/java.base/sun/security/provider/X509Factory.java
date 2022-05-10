@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -640,7 +640,8 @@ public class X509Factory extends CertificateFactorySpi {
                 if (next != '\r') footer.append((char)next);
             }
 
-            checkHeaderFooter(header.toString(), footer.toString());
+            checkHeaderFooter(header.toString().stripTrailing(),
+                    footer.toString().stripTrailing());
 
             try {
                 return Base64.getDecoder().decode(data.toByteArray());

@@ -42,6 +42,7 @@ public class AsynchronousCloseException
     extends ClosedChannelException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 6891178312432313966L;
 
     /**

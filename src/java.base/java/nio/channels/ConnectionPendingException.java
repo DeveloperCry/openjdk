@@ -42,6 +42,7 @@ public class ConnectionPendingException
     extends IllegalStateException
 {
 
+    @java.io.Serial
     private static final long serialVersionUID = 2008393366501760879L;
 
     /**

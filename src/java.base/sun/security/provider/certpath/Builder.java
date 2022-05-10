@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,13 +63,13 @@ public abstract class Builder {
      * Authority Information Access extension shall be enabled. Currently
      * disabled by default for compatibility reasons.
      */
-    static final boolean USE_AIA = AccessController.doPrivileged
-        (new GetBooleanAction("com.sun.security.enableAIAcaIssuers"));
+    static final boolean USE_AIA = GetBooleanAction
+            .privilegedGetProperty("com.sun.security.enableAIAcaIssuers");
 
     /**
      * Initialize the builder with the input parameters.
      *
-     * @param params the parameter set used to build a certification path
+     * @param buildParams the parameter set used to build a certification path
      */
     Builder(BuilderParams buildParams) {
         this.buildParams = buildParams;

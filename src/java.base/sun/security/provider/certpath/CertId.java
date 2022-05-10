@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -170,7 +170,7 @@ public class CertId {
         }
     }
 
-   /**
+    /**
      * Returns a hashcode value for this CertId.
      *
      * @return the hashcode value.

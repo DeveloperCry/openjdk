@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.lang.annotation.*;
  * @since   1.5
  */
 public class TypeNotPresentExceptionProxy extends ExceptionProxy {
+    @java.io.Serial
     private static final long serialVersionUID = 5565925172427947573L;
     final String typeName;
     final Throwable cause;

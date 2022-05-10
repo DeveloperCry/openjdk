@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -53,6 +53,7 @@ public class MalformedParametersException extends RuntimeException {
     /**
      * Version for serialization.
      */
+    @java.io.Serial
     private static final long serialVersionUID = 20130919L;
 
     /**
