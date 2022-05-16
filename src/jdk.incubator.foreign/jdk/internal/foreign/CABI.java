@@ -25,7 +25,9 @@
  */
 package jdk.internal.foreign;
 
-import static jdk.incubator.foreign.ValueLayout.ADDRESS;
+import sun.security.action.GetPropertyAction;
+
+import static jdk.incubator.foreign.MemoryLayouts.ADDRESS;
 import static sun.security.action.GetPropertyAction.privilegedGetProperty;
 
 public enum CABI {

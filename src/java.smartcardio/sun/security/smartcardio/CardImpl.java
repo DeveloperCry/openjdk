@@ -276,7 +276,7 @@ final class CardImpl extends Card {
             + ", protocol " + getProtocol() + ", state " + state;
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         try {
             if (state == State.OK) {

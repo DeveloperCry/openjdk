@@ -312,7 +312,7 @@ public class AlgorithmId implements Serializable, DerEncoder {
      *
      * @return DER encoded parameters, or null not present.
      */
-    public byte[] getEncodedParams() {
+    public byte[] getEncodedParams() throws IOException {
         return (encodedParams == null ||
             algid.toString().equals(KnownOIDs.SpecifiedSHA2withECDSA.value()))
                 ? null
@@ -520,7 +520,7 @@ public class AlgorithmId implements Serializable, DerEncoder {
         }
 
         // unknown algorithm oids
-        if (!name.contains(".")) {
+        if (name.indexOf(".") == -1) {
             // see if there is a matching oid string alias mapping from
             // 3rd party providers
             name = name.toUpperCase(Locale.ENGLISH);

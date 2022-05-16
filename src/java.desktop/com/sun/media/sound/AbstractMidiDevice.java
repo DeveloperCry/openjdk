@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -425,7 +425,7 @@ abstract class AbstractMidiDevice implements MidiDevice, ReferenceCountingDevice
      * close this device if discarded by the garbage collector.
      */
     @Override
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected final void finalize() {
         close();
     }
@@ -576,9 +576,11 @@ abstract class AbstractMidiDevice implements MidiDevice, ReferenceCountingDevice
                 if (midiOutReceiver == oldR) {
                     midiOutReceiver = null;
                 }
-                if ((newR instanceof MidiOutDevice.MidiOutReceiver newReceiver)
+                if (newR != null) {
+                    if ((newR instanceof MidiOutDevice.MidiOutReceiver)
                         && (midiOutReceiver == null)) {
-                    midiOutReceiver = newReceiver;
+                        midiOutReceiver = ((MidiOutDevice.MidiOutReceiver) newR);
+                    }
                 }
                 optimizedReceiverCount =
                       ((midiOutReceiver!=null)?1:0);

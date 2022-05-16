@@ -355,7 +355,7 @@ public class MBeanServerFactory {
      * caller's permissions do not include or imply <code>{@link
      * MBeanServerPermission}("findMBeanServer")</code>.
      */
-    public static synchronized
+    public synchronized static
             ArrayList<MBeanServer> findMBeanServer(String agentId) {
 
         checkPermission("findMBeanServer");

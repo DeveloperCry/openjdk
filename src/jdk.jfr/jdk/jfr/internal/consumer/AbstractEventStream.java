@@ -65,7 +65,7 @@ public abstract class AbstractEventStream implements EventStream {
     private volatile Thread thread;
     private Dispatcher dispatcher;
 
-    protected final ParserState parserState = new ParserState();
+    private volatile boolean closed;
 
     private boolean daemon = false;
 
@@ -215,12 +215,12 @@ public abstract class AbstractEventStream implements EventStream {
 
     protected abstract void process() throws IOException;
 
-    protected final void closeParser() {
-        parserState.close();
+    protected final void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
     protected final boolean isClosed() {
-        return parserState.isClosed();
+        return closed;
     }
 
     public final void startAsync(long startNanos) {

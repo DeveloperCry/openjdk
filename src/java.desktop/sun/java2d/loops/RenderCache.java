@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,7 @@
 package sun.java2d.loops;
 
 public final class RenderCache {
-    static final class Entry {
+    final class Entry {
         private SurfaceType src;
         private CompositeType comp;
         private SurfaceType dst;

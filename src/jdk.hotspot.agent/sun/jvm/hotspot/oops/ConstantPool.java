@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -477,7 +477,7 @@ public class ConstantPool extends Metadata implements ClassConstants {
     return values;
   }
 
-  private static final String[] nameForTag = new String[] {
+  final private static String[] nameForTag = new String[] {
   };
 
   private String nameForTag(int tag) {

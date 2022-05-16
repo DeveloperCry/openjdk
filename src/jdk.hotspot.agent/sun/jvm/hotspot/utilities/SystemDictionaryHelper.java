@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,7 +65,9 @@ public class SystemDictionaryHelper {
                         }
                      });
 
-      klasses = tmp.toArray(new InstanceKlass[0]);
+      Object[] tmpArray = tmp.toArray();
+      klasses = new InstanceKlass[tmpArray.length];
+      System.arraycopy(tmpArray, 0, klasses, 0, tmpArray.length);
       Arrays.sort(klasses, new Comparator<>() {
                           public int compare(InstanceKlass k1, InstanceKlass k2) {
                              Symbol s1 = k1.getName();
@@ -89,7 +91,9 @@ public class SystemDictionaryHelper {
          }
       }
 
-      InstanceKlass[] searchResult = tmp.toArray(new InstanceKlass[0]);
+      Object[] tmpArray = tmp.toArray();
+      InstanceKlass[] searchResult = new InstanceKlass[tmpArray.length];
+      System.arraycopy(tmpArray, 0, searchResult, 0, tmpArray.length);
       return searchResult;
    }
 

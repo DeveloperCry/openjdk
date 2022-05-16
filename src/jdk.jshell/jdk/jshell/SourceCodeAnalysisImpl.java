@@ -1381,7 +1381,8 @@ class SourceCodeAnalysisImpl extends SourceCodeAnalysis {
             FileSystem zipFO = null;
 
             try {
-                zipFO = FileSystems.newFileSystem(srcZip, Collections.emptyMap());
+                URI uri = URI.create("jar:" + srcZip.toUri());
+                zipFO = FileSystems.newFileSystem(uri, Collections.emptyMap());
                 Path root = zipFO.getRootDirectories().iterator().next();
 
                 if (Files.exists(root.resolve("java/lang/Object.java".replace("/", zipFO.getSeparator())))) {

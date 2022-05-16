@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1056,7 +1056,7 @@ public class ImageView extends View {
      * the attribute specified an alt attribute. It overriden a handle of
      * methods as the text is hardcoded and does not come from the document.
      */
-    private static class ImageLabelView extends InlineView {
+    private class ImageLabelView extends InlineView {
         private Segment segment;
         private Color fg;
 

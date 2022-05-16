@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -81,7 +81,6 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.chrono.ChronoLocalDateTime;
-import java.time.chrono.ChronoZonedDateTime;
 import java.time.chrono.Chronology;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder.CompositePrinterParser;
@@ -374,15 +373,15 @@ import sun.util.locale.provider.TimeZoneNameUtility;
  * letters throws {@code IllegalArgumentException}.
  * <p>
  * <b>Zone names</b>: This outputs the display name of the time-zone ID. If the
- * pattern letter is 'z' the output is the daylight saving aware zone name.
+ * pattern letter is 'z' the output is the daylight savings aware zone name.
  * If there is insufficient information to determine whether DST applies,
- * the name ignoring daylight saving time will be used.
+ * the name ignoring daylight savings time will be used.
  * If the count of letters is one, two or three, then the short name is output.
  * If the count of letters is four, then the full name is output.
  * Five or more letters throws {@code IllegalArgumentException}.
  * <p>
  * If the pattern letter is 'v' the output provides the zone name ignoring
- * daylight saving time. If the count of letters is one, then the short name is output.
+ * daylight savings time. If the count of letters is one, then the short name is output.
  * If the count of letters is four, then the full name is output.
  * Two, three and five or more letters throw {@code IllegalArgumentException}.
  * <p>
@@ -503,10 +502,7 @@ import sun.util.locale.provider.TimeZoneNameUtility;
  * {@code LocalDateTime} to form the instant, with any zone ignored.
  * If a {@code ZoneId} was parsed without an offset then the zone will be
  * combined with the {@code LocalDateTime} to form the instant using the rules
- * of {@link ChronoLocalDateTime#atZone(ZoneId)}. If the {@code ZoneId} was
- * parsed from a zone name that indicates whether daylight saving time is in
- * operation or not, then that fact will be used to select the correct offset
- * at the local time-line overlap.
+ * of {@link ChronoLocalDateTime#atZone(ZoneId)}.
  * </ol>
  *
  * @implSpec

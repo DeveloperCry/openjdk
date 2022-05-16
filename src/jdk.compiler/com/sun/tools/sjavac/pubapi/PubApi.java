@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,7 +49,6 @@ import javax.lang.model.element.Modifier;
 import com.sun.tools.javac.util.Assert;
 import com.sun.tools.javac.util.StringUtils;
 
-@SuppressWarnings("serial") // Types of instance fields are not Serializable
 public class PubApi implements Serializable {
 
     private static final long serialVersionUID = 5926627347801986850L;

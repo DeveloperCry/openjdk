@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,9 +38,6 @@ import com.sun.jndi.ldap.pool.PooledConnection;
 import com.sun.jndi.ldap.pool.PoolCallback;
 import com.sun.jndi.ldap.sasl.LdapSasl;
 import com.sun.jndi.ldap.sasl.SaslInputStream;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * LDAP (RFC-1777) and LDAPv3 (RFC-2251) compliant client
@@ -312,7 +309,7 @@ public final class LdapClient implements PooledConnection {
      * @param auth The authentication mechanism
      *
      */
-    public synchronized LdapResult ldapBind(String dn, byte[]toServer,
+    synchronized public LdapResult ldapBind(String dn, byte[]toServer,
         Control[] bindCtls, String auth, boolean pauseAfterReceipt)
         throws java.io.IOException, NamingException {
 
@@ -424,9 +421,9 @@ public final class LdapClient implements PooledConnection {
 
         if (pw instanceof String) {
             if (v3) {
-                return ((String)pw).getBytes(UTF_8);
+                return ((String)pw).getBytes("UTF8");
             } else {
-                return ((String)pw).getBytes(ISO_8859_1);
+                return ((String)pw).getBytes("8859_1");
             }
         } else {
             return (byte[])pw;
@@ -477,7 +474,7 @@ public final class LdapClient implements PooledConnection {
         }
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() {
         if (debug > 0) System.err.println("LdapClient: finalize " + this);
         forceClose(pooled);
@@ -486,7 +483,7 @@ public final class LdapClient implements PooledConnection {
     /*
      * Used by connection pooling to close physical connection.
      */
-    public synchronized void closeConnection() {
+    synchronized public void closeConnection() {
         forceClose(false); // this is a pool callback so no need to clean pool
     }
 
@@ -1156,7 +1153,7 @@ public final class LdapClient implements PooledConnection {
 
                         // replace any escaped characters in the value
                         byte[] val = isLdapv3 ?
-                            value.getBytes(UTF_8) : value.getBytes(ISO_8859_1);
+                            value.getBytes("UTF8") : value.getBytes("8859_1");
                         ber.encodeOctetString(
                             Filter.unescapeFilterValue(val, 0, val.length),
                             Ber.ASN_OCTET_STR);

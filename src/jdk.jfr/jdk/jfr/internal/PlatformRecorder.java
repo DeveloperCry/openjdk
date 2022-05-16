@@ -36,6 +36,7 @@ import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -142,7 +143,7 @@ public final class PlatformRecorder {
         return Collections.unmodifiableList(new ArrayList<PlatformRecording>(recordings));
     }
 
-    public static synchronized void addListener(FlightRecorderListener changeListener) {
+    public synchronized static void addListener(FlightRecorderListener changeListener) {
         @SuppressWarnings("removal")
         AccessControlContext context = AccessController.getContext();
         SecureRecorderListener sl = new SecureRecorderListener(context, changeListener);
@@ -156,7 +157,7 @@ public final class PlatformRecorder {
         }
     }
 
-    public static synchronized boolean removeListener(FlightRecorderListener changeListener) {
+    public synchronized static boolean removeListener(FlightRecorderListener changeListener) {
         for (SecureRecorderListener s : new ArrayList<>(changeListeners)) {
             if (s.getChangeListener() == changeListener) {
                 changeListeners.remove(s);
@@ -248,7 +249,7 @@ public final class PlatformRecorder {
             }
             currentChunk = newChunk;
             jvm.beginRecording();
-            startNanos = Utils.getChunkStartNanos();
+            startNanos = jvm.getChunkStartNanos();
             startTime = Utils.epochNanosToInstant(startNanos);
             if (currentChunk != null) {
                 currentChunk.setStartTime(startTime);
@@ -269,7 +270,7 @@ public final class PlatformRecorder {
                 startTime = MetadataRepository.getInstance().setOutput(p);
                 newChunk.setStartTime(startTime);
             }
-            startNanos = Utils.getChunkStartNanos();
+            startNanos = jvm.getChunkStartNanos();
             startTime = Utils.epochNanosToInstant(startNanos);
             recording.setStartTime(startTime);
             recording.setState(RecordingState.RUNNING);
@@ -316,7 +317,7 @@ public final class PlatformRecorder {
             }
         }
         OldObjectSample.emit(recording);
-        recording.setFinalStartnanos(Utils.getChunkStartNanos());
+        recording.setFinalStartnanos(jvm.getChunkStartNanos());
 
         if (endPhysical) {
             RequestEngine.doChunkEnd();
@@ -436,7 +437,7 @@ public final class PlatformRecorder {
             }
             // n*log(n), should be able to do n*log(k) with a priority queue,
             // where k = number of recordings, n = number of chunks
-            chunks.sort(RepositoryChunk.END_TIME_COMPARATOR);
+            Collections.sort(chunks, RepositoryChunk.END_TIME_COMPARATOR);
             return chunks;
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,7 +73,7 @@ public class OptionLister {
         }
 
         for ( OptionFormat of : options) {
-            if (of.getName().equals("timestamp")) {
+            if (of.getName().compareTo("timestamp") == 0) {
               // ignore the special timestamp OptionFormat.
               continue;
             }

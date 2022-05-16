@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,9 +31,9 @@ import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 
 public abstract class SimpleRenderedImage implements RenderedImage {
@@ -270,10 +270,10 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 
         prefix = prefix.toLowerCase();
 
-        ArrayList<String> names = new ArrayList<String>();
+        Vector<String> names = new Vector<String>();
         for (int i = 0; i < propertyNames.length; i++) {
             if (propertyNames[i].startsWith(prefix)) {
-                names.add(propertyNames[i]);
+                names.addElement(propertyNames[i]);
             }
         }
 
@@ -281,7 +281,13 @@ public abstract class SimpleRenderedImage implements RenderedImage {
             return null;
         }
 
-        String[] prefixNames = names.toArray(new String[0]);
+        // Copy the strings from the Vector over to a String array.
+        String[] prefixNames = new String[names.size()];
+        int count = 0;
+        for (Iterator<String> it = names.iterator(); it.hasNext(); ) {
+            prefixNames[count++] = it.next();
+        }
+
         return prefixNames;
     }
 

@@ -763,14 +763,12 @@ public class ModuleWriterImpl extends HtmlDocletWriter implements ModuleSummaryW
             Content desc = new ContentBuilder();
             if (display(providesTrees)) {
                 description = providesTrees.get(srv);
-                if (description != null && !description.isEmpty()) {
-                    desc.add(HtmlTree.DIV(HtmlStyle.block, description));
-                } else {
-                    addSummaryComment(srv, desc);
-                }
+                desc.add((description != null && !description.isEmpty())
+                        ? HtmlTree.DIV(HtmlStyle.block, description)
+                        : Entity.NO_BREAK_SPACE);
             } else {
                 desc.add(Entity.NO_BREAK_SPACE);
-            }
+                }
             // Only display the implementation details in the "all" mode.
             if (moduleMode == ModuleMode.ALL && !implSet.isEmpty()) {
                 desc.add(new HtmlTree(TagName.BR));

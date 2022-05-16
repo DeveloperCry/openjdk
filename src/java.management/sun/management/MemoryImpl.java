@@ -58,7 +58,6 @@ class MemoryImpl extends NotificationEmitterSupport
         this.jvm = vm;
     }
 
-    @SuppressWarnings("deprecation")
     public int getObjectPendingFinalizationCount() {
         return jdk.internal.misc.VM.getFinalRefCount();
     }

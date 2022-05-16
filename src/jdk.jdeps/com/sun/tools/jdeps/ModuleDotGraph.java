@@ -147,7 +147,7 @@ public class ModuleDotGraph {
      */
     private Graph<String> gengraph(Configuration cf) {
         Graph.Builder<String> builder = new Graph.Builder<>();
-        cf.modules()
+        cf.modules().stream()
             .forEach(rm -> {
                 String mn = rm.name();
                 builder.addNode(mn);
@@ -197,7 +197,7 @@ public class ModuleDotGraph {
         static final String ORANGE = "#e76f00";
         static final String BLUE = "#437291";
         static final String BLACK = "#000000";
-        static final String DARK_GRAY = "#a9a9a9";
+        static final String DARK_GRAY = "#999999";
         static final String LIGHT_GRAY = "#dddddd";
 
         int fontSize();
@@ -208,12 +208,8 @@ public class ModuleDotGraph {
         int arrowWidth();
         String arrowColor();
 
-        default double nodeSep() {
-            return 0.5;
-        }
-
         default double rankSep() {
-            return 0.6;
+            return 1;
         }
 
         default List<Set<String>> ranks() {
@@ -235,15 +231,9 @@ public class ModuleDotGraph {
         default String jdkSubgraphColor() {
             return BLUE;
         }
-
-        default String nodeMargin() { return ".2, .2"; }
-
-        default String requiresStyle() { return "dashed"; };
-
-        default String requiresTransitiveStyle() { return ""; };
     }
 
-    public static class DotGraphAttributes implements Attributes {
+    static class DotGraphAttributes implements Attributes {
         static final DotGraphAttributes DEFAULT = new DotGraphAttributes();
 
         static final String FONT_NAME = "DejaVuSans";
@@ -283,6 +273,9 @@ public class ModuleDotGraph {
     }
 
     private static class DotGraphBuilder {
+        static final String REEXPORTS = "";
+        static final String REQUIRES = "style=\"dashed\"";
+
         static final Set<String> JAVA_SE_SUBGRAPH = javaSE();
         static final Set<String> JDK_SUBGRAPH = jdk();
 
@@ -333,7 +326,7 @@ public class ModuleDotGraph {
 
         private final String name;
         private final Graph<String> graph;
-        private final TreeSet<ModuleDescriptor> descriptors = new TreeSet<>();
+        private final Set<ModuleDescriptor> descriptors = new TreeSet<>();
         private final List<SubGraph> subgraphs = new ArrayList<>();
         private final Attributes attributes;
         public DotGraphBuilder(String name,
@@ -354,15 +347,14 @@ public class ModuleDotGraph {
                  PrintWriter out = new PrintWriter(writer)) {
 
                 out.format("digraph \"%s\" {%n", name);
-                out.format("  nodesep=%f;%n", attributes.nodeSep());
+                out.format("  nodesep=.5;%n");
                 out.format((Locale)null, "  ranksep=%f;%n", attributes.rankSep());
                 out.format("  pencolor=transparent;%n");
                 out.format("  node [shape=plaintext, fontcolor=\"%s\", fontname=\"%s\","
-                                + " fontsize=%d, margin=\"%s\"];%n",
+                                + " fontsize=%d, margin=\".2,.2\"];%n",
                            attributes.fontColor(),
                            attributes.fontName(),
-                           attributes.fontSize(),
-                           attributes.nodeMargin());
+                           attributes.fontSize());
                 out.format("  edge [penwidth=%d, color=\"%s\", arrowhead=open, arrowsize=%d];%n",
                            attributes.arrowWidth(),
                            attributes.arrowColor(),
@@ -414,16 +406,12 @@ public class ModuleDotGraph {
                 .collect(toSet());
 
             String mn = md.name();
-            edges.stream().sorted().forEach(dn -> {
-                String attr = "";
+            edges.stream().forEach(dn -> {
+                String attr;
                 if (dn.equals("java.base")) {
                     attr = "color=\"" + attributes.requiresMandatedColor() + "\"";
                 } else {
-                    String style = requiresTransitive.contains(dn) ? attributes.requiresTransitiveStyle()
-                                                                   : attributes.requiresStyle();
-                    if (!style.isEmpty()) {
-                        attr = "style=\"" + style + "\"";
-                    }
+                    attr = (requiresTransitive.contains(dn) ? REEXPORTS : REQUIRES);
                 }
 
                 int w = attributes.weightOf(mn, dn);

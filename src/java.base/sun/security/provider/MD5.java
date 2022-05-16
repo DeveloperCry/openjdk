@@ -32,8 +32,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static sun.security.provider.ByteArrayAccess.*;
-
-import jdk.internal.util.Preconditions;
 import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 /**
@@ -154,7 +152,9 @@ public final class MD5 extends DigestBase {
         // These checks are sufficient for the case when the method
         // 'implCompressImpl' is replaced with a compiler
         // intrinsic.
-        Preconditions.checkFromIndexSize(ofs, 64, buf.length, Preconditions.AIOOBE_FORMATTER);
+        if ((ofs < 0) || ((buf.length - ofs) < 64)) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 
     // The method 'implCompress0 seems not to use its parameters.

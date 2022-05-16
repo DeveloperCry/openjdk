@@ -46,6 +46,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Iterator;
 import java.security.Permission;
 import java.util.Properties;
 import sun.net.NetworkClient;
@@ -249,8 +250,9 @@ public class FtpURLConnection extends URLConnection {
                 } catch (IllegalArgumentException iae) {
                     throw new IOException("Failed to select a proxy", iae);
                 }
-                for (Proxy proxy : proxies) {
-                    p = proxy;
+                final Iterator<Proxy> it = proxies.iterator();
+                while (it.hasNext()) {
+                    p = it.next();
                     if (p == null || p == Proxy.NO_PROXY ||
                         p.type() == Proxy.Type.SOCKS) {
                         break;

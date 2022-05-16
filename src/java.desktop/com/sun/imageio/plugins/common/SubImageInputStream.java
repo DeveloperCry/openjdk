@@ -72,7 +72,7 @@ public final class SubImageInputStream extends ImageInputStreamImpl {
         streamPos = pos;
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         // Empty finalizer (for improved performance; no need to call
         // super.finalize() in this case)

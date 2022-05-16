@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -125,10 +125,6 @@ public enum ElementKind {
      * @since 16
      */
     BINDING_VARIABLE;
-
-    // Maintenance note: check if the default implementation of
-    // Elements.getOutermostTypeElement needs updating when new kind
-    // constants are added.
 
     /**
      * Returns {@code true} if this is a kind of class:

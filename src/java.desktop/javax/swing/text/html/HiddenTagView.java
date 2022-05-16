@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -271,7 +271,8 @@ class HiddenTagView extends EditableView implements DocumentListener {
         AttributeSet as = getElement().getAttributes();
         if (as != null) {
             Object end = as.getAttribute(HTML.Attribute.ENDTAG);
-            if ("true".equals(end)) {
+            if (end != null && (end instanceof String) &&
+                ((String)end).equals("true")) {
                 return true;
             }
         }

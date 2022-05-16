@@ -989,7 +989,7 @@ abstract class BaseNameClassPairEnumeration<T> implements NamingEnumeration<T> {
         return hasMore();
     }
 
-    public abstract T next() throws NamingException;
+    abstract public T next() throws NamingException;
 
     public final T nextElement() {
         try {

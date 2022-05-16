@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2012, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,7 @@ import sun.jvm.hotspot.debugger.cdbg.*;
 import sun.jvm.hotspot.debugger.cdbg.basic.*;
 import sun.jvm.hotspot.debugger.x86.*;
 
-public final class BsdX86CFrame extends BasicCFrame {
+final public class BsdX86CFrame extends BasicCFrame {
    // package/class internals only
    public BsdX86CFrame(BsdDebugger dbg, Address ebp, Address pc) {
       super(dbg.getCDebugger());

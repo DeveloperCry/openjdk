@@ -639,7 +639,7 @@ class NativeGSSContext implements GSSContextSpi {
         return isInitiator;
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         dispose();
     }

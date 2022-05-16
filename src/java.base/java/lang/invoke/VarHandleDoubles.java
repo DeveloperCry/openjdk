@@ -621,7 +621,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getDoubleVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -629,7 +629,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             UNSAFE.putDoubleVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -638,7 +638,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getDoubleOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -646,7 +646,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             UNSAFE.putDoubleOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -655,7 +655,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getDoubleAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -663,7 +663,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             UNSAFE.putDoubleRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -672,7 +672,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.compareAndSetDouble(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -682,7 +682,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.compareAndExchangeDouble(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -692,7 +692,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.compareAndExchangeDoubleAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -702,7 +702,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.compareAndExchangeDoubleRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -712,7 +712,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.weakCompareAndSetDoublePlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -722,7 +722,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.weakCompareAndSetDouble(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -732,7 +732,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.weakCompareAndSetDoubleAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -742,7 +742,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.weakCompareAndSetDoubleRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -752,7 +752,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndSetDouble(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -761,7 +761,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndSetDoubleAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -770,7 +770,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndSetDoubleRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -779,7 +779,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndAddDouble(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -788,7 +788,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndAddDoubleAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -797,7 +797,7 @@ final class VarHandleDoubles {
             Array handle = (Array)ob;
             double[] array = (double[]) oarray;
             return UNSAFE.getAndAddDoubleRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 

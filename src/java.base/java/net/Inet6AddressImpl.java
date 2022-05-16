@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,9 +25,10 @@
 package java.net;
 
 import java.io.IOException;
-import java.net.spi.InetAddressResolver.LookupPolicy;
 
-import static java.net.InetAddress.PLATFORM_LOOKUP_POLICY;
+import static java.net.InetAddress.IPv6;
+import static java.net.InetAddress.PREFER_IPV6_VALUE;
+import static java.net.InetAddress.PREFER_SYSTEM_VALUE;
 
 /*
  * Package private implementation of InetAddressImpl for dual
@@ -43,17 +44,12 @@ import static java.net.InetAddress.PLATFORM_LOOKUP_POLICY;
  *
  * @since 1.4
  */
-final class Inet6AddressImpl implements InetAddressImpl {
+class Inet6AddressImpl implements InetAddressImpl {
 
     public native String getLocalHostName() throws UnknownHostException;
 
-    public InetAddress[] lookupAllHostAddr(String hostname, LookupPolicy lookupPolicy)
-            throws UnknownHostException {
-        return lookupAllHostAddr(hostname, lookupPolicy.characteristics());
-    }
-
-    private native InetAddress[] lookupAllHostAddr(String hostname, int characteristics)
-            throws UnknownHostException;
+    public native InetAddress[] lookupAllHostAddr(String hostname)
+        throws UnknownHostException;
 
     public native String getHostByAddr(byte[] addr) throws UnknownHostException;
 
@@ -100,9 +96,8 @@ final class Inet6AddressImpl implements InetAddressImpl {
 
     public synchronized InetAddress anyLocalAddress() {
         if (anyLocalAddress == null) {
-            int flags = PLATFORM_LOOKUP_POLICY.characteristics();
-            if (InetAddress.ipv6AddressesFirst(flags) ||
-                InetAddress.systemAddressesOrder(flags)) {
+            if (InetAddress.preferIPv6Address == PREFER_IPV6_VALUE ||
+                InetAddress.preferIPv6Address == PREFER_SYSTEM_VALUE) {
                 anyLocalAddress = new Inet6Address();
                 anyLocalAddress.holder().hostName = "::";
             } else {
@@ -114,9 +109,9 @@ final class Inet6AddressImpl implements InetAddressImpl {
 
     public synchronized InetAddress loopbackAddress() {
         if (loopbackAddress == null) {
-            int flags = PLATFORM_LOOKUP_POLICY.characteristics();
-            boolean preferIPv6Address = InetAddress.ipv6AddressesFirst(flags) ||
-                    InetAddress.systemAddressesOrder(flags);
+            boolean preferIPv6Address =
+                InetAddress.preferIPv6Address == PREFER_IPV6_VALUE ||
+                InetAddress.preferIPv6Address == PREFER_SYSTEM_VALUE;
 
             for (int i = 0; i < 2; i++) {
                 InetAddress address;

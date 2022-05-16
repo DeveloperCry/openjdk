@@ -134,7 +134,7 @@ final class RepositoryChunk {
     }
 
     @Override
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() {
         boolean destroy = false;
         synchronized (this) {

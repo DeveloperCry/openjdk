@@ -274,7 +274,8 @@ public class HelpWriter extends HtmlDocletWriter {
                         contents.interfaces,
                         contents.classes,
                         contents.enums,
-                        contents.exceptionClasses,
+                        contents.exceptions,
+                        contents.errors,
                         contents.annotationTypes));
         pageKindsSection.add(section);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2012, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -416,7 +416,7 @@ public class XMBeanNotifications extends JTable implements NotificationListener 
         }
     }
 
-    static class UserDataCellRenderer extends DefaultTableCellRenderer {
+    class UserDataCellRenderer extends DefaultTableCellRenderer {
 
         Component comp;
 
@@ -444,7 +444,7 @@ public class XMBeanNotifications extends JTable implements NotificationListener 
         }
     }
 
-    static class UserDataCell {
+    class UserDataCell {
 
         TableCellRenderer minRenderer;
         UserDataCellRenderer maxRenderer;

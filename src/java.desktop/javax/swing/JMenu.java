@@ -46,7 +46,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
@@ -1313,7 +1313,7 @@ public class JMenu extends JMenuItem implements Accessible,MenuElement
      * @return the array of menu items
      */
     private MenuElement[] buildMenuElementArray(JMenu leaf) {
-        ArrayList<MenuElement> elements = new ArrayList<>();
+        Vector<MenuElement> elements = new Vector<>();
         Component current = leaf.getPopupMenu();
         JPopupMenu pop;
         JMenu menu;
@@ -1322,21 +1322,22 @@ public class JMenu extends JMenuItem implements Accessible,MenuElement
         while (true) {
             if (current instanceof JPopupMenu) {
                 pop = (JPopupMenu) current;
-                elements.add(0, pop);
+                elements.insertElementAt(pop, 0);
                 current = pop.getInvoker();
             } else if (current instanceof JMenu) {
                 menu = (JMenu) current;
-                elements.add(0, menu);
+                elements.insertElementAt(menu, 0);
                 current = menu.getParent();
             } else if (current instanceof JMenuBar) {
                 bar = (JMenuBar) current;
-                elements.add(0, bar);
+                elements.insertElementAt(bar, 0);
                 break;
             } else {
                 break;
             }
         }
-        MenuElement[] me = elements.toArray(new MenuElement[0]);
+        MenuElement[] me = new MenuElement[elements.size()];
+        elements.copyInto(me);
         return me;
     }
 
@@ -1598,7 +1599,7 @@ public class JMenu extends JMenuItem implements Accessible,MenuElement
                 return;
             }
             JMenuItem mi = getItem(i);
-            if (mi instanceof JMenu) {
+            if (mi != null && mi instanceof JMenu) {
                 if (mi.isSelected()) {
                     MenuElement[] old =
                         MenuSelectionManager.defaultManager().getSelectedPath();

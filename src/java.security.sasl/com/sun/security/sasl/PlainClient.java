@@ -195,7 +195,7 @@ final class PlainClient implements SaslClient {
         }
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() {
         clearPassword();
     }

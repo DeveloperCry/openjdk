@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,14 +26,18 @@
 package java.io;
 
 /**
- * A {@code FilterInputStream} wraps some other input stream, which it uses as
- * its basic source of data, possibly transforming the data along the way or
- * providing additional functionality. The class {@code FilterInputStream}
- * itself simply overrides select methods of {@code InputStream} with versions
- * that pass all requests to the wrapped input stream. Subclasses of
- * {@code FilterInputStream} may of course override any methods declared or
- * inherited by {@code FilterInputStream}, and may also provide additional
- * fields and methods.
+ * A {@code FilterInputStream} contains
+ * some other input stream, which it uses as
+ * its  basic source of data, possibly transforming
+ * the data along the way or providing  additional
+ * functionality. The class {@code FilterInputStream}
+ * itself simply overrides all  methods of
+ * {@code InputStream} with versions that
+ * pass all requests to the contained  input
+ * stream. Subclasses of {@code FilterInputStream}
+ * may further override some of  these methods
+ * and may also provide additional methods
+ * and fields.
  *
  * @author  Jonathan Payne
  * @since   1.0
@@ -65,16 +69,15 @@ public class FilterInputStream extends InputStream {
      * {@code -1} is returned. This method blocks until input data
      * is available, the end of the stream is detected, or an exception
      * is thrown.
-     *
-     * @implSpec
-     * This method simply performs {@code in.read()} and returns the result.
+     * <p>
+     * This method
+     * simply performs {@code in.read()} and returns the result.
      *
      * @return     the next byte of data, or {@code -1} if the end of the
      *             stream is reached.
      * @throws     IOException  if an I/O error occurs.
      * @see        java.io.FilterInputStream#in
      */
-    @Override
     public int read() throws IOException {
         return in.read();
     }
@@ -83,11 +86,10 @@ public class FilterInputStream extends InputStream {
      * Reads up to {@code b.length} bytes of data from this
      * input stream into an array of bytes. This method blocks until some
      * input is available.
-     *
-     * @implSpec
+     * <p>
      * This method simply performs the call
      * {@code read(b, 0, b.length)} and returns
-     * the result. It is important that it does
+     * the  result. It is important that it does
      * <i>not</i> do {@code in.read(b)} instead;
      * certain subclasses of  {@code FilterInputStream}
      * depend on the implementation strategy actually
@@ -100,8 +102,7 @@ public class FilterInputStream extends InputStream {
      * @throws     IOException  if an I/O error occurs.
      * @see        java.io.FilterInputStream#read(byte[], int, int)
      */
-    @Override
-    public int read(byte[] b) throws IOException {
+    public int read(byte b[]) throws IOException {
         return read(b, 0, b.length);
     }
 
@@ -110,8 +111,7 @@ public class FilterInputStream extends InputStream {
      * into an array of bytes. If {@code len} is not zero, the method
      * blocks until some input is available; otherwise, no
      * bytes are read and {@code 0} is returned.
-     *
-     * @implSpec
+     * <p>
      * This method simply performs {@code in.read(b, off, len)}
      * and returns the result.
      *
@@ -128,8 +128,7 @@ public class FilterInputStream extends InputStream {
      * @throws     IOException  if an I/O error occurs.
      * @see        java.io.FilterInputStream#in
      */
-    @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(byte b[], int off, int len) throws IOException {
         return in.read(b, off, len);
     }
 
@@ -139,15 +138,13 @@ public class FilterInputStream extends InputStream {
      * reasons, end up skipping over some smaller number of bytes,
      * possibly {@code 0}. The actual number of bytes skipped is
      * returned.
-     *
-     * @implSpec
-     * This method simply performs {@code in.skip(n)} and returns the result.
+     * <p>
+     * This method simply performs {@code in.skip(n)}.
      *
      * @param      n   the number of bytes to be skipped.
      * @return     the actual number of bytes skipped.
      * @throws     IOException  if {@code in.skip(n)} throws an IOException.
      */
-    @Override
     public long skip(long n) throws IOException {
         return in.skip(n);
     }
@@ -158,15 +155,13 @@ public class FilterInputStream extends InputStream {
      * caller of a method for this input stream. The next caller might be
      * the same thread or another thread.  A single read or skip of this
      * many bytes will not block, but may read or skip fewer bytes.
+     * <p>
+     * This method returns the result of {@link #in in}.available().
      *
-     * @implSpec
-     * This method returns the result of {@code in.available()}.
-     *
-     * @return     an estimate of the number of bytes that can be read (or
-     *             skipped over) from this input stream without blocking.
+     * @return     an estimate of the number of bytes that can be read (or skipped
+     *             over) from this input stream without blocking.
      * @throws     IOException  if an I/O error occurs.
      */
-    @Override
     public int available() throws IOException {
         return in.available();
     }
@@ -174,14 +169,12 @@ public class FilterInputStream extends InputStream {
     /**
      * Closes this input stream and releases any system resources
      * associated with the stream.
-     *
-     * @implSpec
-     * This method simply performs {@code in.close()}.
+     * This
+     * method simply performs {@code in.close()}.
      *
      * @throws     IOException  if an I/O error occurs.
      * @see        java.io.FilterInputStream#in
      */
-    @Override
     public void close() throws IOException {
         in.close();
     }
@@ -194,8 +187,7 @@ public class FilterInputStream extends InputStream {
      * The {@code readlimit} argument tells this input stream to
      * allow that many bytes to be read before the mark position gets
      * invalidated.
-     *
-     * @implSpec
+     * <p>
      * This method simply performs {@code in.mark(readlimit)}.
      *
      * @param   readlimit   the maximum limit of bytes that can be read before
@@ -203,7 +195,6 @@ public class FilterInputStream extends InputStream {
      * @see     java.io.FilterInputStream#in
      * @see     java.io.FilterInputStream#reset()
      */
-    @Override
     public synchronized void mark(int readlimit) {
         in.mark(readlimit);
     }
@@ -211,6 +202,9 @@ public class FilterInputStream extends InputStream {
     /**
      * Repositions this stream to the position at the time the
      * {@code mark} method was last called on this input stream.
+     * <p>
+     * This method
+     * simply performs {@code in.reset()}.
      * <p>
      * Stream marks are intended to be used in
      * situations where you need to read ahead a little to see what's in
@@ -221,15 +215,11 @@ public class FilterInputStream extends InputStream {
      * If this happens within readlimit bytes, it allows the outer
      * code to reset the stream and try another parser.
      *
-     * @implSpec
-     * This method simply performs {@code in.reset()}.
-     *
      * @throws     IOException  if the stream has not been marked or if the
      *               mark has been invalidated.
      * @see        java.io.FilterInputStream#in
      * @see        java.io.FilterInputStream#mark(int)
      */
-    @Override
     public synchronized void reset() throws IOException {
         in.reset();
     }
@@ -237,9 +227,8 @@ public class FilterInputStream extends InputStream {
     /**
      * Tests if this input stream supports the {@code mark}
      * and {@code reset} methods.
-     *
-     * @implSpec
-     * This method simply performs {@code in.markSupported()}.
+     * This method
+     * simply performs {@code in.markSupported()}.
      *
      * @return  {@code true} if this stream type supports the
      *          {@code mark} and {@code reset} method;
@@ -248,7 +237,6 @@ public class FilterInputStream extends InputStream {
      * @see     java.io.InputStream#mark(int)
      * @see     java.io.InputStream#reset()
      */
-    @Override
     public boolean markSupported() {
         return in.markSupported();
     }

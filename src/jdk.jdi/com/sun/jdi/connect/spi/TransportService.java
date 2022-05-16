@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -101,7 +101,7 @@ public abstract class TransportService {
     /**
      * The transport service capabilities.
      */
-    public abstract static class Capabilities {
+    public static abstract class Capabilities {
         /**
          * Constructor for subclasses to call.
          */
@@ -236,7 +236,7 @@ public abstract class TransportService {
      * #stopListening stopListening} to stop the transport
      * service from listening on an address.
      */
-    public abstract static class ListenKey {
+    public static abstract class ListenKey {
         /**
          * Constructor for subclasses to call.
          */

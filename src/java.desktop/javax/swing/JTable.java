@@ -6579,7 +6579,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * A <code>Printable</code> implementation that wraps another
      * <code>Printable</code>, making it safe for printing on another thread.
      */
-    private static class ThreadSafePrintable implements Printable {
+    private class ThreadSafePrintable implements Printable {
 
         /** The delegate <code>Printable</code>. */
         private Printable printDelegate;
@@ -6756,35 +6756,39 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             Object newValue = e.getNewValue();
 
                 // re-set tableModel listeners
-            if (name.equals("model")) {
+            if (name.compareTo("model") == 0) {
 
-                if (oldValue instanceof TableModel oldModel) {
-                    oldModel.removeTableModelListener(this);
+                if (oldValue != null && oldValue instanceof TableModel) {
+                    ((TableModel) oldValue).removeTableModelListener(this);
                 }
-                if (newValue instanceof TableModel newModel) {
-                    newModel.addTableModelListener(this);
+                if (newValue != null && newValue instanceof TableModel) {
+                    ((TableModel) newValue).addTableModelListener(this);
                 }
 
                 // re-set selectionModel listeners
-            } else if (name.equals("selectionModel")) {
+            } else if (name.compareTo("selectionModel") == 0) {
 
                 Object source = e.getSource();
                 if (source == JTable.this) {    // row selection model
 
-                    if (oldValue instanceof ListSelectionModel oldModel) {
-                        oldModel.removeListSelectionListener(this);
+                    if (oldValue != null &&
+                        oldValue instanceof ListSelectionModel) {
+                        ((ListSelectionModel) oldValue).removeListSelectionListener(this);
                     }
-                    if (newValue instanceof ListSelectionModel newModel) {
-                        newModel.addListSelectionListener(this);
+                    if (newValue != null &&
+                        newValue instanceof ListSelectionModel) {
+                        ((ListSelectionModel) newValue).addListSelectionListener(this);
                     }
 
                 } else if (source == JTable.this.getColumnModel()) {
 
-                    if (oldValue instanceof ListSelectionModel oldModel) {
-                        oldModel.removeListSelectionListener(this);
+                    if (oldValue != null &&
+                        oldValue instanceof ListSelectionModel) {
+                        ((ListSelectionModel) oldValue).removeListSelectionListener(this);
                     }
-                    if (newValue instanceof ListSelectionModel newModel) {
-                        newModel.addListSelectionListener(this);
+                    if (newValue != null &&
+                        newValue instanceof ListSelectionModel) {
+                        ((ListSelectionModel) newValue).addListSelectionListener(this);
                     }
 
                 } else {
@@ -6793,25 +6797,27 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
                 // re-set columnModel listeners
                 // and column's selection property listener as well
-            } else if (name.equals("columnModel")) {
+            } else if (name.compareTo("columnModel") == 0) {
 
-                if (oldValue instanceof TableColumnModel tcm) {
+                if (oldValue != null && oldValue instanceof TableColumnModel) {
+                    TableColumnModel tcm = (TableColumnModel) oldValue;
                     tcm.removeColumnModelListener(this);
                     tcm.getSelectionModel().removeListSelectionListener(this);
                 }
-                if (newValue instanceof TableColumnModel tcm) {
+                if (newValue != null && newValue instanceof TableColumnModel) {
+                    TableColumnModel tcm = (TableColumnModel) newValue;
                     tcm.addColumnModelListener(this);
                     tcm.getSelectionModel().addListSelectionListener(this);
                 }
 
                 // re-se cellEditor listeners
-            } else if (name.equals("tableCellEditor")) {
+            } else if (name.compareTo("tableCellEditor") == 0) {
 
-                if (oldValue instanceof TableCellEditor oldEditor) {
-                    oldEditor.removeCellEditorListener(this);
+                if (oldValue != null && oldValue instanceof TableCellEditor) {
+                    ((TableCellEditor) oldValue).removeCellEditorListener(this);
                 }
-                if (newValue instanceof TableCellEditor newEditor) {
-                    newEditor.addCellEditorListener(this);
+                if (newValue != null && newValue instanceof TableCellEditor) {
+                    ((TableCellEditor) newValue).addCellEditorListener(this);
                 }
             }
         }

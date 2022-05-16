@@ -135,7 +135,7 @@ public final class FaxTIFFTagSet extends TIFFTagSet {
      *
      * @return a {@code FaxTIFFTagSet} instance.
      */
-    public static synchronized FaxTIFFTagSet getInstance() {
+    public synchronized static FaxTIFFTagSet getInstance() {
         if (theInstance == null) {
             initTags();
             theInstance = new FaxTIFFTagSet();

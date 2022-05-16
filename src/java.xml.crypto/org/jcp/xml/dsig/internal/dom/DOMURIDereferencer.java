@@ -21,7 +21,7 @@
  * under the License.
  */
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2016, Oracle and/or its affiliates. All rights reserved.
  */
 package org.jcp.xml.dsig.internal.dom;
 
@@ -101,9 +101,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
             if (id.startsWith("xpointer(id(")) {
                 int i1 = id.indexOf('\'');
                 int i2 = id.indexOf('\'', i1+1);
-                if (i1 >= 0 && i2 >= 0) {
-                    id = id.substring(i1 + 1, i2);
-                }
+                id = id.substring(i1+1, i2);
             }
 
             // check if element is registered by Id
@@ -140,7 +138,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
         }
 
         try {
-            ResourceResolverContext resContext = new ResourceResolverContext(uriAttr, baseURI, secVal);
+            ResourceResolverContext resContext = new ResourceResolverContext(uriAttr, baseURI, false);
             XMLSignatureInput in = ResourceResolver.resolve(resContext);
             if (in.isOctetStream()) {
                 return new ApacheOctetStreamData(in);

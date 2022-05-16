@@ -29,11 +29,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Class {@code MimeType} encapsulates a Multipurpose Internet Mail Extensions
@@ -141,9 +141,10 @@ class MimeType implements Serializable, Cloneable {
             throw new UnsupportedOperationException();
         }
         public boolean equals(Object o) {
-            return o instanceof Map.Entry<?, ?> entry &&
-                    getKey().equals(entry.getKey()) &&
-                    getValue().equals(entry.getValue());
+            return (o != null &&
+                    o instanceof Map.Entry &&
+                    getKey().equals (((Map.Entry) o).getKey()) &&
+                    getValue().equals(((Map.Entry) o).getValue()));
         }
         public int hashCode() {
             return getKey().hashCode() ^ getValue().hashCode();
@@ -289,8 +290,9 @@ class MimeType implements Serializable, Cloneable {
      *         {@code false} otherwise
      */
     public boolean equals (Object obj) {
-        return obj instanceof MimeType mimeType &&
-                getStringValue().equals(mimeType.getStringValue());
+        return(obj != null &&
+               obj instanceof MimeType &&
+               getStringValue().equals(((MimeType) obj).getStringValue()));
     }
 
     /**
@@ -569,7 +571,8 @@ class MimeType implements Serializable, Cloneable {
             throw new NullPointerException();
         }
         LexicalAnalyzer theLexer = new LexicalAnalyzer (s);
-        ArrayList<String> thePieces = new ArrayList<>();
+        int theLexemeType;
+        Vector<String> thePieces = new Vector<>();
         boolean mediaTypeIsText = false;
         boolean parameterNameIsCharset = false;
 

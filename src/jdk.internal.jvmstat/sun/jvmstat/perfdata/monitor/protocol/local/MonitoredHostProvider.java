@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -170,7 +170,8 @@ public class MonitoredHostProvider extends MonitoredHost {
             registered = (ArrayList)listeners.clone();
         }
 
-        for (HostListener l : registered) {
+        for (Iterator<HostListener> i = registered.iterator(); i.hasNext(); /* empty */) {
+            HostListener l = i.next();
             if (ev == null) {
                 ev = new VmStatusChangeEvent(this, active, started, terminated);
             }
@@ -197,14 +198,17 @@ public class MonitoredHostProvider extends MonitoredHost {
             Set<Integer> startedVms = new HashSet<>();
             Set<Integer> terminatedVms = new HashSet<>();
 
-            for (Integer vmid : activeVms) {
+            for (Iterator<Integer> i = activeVms.iterator(); i.hasNext(); /* empty */) {
+                Integer vmid = i.next();
                 if (!lastActiveVms.contains(vmid)) {
                     // a new file has been detected, add to set
                     startedVms.add(vmid);
                 }
             }
 
-            for (Integer o : lastActiveVms) {
+            for (Iterator<Integer> i = lastActiveVms.iterator(); i.hasNext();
+                    /* empty */) {
+                Integer o = i.next();
                 if (!activeVms.contains(o)) {
                     // JVM has terminated, remove it from the active list
                     terminatedVms.add(o);

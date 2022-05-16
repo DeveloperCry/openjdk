@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,8 @@
  */
 
 package sun.tools.jstat;
+
+import java.util.*;
 
 /**
  * A class to represent the format for a column of data.
@@ -154,8 +156,9 @@ public class ColumnFormat extends OptionFormat {
                 + ";scale=" + scale.toString() + ";align=" + align.toString()
                 + ";required=" + required);
 
-        for (OptionFormat of : children) {
-            of.printFormat(indentLevel + 1);
+        for (Iterator<OptionFormat> i = children.iterator();  i.hasNext(); /* empty */) {
+            OptionFormat of = i.next();
+            of.printFormat(indentLevel+1);
         }
 
         System.out.println(indent + "}");

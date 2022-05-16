@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,10 +24,9 @@
  */
 package javax.xml.catalog;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * The Normalizer is responsible for normalizing Public and System Identifiers
@@ -94,9 +93,13 @@ class Normalizer {
     static String encodeURN(String publicId) {
         String urn = normalizePublicId(publicId);
 
-        urn = URLEncoder.encode(urn, UTF_8);
-        urn = urn.replace("::", ";");
-        urn = urn.replace("//", ":");
+        try {
+            urn = URLEncoder.encode(urn, "UTF-8");
+            urn = urn.replace("::", ";");
+            urn = urn.replace("//", ":");
+        } catch (UnsupportedEncodingException ex) {
+            CatalogMessages.reportRunTimeError(CatalogMessages.ERR_OTHER, ex);
+        }
         return Util.URN + urn;
     }
 
@@ -116,9 +119,13 @@ class Normalizer {
         } else {
             return urn;
         }
-        publicId = publicId.replace(":", "//");
-        publicId = publicId.replace(";", "::");
-        publicId = URLDecoder.decode(publicId, UTF_8);
+        try {
+            publicId = publicId.replace(":", "//");
+            publicId = publicId.replace(";", "::");
+            publicId = URLDecoder.decode(publicId, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            CatalogMessages.reportRunTimeError(CatalogMessages.ERR_OTHER, ex);
+        }
 
         return publicId;
     }
@@ -134,8 +141,14 @@ class Normalizer {
             return null;
         }
 
+        byte[] bytes;
         uriref = uriref.trim();
-        byte[] bytes = uriref.getBytes(UTF_8);
+        try {
+            bytes = uriref.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            // this can't happen
+            return uriref;
+        }
 
         StringBuilder newRef = new StringBuilder(bytes.length);
         for (int count = 0; count < bytes.length; count++) {

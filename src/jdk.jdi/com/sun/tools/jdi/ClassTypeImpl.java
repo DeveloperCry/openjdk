@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -42,11 +42,11 @@ import com.sun.jdi.ThreadReference;
 import com.sun.jdi.Value;
 import com.sun.jdi.VirtualMachine;
 
-public final class ClassTypeImpl extends InvokableTypeImpl
+final public class ClassTypeImpl extends InvokableTypeImpl
                                  implements ClassType
 {
     private static class IResult implements InvocationResult {
-        private final JDWP.ClassType.InvokeMethod rslt;
+        final private JDWP.ClassType.InvokeMethod rslt;
 
         public IResult(JDWP.ClassType.InvokeMethod rslt) {
             this.rslt = rslt;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -314,7 +314,9 @@ public class ThreadReferenceImpl extends ObjectReferenceImpl
             StackFrame frame = frame(0);
             Location location = frame.location();
             List<BreakpointRequest> requests = vm.eventRequestManager().breakpointRequests();
-            for (BreakpointRequest request : requests) {
+            Iterator<BreakpointRequest> iter = requests.iterator();
+            while (iter.hasNext()) {
+                BreakpointRequest request = iter.next();
                 if (location.equals(request.location())) {
                     return true;
                 }
@@ -407,7 +409,7 @@ public class ThreadReferenceImpl extends ObjectReferenceImpl
      * Private version of frames() allows "-1" to specify all
      * remaining frames.
      */
-    private synchronized List<StackFrame> privateFrames(int start, int length)
+    synchronized private List<StackFrame> privateFrames(int start, int length)
                               throws IncompatibleThreadStateException  {
 
         // Lock must be held while creating stack frames so if that two threads

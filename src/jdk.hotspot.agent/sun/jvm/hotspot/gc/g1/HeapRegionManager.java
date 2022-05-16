@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,7 +41,7 @@ import sun.jvm.hotspot.types.TypeDataBase;
 
 public class HeapRegionManager extends VMObject {
     // G1HeapRegionTable _regions
-    private static long regionsFieldOffset;
+    static private long regionsFieldOffset;
 
     static {
         VM.registerVMInitializedObserver(new Observer() {
@@ -51,7 +51,7 @@ public class HeapRegionManager extends VMObject {
             });
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("HeapRegionManager");
 
         regionsFieldOffset = type.getField("_regions").getOffset();

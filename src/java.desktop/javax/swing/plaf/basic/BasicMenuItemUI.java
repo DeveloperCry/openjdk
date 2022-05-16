@@ -45,7 +45,6 @@ import sun.swing.*;
  * @author Arnaud Weber
  * @author Fredrik Lagerblad
  */
-@SuppressWarnings("doclint:missing")
 public class BasicMenuItemUI extends MenuItemUI
 {
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -126,8 +126,8 @@ public class ReplicateScaleFilter extends ImageFilter {
         String key = "rescale";
         String val = destWidth + "x" + destHeight;
         Object o = p.get(key);
-        if (o instanceof String s) {
-            val = s + ", " + val;
+        if (o != null && o instanceof String) {
+            val = ((String) o) + ", " + val;
         }
         p.put(key, val);
         super.setProperties(p);
@@ -194,8 +194,8 @@ public class ReplicateScaleFilter extends ImageFilter {
         int dx1 = (2 * x * destWidth + srcWidth - 1) / (2 * srcWidth);
         int dy1 = (2 * y * destHeight + srcHeight - 1) / (2 * srcHeight);
         byte[] outpix;
-        if (outpixbuf instanceof byte[] outbytes) {
-            outpix = outbytes;
+        if (outpixbuf != null && outpixbuf instanceof byte[]) {
+            outpix = (byte[]) outpixbuf;
         } else {
             outpix = new byte[destWidth];
             outpixbuf = outpix;
@@ -235,8 +235,8 @@ public class ReplicateScaleFilter extends ImageFilter {
         int dx1 = (2 * x * destWidth + srcWidth - 1) / (2 * srcWidth);
         int dy1 = (2 * y * destHeight + srcHeight - 1) / (2 * srcHeight);
         int[] outpix;
-        if (outpixbuf instanceof int[] outints) {
-            outpix = outints;
+        if (outpixbuf != null && outpixbuf instanceof int[]) {
+            outpix = (int[]) outpixbuf;
         } else {
             outpix = new int[destWidth];
             outpixbuf = outpix;

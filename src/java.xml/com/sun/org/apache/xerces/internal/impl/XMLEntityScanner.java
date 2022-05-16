@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
  */
 
 /*
@@ -57,7 +57,7 @@ import java.util.Locale;
  * @author Arnaud  Le Hors, IBM
  * @author K.Venugopal Sun Microsystems
  *
- * @LastModified: Mar 2022
+ * @LastModified: Sep 2021
  */
 public class XMLEntityScanner implements XMLLocator  {
 
@@ -2162,7 +2162,7 @@ public class XMLEntityScanner implements XMLLocator  {
                             break;
                         }
                     }
-                    if (c == '\r' && isExternal) {
+                    if (c == '\r') {
                         int cc = fCurrentEntity.ch[fCurrentEntity.position];
                         if (cc == '\n' || (version == XML_VERSION_1_1 && cc == 0x85)) {
                             fCurrentEntity.position++;

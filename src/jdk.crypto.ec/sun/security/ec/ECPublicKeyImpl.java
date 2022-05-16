@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,10 +46,7 @@ public final class ECPublicKeyImpl extends X509Key implements ECPublicKey {
 
     private static final long serialVersionUID = -2462037275160462289L;
 
-    @SuppressWarnings("serial") // Type of field is not
-                                // Serializable;see writeReplace
     private ECPoint w;
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private ECParameterSpec params;
 
     /**

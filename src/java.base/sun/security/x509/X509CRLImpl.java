@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -820,7 +820,13 @@ public class X509CRLImpl extends X509CRL implements DerEncoder {
      *         null if no parameters are present.
      */
     public byte[] getSigAlgParams() {
-        return sigAlgId == null ? null : sigAlgId.getEncodedParams();
+        if (sigAlgId == null)
+            return null;
+        try {
+            return sigAlgId.getEncodedParams();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1024,7 +1024,10 @@ class SynthParser extends DefaultHandler {
                                                        painter,
                                                        direction);
 
-        for (ParsedSynthStyle.PainterInfo info: painters) {
+        for (Object infoObject: painters) {
+            ParsedSynthStyle.PainterInfo info;
+            info = (ParsedSynthStyle.PainterInfo) infoObject;
+
             if (painterInfo.equalsPainter(info)) {
                 info.addPainter(painter);
                 return;

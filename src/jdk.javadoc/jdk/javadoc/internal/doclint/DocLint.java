@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -287,6 +287,7 @@ public class DocLint extends com.sun.tools.doclint.DocLint {
                 void visitDecl(Tree tree, Name name) {
                     TreePath p = getCurrentPath();
                     DocCommentTree dc = env.trees.getDocCommentTree(p);
+
                     checker.scan(dc, p);
                 }
             };
@@ -378,7 +379,7 @@ public class DocLint extends com.sun.tools.doclint.DocLint {
 
     // <editor-fold defaultstate="collapsed" desc="DeclScanner">
 
-    abstract static class DeclScanner extends TreePathScanner<Void, Void> {
+    static abstract class DeclScanner extends TreePathScanner<Void, Void> {
         final Env env;
 
         public DeclScanner(Env env) {

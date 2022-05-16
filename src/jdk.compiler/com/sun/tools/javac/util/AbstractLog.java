@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,7 +50,7 @@ import com.sun.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 public abstract class AbstractLog {
     /** Factory for diagnostics
      */
-    public final JCDiagnostic.Factory diags;
+    protected JCDiagnostic.Factory diags;
 
     /** The file that's currently being translated.
      */

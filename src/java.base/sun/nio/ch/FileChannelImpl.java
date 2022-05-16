@@ -888,7 +888,7 @@ public class FileChannelImpl
 
     // -- Memory-mapped buffers --
 
-    private abstract static class Unmapper
+    private static abstract class Unmapper
         implements Runnable, UnmapperProxy
     {
         // may be required to close file

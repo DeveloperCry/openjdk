@@ -82,6 +82,7 @@ import java.net.URL;
 import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
@@ -127,7 +128,7 @@ public abstract class SunToolkit extends Toolkit
         if (AccessController.doPrivileged(new GetBooleanAction("sun.awt.nativedebug"))) {
             DebugSettings.init();
         }
-        touchKeyboardAutoShowIsEnabled = Boolean.parseBoolean(
+        touchKeyboardAutoShowIsEnabled = Boolean.valueOf(
             GetPropertyAction.privilegedGetProperty(
                 "awt.touchKeyboardAutoShowIsEnabled", "true"));
     };
@@ -945,12 +946,13 @@ public abstract class SunToolkit extends Toolkit
         int bestHeight = 0;
         double bestSimilarity = 3; //Impossibly high value
         double bestScaleFactor = 0;
-        for (Image im : multiResAndnormalImages) {
+        for (Iterator<Image> i = multiResAndnormalImages.iterator();i.hasNext();) {
             //Iterate imageList looking for best matching image.
             //'Similarity' measure is defined as good scale factor and small insets.
             //best possible similarity is 0 (no scale, no insets).
             //It's found while the experiments that good-looking result is achieved
             //with scale factors x1, x3/4, x2/3, xN, x1/N.
+            Image im = i.next();
             if (im == null) {
                 continue;
             }
@@ -1767,7 +1769,8 @@ public abstract class SunToolkit extends Toolkit
                          new GetPropertyAction("awt.useSystemAAFontSettings"));
             }
             if (systemAAFonts != null) {
-                useSystemAAFontSettings = Boolean.parseBoolean(systemAAFonts);
+                useSystemAAFontSettings =
+                    Boolean.valueOf(systemAAFonts).booleanValue();
                 /* If it is anything other than "true", then it may be
                  * a hint name , or it may be "off, "default", etc.
                  */
@@ -1802,8 +1805,8 @@ public abstract class SunToolkit extends Toolkit
         if (useSystemAAFontSettings()) {
              Toolkit tk = Toolkit.getDefaultToolkit();
              if (tk instanceof SunToolkit) {
-                 RenderingHints map = ((SunToolkit)tk).getDesktopAAHints();
-                 return map;
+                 Object map = ((SunToolkit)tk).getDesktopAAHints();
+                 return (RenderingHints)map;
              } else { /* Headless Toolkit */
                  return null;
              }

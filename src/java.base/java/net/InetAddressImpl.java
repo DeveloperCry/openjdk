@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2005, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,10 +24,7 @@
  */
 
 package java.net;
-
 import java.io.IOException;
-import java.net.spi.InetAddressResolver.LookupPolicy;
-
 /*
  * Package private interface to "implementation" used by
  * {@link InetAddress}.
@@ -37,11 +34,11 @@ import java.net.spi.InetAddressResolver.LookupPolicy;
  *
  * @since 1.4
  */
-sealed interface InetAddressImpl permits Inet4AddressImpl, Inet6AddressImpl {
+interface InetAddressImpl {
 
     String getLocalHostName() throws UnknownHostException;
     InetAddress[]
-        lookupAllHostAddr(String hostname, LookupPolicy lookupPolicy) throws UnknownHostException;
+        lookupAllHostAddr(String hostname) throws UnknownHostException;
     String getHostByAddr(byte[] addr) throws UnknownHostException;
 
     InetAddress anyLocalAddress();

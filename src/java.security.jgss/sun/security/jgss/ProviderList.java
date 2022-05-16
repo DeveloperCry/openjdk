@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -160,7 +160,7 @@ public final class ProviderList {
     }
 
     // So the existing code do not have to be changed
-    public synchronized MechanismFactory getMechFactory(Oid mechOid)
+    synchronized public MechanismFactory getMechFactory(Oid mechOid)
         throws GSSException {
         if (mechOid == null) mechOid = ProviderList.DEFAULT_MECH_OID;
         return getMechFactory(mechOid, null);
@@ -177,7 +177,7 @@ public final class ProviderList {
      * support the desired mechanism, or when no provider supports
      * the desired mechanism.
      */
-    public synchronized MechanismFactory getMechFactory(Oid mechOid,
+    synchronized public MechanismFactory getMechFactory(Oid mechOid,
                                                         Provider p)
         throws GSSException {
 
@@ -335,7 +335,7 @@ public final class ProviderList {
         return mechs.toArray(new Oid[] {});
     }
 
-    public synchronized void addProviderAtFront(Provider p, Oid mechOid)
+    synchronized public void addProviderAtFront(Provider p, Oid mechOid)
         throws GSSException {
 
         PreferencesEntry newEntry = new PreferencesEntry(p, mechOid);
@@ -367,7 +367,7 @@ public final class ProviderList {
         }
     }
 
-    public synchronized void addProviderAtEnd(Provider p, Oid mechOid)
+    synchronized public void addProviderAtEnd(Provider p, Oid mechOid)
         throws GSSException {
 
         PreferencesEntry newEntry = new PreferencesEntry(p, mechOid);

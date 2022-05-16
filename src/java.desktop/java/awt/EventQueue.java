@@ -94,6 +94,7 @@ import jdk.internal.access.JavaSecurityAccess;
  *
  * @since       1.1
  */
+@SuppressWarnings("removal")
 public class EventQueue {
     private static final AtomicInteger threadInitNumber = new AtomicInteger();
 
@@ -191,6 +192,8 @@ public class EventQueue {
         return eventLog;
     }
 
+    private static boolean fxAppThreadIsDispatchThread;
+
     static {
         AWTAccessor.setEventQueueAccessor(
             new AWTAccessor.EventQueueAccessor() {
@@ -227,15 +230,14 @@ public class EventQueue {
                     return eventQueue.getMostRecentEventTimeImpl();
                 }
             });
+        AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                fxAppThreadIsDispatchThread =
+                        "true".equals(System.getProperty("javafx.embed.singleThread"));
+                return null;
+            }
+        });
     }
-
-    @SuppressWarnings("removal")
-    private static boolean fxAppThreadIsDispatchThread =
-            AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-                public Boolean run() {
-                    return "true".equals(System.getProperty("javafx.embed.singleThread"));
-                }
-            });
 
     /**
      * Initializes a new instance of {@code EventQueue}.
@@ -732,11 +734,8 @@ public class EventQueue {
             }
         };
 
-        @SuppressWarnings("removal")
         final AccessControlContext stack = AccessController.getContext();
-        @SuppressWarnings("removal")
         final AccessControlContext srcAcc = getAccessControlContextFrom(src);
-        @SuppressWarnings("removal")
         final AccessControlContext eventAcc = event.getAccessControlContext();
         if (srcAcc == null) {
             javaSecurityAccess.doIntersectionPrivilege(action, stack, eventAcc);
@@ -751,7 +750,6 @@ public class EventQueue {
         }
     }
 
-    @SuppressWarnings("removal")
     private static AccessControlContext getAccessControlContextFrom(Object src) {
         return src instanceof Component ?
             ((Component)src).getAccessControlContext() :

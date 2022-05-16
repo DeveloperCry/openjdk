@@ -38,7 +38,6 @@ public class SimpleInputMethodWindow
         extends Frame
         implements InputMethodWindow {
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     InputContext inputContext = null;
 
     /**

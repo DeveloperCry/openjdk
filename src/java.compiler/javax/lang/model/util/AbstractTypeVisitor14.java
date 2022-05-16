@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,7 +47,7 @@ import static javax.lang.model.SourceVersion.*;
  * @see AbstractTypeVisitor9
  * @since 14
  */
-@SupportedSourceVersion(RELEASE_18)
+@SupportedSourceVersion(RELEASE_17)
 public abstract class AbstractTypeVisitor14<R, P> extends AbstractTypeVisitor9<R, P> {
     /**
      * Constructor for concrete subclasses to call.

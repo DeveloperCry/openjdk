@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -197,8 +197,8 @@ public class BasicSpinnerUI extends SpinnerUI
             spinner.addChangeListener(getHandler());
         }
         JComponent editor = spinner.getEditor();
-        if (editor instanceof JSpinner.DefaultEditor defaultEditor) {
-            JTextField tf = defaultEditor.getTextField();
+        if (editor != null && editor instanceof JSpinner.DefaultEditor) {
+            JTextField tf = ((JSpinner.DefaultEditor)editor).getTextField();
             if (tf != null) {
                 tf.addFocusListener(nextButtonHandler);
                 tf.addFocusListener(previousButtonHandler);

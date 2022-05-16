@@ -495,7 +495,7 @@ public class NimbusLookAndFeel extends SynthLookAndFeel {
     /**
      * Simple Symbolic Link style UIDefalts Property
      */
-    private static class LinkProperty implements UIDefaults.ActiveValue, UIResource{
+    private class LinkProperty implements UIDefaults.ActiveValue, UIResource{
         private String dstPropName;
 
         private LinkProperty(String dstPropName) {

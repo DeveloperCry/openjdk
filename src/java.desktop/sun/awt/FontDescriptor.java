@@ -22,17 +22,14 @@
  *
  *
  */
-
 package sun.awt;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-
-import static java.nio.charset.StandardCharsets.UTF_16BE;
-import static java.nio.charset.StandardCharsets.UTF_16LE;
+import java.nio.charset.StandardCharsets;
 
 public class FontDescriptor implements Cloneable {
 
@@ -112,8 +109,9 @@ public class FontDescriptor implements Cloneable {
     public boolean useUnicode() {
         if (useUnicode && unicodeEncoder == null) {
             try {
-                this.unicodeEncoder = isLE ? UTF_16LE.newEncoder():
-                                             UTF_16BE.newEncoder();
+                this.unicodeEncoder = isLE?
+                    StandardCharsets.UTF_16LE.newEncoder():
+                    StandardCharsets.UTF_16BE.newEncoder();
             } catch (IllegalArgumentException x) {}
         }
         return useUnicode;

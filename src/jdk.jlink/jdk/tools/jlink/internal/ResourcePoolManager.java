@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,7 +54,7 @@ public class ResourcePoolManager {
     static Attributes readModuleAttributes(ResourcePoolModule mod) {
         String p = "/" + mod.name() + "/module-info.class";
         Optional<ResourcePoolEntry> content = mod.findEntry(p);
-        if (content.isEmpty()) {
+        if (!content.isPresent()) {
               throw new PluginException("module-info.class not found for " +
                   mod.name() + " module");
         }
@@ -74,7 +74,7 @@ public class ResourcePoolManager {
                 Resources.canEncapsulate(path);
     }
 
-    static class ResourcePoolModuleImpl implements ResourcePoolModule {
+    class ResourcePoolModuleImpl implements ResourcePoolModule {
 
         final Map<String, ResourcePoolEntry> moduleContent = new LinkedHashMap<>();
         // lazily initialized

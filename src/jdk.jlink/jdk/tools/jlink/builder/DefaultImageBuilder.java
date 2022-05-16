@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -86,9 +86,8 @@ public final class DefaultImageBuilder implements ImageBuilder {
         private final Path home;
         private final List<String> args;
         private final Set<String> modules;
-        private final Platform platform;
 
-        DefaultExecutableImage(Path home, Set<String> modules, Platform p) {
+        DefaultExecutableImage(Path home, Set<String> modules) {
             Objects.requireNonNull(home);
             if (!Files.exists(home)) {
                 throw new IllegalArgumentException("Invalid image home");
@@ -96,7 +95,6 @@ public final class DefaultImageBuilder implements ImageBuilder {
             this.home = home;
             this.modules = Collections.unmodifiableSet(modules);
             this.args = createArgs(home);
-            this.platform = p;
         }
 
         private static List<String> createArgs(Path home) {
@@ -129,18 +127,13 @@ public final class DefaultImageBuilder implements ImageBuilder {
                 throw new UncheckedIOException(ex);
             }
         }
-
-        @Override
-        public Platform getTargetPlatform() {
-            return platform;
-        }
     }
 
     private final Path root;
     private final Map<String, String> launchers;
     private final Path mdir;
     private final Set<String> modules = new HashSet<>();
-    private Platform platform;
+    private Platform targetPlatform;
 
     /**
      * Default image builder constructor.
@@ -156,11 +149,6 @@ public final class DefaultImageBuilder implements ImageBuilder {
     }
 
     @Override
-    public Platform getTargetPlatform() {
-        return platform;
-    }
-
-    @Override
     public void storeFiles(ResourcePool files) {
         try {
             String value = files.moduleView()
@@ -170,7 +158,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
             if (value == null) {
                 throw new PluginException("ModuleTarget attribute is missing for java.base module");
             }
-            this.platform = Platform.parsePlatform(value);
+            this.targetPlatform = Platform.toPlatform(value);
 
             checkResourcePool(files);
 
@@ -281,7 +269,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
             if (mainClassName == null) {
                 String path = "/" + module + "/module-info.class";
                 Optional<ResourcePoolEntry> res = imageContent.findEntry(path);
-                if (res.isEmpty()) {
+                if (!res.isPresent()) {
                     throw new IOException("module-info.class not found for " + module + " module");
                 }
                 ByteArrayInputStream stream = new ByteArrayInputStream(res.get().contentBytes());
@@ -293,8 +281,8 @@ public final class DefaultImageBuilder implements ImageBuilder {
 
             if (mainClassName != null) {
                 // make sure main class exists!
-                if (imageContent.findEntry("/" + module + "/" +
-                        mainClassName.replace('.', '/') + ".class").isEmpty()) {
+                if (!imageContent.findEntry("/" + module + "/" +
+                        mainClassName.replace('.', '/') + ".class").isPresent()) {
                     throw new IllegalArgumentException(module + " does not have main class: " + mainClassName);
                 }
 
@@ -486,7 +474,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
     }
 
     private boolean isWindows() {
-        return platform.os() == Platform.OperatingSystem.WINDOWS;
+        return targetPlatform == Platform.WINDOWS;
     }
 
     /**
@@ -521,7 +509,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
 
     @Override
     public ExecutableImage getExecutableImage() {
-        return new DefaultExecutableImage(root, modules, platform);
+        return new DefaultExecutableImage(root, modules);
     }
 
     // This is experimental, we should get rid-off the scripts in a near future
@@ -563,10 +551,7 @@ public final class DefaultImageBuilder implements ImageBuilder {
         Path binDir = root.resolve(BIN_DIRNAME);
         if (Files.exists(binDir.resolve("java")) ||
             Files.exists(binDir.resolve("java.exe"))) {
-            // It may be possible to extract the platform info from the given image.
-            // --post-process-path is a hidden option and pass unknown platform for now.
-            // --generate-cds-archive plugin cannot be used with --post-process-path option.
-            return new DefaultExecutableImage(root, retrieveModules(root), Platform.UNKNOWN);
+            return new DefaultExecutableImage(root, retrieveModules(root));
         }
         return null;
     }

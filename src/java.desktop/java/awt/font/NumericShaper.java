@@ -119,20 +119,21 @@ import jdk.internal.access.SharedSecrets;
  * <tbody>
  *   <tr>
  *     <th scope="rowgroup" rowspan="2">Arabic
- *     <th scope="row">{@link NumericShaper#ARABIC NumericShaper.ARABIC}
+ *     <td>{@link NumericShaper#ARABIC NumericShaper.ARABIC}
  *     <br>
  *     {@link NumericShaper#EASTERN_ARABIC NumericShaper.EASTERN_ARABIC}
  *     <td>{@link NumericShaper#EASTERN_ARABIC NumericShaper.EASTERN_ARABIC}
+ *   </tr>
  *   <tr>
- *     <th scope="row">{@link NumericShaper.Range#ARABIC}
+ *     <td>{@link NumericShaper.Range#ARABIC}
  *     <br>
  *     {@link NumericShaper.Range#EASTERN_ARABIC}
  *     <td>{@link NumericShaper.Range#EASTERN_ARABIC}
  * </tbody>
  * <tbody>
  *   <tr>
- *     <th scope="rowgroup">Tai Tham
- *     <th scope="row">{@link NumericShaper.Range#TAI_THAM_HORA}
+ *     <th scope="row">Tai Tham
+ *     <td>{@link NumericShaper.Range#TAI_THAM_HORA}
  *     <br>
  *     {@link NumericShaper.Range#TAI_THAM_THAM}
  *     <td>{@link NumericShaper.Range#TAI_THAM_THAM}
@@ -1363,7 +1364,7 @@ public final class NumericShaper implements java.io.Serializable {
 
     // use a binary search with a cache
 
-    private transient volatile int stCache;
+    private transient volatile int stCache = 0;
 
     private boolean isStrongDirectional(char c) {
         int cachedIndex = stCache;

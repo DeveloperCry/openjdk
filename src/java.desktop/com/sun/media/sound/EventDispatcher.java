@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -350,7 +350,7 @@ final class EventDispatcher implements Runnable {
     /**
      * Container for an event and a set of listeners to deliver it to.
      */
-    private static class EventInfo {
+    private class EventInfo {
 
         private final Object event;
         private final Object[] listeners;
@@ -383,7 +383,7 @@ final class EventDispatcher implements Runnable {
     /**
      * Container for a clip with its expiration time.
      */
-    private static class ClipInfo {
+    private class ClipInfo {
 
         private final AutoClosingClip clip;
         private final long expiration;

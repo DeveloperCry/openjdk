@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -257,19 +257,6 @@ public abstract class HttpRequest {
         public Builder DELETE();
 
         /**
-         * Sets the request method of this builder to HEAD.
-         *
-         * @implSpec The default implementation is expected to have the same behaviour as:
-         * {@code return method("HEAD", BodyPublishers.noBody());}
-         *
-         * @return this builder
-         * @since 18
-         */
-        default Builder HEAD() {
-            return method("HEAD", BodyPublishers.noBody());
-        }
-
-        /**
          * Sets the request method and request body of this builder to the
          * given values.
          *
@@ -373,13 +360,12 @@ public abstract class HttpRequest {
         request.bodyPublisher().ifPresentOrElse(
                 // if body is present, set it
                 bodyPublisher -> builder.method(method, bodyPublisher),
-                // otherwise, the body is absent, special case for GET/DELETE/HEAD,
+                // otherwise, the body is absent, special case for GET/DELETE,
                 // or else use empty body
                 () -> {
                     switch (method) {
                         case "GET" -> builder.GET();
                         case "DELETE" -> builder.DELETE();
-                        case "HEAD" -> builder.HEAD();
                         default -> builder.method(method, HttpRequest.BodyPublishers.noBody());
                     }
                 }

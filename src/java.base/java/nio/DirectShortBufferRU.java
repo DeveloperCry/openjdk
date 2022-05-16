@@ -192,6 +192,9 @@ class DirectShortBufferRU
 
 
 
+
+
+
     // For duplicates and slices
     //
     DirectShortBufferRU(DirectBuffer db,         // package-private

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -234,28 +234,6 @@ abstract class DomainKeyStore extends KeyStoreSpi {
         }
 
         return date;
-    }
-
-    @Override
-    public Set<KeyStore.Entry.Attribute> engineGetAttributes(String alias) {
-
-        AbstractMap.SimpleEntry<String, Collection<KeyStore>> pair =
-                getKeystoresForReading(alias);
-        Set<KeyStore.Entry.Attribute> result = Collections.emptySet();
-
-        try {
-            String entryAlias = pair.getKey();
-            for (KeyStore keystore : pair.getValue()) {
-                result = keystore.getAttributes(entryAlias);
-                if (result != null) {
-                    break;
-                }
-            }
-        } catch (KeyStoreException e) {
-            throw new IllegalStateException(e);
-        }
-
-        return result;
     }
 
     /**

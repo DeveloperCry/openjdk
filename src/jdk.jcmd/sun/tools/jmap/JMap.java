@@ -28,14 +28,14 @@ package sun.tools.jmap;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 import com.sun.tools.attach.VirtualMachine;
+import com.sun.tools.attach.VirtualMachineDescriptor;
 import com.sun.tools.attach.AttachNotSupportedException;
 import sun.tools.attach.HotSpotVirtualMachine;
 import sun.tools.common.ProcessArgumentMatcher;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /*
  * This class is the main class for the JMap utility. It parses its arguments
@@ -123,7 +123,8 @@ public class JMap {
     }
 
     private static void executeCommandForPid(String pid, String command, Object ... args)
-        throws AttachNotSupportedException, IOException {
+        throws AttachNotSupportedException, IOException,
+               UnsupportedEncodingException {
         VirtualMachine vm = VirtualMachine.attach(pid);
 
         // Cast to HotSpotVirtualMachine as this is an
@@ -136,7 +137,7 @@ public class JMap {
           do {
               n = in.read(b);
               if (n > 0) {
-                  String s = new String(b, 0, n, UTF_8);
+                  String s = new String(b, 0, n, "UTF-8");
                   System.out.print(s);
               }
           } while (n > 0);
@@ -164,13 +165,15 @@ public class JMap {
     }
 
     private static void histo(String pid, String options)
-        throws AttachNotSupportedException, IOException {
+        throws AttachNotSupportedException, IOException,
+               UnsupportedEncodingException {
         String liveopt = "-all";
         String filename = null;
         String parallel = null;
         String subopts[] = options.split(",");
 
-        for (String subopt : subopts) {
+        for (int i = 0; i < subopts.length; i++) {
+            String subopt = subopts[i];
             if (subopt.equals("") || subopt.equals("all")) {
                 // pass
             } else if (subopt.equals("live")) {
@@ -182,11 +185,11 @@ public class JMap {
                     usage(1);
                 }
             } else if (subopt.startsWith("parallel=")) {
-                parallel = subopt.substring("parallel=".length());
-                if (parallel == null) {
+               parallel = subopt.substring("parallel=".length());
+               if (parallel == null) {
                     System.err.println("Fail: no number provided in option: '" + subopt + "'");
                     usage(1);
-                }
+               }
             } else {
                 System.err.println("Fail: invalid option: '" + subopt + "'");
                 usage(1);
@@ -200,14 +203,16 @@ public class JMap {
     }
 
     private static void dump(String pid, String options)
-        throws AttachNotSupportedException, IOException {
+        throws AttachNotSupportedException, IOException,
+               UnsupportedEncodingException {
 
         String subopts[] = options.split(",");
         String filename = null;
         String liveopt = "-all";
         String compress_level = null;
 
-        for (String subopt : subopts) {
+        for (int i = 0; i < subopts.length; i++) {
+            String subopt = subopts[i];
             if (subopt.equals("") || subopt.equals("all")) {
                 // pass
             } else if (subopt.equals("live")) {

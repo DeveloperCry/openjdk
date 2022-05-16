@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -415,24 +415,6 @@ final class DateTimeParseContext {
     void setParsed(ZoneId zone) {
         Objects.requireNonNull(zone, "zone");
         currentParsed().zone = zone;
-    }
-
-    /**
-     * Stores the parsed zone name type.
-     * <p>
-     * This stores the zone name type that has been parsed.
-     * The parsed type should either be;
-     * <ul>
-     *     <li>{@link DateTimeFormatterBuilder.ZoneTextPrinterParser#UNDEFINED}</li>
-     *     <li>{@link DateTimeFormatterBuilder.ZoneTextPrinterParser#STD}</li>
-     *     <li>{@link DateTimeFormatterBuilder.ZoneTextPrinterParser#DST}</li>
-     *     <li>{@link DateTimeFormatterBuilder.ZoneTextPrinterParser#GENERIC}</li>
-     * </ul>
-     *
-     * @param type  the parsed zone name type
-     */
-    void setParsedZoneNameType(int type) {
-        currentParsed().zoneNameType = type;
     }
 
     /**

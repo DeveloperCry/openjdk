@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -218,7 +218,7 @@ public class XMLEncoder extends Encoder implements AutoCloseable {
     private boolean preambleWritten = false;
     private NameGenerator nameGenerator;
 
-    private static class ValueData {
+    private class ValueData {
         public int refs = 0;
         public boolean marked = false; // Marked -> refs > 0 unless ref was a target.
         public String name = null;

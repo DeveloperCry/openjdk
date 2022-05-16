@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -184,12 +184,7 @@ public interface DocumentationTool extends Tool, OptionChecker {
         /**
          * Location to search for taglets.
          */
-        TAGLET_PATH,
-
-        /**
-         * Location to search for snippets.
-         */
-        SNIPPET_PATH;
+        TAGLET_PATH;
 
         public String getName() { return name(); }
 

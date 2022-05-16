@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -150,7 +150,7 @@ public final class EventControl {
                             String name = m.getName();
                             Name n = m.getAnnotation(Name.class);
                             if (n != null) {
-                                name = Utils.validJavaIdentifier(n.value(), name);
+                                name = n.value();
                             }
 
                             if (!hasControl(name)) {
@@ -292,7 +292,7 @@ public final class EventControl {
         }
         ActiveSettingEvent event = ActiveSettingEvent.EVENT.get();
         for (NamedControl nc : namedControls) {
-            if (Utils.isSettingVisible(nc.control, type.hasEventHook()) && type.isVisible()) {
+            if (Utils.isSettingVisible(nc.control, type.hasEventHook())) {
                 String value = nc.control.getLastValue();
                 if (value == null) {
                     value = nc.control.getDefaultValue();

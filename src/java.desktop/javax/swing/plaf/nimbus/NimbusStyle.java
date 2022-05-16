@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -462,7 +463,7 @@ public final class NimbusStyle extends SynthStyle {
 
         //now that I've collected all the runtime states, I'll sort them based
         //on their integer "state" (see SynthState for how this works).
-        runtimeStates.sort(STATE_COMPARATOR);
+        Collections.sort(runtimeStates, STATE_COMPARATOR);
 
         //finally, set the array of runtime states on the values object
         values.states = runtimeStates.toArray(new RuntimeState[runtimeStates.size()]);
@@ -1019,7 +1020,7 @@ public final class NimbusStyle extends SynthStyle {
      * fonts, painters, etc associated with some state for this
      * style.
      */
-    private static final class RuntimeState implements Cloneable {
+    private final class RuntimeState implements Cloneable {
         int state;
         Painter<Object> backgroundPainter;
         Painter<Object> foregroundPainter;

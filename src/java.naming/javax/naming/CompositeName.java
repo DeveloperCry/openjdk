@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -278,8 +278,9 @@ public class CompositeName implements Name {
       * @see #hashCode
       */
     public boolean equals(Object obj) {
-        return (obj instanceof CompositeName other) &&
-                impl.equals(other.impl);
+        return (obj != null &&
+                obj instanceof CompositeName &&
+                impl.equals(((CompositeName)obj).impl));
     }
 
     /**

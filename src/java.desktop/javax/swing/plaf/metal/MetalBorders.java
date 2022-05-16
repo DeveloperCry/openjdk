@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -47,7 +47,7 @@ import sun.swing.SwingUtilities2;
  * Factory object that can vend Borders appropriate for the metal L &amp; F.
  * @author Steve Wilson
  */
-@SuppressWarnings("doclint:missing")
+
 public class MetalBorders {
 
     /**

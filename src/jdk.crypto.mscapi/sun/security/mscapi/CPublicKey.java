@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,8 +55,7 @@ public abstract class CPublicKey extends CKey implements PublicKey {
     protected byte[] encoding = null;
 
     public static class CECPublicKey extends CPublicKey implements ECPublicKey {
-        @SuppressWarnings("serial") // Type of field is not Serializable;
-                                    // see writeReplace
+
         private ECPoint w = null;
         private static final long serialVersionUID = 12L;
 

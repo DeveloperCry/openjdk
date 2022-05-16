@@ -1143,14 +1143,9 @@ public final class Unsafe {
     }
 
     /**
-     * Ensures the given class has been initialized (see JVMS-5.5 for details).
-     * This is often needed in conjunction with obtaining the static field base
-     * of a class.
-     *
-     * The call returns when either class {@code c} is fully initialized or
-     * class {@code c} is being initialized and the call is performed from
-     * the initializing thread. In the latter case a subsequent call to
-     * {@link #shouldBeInitialized} will return {@code true}.
+     * Ensures the given class has been initialized. This is often
+     * needed in conjunction with obtaining the static field base of a
+     * class.
      */
     public void ensureClassInitialized(Class<?> c) {
         if (c == null) {
@@ -3395,10 +3390,7 @@ public final class Unsafe {
      * @since 1.8
      */
     @IntrinsicCandidate
-    public final void loadFence() {
-        // If loadFence intrinsic is not available, fall back to full fence.
-        fullFence();
-    }
+    public native void loadFence();
 
     /**
      * Ensures that loads and stores before the fence will not be reordered with
@@ -3409,13 +3401,11 @@ public final class Unsafe {
      *
      * Provides a StoreStore barrier followed by a LoadStore barrier.
      *
+     *
      * @since 1.8
      */
     @IntrinsicCandidate
-    public final void storeFence() {
-        // If storeFence intrinsic is not available, fall back to full fence.
-        fullFence();
-    }
+    public native void storeFence();
 
     /**
      * Ensures that loads and stores before the fence will not be reordered
@@ -3446,13 +3436,15 @@ public final class Unsafe {
      * Ensures that stores before the fence will not be reordered with
      * stores after the fence.
      *
+     * @implNote
+     * This method is operationally equivalent to {@link #storeFence()}.
+     *
      * @since 9
      */
-    @IntrinsicCandidate
     public final void storeStoreFence() {
-        // If storeStoreFence intrinsic is not available, fall back to storeFence.
         storeFence();
     }
+
 
     /**
      * Throws IllegalAccessError; for use by the VM for access control

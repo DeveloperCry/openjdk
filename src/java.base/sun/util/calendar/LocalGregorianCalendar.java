@@ -123,7 +123,7 @@ public class LocalGregorianCalendar extends BaseCalendar {
         public String toString() {
             String time = super.toString();
             time = time.substring(time.indexOf('T'));
-            StringBuilder sb = new StringBuilder();
+            StringBuffer sb = new StringBuffer();
             Era era = getEra();
             if (era != null) {
                 String abbr = era.getAbbreviation();

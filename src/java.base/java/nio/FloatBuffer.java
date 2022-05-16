@@ -55,12 +55,12 @@ import jdk.internal.util.ArraysSupport;
  *
  *   <li><p> Absolute and relative {@link #get(float[]) <i>bulk get</i>}
  *   methods that transfer contiguous sequences of floats from this buffer
- *   into an array;</p></li>
+ *   into an array; and</p></li>
  *
  *   <li><p> Absolute and relative {@link #put(float[]) <i>bulk put</i>}
  *   methods that transfer contiguous sequences of floats from a
- *   float array or some other float
- *   buffer into this buffer;</p></li>
+ *   float array{#if[char]?,&#32;a&#32;string,} or some other float
+ *   buffer into this buffer;{#if[!byte]?&#32;and} </p></li>
  *
 
 
@@ -91,7 +91,7 @@ import jdk.internal.util.ArraysSupport;
 
  *
  * content, by {@link #wrap(float[]) <i>wrapping</i>} an existing
- * float array  into a buffer, or by creating a
+ * float array {#if[char]?or&#32;string} into a buffer, or by creating a
  * <a href="ByteBuffer.html#views"><i>view</i></a> of an existing byte buffer.
  *
 

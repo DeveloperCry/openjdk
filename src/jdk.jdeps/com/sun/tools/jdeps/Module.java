@@ -183,7 +183,7 @@ class Module extends Archive {
         return name();
     }
 
-    public static final class Builder {
+    public final static class Builder {
         final String name;
         final ModuleDescriptor descriptor;
         final boolean isSystem;
@@ -223,10 +223,10 @@ class Module extends Archive {
                 descriptor.packages().forEach(pn -> exports.put(pn, Collections.emptySet()));
                 descriptor.packages().forEach(pn -> opens.put(pn, Collections.emptySet()));
             } else {
-                descriptor.exports()
+                descriptor.exports().stream()
                           .forEach(exp -> exports.computeIfAbsent(exp.source(), _k -> new HashSet<>())
                                                  .addAll(exp.targets()));
-                descriptor.opens()
+                descriptor.opens().stream()
                     .forEach(exp -> opens.computeIfAbsent(exp.source(), _k -> new HashSet<>())
                         .addAll(exp.targets()));
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -77,10 +77,11 @@ public class AuthCacheImpl implements AuthCache {
         }
         if (skey == null) {
             // list should contain only one element
-            return list.get(0);
+            return (AuthenticationInfo)list.get (0);
         }
-        for (AuthCacheValue authCacheValue : list) {
-            AuthenticationInfo inf = (AuthenticationInfo) authCacheValue;
+        ListIterator<AuthCacheValue> iter = list.listIterator();
+        while (iter.hasNext()) {
+            AuthenticationInfo inf = (AuthenticationInfo)iter.next();
             if (skey.startsWith (inf.path)) {
                 return inf;
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -225,7 +225,8 @@ public class BasicAttributes implements Attributes {
      * @see #hashCode
      */
     public boolean equals(Object obj) {
-        if (obj instanceof Attributes target) {
+        if ((obj != null) && (obj instanceof Attributes)) {
+            Attributes target = (Attributes)obj;
 
             // Check case first
             if (ignoreCase != target.isCaseIgnored()) {

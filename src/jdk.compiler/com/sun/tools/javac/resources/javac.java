@@ -52,7 +52,7 @@ public final class javac extends java.util.ListResourceBundle {
             { "javac.opt.Xlint.desc.removal", "Warn about use of API that has been marked for removal." },
             { "javac.opt.Xlint.desc.requires-automatic", "Warn about use of automatic modules in the requires clauses." },
             { "javac.opt.Xlint.desc.requires-transitive-automatic", "Warn about automatic modules in requires transitive." },
-            { "javac.opt.Xlint.desc.serial", "Warn about Serializable classes that do not have a serialVersionUID field. \n                         Also warn about other suspect declarations in Serializable and Externalizable classes and interfaces." },
+            { "javac.opt.Xlint.desc.serial", "Warn about Serializable classes that do not provide a serial version ID. \n                         Also warn about access to non-public members from a serializable element." },
             { "javac.opt.Xlint.desc.static", "Warn about accessing a static member using an instance." },
             { "javac.opt.Xlint.desc.strictfp", "Warn about unnecessary use of the strictfp modifier." },
             { "javac.opt.Xlint.desc.synchronization", "Warn about synchronization attempts on instances of value-based classes." },

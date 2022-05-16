@@ -887,11 +887,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
         boolean stopPostProcessing = false;
         java.util.List<KeyEventPostProcessor> processors = getKeyEventPostProcessors();
         if (processors != null) {
-            for (KeyEventPostProcessor processor : processors) {
-                stopPostProcessing = processor.postProcessKeyEvent(e);
-                if (stopPostProcessing) {
-                    break;
-                }
+            for (java.util.Iterator<KeyEventPostProcessor> iter = processors.iterator();
+                 !stopPostProcessing && iter.hasNext(); )
+            {
+                stopPostProcessing = iter.next().
+                            postProcessKeyEvent(e);
             }
         }
         if (!stopPostProcessing) {
@@ -1078,8 +1078,8 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
      * @since 1.5
      */
     private boolean hasMarker(Component comp) {
-        for (TypeAheadMarker typeAheadMarker : typeAheadMarkers) {
-            if (typeAheadMarker.untilFocused == comp) {
+        for (Iterator<TypeAheadMarker> iter = typeAheadMarkers.iterator(); iter.hasNext(); ) {
+            if (iter.next().untilFocused == comp) {
                 return true;
             }
         }
@@ -1137,11 +1137,15 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager {
 
         java.util.List<KeyEventDispatcher> dispatchers = getKeyEventDispatchers();
         if (dispatchers != null) {
-            for (KeyEventDispatcher dispatcher : dispatchers) {
-                if (dispatcher.dispatchKeyEvent(ke)) {
-                    return true;
-                }
-            }
+            for (java.util.Iterator<KeyEventDispatcher> iter = dispatchers.iterator();
+                 iter.hasNext(); )
+             {
+                 if (iter.next().
+                     dispatchKeyEvent(ke))
+                 {
+                     return true;
+                 }
+             }
         }
         return dispatchKeyEvent(ke);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1993,17 +1993,19 @@ public abstract class Parser {
                             try {
                                 int i = Integer.parseInt(
                                         new String(mBuff, idx + 1, mBuffIdx - idx), 10);
-                                //          Restore the buffer offset
-                                mBuffIdx = idx - 1;
-                                for(char character : Character.toChars(i)) {
-                                    if (character == ' ' || mInp.next != null) {
-                                        bappend(character, flag);
-                                    } else {
-                                        bappend(character);
-                                    }
+                                if (i >= 0xffff) {
+                                    panic(FAULT);
                                 }
+                                ch = (char) i;
                             } catch (NumberFormatException nfe) {
                                 panic(FAULT);
+                            }
+                            //          Restore the buffer offset
+                            mBuffIdx = idx - 1;
+                            if (ch == ' ' || mInp.next != null) {
+                                bappend(ch, flag);
+                            } else {
+                                bappend(ch);
                             }
                             st = -1;
                             break;
@@ -2032,17 +2034,19 @@ public abstract class Parser {
                             try {
                                 int i = Integer.parseInt(
                                         new String(mBuff, idx + 1, mBuffIdx - idx), 16);
-                                //          Restore the buffer offset
-                                mBuffIdx = idx - 1;
-                                for(char character : Character.toChars(i)) {
-                                    if (character == ' ' || mInp.next != null) {
-                                        bappend(character, flag);
-                                    } else {
-                                        bappend(character);
-                                    }
+                                if (i >= 0xffff) {
+                                    panic(FAULT);
                                 }
+                                ch = (char) i;
                             } catch (NumberFormatException nfe) {
                                 panic(FAULT);
+                            }
+                            //          Restore the buffer offset
+                            mBuffIdx = idx - 1;
+                            if (ch == ' ' || mInp.next != null) {
+                                bappend(ch, flag);
+                            } else {
+                                bappend(ch);
                             }
                             st = -1;
                             break;

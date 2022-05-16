@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -68,7 +68,6 @@ public class WebRowSetImpl extends CachedRowSetImpl implements WebRowSet {
      */
     private int curPosBfrWrite;
 
-    @SuppressWarnings("serial")
     private SyncProvider provider;
 
     /**

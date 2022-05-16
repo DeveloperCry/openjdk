@@ -25,8 +25,8 @@
 
 package jdk.internal.foreign;
 
+import jdk.incubator.foreign.MemoryAccess;
 import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SymbolLookup;
 import jdk.incubator.foreign.MemoryAddress;
@@ -39,13 +39,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static jdk.incubator.foreign.ValueLayout.ADDRESS;
+import static jdk.incubator.foreign.CLinker.C_POINTER;
 
 public class SystemLookup implements SymbolLookup {
 
     private SystemLookup() { }
 
-    static final SystemLookup INSTANCE = new SystemLookup();
+    final static SystemLookup INSTANCE = new SystemLookup();
 
     /*
      * On POSIX systems, dlsym will allow us to lookup symbol in library dependencies; the same trick doesn't work
@@ -71,11 +71,11 @@ public class SystemLookup implements SymbolLookup {
             SymbolLookup fallbackLibLookup = libLookup(libs -> libs.loadLibrary("WinFallbackLookup"));
 
             int numSymbols = WindowsFallbackSymbols.values().length;
-            MemorySegment funcs = MemorySegment.ofAddress(fallbackLibLookup.lookup("funcs").orElseThrow().address(),
-                ADDRESS.byteSize() * numSymbols, ResourceScope.globalScope());
+            MemorySegment funcs = fallbackLibLookup.lookup("funcs").orElseThrow()
+                .asSegment(C_POINTER.byteSize() * numSymbols, ResourceScope.newImplicitScope());
 
             SymbolLookup fallbackLookup = name -> Optional.ofNullable(WindowsFallbackSymbols.valueOfOrNull(name))
-                .map(symbol -> NativeSymbol.ofAddress(symbol.name(), funcs.getAtIndex(ADDRESS, symbol.ordinal()), ResourceScope.globalScope()));
+                .map(symbol -> MemoryAccess.getAddressAtIndex(funcs, symbol.ordinal()));
 
             final SymbolLookup finalLookup = lookup;
             lookup = name -> finalLookup.lookup(name).or(() -> fallbackLookup.lookup(name));
@@ -91,8 +91,7 @@ public class SystemLookup implements SymbolLookup {
             try {
                 long addr = lib.lookup(name);
                 return addr == 0 ?
-                        Optional.empty() :
-                        Optional.of(NativeSymbol.ofAddress(name, MemoryAddress.ofLong(addr), ResourceScope.globalScope()));
+                        Optional.empty() : Optional.of(MemoryAddress.ofLong(addr));
             } catch (NoSuchMethodException e) {
                 return Optional.empty();
             }
@@ -100,7 +99,7 @@ public class SystemLookup implements SymbolLookup {
     }
 
     @Override
-    public Optional<NativeSymbol> lookup(String name) {
+    public Optional<MemoryAddress> lookup(String name) {
         return syslookup.lookup(name);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2021, Red Hat, Inc. All rights reserved.
+ * Copyright (c) 2017, 2019, Red Hat, Inc. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -74,7 +74,7 @@ public class ShenandoahHeapRegion extends VMObject implements LiveRegionsProvide
         });
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("ShenandoahHeapRegion");
         RegionSizeBytesField = type.getCIntegerField("RegionSizeBytes");
         RegionStateField = type.getField("_state");

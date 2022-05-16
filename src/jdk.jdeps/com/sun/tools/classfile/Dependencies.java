@@ -557,7 +557,7 @@ public class Dependencies {
         private int showAccess;
     }
 
-    abstract static class BasicDependencyFinder implements Finder {
+    static abstract class BasicDependencyFinder implements Finder {
         private Map<String,Location> locations = new ConcurrentHashMap<>();
 
         Location getLocation(String className) {

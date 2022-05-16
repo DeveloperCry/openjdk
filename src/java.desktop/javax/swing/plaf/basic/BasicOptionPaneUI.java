@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -964,10 +964,13 @@ public class BasicOptionPaneUI extends OptionPaneUI {
      * the look and feel for based on the value in the inputComponent.
      */
     protected void resetInputValue() {
-        if (inputComponent instanceof JTextField textField) {
-            optionPane.setInputValue(textField.getText());
-        } else if (inputComponent instanceof JComboBox<?> comboBox) {
-            optionPane.setInputValue(comboBox.getSelectedItem());
+        if(inputComponent != null && (inputComponent instanceof JTextField)) {
+            optionPane.setInputValue(((JTextField)inputComponent).getText());
+
+        } else if(inputComponent != null &&
+                  (inputComponent instanceof JComboBox)) {
+            optionPane.setInputValue(((JComboBox)inputComponent)
+                                     .getSelectedItem());
         } else if(inputComponent != null) {
             optionPane.setInputValue(((JList)inputComponent)
                                      .getSelectedValue());

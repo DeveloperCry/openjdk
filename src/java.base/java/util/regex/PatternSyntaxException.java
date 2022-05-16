@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -107,9 +107,7 @@ public class PatternSyntaxException
         sb.append(pattern);
         if (index >= 0 && pattern != null && index < pattern.length()) {
             sb.append(System.lineSeparator());
-            for (int i = 0; i < index; i++) {
-                sb.append((pattern.charAt(i) == '\t') ? '\t' : ' ');
-            }
+            for (int i = 0; i < index; i++) sb.append(' ');
             sb.append('^');
         }
         return sb.toString();

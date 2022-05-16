@@ -2603,6 +2603,7 @@ public final class LdapCtx extends ComponentDirContext
 
         Vector<Vector<String>> referrals = new Vector<>(urlCount);
         int iURL;
+        int i = 0;
 
         separator = refString.indexOf('\n');
         iURL = separator + 1;
@@ -2639,7 +2640,7 @@ public final class LdapCtx extends ComponentDirContext
 
    // ----------------- Connection  ---------------------
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() {
         try {
             close();
@@ -2648,7 +2649,7 @@ public final class LdapCtx extends ComponentDirContext
         }
     }
 
-    public synchronized void close() throws NamingException {
+    synchronized public void close() throws NamingException {
         if (debug) {
             System.err.println("LdapCtx: close() called " + this);
             (new Throwable()).printStackTrace();

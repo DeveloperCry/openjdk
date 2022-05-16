@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -263,7 +263,7 @@ public class CoderResult {
      *
      * @throws  UnmappableCharacterException
      *          If this object represents an unmappable-character error; the
-     *          exception's length value will be that of this object
+     *          exceptions length value will be that of this object
      */
     public void throwException()
         throws CharacterCodingException

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -378,10 +378,10 @@ public class MenuItemLayoutHelper {
         if (miParent != null) {
             value = miParent.getClientProperty(propertyName);
         }
-        if (value instanceof Integer intValue) {
-            return intValue;
+        if ((value == null) || !(value instanceof Integer)) {
+            value = 0;
         }
-        return 0;
+        return (Integer) value;
     }
 
     public static boolean isColumnLayout(boolean isLeftToRight,

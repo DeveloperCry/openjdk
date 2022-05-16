@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,6 @@ public final class XDHPublicKeyImpl extends X509Key implements XECPublicKey {
     private static final long serialVersionUID = 1L;
 
     private final BigInteger u;
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private final NamedParameterSpec paramSpec;
 
     XDHPublicKeyImpl(XECParameters params, BigInteger u)

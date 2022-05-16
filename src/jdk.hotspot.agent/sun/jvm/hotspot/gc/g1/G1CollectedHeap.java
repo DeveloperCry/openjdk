@@ -48,19 +48,19 @@ import sun.jvm.hotspot.tools.HeapSummary;
 
 public class G1CollectedHeap extends CollectedHeap {
     // HeapRegionManager _hrm;
-    private static long hrmFieldOffset;
+    static private long hrmFieldOffset;
     // MemRegion _g1_reserved;
-    private static long g1ReservedFieldOffset;
+    static private long g1ReservedFieldOffset;
     // size_t _summary_bytes_used;
-    private static CIntegerField summaryBytesUsedField;
-    // G1MonitoringSupport* _monitoring_support;
-    private static AddressField monitoringSupportField;
+    static private CIntegerField summaryBytesUsedField;
+    // G1MonitoringSupport* _g1mm;
+    static private AddressField g1mmField;
     // HeapRegionSet _old_set;
-    private static long oldSetFieldOffset;
+    static private long oldSetFieldOffset;
     // HeapRegionSet _archive_set;
-    private static long archiveSetFieldOffset;
+    static private long archiveSetFieldOffset;
     // HeapRegionSet _humongous_set;
-    private static long humongousSetFieldOffset;
+    static private long humongousSetFieldOffset;
 
     static {
         VM.registerVMInitializedObserver(new Observer() {
@@ -70,12 +70,12 @@ public class G1CollectedHeap extends CollectedHeap {
             });
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("G1CollectedHeap");
 
         hrmFieldOffset = type.getField("_hrm").getOffset();
         summaryBytesUsedField = type.getCIntegerField("_summary_bytes_used");
-        monitoringSupportField = type.getAddressField("_monitoring_support");
+        g1mmField = type.getAddressField("_g1mm");
         oldSetFieldOffset = type.getField("_old_set").getOffset();
         archiveSetFieldOffset = type.getField("_archive_set").getOffset();
         humongousSetFieldOffset = type.getField("_humongous_set").getOffset();
@@ -99,9 +99,9 @@ public class G1CollectedHeap extends CollectedHeap {
                                                              hrmAddr);
     }
 
-    public G1MonitoringSupport monitoringSupport() {
-        Address monitoringSupportAddr = monitoringSupportField.getValue(addr);
-        return (G1MonitoringSupport) VMObjectFactory.newObject(G1MonitoringSupport.class, monitoringSupportAddr);
+    public G1MonitoringSupport g1mm() {
+        Address g1mmAddr = g1mmField.getValue(addr);
+        return (G1MonitoringSupport) VMObjectFactory.newObject(G1MonitoringSupport.class, g1mmAddr);
     }
 
     public HeapRegionSetBase oldSet() {

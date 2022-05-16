@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -474,7 +474,7 @@ public class AudioInputStream extends InputStream {
     /**
      * Private inner class that makes a TargetDataLine look like an InputStream.
      */
-    private static class TargetDataLineInputStream extends InputStream {
+    private class TargetDataLineInputStream extends InputStream {
 
         /**
          * The TargetDataLine on which this TargetDataLineInputStream is based.

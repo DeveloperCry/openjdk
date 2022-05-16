@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,7 @@ public class CallStaticJavaNode extends CallJavaNode {
     nameField    = type.getAddressField("_name");
   }
 
-  private static AddressField nameField;
+  static private AddressField nameField;
 
   public String name() {
     return CStringUtilities.getString(nameField.getValue(getAddress()));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -94,7 +94,7 @@ public abstract class AbstractMemberBuilder extends AbstractBuilder {
      * @param kind of members
      * @return a list of members
      */
-    protected List<Element> getVisibleMembers(Kind kind) {
+    protected List<? extends Element> getVisibleMembers(Kind kind) {
         return visibleMemberTable.getVisibleMembers(kind);
     }
 }

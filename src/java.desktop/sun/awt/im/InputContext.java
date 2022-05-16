@@ -47,8 +47,8 @@ import java.lang.Character.Subset;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -695,10 +695,10 @@ public class InputContext extends java.awt.im.InputContext
         }
         inputMethodLocator = null;
         if (usedInputMethods != null && !usedInputMethods.isEmpty()) {
-            Collection<InputMethod> methods = usedInputMethods.values();
+            Iterator<InputMethod> iterator = usedInputMethods.values().iterator();
             usedInputMethods = null;
-            for (InputMethod method : methods) {
-                method.dispose();
+            while (iterator.hasNext()) {
+                iterator.next().dispose();
             }
         }
 
@@ -790,8 +790,8 @@ public class InputContext extends java.awt.im.InputContext
      */
     public void disableNativeIM() {
         InputMethod inputMethod = getInputMethod();
-        if (inputMethod instanceof InputMethodAdapter adapter) {
-            adapter.stopListening();
+        if (inputMethod != null && inputMethod instanceof InputMethodAdapter) {
+            ((InputMethodAdapter)inputMethod).stopListening();
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -77,6 +77,7 @@ class DRIMarkerSegment extends MarkerSegment {
 
     void print() {
         printTag("DRI");
-        System.out.println("Interval: " + restartInterval);
+        System.out.println("Interval: "
+                           + Integer.toString(restartInterval));
     }
 }

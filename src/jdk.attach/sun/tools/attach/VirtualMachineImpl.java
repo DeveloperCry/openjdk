@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,8 @@ import com.sun.tools.attach.AttachOperationFailedException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.spi.AttachProvider;
+
+import sun.tools.attach.HotSpotVirtualMachine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -139,7 +141,7 @@ public class VirtualMachineImpl extends HotSpotVirtualMachine {
     }
 
     // An InputStream based on a pipe to the target VM
-    private static class PipedInputStream extends InputStream {
+    private class PipedInputStream extends InputStream {
 
         private long hPipe;
 

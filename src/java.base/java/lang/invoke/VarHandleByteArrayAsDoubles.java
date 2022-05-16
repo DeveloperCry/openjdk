@@ -102,9 +102,12 @@ final class VarHandleByteArrayAsDoubles extends VarHandleByteArrayBase {
             return at.accessModeType(byte[].class, double.class, int.class);
         }
 
+        private static final BiFunction<String, List<Number>, ArrayIndexOutOfBoundsException>
+            OOBEF = Preconditions.outOfBoundsExceptionFormatter(ArrayIndexOutOfBoundsException::new);
+
         @ForceInline
         static int index(byte[] ba, int index) {
-            return Preconditions.checkIndex(index, ba.length - ALIGN, Preconditions.AIOOBE_FORMATTER);
+            return Preconditions.checkIndex(index, ba.length - ALIGN, OOBEF);
         }
 
         @ForceInline

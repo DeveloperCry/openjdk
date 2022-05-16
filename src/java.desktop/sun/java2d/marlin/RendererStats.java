@@ -334,7 +334,7 @@ public final class RendererStats implements MarlinConst {
     static final class RendererStatsHolder {
 
         // singleton
-        private static volatile RendererStatsHolder SINGLETON;
+        private static volatile RendererStatsHolder SINGLETON = null;
 
         static synchronized RendererStatsHolder getInstance() {
             if (SINGLETON == null) {

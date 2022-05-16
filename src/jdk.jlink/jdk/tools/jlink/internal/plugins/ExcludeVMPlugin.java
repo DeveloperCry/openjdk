@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -245,9 +245,8 @@ public final class ExcludeVMPlugin extends AbstractPlugin {
     }
 
     private static String[] jvmlibs(ResourcePoolModule module) {
-        String targetPlatform = module.targetPlatform();
-        Platform platform = Platform.parsePlatform(targetPlatform);
-        switch (platform.os()) {
+        Platform platform = Platform.getTargetPlatform(module);
+        switch (platform) {
             case WINDOWS:
                 return new String[] { "jvm.dll" };
             case MACOS:

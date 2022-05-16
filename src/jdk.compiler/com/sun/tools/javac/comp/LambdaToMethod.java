@@ -165,14 +165,9 @@ public class LambdaToMethod extends TreeTranslator {
         dumpLambdaToMethodStats = options.isSet("debug.dumpLambdaToMethodStats");
         attr = Attr.instance(context);
         forceSerializable = options.isSet("forceSerializable");
-        boolean lineDebugInfo =
-            options.isUnset(Option.G_CUSTOM) ||
-            options.isSet(Option.G_CUSTOM, "lines");
-        boolean varDebugInfo =
-            options.isUnset(Option.G_CUSTOM)
-            ? options.isSet(Option.G)
-            : options.isSet(Option.G_CUSTOM, "vars");
-        debugLinesOrVars = lineDebugInfo || varDebugInfo;
+        debugLinesOrVars = options.isSet(Option.G)
+                || options.isSet(Option.G_CUSTOM, "lines")
+                || options.isSet(Option.G_CUSTOM, "vars");
         verboseDeduplication = options.isSet("debug.dumpLambdaToMethodDeduplication");
         deduplicateLambdas = options.getBoolean("deduplicateLambdas", true);
         nestmateLambdas = Target.instance(context).runtimeUseNestAccess();
@@ -429,14 +424,14 @@ public class LambdaToMethod extends TreeTranslator {
         //add captured locals
         for (Symbol fv : localContext.getSymbolMap(CAPTURED_VAR).keySet()) {
             if (fv != localContext.self) {
-                JCExpression captured_local = make.Ident(fv).setType(fv.type);
-                syntheticInits.append(captured_local);
+                JCTree captured_local = make.Ident(fv).setType(fv.type);
+                syntheticInits.append((JCExpression) captured_local);
             }
         }
         // add captured outer this instances (used only when `this' capture itself is illegal)
         for (Symbol fv : localContext.getSymbolMap(CAPTURED_OUTER_THIS).keySet()) {
-            JCExpression captured_local = make.QualThis(fv.type);
-            syntheticInits.append(captured_local);
+            JCTree captured_local = make.QualThis(fv.type);
+            syntheticInits.append((JCExpression) captured_local);
         }
 
         //then, determine the arguments to the indy call
@@ -1189,13 +1184,13 @@ public class LambdaToMethod extends TreeTranslator {
                 syms.stringType,
                 syms.methodTypeType).appendList(staticArgs.map(types::constantType));
 
-            MethodSymbol bsm = rs.resolveInternalMethod(pos, attrEnv, site,
+            Symbol bsm = rs.resolveInternalMethod(pos, attrEnv, site,
                     bsmName, bsm_staticArgs, List.nil());
 
             DynamicMethodSymbol dynSym =
                     new DynamicMethodSymbol(methName,
                                             syms.noSymbol,
-                                            bsm.asHandle(),
+                                            ((MethodSymbol)bsm).asHandle(),
                                             indyType,
                                             staticArgs.toArray(new LoadableConstant[staticArgs.length()]));
             JCFieldAccess qualifier = make.Select(make.QualIdent(site.tsym), bsmName);

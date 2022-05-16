@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -50,9 +50,9 @@ public class JarConstraintsParameters implements ConstraintsParameters {
     private boolean anchorIsJdkCASet;
     // The timestamp of the signed JAR file, if timestamped
     private Date timestamp;
-    // The keys of the signers and TSA
+    // The keys of the signers
     private final Set<Key> keys;
-    // The certs in the signers and TSA chain that are issued by the trust anchor
+    // The certs in the signers' chains that are issued by the trust anchor
     private final Set<X509Certificate> certsIssuedByAnchor;
     // The extended exception message
     private String message;
@@ -73,7 +73,7 @@ public class JarConstraintsParameters implements ConstraintsParameters {
         // used for checking if the signer's certificate chains back to a
         // JDK root CA
         for (CodeSigner signer : signers) {
-            addToCertsAndKeys(signer.getSignerCertPath());
+            init(signer.getSignerCertPath());
             Timestamp timestamp = signer.getTimestamp();
             if (timestamp == null) {
                 // this means one of the signers doesn't have a timestamp
@@ -82,7 +82,7 @@ public class JarConstraintsParameters implements ConstraintsParameters {
                 skipTimestamp = true;
             } else {
                 // add the key and last cert of TSA too
-                addToCertsAndKeys(timestamp.getSignerCertPath());
+                init(timestamp.getSignerCertPath());
                 if (!skipTimestamp) {
                     Date timestampDate = timestamp.getTimestamp();
                     if (latestTimestamp == null) {
@@ -98,22 +98,11 @@ public class JarConstraintsParameters implements ConstraintsParameters {
         this.timestamp = latestTimestamp;
     }
 
-    public JarConstraintsParameters(List<X509Certificate> chain, Date timestamp) {
-        this.keys = new HashSet<>();
-        this.certsIssuedByAnchor = new HashSet<>();
-        addToCertsAndKeys(chain);
-        this.timestamp = timestamp;
-    }
-
-    // extract last certificate and signer's public key from chain
-    private void addToCertsAndKeys(CertPath cp) {
+    // extract last certificate and key from chain
+    private void init(CertPath cp) {
         @SuppressWarnings("unchecked")
         List<X509Certificate> chain =
             (List<X509Certificate>)cp.getCertificates();
-        addToCertsAndKeys(chain);
-    }
-
-    private void addToCertsAndKeys(List<X509Certificate> chain) {
         if (!chain.isEmpty()) {
             this.certsIssuedByAnchor.add(chain.get(chain.size() - 1));
             this.keys.add(chain.get(0).getPublicKey());
@@ -173,13 +162,13 @@ public class JarConstraintsParameters implements ConstraintsParameters {
 
     @Override
     public String extendedExceptionMsg() {
-        return message == null ? "." : message;
+        return message;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[\n");
-        sb.append("  Variant: ").append(getVariant());
+        sb.append("\n  Variant: ").append(getVariant());
         sb.append("\n  Certs Issued by Anchor:");
         for (X509Certificate cert : certsIssuedByAnchor) {
             sb.append("\n    Cert Issuer: ")

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1024,7 +1024,7 @@ final class RealTimeSequencer extends AbstractMidiDevice
         }
     } // class Info
 
-    private static class ControllerListElement {
+    private class ControllerListElement {
 
         // $$jb: using an array for controllers b/c its
         //       easier to deal with than turning all the

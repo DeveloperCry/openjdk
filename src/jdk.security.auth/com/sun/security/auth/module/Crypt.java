@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2003, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,8 +52,6 @@
  */
 
 package com.sun.security.auth.module;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 class Crypt {
 
@@ -387,10 +385,14 @@ class Crypt {
         }
 
         Crypt c = new Crypt();
-        byte[] result = c.crypt
-            (arg[0].getBytes(ISO_8859_1), arg[1].getBytes(ISO_8859_1));
-        for (int i=0; i<result.length; i++) {
-            System.out.println(" "+i+" "+(char)result[i]);
+        try {
+            byte[] result = c.crypt
+                (arg[0].getBytes("ISO-8859-1"), arg[1].getBytes("ISO-8859-1"));
+            for (int i=0; i<result.length; i++) {
+                System.out.println(" "+i+" "+(char)result[i]);
+            }
+        } catch (java.io.UnsupportedEncodingException uee) {
+            // cannot happen
         }
     }
 }

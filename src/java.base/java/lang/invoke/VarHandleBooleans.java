@@ -716,7 +716,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getBooleanVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -724,7 +724,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             UNSAFE.putBooleanVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -733,7 +733,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getBooleanOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -741,7 +741,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             UNSAFE.putBooleanOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -750,7 +750,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getBooleanAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -758,7 +758,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             UNSAFE.putBooleanRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -767,7 +767,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.compareAndSetBoolean(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -777,7 +777,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.compareAndExchangeBoolean(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -787,7 +787,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.compareAndExchangeBooleanAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -797,7 +797,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.compareAndExchangeBooleanRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -807,7 +807,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.weakCompareAndSetBooleanPlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -817,7 +817,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.weakCompareAndSetBoolean(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -827,7 +827,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.weakCompareAndSetBooleanAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -837,7 +837,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.weakCompareAndSetBooleanRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -847,7 +847,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndSetBoolean(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -856,7 +856,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndSetBooleanAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -865,7 +865,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndSetBooleanRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -874,7 +874,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseOrBoolean(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -883,7 +883,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseOrBooleanRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -892,7 +892,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseOrBooleanAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -901,7 +901,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseAndBoolean(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -910,7 +910,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseAndBooleanRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -919,7 +919,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseAndBooleanAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -928,7 +928,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseXorBoolean(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -937,7 +937,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseXorBooleanRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -946,7 +946,7 @@ final class VarHandleBooleans {
             Array handle = (Array)ob;
             boolean[] array = (boolean[]) oarray;
             return UNSAFE.getAndBitwiseXorBooleanAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 

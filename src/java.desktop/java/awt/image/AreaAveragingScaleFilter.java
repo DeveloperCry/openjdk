@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -105,7 +105,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
 
     private int[] calcRow() {
         float origmult = ((float) srcWidth) * srcHeight;
-        if (!(outpixbuf instanceof int[])) {
+        if (outpixbuf == null || !(outpixbuf instanceof int[])) {
             outpixbuf = new int[destWidth];
         }
         int[] outpix = (int[]) outpixbuf;

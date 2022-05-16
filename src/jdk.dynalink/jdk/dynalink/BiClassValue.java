@@ -87,7 +87,7 @@ final class BiClassValue<T> {
      * creates the association from a type Class object to its BiClassValues'.
      * @param <T> the type of the values
      */
-    private static final class BiClassValues<T> {
+    private final static class BiClassValues<T> {
         // These will be used for compareAndExchange on forward and reverse fields.
         private static final VarHandle FORWARD;
         private static final VarHandle REVERSE;

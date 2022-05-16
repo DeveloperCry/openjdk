@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -438,11 +438,11 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
      */
     public void setLogicalStyle(int pos, Style s) {
         Element paragraph = getParagraphElement(pos);
-        if (paragraph instanceof AbstractElement abstractElement) {
+        if ((paragraph != null) && (paragraph instanceof AbstractElement)) {
             try {
                 writeLock();
-                StyleChangeUndoableEdit edit = new StyleChangeUndoableEdit(abstractElement, s);
-                abstractElement.setResolveParent(s);
+                StyleChangeUndoableEdit edit = new StyleChangeUndoableEdit((AbstractElement)paragraph, s);
+                ((AbstractElement)paragraph).setResolveParent(s);
                 int p0 = paragraph.getStartOffset();
                 int p1 = paragraph.getEndOffset();
                 DefaultDocumentEvent e =
@@ -833,17 +833,17 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
         else {
             // Will only happen for text with more than 2 levels.
             // Find the common parent of a paragraph and pParagraph
-            ArrayList<Element> leftParents = new ArrayList<Element>();
-            ArrayList<Element> rightParents = new ArrayList<Element>();
+            Vector<Element> leftParents = new Vector<Element>();
+            Vector<Element> rightParents = new Vector<Element>();
             Element e = pParagraph;
             while(e != null) {
-                leftParents.add(e);
+                leftParents.addElement(e);
                 e = e.getParentElement();
             }
             e = paragraph;
             int leftIndex = -1;
             while(e != null && (leftIndex = leftParents.indexOf(e)) == -1) {
-                rightParents.add(e);
+                rightParents.addElement(e);
                 e = e.getParentElement();
             }
             if(e != null) {
@@ -858,7 +858,7 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
                 ElementSpec spec;
                 for(int counter = rightParents.size() - 1;
                     counter >= 0; counter--) {
-                    spec = new ElementSpec(rightParents.get(counter).getAttributes(),
+                    spec = new ElementSpec(rightParents.elementAt(counter).getAttributes(),
                                    ElementSpec.StartTagType);
                     if(counter > 0)
                         spec.setDirection(ElementSpec.JoinNextDirection);
@@ -2081,34 +2081,35 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
                 if (rj.getStartOffset() == rmOffs1) {
                     rj = null;
                 }
-                ArrayList<Element> children = new ArrayList<Element>();
+                Vector<Element> children = new Vector<Element>();
 
                 // transfer the left
                 for (int i = 0; i < ljIndex; i++) {
-                    children.add(clone(to, left.getElement(i)));
+                    children.addElement(clone(to, left.getElement(i)));
                 }
 
                 // transfer the join/middle
                 if (canJoin(lj, rj)) {
                     Element e = join(to, lj, rj, rmOffs0, rmOffs1);
-                    children.add(e);
+                    children.addElement(e);
                 } else {
                     if (lj != null) {
-                        children.add(cloneAsNecessary(to, lj, rmOffs0, rmOffs1));
+                        children.addElement(cloneAsNecessary(to, lj, rmOffs0, rmOffs1));
                     }
                     if (rj != null) {
-                        children.add(cloneAsNecessary(to, rj, rmOffs0, rmOffs1));
+                        children.addElement(cloneAsNecessary(to, rj, rmOffs0, rmOffs1));
                     }
                 }
 
                 // transfer the right
                 int n = right.getElementCount();
                 for (int i = (rj == null) ? rjIndex : rjIndex + 1; i < n; i++) {
-                    children.add(clone(to, right.getElement(i)));
+                    children.addElement(clone(to, right.getElement(i)));
                 }
 
                 // install the children
-                Element[] c = children.toArray(new Element[0]);
+                Element[] c = new Element[children.size()];
+                children.copyInto(c);
                 ((BranchElement)to).replace(0, 0, c);
                 return to;
             } else {

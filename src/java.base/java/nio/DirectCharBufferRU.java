@@ -192,6 +192,9 @@ class DirectCharBufferRU
 
 
 
+
+
+
     // For duplicates and slices
     //
     DirectCharBufferRU(DirectBuffer db,         // package-private

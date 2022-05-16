@@ -86,7 +86,7 @@ public class EventQueueMonitor
     /**
      * Class that tells us what the component event dispatch thread is.
      */
-    private static ComponentEvtDispatchThread cedt = null;
+    static private ComponentEvtDispatchThread cedt = null;
 
     /**
      * Handle the synchronization between the thing that populates the
@@ -397,7 +397,7 @@ public class EventQueueMonitor
      * @param p the point to be accessed
      * @return the {@code Accessible} at the specified point
      */
-    public static Accessible getAccessibleAt(Point p) {
+    static public Accessible getAccessibleAt(Point p) {
         Window w = getTopLevelWindowWithFocus();
         Window[] wins = getTopLevelWindows();
         Component c = null;
@@ -464,7 +464,7 @@ public class EventQueueMonitor
      * @return true if the GUI subsystem has been initialized
      * @see #addGUIInitializedListener
      */
-    public static boolean isGUIInitialized() {
+    static public boolean isGUIInitialized() {
         maybeInitialize();
         return guiInitialized;
     }
@@ -478,7 +478,7 @@ public class EventQueueMonitor
      * @see #isGUIInitialized
      * @see #removeTopLevelWindowListener
      */
-    public static void addGUIInitializedListener(GUIInitializedListener l) {
+    static public void addGUIInitializedListener(GUIInitializedListener l) {
         maybeInitialize();
         guiInitializedListener =
             GUIInitializedMulticaster.add(guiInitializedListener,l);
@@ -491,7 +491,7 @@ public class EventQueueMonitor
      * @param l the listener to remove
      * @see #addGUIInitializedListener
      */
-    public static void removeGUIInitializedListener(GUIInitializedListener l) {
+    static public void removeGUIInitializedListener(GUIInitializedListener l) {
         guiInitializedListener =
             GUIInitializedMulticaster.remove(guiInitializedListener,l);
     }
@@ -503,7 +503,7 @@ public class EventQueueMonitor
      * @param l the listener to add
      * @see #removeTopLevelWindowListener
      */
-    public static void addTopLevelWindowListener(TopLevelWindowListener l) {
+    static public void addTopLevelWindowListener(TopLevelWindowListener l) {
         topLevelWindowListener =
             TopLevelWindowMulticaster.add(topLevelWindowListener,l);
     }
@@ -515,7 +515,7 @@ public class EventQueueMonitor
      * @param l the listener to remove
      * @see #addTopLevelWindowListener
      */
-    public static void removeTopLevelWindowListener(TopLevelWindowListener l) {
+    static public void removeTopLevelWindowListener(TopLevelWindowListener l) {
         topLevelWindowListener =
             TopLevelWindowMulticaster.remove(topLevelWindowListener,l);
     }
@@ -525,7 +525,7 @@ public class EventQueueMonitor
      *
      * @return the last recorded position of the mouse in screen coordinates
      */
-    public static Point getCurrentMousePosition() {
+    static public Point getCurrentMousePosition() {
         return currentMousePosition;
     }
 
@@ -534,7 +534,7 @@ public class EventQueueMonitor
      *
      * @return an array of top level {@code Window}s in use in the Java Virtual Machine
      */
-    public static Window[] getTopLevelWindows() {
+    static public Window[] getTopLevelWindows() {
 
         // Because this method is static, do not make it synchronized because
         // it can lock the whole class.  Instead, just lock what needs to be
@@ -559,7 +559,7 @@ public class EventQueueMonitor
      *
      * @return the top level {@code Window} that currently has keyboard focus
      */
-    public static Window getTopLevelWindowWithFocus() {
+    static public Window getTopLevelWindowWithFocus() {
         return topLevelWindowWithFocus;
     }
 }

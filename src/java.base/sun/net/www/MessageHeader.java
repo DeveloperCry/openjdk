@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -245,7 +245,7 @@ class MessageHeader {
             String[] excludeList, Map<String, List<String>>  include) {
         boolean skipIt = false;
         Map<String, List<String>> m = new HashMap<>();
-        for (int i = 0; i < nkeys; i++) {
+        for (int i = nkeys; --i >= 0;) {
             if (excludeList != null) {
                 // check if the key is in the excludeList.
                 // if so, don't include it in the Map.

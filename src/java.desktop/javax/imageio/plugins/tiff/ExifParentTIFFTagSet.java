@@ -84,7 +84,7 @@ public final class ExifParentTIFFTagSet extends TIFFTagSet {
      *
      * @return an {@code ExifParentTIFFTagSet} instance.
      */
-    public static synchronized ExifParentTIFFTagSet getInstance() {
+    public synchronized static ExifParentTIFFTagSet getInstance() {
         if (theInstance == null) {
             initTags();
             theInstance = new ExifParentTIFFTagSet();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,8 +31,6 @@ import java.io.ByteArrayInputStream;
 
 import sun.security.util.HexDumpEncoder;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
   * Base class that defines common fields, constants, and debug method.
   *
@@ -52,7 +50,7 @@ public abstract class Ber {
 
         try {
             outStream.write('\n');
-            outStream.write(tag.getBytes(UTF_8));
+            outStream.write(tag.getBytes("UTF8"));
 
             new HexDumpEncoder().encodeBuffer(
                 new ByteArrayInputStream(bytes, from, to),
@@ -62,7 +60,7 @@ public abstract class Ber {
         } catch (IOException e) {
             try {
                 outStream.write(
-                    "Ber.dumpBER(): error encountered\n".getBytes(UTF_8));
+                    "Ber.dumpBER(): error encountered\n".getBytes("UTF8"));
             } catch (IOException e2) {
                 // ignore
             }

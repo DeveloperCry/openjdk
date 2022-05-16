@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -56,7 +56,7 @@ public class Bootstrap extends Object {
      * ("{@code virtualMachineManager}") or other unspecified
      * permissions required by the implementation.
      */
-    public static synchronized VirtualMachineManager virtualMachineManager() {
+    static public synchronized VirtualMachineManager virtualMachineManager() {
         return VirtualMachineManagerImpl.virtualMachineManager();
     }
 }

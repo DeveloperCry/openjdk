@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -81,9 +81,9 @@ public class TypeCode {
      *                                  a valid Java TypeCode.
      */
     public static TypeCode toTypeCode(char c) {
-        for (TypeCode basicType : basicTypes) {
-            if (basicType.value == c) {
-                return basicType;
+        for (int j = 0; j < basicTypes.length; j++) {
+            if (basicTypes[j].value == c) {
+                return (basicTypes[j]);
             }
         }
         throw new IllegalArgumentException();

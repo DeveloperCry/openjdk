@@ -65,8 +65,8 @@ class VMManagementImpl implements VMManagement {
         }
         initOptionalSupportFields();
     }
-    private static native String getVersion0();
-    private static native void initOptionalSupportFields();
+    private native static String getVersion0();
+    private native static void initOptionalSupportFields();
 
     // Optional supports
     public boolean isCompilationTimeMonitoringSupported() {

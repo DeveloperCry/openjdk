@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,7 +39,7 @@ class SDE {
     /* for C capatibility */
     static final String NullString = null;
 
-    private static class FileTableRecord {
+    private class FileTableRecord {
         int fileId;
         String sourceName;
         String sourcePath; // do not read - use accessor
@@ -72,7 +72,7 @@ class SDE {
         }
     }
 
-    private static class LineTableRecord {
+    private class LineTableRecord {
         int jplsStart;
         int jplsEnd;
         int jplsLineInc;
@@ -82,7 +82,7 @@ class SDE {
         int fileId;
     }
 
-    private static class StratumTableRecord {
+    private class StratumTableRecord {
         String id;
         int fileIndex;
         int lineIndex;

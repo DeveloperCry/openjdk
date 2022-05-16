@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -118,8 +118,9 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
         // Fetch all methods for the class, check performance impact
         // Needs no synchronization now, since methods() returns
         // unmodifiable local data
-        for (Method m : methods()) {
-            MethodImpl method = (MethodImpl)m;
+        Iterator<Method> it = methods().iterator();
+        while (it.hasNext()) {
+            MethodImpl method = (MethodImpl)it.next();
             if (method.ref() == ref) {
                 return method;
             }
@@ -131,8 +132,9 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
         // Fetch all fields for the class, check performance impact
         // Needs no synchronization now, since fields() returns
         // unmodifiable local data
-        for (Field f : fields()) {
-            FieldImpl field = (FieldImpl)f;
+        Iterator<Field>it = fields().iterator();
+        while (it.hasNext()) {
+            FieldImpl field = (FieldImpl)it.next();
             if (field.ref() == ref) {
                 return field;
             }
@@ -141,7 +143,8 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof ReferenceTypeImpl other) {
+        if ((obj != null) && (obj instanceof ReferenceTypeImpl)) {
+            ReferenceTypeImpl other = (ReferenceTypeImpl)obj;
             return (ref() == other.ref()) &&
                 (vm.equals(other.virtualMachine()));
         } else {
@@ -149,9 +152,8 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
         }
     }
 
-    @Override
     public int hashCode() {
-        return Long.hashCode(ref());
+        return(int)ref();
     }
 
     public int compareTo(ReferenceType object) {
@@ -418,11 +420,12 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
 
         /* Add inherited, visible fields */
         List<? extends ReferenceType> types = inheritedTypes();
-        for (ReferenceType referenceType : types) {
+        Iterator<? extends ReferenceType> iter = types.iterator();
+        while (iter.hasNext()) {
             /*
              * TO DO: Be defensive and check for cyclic interface inheritance
              */
-            ReferenceTypeImpl type = (ReferenceTypeImpl)referenceType;
+            ReferenceTypeImpl type = (ReferenceTypeImpl)iter.next();
             type.addVisibleFields(visibleList, visibleTable, ambiguousNames);
         }
 
@@ -451,8 +454,9 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
 
             /* Add inherited fields */
             List<? extends ReferenceType> types = inheritedTypes();
-            for (ReferenceType referenceType : types) {
-                ReferenceTypeImpl type = (ReferenceTypeImpl)referenceType;
+            Iterator<? extends ReferenceType> iter = types.iterator();
+            while (iter.hasNext()) {
+                ReferenceTypeImpl type = (ReferenceTypeImpl)iter.next();
                 type.addAllFields(fieldList, typeSet);
             }
         }
@@ -564,7 +568,7 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
         return list;
     }
 
-    public abstract List<Method> allMethods();
+    abstract public List<Method> allMethods();
 
     public List<Method> methodsByName(String name) {
         List<Method> methods = visibleMethods();
@@ -912,8 +916,9 @@ public abstract class ReferenceTypeImpl extends TypeImpl implements ReferenceTyp
 
         List<Location> list = new ArrayList<Location>();
 
-        for (Method m : methods) {
-            MethodImpl method = (MethodImpl)m;
+        Iterator<Method> iter = methods.iterator();
+        while(iter.hasNext()) {
+            MethodImpl method = (MethodImpl)iter.next();
             // eliminate native and abstract to eliminate
             // false positives
             if (!method.isAbstract() &&

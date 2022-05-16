@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -485,7 +485,7 @@ final class JrtPath implements Path {
     // Remove DotSlash(./) and resolve DotDot (..) components
     private String getResolved() {
         int length = path.length();
-        if (length == 0 || (!path.contains("./") && path.charAt(length - 1) != '.')) {
+        if (length == 0 || (path.indexOf("./") == -1 && path.charAt(length - 1) != '.')) {
             return path;
         } else {
             return resolvePath();

@@ -30,7 +30,6 @@ import jdk.internal.reflect.CallerSensitive;
 import jdk.internal.reflect.FieldAccessor;
 import jdk.internal.reflect.Reflection;
 import jdk.internal.vm.annotation.ForceInline;
-import jdk.internal.vm.annotation.Stable;
 import sun.reflect.generics.repository.FieldRepository;
 import sun.reflect.generics.factory.CoreReflectionFactory;
 import sun.reflect.generics.factory.GenericsFactory;
@@ -65,24 +64,23 @@ import sun.reflect.annotation.TypeAnnotationParser;
  */
 public final
 class Field extends AccessibleObject implements Member {
-    private final Class<?>            clazz;
-    private final int                 slot;
+
+    private Class<?>            clazz;
+    private int                 slot;
     // This is guaranteed to be interned by the VM in the 1.4
     // reflection implementation
-    private final String              name;
-    private final Class<?>            type;
-    private final int                 modifiers;
-    private final boolean             trustedFinal;
+    private String              name;
+    private Class<?>            type;
+    private int                 modifiers;
+    private boolean             trustedFinal;
     // Generics and annotations support
-    private final transient String    signature;
+    private transient String    signature;
     // generic info repository; lazily initialized
     private transient FieldRepository genericInfo;
-    private final byte[]              annotations;
+    private byte[]              annotations;
     // Cached field accessor created without override
-    @Stable
     private FieldAccessor fieldAccessor;
     // Cached field accessor created with override
-    @Stable
     private FieldAccessor overrideFieldAccessor;
     // For sharing of FieldAccessors. This branching structure is
     // currently only two levels deep (i.e., one root Field and
@@ -423,10 +421,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().get(obj);
-        } else {
-            return getOverrideFieldAccessor().get(obj);
         }
+        return getFieldAccessor(obj).get(obj);
     }
 
     /**
@@ -459,10 +455,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getBoolean(obj);
-        } else {
-            return getOverrideFieldAccessor().getBoolean(obj);
         }
+        return getFieldAccessor(obj).getBoolean(obj);
     }
 
     /**
@@ -495,10 +489,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getByte(obj);
-        } else {
-            return getOverrideFieldAccessor().getByte(obj);
         }
+        return getFieldAccessor(obj).getByte(obj);
     }
 
     /**
@@ -533,10 +525,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getChar(obj);
-        } else {
-            return getOverrideFieldAccessor().getChar(obj);
         }
+        return getFieldAccessor(obj).getChar(obj);
     }
 
     /**
@@ -571,10 +561,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getShort(obj);
-        } else {
-            return getOverrideFieldAccessor().getShort(obj);
         }
+        return getFieldAccessor(obj).getShort(obj);
     }
 
     /**
@@ -609,10 +597,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getInt(obj);
-        } else {
-            return getOverrideFieldAccessor().getInt(obj);
         }
+        return getFieldAccessor(obj).getInt(obj);
     }
 
     /**
@@ -647,10 +633,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getLong(obj);
-        } else {
-            return getOverrideFieldAccessor().getLong(obj);
         }
+        return getFieldAccessor(obj).getLong(obj);
     }
 
     /**
@@ -685,10 +669,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getFloat(obj);
-        } else {
-            return getOverrideFieldAccessor().getFloat(obj);
         }
+        return getFieldAccessor(obj).getFloat(obj);
     }
 
     /**
@@ -723,10 +705,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            return getFieldAccessor().getDouble(obj);
-        } else {
-            return getOverrideFieldAccessor().getDouble(obj);
         }
+        return getFieldAccessor(obj).getDouble(obj);
     }
 
     /**
@@ -815,10 +795,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().set(obj, value);
-        } else {
-            getOverrideFieldAccessor().set(obj, value);
         }
+        getFieldAccessor(obj).set(obj, value);
     }
 
     /**
@@ -854,10 +832,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setBoolean(obj, z);
-        } else {
-            getOverrideFieldAccessor().setBoolean(obj, z);
         }
+        getFieldAccessor(obj).setBoolean(obj, z);
     }
 
     /**
@@ -893,10 +869,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setByte(obj, b);
-        } else {
-            getOverrideFieldAccessor().setByte(obj, b);
         }
+        getFieldAccessor(obj).setByte(obj, b);
     }
 
     /**
@@ -932,10 +906,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setChar(obj, c);
-        } else {
-            getOverrideFieldAccessor().setChar(obj, c);
         }
+        getFieldAccessor(obj).setChar(obj, c);
     }
 
     /**
@@ -971,10 +943,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setShort(obj, s);
-        } else {
-            getOverrideFieldAccessor().setShort(obj, s);
         }
+        getFieldAccessor(obj).setShort(obj, s);
     }
 
     /**
@@ -1010,10 +980,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setInt(obj, i);
-        } else {
-            getOverrideFieldAccessor().setInt(obj, i);
         }
+        getFieldAccessor(obj).setInt(obj, i);
     }
 
     /**
@@ -1049,10 +1017,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setLong(obj, l);
-        } else {
-            getOverrideFieldAccessor().setLong(obj, l);
         }
+        getFieldAccessor(obj).setLong(obj, l);
     }
 
     /**
@@ -1088,10 +1054,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setFloat(obj, f);
-        } else {
-            getOverrideFieldAccessor().setFloat(obj, f);
         }
+        getFieldAccessor(obj).setFloat(obj, f);
     }
 
     /**
@@ -1127,10 +1091,8 @@ class Field extends AccessibleObject implements Member {
         if (!override) {
             Class<?> caller = Reflection.getCallerClass();
             checkAccess(caller, obj);
-            getFieldAccessor().setDouble(obj, d);
-        } else {
-            getOverrideFieldAccessor().setDouble(obj, d);
         }
+        getFieldAccessor(obj).setDouble(obj, d);
     }
 
     // check access to field
@@ -1143,69 +1105,53 @@ class Field extends AccessibleObject implements Member {
     }
 
     // security check is done before calling this method
-    private FieldAccessor getFieldAccessor() {
-        FieldAccessor a = fieldAccessor;
-        return (a != null) ? a : acquireFieldAccessor();
-    }
-
-    private FieldAccessor getOverrideFieldAccessor() {
-        FieldAccessor a = overrideFieldAccessor;
-        return (a != null) ? a : acquireOverrideFieldAccessor();
+    private FieldAccessor getFieldAccessor(Object obj)
+        throws IllegalAccessException
+    {
+        boolean ov = override;
+        FieldAccessor a = (ov) ? overrideFieldAccessor : fieldAccessor;
+        return (a != null) ? a : acquireFieldAccessor(ov);
     }
 
     // NOTE that there is no synchronization used here. It is correct
     // (though not efficient) to generate more than one FieldAccessor
     // for a given Field. However, avoiding synchronization will
     // probably make the implementation more scalable.
-    private FieldAccessor acquireFieldAccessor() {
+    private FieldAccessor acquireFieldAccessor(boolean overrideFinalCheck) {
         // First check to see if one has been created yet, and take it
         // if so
-        Field root = this.root;
-        FieldAccessor tmp = root == null ? null : root.fieldAccessor;
+        FieldAccessor tmp = null;
+        if (root != null) tmp = root.getFieldAccessor(overrideFinalCheck);
         if (tmp != null) {
-            fieldAccessor = tmp;
+            if (overrideFinalCheck)
+                overrideFieldAccessor = tmp;
+            else
+                fieldAccessor = tmp;
         } else {
             // Otherwise fabricate one and propagate it up to the root
-            tmp = reflectionFactory.newFieldAccessor(this, false);
-            setFieldAccessor(tmp);
+            tmp = reflectionFactory.newFieldAccessor(this, overrideFinalCheck);
+            setFieldAccessor(tmp, overrideFinalCheck);
         }
+
         return tmp;
     }
 
-    private FieldAccessor acquireOverrideFieldAccessor() {
-        // First check to see if one has been created yet, and take it
-        // if so
-        Field root = this.root;
-        FieldAccessor tmp = root == null ? null : root.overrideFieldAccessor;
-        if (tmp != null) {
-            overrideFieldAccessor = tmp;
-        } else {
-            // Otherwise fabricate one and propagate it up to the root
-            tmp = reflectionFactory.newFieldAccessor(this, true);
-            setOverrideFieldAccessor(tmp);
-        }
-        return tmp;
+    // Returns FieldAccessor for this Field object, not looking up
+    // the chain to the root
+    private FieldAccessor getFieldAccessor(boolean overrideFinalCheck) {
+        return (overrideFinalCheck)? overrideFieldAccessor : fieldAccessor;
     }
 
-    // Sets the fieldAccessor for this Field object and
+    // Sets the FieldAccessor for this Field object and
     // (recursively) its root
-    private void setFieldAccessor(FieldAccessor accessor) {
-        fieldAccessor = accessor;
+    private void setFieldAccessor(FieldAccessor accessor, boolean overrideFinalCheck) {
+        if (overrideFinalCheck)
+            overrideFieldAccessor = accessor;
+        else
+            fieldAccessor = accessor;
         // Propagate up
-        Field root = this.root;
         if (root != null) {
-            root.setFieldAccessor(accessor);
-        }
-    }
-
-    // Sets the overrideFieldAccessor for this Field object and
-    // (recursively) its root
-    private void setOverrideFieldAccessor(FieldAccessor accessor) {
-        overrideFieldAccessor = accessor;
-        // Propagate up
-        Field root = this.root;
-        if (root != null) {
-            root.setOverrideFieldAccessor(accessor);
+            root.setFieldAccessor(accessor, overrideFinalCheck);
         }
     }
 

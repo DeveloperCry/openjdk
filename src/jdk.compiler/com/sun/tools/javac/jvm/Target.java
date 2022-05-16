@@ -85,10 +85,7 @@ public enum Target {
     JDK1_16("16", 60, 0),
 
     /** JDK 17. */
-    JDK1_17("17", 61, 0),
-
-    /** JDK 18. */
-    JDK1_18("18", 62, 0);
+    JDK1_17("17", 61, 0);
 
     private static final Context.Key<Target> targetKey = new Context.Key<>();
 
@@ -202,12 +199,5 @@ public enum Target {
      */
     public boolean obsoleteAccStrict() {
         return compareTo(JDK1_17) >= 0;
-    }
-
-    /** Omit unused enclosing instance fields from inner classes that don't access enclosing
-     * instance state.
-     */
-    public boolean optimizeOuterThis() {
-        return compareTo(JDK1_18) >= 0;
     }
 }

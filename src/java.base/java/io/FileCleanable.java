@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,7 +65,7 @@ final class FileCleanable extends PhantomCleanable<FileDescriptor> {
      * Register a Cleanable with the FileDescriptor
      * if the FileDescriptor is non-null and valid.
      * @implNote
-     * An exception (OutOfMemoryException) will leave the FileDescriptor
+     * A exception (OutOfMemoryException) will leave the FileDescriptor
      * having allocated resources and leak the fd/handle.
      *
      * @param fdo the FileDescriptor; may be null

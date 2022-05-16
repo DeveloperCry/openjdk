@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import jdk.internal.module.Checks;
 import jdk.jfr.internal.EventClassBuilder;
 import jdk.jfr.internal.JVMSupport;
 import jdk.jfr.internal.MetadataRepository;
@@ -136,7 +135,7 @@ public final class EventFactory {
             if (!Type.isValidJavaFieldType(v.getTypeName())) {
                 throw new IllegalArgumentException(v.getTypeName() + " is not a valid type for an event field");
             }
-            if (!Checks.isJavaIdentifier(v.getName())) {
+            if (!Type.isValidJavaIdentifier(v.getName())) {
                 throw new IllegalArgumentException(name + " is not a valid name for an event field");
             }
             if (nameSet.contains(name)) {

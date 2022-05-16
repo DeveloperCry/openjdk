@@ -66,7 +66,6 @@ public final class ECPrivateKeyImpl extends PKCS8Key implements ECPrivateKey {
 
     private BigInteger s;       // private value
     private byte[] arrayS;      // private value as a little-endian array
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private ECParameterSpec params;
 
     /**

@@ -290,9 +290,7 @@ module java.base {
         jdk.crypto.cryptoki,
         jdk.crypto.ec,
         jdk.security.auth;
-    exports sun.security.provider.certpath to
-        java.naming,
-        jdk.jartool;
+    exports sun.security.provider.certpath to java.naming;
     exports sun.security.rsa to
         jdk.crypto.cryptoki,
         jdk.crypto.mscapi;
@@ -332,7 +330,6 @@ module java.base {
 
     uses java.lang.System.LoggerFinder;
     uses java.net.ContentHandlerFactory;
-    uses java.net.spi.InetAddressResolverProvider;
     uses java.net.spi.URLStreamHandlerProvider;
     uses java.nio.channels.spi.AsynchronousChannelProvider;
     uses java.nio.channels.spi.SelectorProvider;

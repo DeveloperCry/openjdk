@@ -22,27 +22,24 @@
  *
  *
  */
-
 package com.sun.imageio.plugins.tiff;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.imageio.IIOException;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.plugins.tiff.BaselineTIFFTagSet;
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.imageio.plugins.tiff.TIFFField;
 import javax.imageio.plugins.tiff.TIFFTag;
 import javax.imageio.plugins.tiff.TIFFTagSet;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.ImageOutputStream;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class TIFFIFD extends TIFFDirectory {
     private static final long MAX_SAMPLES_PER_PIXEL = 0xffff;
@@ -56,12 +53,12 @@ public class TIFFIFD extends TIFFDirectory {
     // A set of tag numbers corresponding to tags essential to decoding
     // the image and metadata required to interpret its samples.
     //
-    private static volatile Set<Integer> essentialTags;
+    private static volatile Set<Integer> essentialTags = null;
 
     private static void initializeEssentialTags() {
         Set<Integer> tags = essentialTags;
         if (tags == null) {
-            essentialTags = Set.of(
+            essentialTags = tags = Set.of(
                 BaselineTIFFTagSet.TAG_BITS_PER_SAMPLE,
                 BaselineTIFFTagSet.TAG_COLOR_MAP,
                 BaselineTIFFTagSet.TAG_COMPRESSION,
@@ -286,7 +283,8 @@ public class TIFFIFD extends TIFFDirectory {
                             if (inString) {
                                 // end of string
                                 String s = new String(bvalues, prevIndex,
-                                        index - prevIndex, US_ASCII);
+                                        index - prevIndex,
+                                        StandardCharsets.US_ASCII);
                                 v.add(s);
                                 inString = false;
                             }

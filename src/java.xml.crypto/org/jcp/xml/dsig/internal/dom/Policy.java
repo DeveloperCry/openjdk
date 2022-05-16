@@ -43,13 +43,14 @@ import java.util.Set;
  */
 public final class Policy {
 
-    private static Set<URI> disallowedAlgs;
-    private static int maxTrans;
-    private static int maxRefs;
-    private static Set<String> disallowedRefUriSchemes;
-    private static Map<String, Integer> minKeyMap;
-    private static boolean noDuplicateIds;
-    private static boolean noRMLoops;
+    // all restrictions are initialized to be unconstrained
+    private static Set<URI> disallowedAlgs = new HashSet<>();
+    private static int maxTrans = Integer.MAX_VALUE;
+    private static int maxRefs = Integer.MAX_VALUE;
+    private static Set<String> disallowedRefUriSchemes = new HashSet<>();
+    private static Map<String, Integer> minKeyMap = new HashMap<>();
+    private static boolean noDuplicateIds = false;
+    private static boolean noRMLoops = false;
 
     static {
         try {
@@ -63,16 +64,6 @@ public final class Policy {
     private Policy() {}
 
     private static void initialize() {
-        // First initialized to be unconstrained and then parse the
-        // security property "jdk.xml.dsig.secureValidationPolicy"
-        disallowedAlgs = new HashSet<>();
-        maxTrans = Integer.MAX_VALUE;
-        maxRefs = Integer.MAX_VALUE;
-        disallowedRefUriSchemes = new HashSet<>();
-        minKeyMap = new HashMap<>();
-        noDuplicateIds = false;
-        noRMLoops = false;
-
         @SuppressWarnings("removal")
         String prop =
             AccessController.doPrivileged((PrivilegedAction<String>) () ->

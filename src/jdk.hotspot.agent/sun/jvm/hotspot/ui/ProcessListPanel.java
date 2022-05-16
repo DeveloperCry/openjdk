@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 import sun.jvm.hotspot.debugger.*;
@@ -201,7 +202,7 @@ public class ProcessListPanel extends JPanel {
           }
         };
     }
-    els.sort(c);
+    Collections.sort(els, c);
   }
 
   private javax.swing.Timer getTimer() {

@@ -28,6 +28,8 @@ package jdk.internal.foreign;
 import jdk.incubator.foreign.MemoryHandles;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
+import jdk.internal.access.JavaLangInvokeAccess;
+import jdk.internal.access.SharedSecrets;
 import jdk.internal.access.foreign.MemorySegmentProxy;
 
 import jdk.incubator.foreign.GroupLayout;
@@ -51,9 +53,11 @@ import java.util.function.UnaryOperator;
  * (see {@link #sequenceElement()}, {@link #sequenceElement(long)}, {@link #sequenceElement(long, long)}, {@link #groupElement(String)}).
  * Once a path has been fully constructed, clients can ask for the offset associated with the layout element selected
  * by the path (see {@link #offset}), or obtain a memory access var handle to access the selected layout element
- * given an address pointing to a segment associated with the root layout (see {@link #dereferenceHandle()}).
+ * given an address pointing to a segment associated with the root layout (see {@link #dereferenceHandle(Class)}).
  */
 public class LayoutPath {
+
+    private static final JavaLangInvokeAccess JLI = SharedSecrets.getJavaLangInvokeAccess();
 
     private static final MethodHandle ADD_STRIDE;
     private static final MethodHandle MH_ADD_SCALED_OFFSET;
@@ -152,10 +156,8 @@ public class LayoutPath {
         return offset;
     }
 
-    public VarHandle dereferenceHandle() {
-        if (!(layout instanceof ValueLayout valueLayout)) {
-            throw new IllegalArgumentException("Path does not select a value layout");
-        }
+    public VarHandle dereferenceHandle(Class<?> carrier) {
+        Utils.checkPrimitiveCarrierCompat(carrier, layout);
         checkAlignment(this);
 
         List<Class<?>> expectedCoordinates = new ArrayList<>();
@@ -163,7 +165,8 @@ public class LayoutPath {
         perms.addFirst(0);
         expectedCoordinates.add(MemorySegment.class);
 
-        VarHandle handle = Utils.makeMemoryAccessVarHandle(valueLayout, true);
+        VarHandle handle = Utils.fixUpVarHandle(JLI.memoryAccessVarHandle(carrier, true, layout.byteAlignment() - 1,
+                ((ValueLayout)layout).order()));
 
         for (int i = 0 ; i < strides.length ; i++) {
             expectedCoordinates.add(long.class);
@@ -223,13 +226,15 @@ public class LayoutPath {
         MemoryLayout newLayout = op.apply(layout);
         if (enclosing == null) {
             return newLayout;
-        } else if (enclosing.layout instanceof SequenceLayout seq) {
+        } else if (enclosing.layout instanceof SequenceLayout) {
+            SequenceLayout seq = (SequenceLayout)enclosing.layout;
             if (seq.elementCount().isPresent()) {
                 return enclosing.map(l -> dup(l, MemoryLayout.sequenceLayout(seq.elementCount().getAsLong(), newLayout)));
             } else {
                 return enclosing.map(l -> dup(l, MemoryLayout.sequenceLayout(newLayout)));
             }
-        } else if (enclosing.layout instanceof GroupLayout g) {
+        } else if (enclosing.layout instanceof GroupLayout) {
+            GroupLayout g = (GroupLayout)enclosing.layout;
             List<MemoryLayout> newElements = new ArrayList<>(g.memberLayouts());
             //if we selected a layout in a group we must have a valid index
             newElements.set((int)elementIndex, newLayout);
@@ -282,11 +287,11 @@ public class LayoutPath {
     private static void checkAlignment(LayoutPath path) {
         MemoryLayout layout = path.layout;
         long alignment = layout.bitAlignment();
-        if (!Utils.isAligned(path.offset, alignment)) {
+        if (path.offset % alignment != 0) {
             throw new UnsupportedOperationException("Invalid alignment requirements for layout " + layout);
         }
         for (long stride : path.strides) {
-            if (!Utils.isAligned(stride, alignment)) {
+            if (stride % alignment != 0) {
                 throw new UnsupportedOperationException("Alignment requirements for layout " + layout + " do not match stride " + stride);
             }
         }

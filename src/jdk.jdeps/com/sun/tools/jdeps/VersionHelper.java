@@ -55,10 +55,15 @@ public class VersionHelper {
                 String version = realName.substring(len, n);
                 assert (Integer.parseInt(version) > 8);
                 String name = cf.getName().replace('/', '.');
-                String v = nameToVersion.computeIfAbsent(name, _n -> version);
-                if (!version.equals(v)) {
-                    throw new MultiReleaseException("err.multirelease.version.associated",
-                                name, nameToVersion.get(name), version);
+                if (nameToVersion.containsKey(name)) {
+                    if (!version.equals(nameToVersion.get(name))) {
+                        throw new MultiReleaseException(
+                                "err.multirelease.version.associated",
+                                name, nameToVersion.get(name), version
+                        );
+                    }
+                } else {
+                    nameToVersion.put(name, version);
                 }
             } else {
                 throw new MultiReleaseException("err.multirelease.jar.malformed",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -130,7 +130,8 @@ public class BasicAttribute implements Attribute {
       * @see #contains
       */
     public boolean equals(Object obj) {
-        if (obj instanceof Attribute target) {
+        if ((obj != null) && (obj instanceof Attribute)) {
+            Attribute target = (Attribute)obj;
 
             // Check order first
             if (isOrdered() != target.isOrdered()) {

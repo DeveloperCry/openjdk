@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -203,8 +203,9 @@ public class SynthTreeUI extends BasicTreeUI
         TreeCellRenderer renderer = tree.getCellRenderer();
         DefaultTreeCellEditor editor;
 
-        if (renderer instanceof DefaultTreeCellRenderer defaultRenderer) {
-            editor = new SynthTreeCellEditor(tree, defaultRenderer);
+        if(renderer != null && (renderer instanceof DefaultTreeCellRenderer)) {
+            editor = new SynthTreeCellEditor(tree, (DefaultTreeCellRenderer)
+                                             renderer);
         }
         else {
             editor = new SynthTreeCellEditor(tree, null);

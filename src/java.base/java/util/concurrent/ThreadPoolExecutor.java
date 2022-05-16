@@ -1477,13 +1477,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * @implNote Previous versions of this class had a finalize method
      * that shut down this executor, but in this version, finalize
      * does nothing.
-     *
-     * @deprecated Finalization has been deprecated for removal.  See
-     * {@link java.lang.Object#finalize} for background information and details
-     * about migration options.
      */
-    @Deprecated(since="9", forRemoval=true)
-    @SuppressWarnings("removal")
+    @Deprecated(since="9")
     protected void finalize() {}
 
     /**

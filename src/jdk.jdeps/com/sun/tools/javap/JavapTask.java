@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -93,12 +93,11 @@ public class JavapTask implements DisassemblerTool.DisassemblerTask, Messages {
         }
 
         final String key;
-        @SuppressWarnings("serial") // Array component type is not Serializable
         final Object[] args;
         boolean showUsage;
     }
 
-    abstract static class Option {
+    static abstract class Option {
         Option(boolean hasArg, String... aliases) {
             this.hasArg = hasArg;
             this.aliases = aliases;

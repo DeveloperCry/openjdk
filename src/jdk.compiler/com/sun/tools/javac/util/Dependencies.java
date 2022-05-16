@@ -178,7 +178,7 @@ public abstract class Dependencies {
         /**
          * Class representing a node in the dependency graph.
          */
-        public abstract static class Node extends GraphUtils.AbstractNode<ClassSymbol, Node>
+        public static abstract class Node extends GraphUtils.AbstractNode<ClassSymbol, Node>
                 implements GraphUtils.DottableNode<ClassSymbol, Node> {
             /**
              * dependant nodes grouped by kind

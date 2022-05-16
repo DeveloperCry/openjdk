@@ -29,6 +29,7 @@ import java.nio.ByteOrder;
 import java.nio.ReadOnlyBufferException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -172,9 +173,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     final
     DoubleVector uOpTemplate(VectorMask<Double> m,
                                      FUnOp f) {
-        if (m == null) {
-            return uOpTemplate(f);
-        }
         double[] vec = vec();
         double[] res = new double[length()];
         boolean[] mbits = ((AbstractMask<Double>)m).getBits();
@@ -218,9 +216,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     DoubleVector bOpTemplate(Vector<Double> o,
                                      VectorMask<Double> m,
                                      FBinOp f) {
-        if (m == null) {
-            return bOpTemplate(o, f);
-        }
         double[] res = new double[length()];
         double[] vec1 = this.vec();
         double[] vec2 = ((DoubleVector)o).vec();
@@ -270,9 +265,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                      Vector<Double> o2,
                                      VectorMask<Double> m,
                                      FTriOp f) {
-        if (m == null) {
-            return tOpTemplate(o1, o2, f);
-        }
         double[] res = new double[length()];
         double[] vec1 = this.vec();
         double[] vec2 = ((DoubleVector)o1).vec();
@@ -288,22 +280,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
 
     /*package-private*/
     abstract
-    double rOp(double v, VectorMask<Double> m, FBinOp f);
-
-    @ForceInline
-    final
-    double rOpTemplate(double v, VectorMask<Double> m, FBinOp f) {
-        if (m == null) {
-            return rOpTemplate(v, f);
-        }
-        double[] vec = vec();
-        boolean[] mbits = ((AbstractMask<Double>)m).getBits();
-        for (int i = 0; i < vec.length; i++) {
-            v = mbits[i] ? f.apply(i, v, vec[i]) : v;
-        }
-        return v;
-    }
-
+    double rOp(double v, FBinOp f);
     @ForceInline
     final
     double rOpTemplate(double v, FBinOp f) {
@@ -402,7 +379,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         }
         return maskFactory(bits);
     }
-
 
     /*package-private*/
     @Override
@@ -563,80 +539,61 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         }
         int opc = opCode(op);
         return VectorSupport.unaryOp(
-            opc, getClass(), null, double.class, length(),
-            this, null,
-            UN_IMPL.find(op, opc, DoubleVector::unaryOperations));
+            opc, getClass(), double.class, length(),
+            this,
+            UN_IMPL.find(op, opc, (opc_) -> {
+              switch (opc_) {
+                case VECTOR_OP_NEG: return v0 ->
+                        v0.uOp((i, a) -> (double) -a);
+                case VECTOR_OP_ABS: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.abs(a));
+                case VECTOR_OP_SIN: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.sin(a));
+                case VECTOR_OP_COS: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.cos(a));
+                case VECTOR_OP_TAN: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.tan(a));
+                case VECTOR_OP_ASIN: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.asin(a));
+                case VECTOR_OP_ACOS: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.acos(a));
+                case VECTOR_OP_ATAN: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.atan(a));
+                case VECTOR_OP_EXP: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.exp(a));
+                case VECTOR_OP_LOG: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.log(a));
+                case VECTOR_OP_LOG10: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.log10(a));
+                case VECTOR_OP_SQRT: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.sqrt(a));
+                case VECTOR_OP_CBRT: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.cbrt(a));
+                case VECTOR_OP_SINH: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.sinh(a));
+                case VECTOR_OP_COSH: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.cosh(a));
+                case VECTOR_OP_TANH: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.tanh(a));
+                case VECTOR_OP_EXPM1: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.expm1(a));
+                case VECTOR_OP_LOG1P: return v0 ->
+                        v0.uOp((i, a) -> (double) Math.log1p(a));
+                default: return null;
+              }}));
     }
+    private static final
+    ImplCache<Unary,UnaryOperator<DoubleVector>> UN_IMPL
+        = new ImplCache<>(Unary.class, DoubleVector.class);
 
     /**
      * {@inheritDoc} <!--workaround-->
      */
-    @Override
-    public abstract
-    DoubleVector lanewise(VectorOperators.Unary op,
-                                  VectorMask<Double> m);
     @ForceInline
-    final
-    DoubleVector lanewiseTemplate(VectorOperators.Unary op,
-                                          Class<? extends VectorMask<Double>> maskClass,
-                                          VectorMask<Double> m) {
-        m.check(maskClass, this);
-        if (opKind(op, VO_SPECIAL)) {
-            if (op == ZOMO) {
-                return blend(broadcast(-1), compare(NE, 0, m));
-            }
-        }
-        int opc = opCode(op);
-        return VectorSupport.unaryOp(
-            opc, getClass(), maskClass, double.class, length(),
-            this, m,
-            UN_IMPL.find(op, opc, DoubleVector::unaryOperations));
-    }
-
-    private static final
-    ImplCache<Unary, UnaryOperation<DoubleVector, VectorMask<Double>>>
-        UN_IMPL = new ImplCache<>(Unary.class, DoubleVector.class);
-
-    private static UnaryOperation<DoubleVector, VectorMask<Double>> unaryOperations(int opc_) {
-        switch (opc_) {
-            case VECTOR_OP_NEG: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) -a);
-            case VECTOR_OP_ABS: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.abs(a));
-            case VECTOR_OP_SIN: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.sin(a));
-            case VECTOR_OP_COS: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.cos(a));
-            case VECTOR_OP_TAN: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.tan(a));
-            case VECTOR_OP_ASIN: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.asin(a));
-            case VECTOR_OP_ACOS: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.acos(a));
-            case VECTOR_OP_ATAN: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.atan(a));
-            case VECTOR_OP_EXP: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.exp(a));
-            case VECTOR_OP_LOG: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.log(a));
-            case VECTOR_OP_LOG10: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.log10(a));
-            case VECTOR_OP_SQRT: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.sqrt(a));
-            case VECTOR_OP_CBRT: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.cbrt(a));
-            case VECTOR_OP_SINH: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.sinh(a));
-            case VECTOR_OP_COSH: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.cosh(a));
-            case VECTOR_OP_TANH: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.tanh(a));
-            case VECTOR_OP_EXPM1: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.expm1(a));
-            case VECTOR_OP_LOG1P: return (v0, m) ->
-                    v0.uOp(m, (i, a) -> (double) Math.log1p(a));
-            default: return null;
-        }
+    public final
+    DoubleVector lanewise(VectorOperators.Unary op,
+                                  VectorMask<Double> m) {
+        return blend(lanewise(op), m);
     }
 
     // Binary lanewise support
@@ -656,7 +613,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                           Vector<Double> v) {
         DoubleVector that = (DoubleVector) v;
         that.check(this);
-
         if (opKind(op, VO_SPECIAL )) {
             if (op == FIRST_NONZERO) {
                 // FIXME: Support this in the JIT.
@@ -670,75 +626,48 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                     .viewAsFloatingLanes();
             }
         }
-
         int opc = opCode(op);
         return VectorSupport.binaryOp(
-            opc, getClass(), null, double.class, length(),
-            this, that, null,
-            BIN_IMPL.find(op, opc, DoubleVector::binaryOperations));
+            opc, getClass(), double.class, length(),
+            this, that,
+            BIN_IMPL.find(op, opc, (opc_) -> {
+              switch (opc_) {
+                case VECTOR_OP_ADD: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)(a + b));
+                case VECTOR_OP_SUB: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)(a - b));
+                case VECTOR_OP_MUL: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)(a * b));
+                case VECTOR_OP_DIV: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)(a / b));
+                case VECTOR_OP_MAX: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)Math.max(a, b));
+                case VECTOR_OP_MIN: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double)Math.min(a, b));
+                case VECTOR_OP_ATAN2: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double) Math.atan2(a, b));
+                case VECTOR_OP_POW: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double) Math.pow(a, b));
+                case VECTOR_OP_HYPOT: return (v0, v1) ->
+                        v0.bOp(v1, (i, a, b) -> (double) Math.hypot(a, b));
+                default: return null;
+                }}));
     }
+    private static final
+    ImplCache<Binary,BinaryOperator<DoubleVector>> BIN_IMPL
+        = new ImplCache<>(Binary.class, DoubleVector.class);
 
     /**
      * {@inheritDoc} <!--workaround-->
      * @see #lanewise(VectorOperators.Binary,double,VectorMask)
      */
-    @Override
-    public abstract
+    @ForceInline
+    public final
     DoubleVector lanewise(VectorOperators.Binary op,
                                   Vector<Double> v,
-                                  VectorMask<Double> m);
-    @ForceInline
-    final
-    DoubleVector lanewiseTemplate(VectorOperators.Binary op,
-                                          Class<? extends VectorMask<Double>> maskClass,
-                                          Vector<Double> v, VectorMask<Double> m) {
-        DoubleVector that = (DoubleVector) v;
-        that.check(this);
-        m.check(maskClass, this);
-
-        if (opKind(op, VO_SPECIAL )) {
-            if (op == FIRST_NONZERO) {
-                return blend(lanewise(op, v), m);
-            }
-        }
-
-        int opc = opCode(op);
-        return VectorSupport.binaryOp(
-            opc, getClass(), maskClass, double.class, length(),
-            this, that, m,
-            BIN_IMPL.find(op, opc, DoubleVector::binaryOperations));
+                                  VectorMask<Double> m) {
+        return blend(lanewise(op, v), m);
     }
-
-    private static final
-    ImplCache<Binary, BinaryOperation<DoubleVector, VectorMask<Double>>>
-        BIN_IMPL = new ImplCache<>(Binary.class, DoubleVector.class);
-
-    private static BinaryOperation<DoubleVector, VectorMask<Double>> binaryOperations(int opc_) {
-        switch (opc_) {
-            case VECTOR_OP_ADD: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)(a + b));
-            case VECTOR_OP_SUB: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)(a - b));
-            case VECTOR_OP_MUL: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)(a * b));
-            case VECTOR_OP_DIV: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)(a / b));
-            case VECTOR_OP_MAX: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)Math.max(a, b));
-            case VECTOR_OP_MIN: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double)Math.min(a, b));
-            case VECTOR_OP_OR: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> fromBits(toBits(a) | toBits(b)));
-            case VECTOR_OP_ATAN2: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double) Math.atan2(a, b));
-            case VECTOR_OP_POW: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double) Math.pow(a, b));
-            case VECTOR_OP_HYPOT: return (v0, v1, vm) ->
-                    v0.bOp(v1, vm, (i, a, b) -> (double) Math.hypot(a, b));
-            default: return null;
-        }
-    }
-
     // FIXME: Maybe all of the public final methods in this file (the
     // simple ones that just call lanewise) should be pushed down to
     // the X-VectorBits template.  They can't optimize properly at
@@ -795,7 +724,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     DoubleVector lanewise(VectorOperators.Binary op,
                                   double e,
                                   VectorMask<Double> m) {
-        return lanewise(op, broadcast(e), m);
+        return blend(lanewise(op, e), m);
     }
 
     /**
@@ -813,7 +742,8 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     DoubleVector lanewise(VectorOperators.Binary op,
                                   long e) {
         double e1 = (double) e;
-        if ((long)e1 != e) {
+        if ((long)e1 != e
+            ) {
             vspecies().checkValue(e);  // for exception
         }
         return lanewise(op, e1);
@@ -833,11 +763,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     public final
     DoubleVector lanewise(VectorOperators.Binary op,
                                   long e, VectorMask<Double> m) {
-        double e1 = (double) e;
-        if ((long)e1 != e) {
-            vspecies().checkValue(e);  // for exception
-        }
-        return lanewise(op, e1, m);
+        return blend(lanewise(op, e), m);
     }
 
 
@@ -879,10 +805,18 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         tother.check(this);
         int opc = opCode(op);
         return VectorSupport.ternaryOp(
-            opc, getClass(), null, double.class, length(),
-            this, that, tother, null,
-            TERN_IMPL.find(op, opc, DoubleVector::ternaryOperations));
+            opc, getClass(), double.class, length(),
+            this, that, tother,
+            TERN_IMPL.find(op, opc, (opc_) -> {
+              switch (opc_) {
+                case VECTOR_OP_FMA: return (v0, v1_, v2_) ->
+                        v0.tOp(v1_, v2_, (i, a, b, c) -> Math.fma(a, b, c));
+                default: return null;
+                }}));
     }
+    private static final
+    ImplCache<Ternary,TernaryOperation<DoubleVector>> TERN_IMPL
+        = new ImplCache<>(Ternary.class, DoubleVector.class);
 
     /**
      * {@inheritDoc} <!--workaround-->
@@ -890,45 +824,13 @@ public abstract class DoubleVector extends AbstractVector<Double> {
      * @see #lanewise(VectorOperators.Ternary,Vector,double,VectorMask)
      * @see #lanewise(VectorOperators.Ternary,double,Vector,VectorMask)
      */
-    @Override
-    public abstract
+    @ForceInline
+    public final
     DoubleVector lanewise(VectorOperators.Ternary op,
                                   Vector<Double> v1,
                                   Vector<Double> v2,
-                                  VectorMask<Double> m);
-    @ForceInline
-    final
-    DoubleVector lanewiseTemplate(VectorOperators.Ternary op,
-                                          Class<? extends VectorMask<Double>> maskClass,
-                                          Vector<Double> v1,
-                                          Vector<Double> v2,
-                                          VectorMask<Double> m) {
-        DoubleVector that = (DoubleVector) v1;
-        DoubleVector tother = (DoubleVector) v2;
-        // It's a word: https://www.dictionary.com/browse/tother
-        // See also Chapter 11 of Dickens, Our Mutual Friend:
-        // "Totherest Governor," replied Mr Riderhood...
-        that.check(this);
-        tother.check(this);
-        m.check(maskClass, this);
-
-        int opc = opCode(op);
-        return VectorSupport.ternaryOp(
-            opc, getClass(), maskClass, double.class, length(),
-            this, that, tother, m,
-            TERN_IMPL.find(op, opc, DoubleVector::ternaryOperations));
-    }
-
-    private static final
-    ImplCache<Ternary, TernaryOperation<DoubleVector, VectorMask<Double>>>
-        TERN_IMPL = new ImplCache<>(Ternary.class, DoubleVector.class);
-
-    private static TernaryOperation<DoubleVector, VectorMask<Double>> ternaryOperations(int opc_) {
-        switch (opc_) {
-            case VECTOR_OP_FMA: return (v0, v1_, v2_, m) ->
-                    v0.tOp(v1_, v2_, m, (i, a, b, c) -> Math.fma(a, b, c));
-            default: return null;
-        }
+                                  VectorMask<Double> m) {
+        return blend(lanewise(op, v1, v2), m);
     }
 
     /**
@@ -985,7 +887,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                   double e1,
                                   double e2,
                                   VectorMask<Double> m) {
-        return lanewise(op, broadcast(e1), broadcast(e2), m);
+        return blend(lanewise(op, e1, e2), m);
     }
 
     /**
@@ -1043,7 +945,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                   Vector<Double> v1,
                                   double e2,
                                   VectorMask<Double> m) {
-        return lanewise(op, v1, broadcast(e2), m);
+        return blend(lanewise(op, v1, e2), m);
     }
 
     /**
@@ -1100,7 +1002,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                   double e1,
                                   Vector<Double> v2,
                                   VectorMask<Double> m) {
-        return lanewise(op, broadcast(e1), v2, m);
+        return blend(lanewise(op, e1, v2), m);
     }
 
     // (Thus endeth the Great and Mighty Ternary Ogdoad.)
@@ -1744,40 +1646,20 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     final
     <M extends VectorMask<Double>>
     M compareTemplate(Class<M> maskType, Comparison op, Vector<Double> v) {
+        Objects.requireNonNull(v);
+        DoubleSpecies vsp = vspecies();
         DoubleVector that = (DoubleVector) v;
         that.check(this);
         int opc = opCode(op);
         return VectorSupport.compare(
             opc, getClass(), maskType, double.class, length(),
-            this, that, null,
-            (cond, v0, v1, m1) -> {
+            this, that,
+            (cond, v0, v1) -> {
                 AbstractMask<Double> m
                     = v0.bTest(cond, v1, (cond_, i, a, b)
                                -> compareWithOp(cond, a, b));
                 @SuppressWarnings("unchecked")
                 M m2 = (M) m;
-                return m2;
-            });
-    }
-
-    /*package-private*/
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    M compareTemplate(Class<M> maskType, Comparison op, Vector<Double> v, M m) {
-        DoubleVector that = (DoubleVector) v;
-        that.check(this);
-        m.check(maskType, this);
-        int opc = opCode(op);
-        return VectorSupport.compare(
-            opc, getClass(), maskType, double.class, length(),
-            this, that, m,
-            (cond, v0, v1, m1) -> {
-                AbstractMask<Double> cmpM
-                    = v0.bTest(cond, v1, (cond_, i, a, b)
-                               -> compareWithOp(cond, a, b));
-                @SuppressWarnings("unchecked")
-                M m2 = (M) cmpM.and(m1);
                 return m2;
             });
     }
@@ -1793,6 +1675,18 @@ public abstract class DoubleVector extends AbstractVector<Double> {
             case BT_ge -> a >= b;
             default -> throw new AssertionError();
         };
+    }
+
+    /**
+     * {@inheritDoc} <!--workaround-->
+     */
+    @Override
+    @ForceInline
+    public final
+    VectorMask<Double> compare(VectorOperators.Comparison op,
+                                  Vector<Double> v,
+                                  VectorMask<Double> m) {
+        return compare(op, v).and(m);
     }
 
     /**
@@ -1853,7 +1747,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     public final VectorMask<Double> compare(VectorOperators.Comparison op,
                                                double e,
                                                VectorMask<Double> m) {
-        return compare(op, broadcast(e), m);
+        return compare(op, e).and(m);
     }
 
     /**
@@ -2104,9 +1998,9 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     DoubleVector rearrangeTemplate(Class<S> shuffletype, S shuffle) {
         shuffle.checkIndexes();
         return VectorSupport.rearrangeOp(
-            getClass(), shuffletype, null, double.class, length(),
-            this, shuffle, null,
-            (v1, s_, m_) -> v1.uOp((i, a) -> {
+            getClass(), shuffletype, double.class, length(),
+            this, shuffle,
+            (v1, s_) -> v1.uOp((i, a) -> {
                 int ei = s_.laneSource(i);
                 return v1.lane(ei);
             }));
@@ -2123,25 +2017,24 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     /*package-private*/
     @ForceInline
     final
-    <S extends VectorShuffle<Double>, M extends VectorMask<Double>>
+    <S extends VectorShuffle<Double>>
     DoubleVector rearrangeTemplate(Class<S> shuffletype,
-                                           Class<M> masktype,
                                            S shuffle,
-                                           M m) {
-
-        m.check(masktype, this);
+                                           VectorMask<Double> m) {
+        DoubleVector unmasked =
+            VectorSupport.rearrangeOp(
+                getClass(), shuffletype, double.class, length(),
+                this, shuffle,
+                (v1, s_) -> v1.uOp((i, a) -> {
+                    int ei = s_.laneSource(i);
+                    return ei < 0 ? 0 : v1.lane(ei);
+                }));
         VectorMask<Double> valid = shuffle.laneIsValid();
         if (m.andNot(valid).anyTrue()) {
             shuffle.checkIndexes();
             throw new AssertionError();
         }
-        return VectorSupport.rearrangeOp(
-                   getClass(), shuffletype, masktype, double.class, length(),
-                   this, shuffle, m,
-                   (v1, s_, m_) -> v1.uOp((i, a) -> {
-                        int ei = s_.laneSource(i);
-                        return ei < 0  || !m_.laneIsSet(i) ? 0 : v1.lane(ei);
-                   }));
+        return broadcast((double)0).blend(unmasked, m);
     }
 
     /**
@@ -2164,17 +2057,17 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         S ws = (S) shuffle.wrapIndexes();
         DoubleVector r0 =
             VectorSupport.rearrangeOp(
-                getClass(), shuffletype, null, double.class, length(),
-                this, ws, null,
-                (v0, s_, m_) -> v0.uOp((i, a) -> {
+                getClass(), shuffletype, double.class, length(),
+                this, ws,
+                (v0, s_) -> v0.uOp((i, a) -> {
                     int ei = s_.laneSource(i);
                     return v0.lane(ei);
                 }));
         DoubleVector r1 =
             VectorSupport.rearrangeOp(
-                getClass(), shuffletype, null, double.class, length(),
-                v, ws, null,
-                (v1, s_, m_) -> v1.uOp((i, a) -> {
+                getClass(), shuffletype, double.class, length(),
+                v, ws,
+                (v1, s_) -> v1.uOp((i, a) -> {
                     int ei = s_.laneSource(i);
                     return v1.lane(ei);
                 }));
@@ -2415,18 +2308,9 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     @ForceInline
     final
     double reduceLanesTemplate(VectorOperators.Associative op,
-                               Class<? extends VectorMask<Double>> maskClass,
                                VectorMask<Double> m) {
-        m.check(maskClass, this);
-        if (op == FIRST_NONZERO) {
-            DoubleVector v = reduceIdentityVector(op).blend(this, m);
-            return v.reduceLanesTemplate(op);
-        }
-        int opc = opCode(op);
-        return fromBits(VectorSupport.reductionCoerced(
-            opc, getClass(), maskClass, double.class, length(),
-            this, m,
-            REDUCE_IMPL.find(op, opc, DoubleVector::reductionOperations)));
+        DoubleVector v = reduceIdentityVector(op).blend(this, m);
+        return v.reduceLanesTemplate(op);
     }
 
     /*package-private*/
@@ -2441,28 +2325,24 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         }
         int opc = opCode(op);
         return fromBits(VectorSupport.reductionCoerced(
-            opc, getClass(), null, double.class, length(),
-            this, null,
-            REDUCE_IMPL.find(op, opc, DoubleVector::reductionOperations)));
+            opc, getClass(), double.class, length(),
+            this,
+            REDUCE_IMPL.find(op, opc, (opc_) -> {
+              switch (opc_) {
+              case VECTOR_OP_ADD: return v ->
+                      toBits(v.rOp((double)0, (i, a, b) -> (double)(a + b)));
+              case VECTOR_OP_MUL: return v ->
+                      toBits(v.rOp((double)1, (i, a, b) -> (double)(a * b)));
+              case VECTOR_OP_MIN: return v ->
+                      toBits(v.rOp(MAX_OR_INF, (i, a, b) -> (double) Math.min(a, b)));
+              case VECTOR_OP_MAX: return v ->
+                      toBits(v.rOp(MIN_OR_INF, (i, a, b) -> (double) Math.max(a, b)));
+              default: return null;
+              }})));
     }
-
     private static final
-    ImplCache<Associative, ReductionOperation<DoubleVector, VectorMask<Double>>>
-        REDUCE_IMPL = new ImplCache<>(Associative.class, DoubleVector.class);
-
-    private static ReductionOperation<DoubleVector, VectorMask<Double>> reductionOperations(int opc_) {
-        switch (opc_) {
-            case VECTOR_OP_ADD: return (v, m) ->
-                    toBits(v.rOp((double)0, m, (i, a, b) -> (double)(a + b)));
-            case VECTOR_OP_MUL: return (v, m) ->
-                    toBits(v.rOp((double)1, m, (i, a, b) -> (double)(a * b)));
-            case VECTOR_OP_MIN: return (v, m) ->
-                    toBits(v.rOp(MAX_OR_INF, m, (i, a, b) -> (double) Math.min(a, b)));
-            case VECTOR_OP_MAX: return (v, m) ->
-                    toBits(v.rOp(MIN_OR_INF, m, (i, a, b) -> (double) Math.max(a, b)));
-            default: return null;
-        }
-    }
+    ImplCache<Associative,Function<DoubleVector,Long>> REDUCE_IMPL
+        = new ImplCache<>(Associative.class, DoubleVector.class);
 
     private
     @ForceInline
@@ -2668,7 +2548,9 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                        VectorMask<Double> m) {
         DoubleSpecies vsp = (DoubleSpecies) species;
         if (offset >= 0 && offset <= (a.length - species.vectorByteSize())) {
-            return vsp.dummyVector().fromByteArray0(a, offset, m).maybeSwap(bo);
+            DoubleVector zero = vsp.zero();
+            DoubleVector v = zero.fromByteArray0(a, offset);
+            return zero.blend(v.maybeSwap(bo), m);
         }
 
         // FIXME: optimize
@@ -2730,7 +2612,8 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                    VectorMask<Double> m) {
         DoubleSpecies vsp = (DoubleSpecies) species;
         if (offset >= 0 && offset <= (a.length - species.length())) {
-            return vsp.dummyVector().fromArray0(a, offset, m);
+            DoubleVector zero = vsp.zero();
+            return zero.blend(zero.fromArray0(a, offset), m);
         }
 
         // FIXME: optimize
@@ -2806,13 +2689,13 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         vix = VectorIntrinsics.checkIndex(vix, a.length);
 
         return VectorSupport.loadWithMap(
-            vectorType, null, double.class, vsp.laneCount(),
-            isp.vectorType(),
-            a, ARRAY_BASE, vix, null,
+            vectorType, double.class, vsp.laneCount(),
+            IntVector.species(vsp.indexShape()).vectorType(),
+            a, ARRAY_BASE, vix,
             a, offset, indexMap, mapOffset, vsp,
-            (c, idx, iMap, idy, s, vm) ->
+            (double[] c, int idx, int[] iMap, int idy, DoubleSpecies s) ->
             s.vOp(n -> c[idx + iMap[idy+n]]));
-    }
+        }
 
     /**
      * Gathers a new vector composed of elements from an array of type
@@ -2860,8 +2743,9 @@ public abstract class DoubleVector extends AbstractVector<Double> {
             return fromArray(species, a, offset, indexMap, mapOffset);
         }
         else {
+            // FIXME: Cannot vectorize yet, if there's a mask.
             DoubleSpecies vsp = (DoubleSpecies) species;
-            return vsp.dummyVector().fromArray0(a, offset, indexMap, mapOffset, m);
+            return vsp.vOp(m, n -> a[offset + indexMap[mapOffset + n]]);
         }
     }
 
@@ -2955,7 +2839,9 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                         VectorMask<Double> m) {
         DoubleSpecies vsp = (DoubleSpecies) species;
         if (offset >= 0 && offset <= (bb.limit() - species.vectorByteSize())) {
-            return vsp.dummyVector().fromByteBuffer0(bb, offset, m).maybeSwap(bo);
+            DoubleVector zero = vsp.zero();
+            DoubleVector v = zero.fromByteBuffer0(bb, offset);
+            return zero.blend(v.maybeSwap(bo), m);
         }
 
         // FIXME: optimize
@@ -3027,9 +2913,10 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         if (m.allTrue()) {
             intoArray(a, offset);
         } else {
+            // FIXME: optimize
             DoubleSpecies vsp = vspecies();
             checkMaskFromIndexSize(offset, vsp, m, 1, a.length);
-            intoArray0(a, offset, m);
+            stOp(a, offset, m, (arr, off, i, v) -> arr[off+i] = v);
         }
     }
 
@@ -3092,12 +2979,12 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         vix = VectorIntrinsics.checkIndex(vix, a.length);
 
         VectorSupport.storeWithMap(
-            vsp.vectorType(), null, vsp.elementType(), vsp.laneCount(),
+            vsp.vectorType(), vsp.elementType(), vsp.laneCount(),
             isp.vectorType(),
             a, arrayAddress(a, 0), vix,
-            this, null,
+            this,
             a, offset, indexMap, mapOffset,
-            (arr, off, v, map, mo, vm)
+            (arr, off, v, map, mo)
             -> v.stOp(arr, off,
                       (arr_, off_, i, e) -> {
                           int j = map[mo + i];
@@ -3144,7 +3031,12 @@ public abstract class DoubleVector extends AbstractVector<Double> {
             intoArray(a, offset, indexMap, mapOffset);
         }
         else {
-            intoArray0(a, offset, indexMap, mapOffset, m);
+            // FIXME: Cannot vectorize yet, if there's a mask.
+            stOp(a, offset, m,
+                 (arr, off, i, e) -> {
+                     int j = indexMap[mapOffset + i];
+                     arr[off + j] = e;
+                 });
         }
     }
 
@@ -3174,9 +3066,12 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         if (m.allTrue()) {
             intoByteArray(a, offset, bo);
         } else {
+            // FIXME: optimize
             DoubleSpecies vsp = vspecies();
             checkMaskFromIndexSize(offset, vsp, m, 8, a.length);
-            maybeSwap(bo).intoByteArray0(a, offset, m);
+            ByteBuffer wb = wrapper(a, bo);
+            this.stOp(wb, offset, m,
+                    (wb_, o, i, e) -> wb_.putDouble(o + i * 8, e));
         }
     }
 
@@ -3188,7 +3083,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     public final
     void intoByteBuffer(ByteBuffer bb, int offset,
                         ByteOrder bo) {
-        if (ScopedMemoryAccess.isReadOnly(bb)) {
+        if (bb.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
         offset = checkFromIndexSize(offset, byteSize(), bb.limit());
@@ -3207,12 +3102,15 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         if (m.allTrue()) {
             intoByteBuffer(bb, offset, bo);
         } else {
+            // FIXME: optimize
             if (bb.isReadOnly()) {
                 throw new ReadOnlyBufferException();
             }
             DoubleSpecies vsp = vspecies();
             checkMaskFromIndexSize(offset, vsp, m, 8, bb.limit());
-            maybeSwap(bo).intoByteBuffer0(bb, offset, m);
+            ByteBuffer wb = wrapper(bb, bo);
+            this.stOp(wb, offset, m,
+                    (wb_, o, i, e) -> wb_.putDouble(o + i * 8, e));
         }
     }
 
@@ -3250,75 +3148,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                                     (arr_, off_, i) -> arr_[off_ + i]));
     }
 
-    /*package-private*/
-    abstract
-    DoubleVector fromArray0(double[] a, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    DoubleVector fromArray0Template(Class<M> maskClass, double[] a, int offset, M m) {
-        m.check(species());
-        DoubleSpecies vsp = vspecies();
-        return VectorSupport.loadMasked(
-            vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-            a, arrayAddress(a, offset), m,
-            a, offset, vsp,
-            (arr, off, s, vm) -> s.ldOp(arr, off, vm,
-                                        (arr_, off_, i) -> arr_[off_ + i]));
-    }
-
-    /*package-private*/
-    abstract
-    DoubleVector fromArray0(double[] a, int offset,
-                                    int[] indexMap, int mapOffset,
-                                    VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    DoubleVector fromArray0Template(Class<M> maskClass, double[] a, int offset,
-                                            int[] indexMap, int mapOffset, M m) {
-        DoubleSpecies vsp = vspecies();
-        IntVector.IntSpecies isp = IntVector.species(vsp.indexShape());
-        Objects.requireNonNull(a);
-        Objects.requireNonNull(indexMap);
-        m.check(vsp);
-        Class<? extends DoubleVector> vectorType = vsp.vectorType();
-
-        if (vsp.laneCount() == 1) {
-          return DoubleVector.fromArray(vsp, a, offset + indexMap[mapOffset], m);
-        }
-
-        // Index vector: vix[0:n] = k -> offset + indexMap[mapOffset + k]
-        IntVector vix;
-        if (isp.laneCount() != vsp.laneCount()) {
-            // For DoubleMaxVector,  if vector length is non-power-of-two or
-            // 2048 bits, indexShape of Double species is S_MAX_BIT.
-            // Assume that vector length is 2048, then the lane count of Double
-            // vector is 32. When converting Double species to int species,
-            // indexShape is still S_MAX_BIT, but the lane count of int vector
-            // is 64. So when loading index vector (IntVector), only lower half
-            // of index data is needed.
-            vix = IntVector
-                .fromArray(isp, indexMap, mapOffset, IntMaxVector.IntMaxMask.LOWER_HALF_TRUE_MASK)
-                .add(offset);
-        } else {
-            vix = IntVector
-                .fromArray(isp, indexMap, mapOffset)
-                .add(offset);
-        }
-
-        // FIXME: Check index under mask controlling.
-        vix = VectorIntrinsics.checkIndex(vix, a.length);
-
-        return VectorSupport.loadWithMap(
-            vectorType, maskClass, double.class, vsp.laneCount(),
-            isp.vectorType(),
-            a, ARRAY_BASE, vix, m,
-            a, offset, indexMap, mapOffset, vsp,
-            (c, idx, iMap, idy, s, vm) ->
-            s.vOp(vm, n -> c[idx + iMap[idy+n]]));
-    }
-
 
 
     @Override
@@ -3340,25 +3169,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     }
 
     abstract
-    DoubleVector fromByteArray0(byte[] a, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    DoubleVector fromByteArray0Template(Class<M> maskClass, byte[] a, int offset, M m) {
-        DoubleSpecies vsp = vspecies();
-        m.check(vsp);
-        return VectorSupport.loadMasked(
-            vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-            a, byteArrayAddress(a, offset), m,
-            a, offset, vsp,
-            (arr, off, s, vm) -> {
-                ByteBuffer wb = wrapper(arr, NATIVE_ENDIAN);
-                return s.ldOp(wb, off, vm,
-                        (wb_, o, i) -> wb_.getDouble(o + i * 8));
-            });
-    }
-
-    abstract
     DoubleVector fromByteBuffer0(ByteBuffer bb, int offset);
     @ForceInline
     final
@@ -3370,24 +3180,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                 (buf, off, s) -> {
                     ByteBuffer wb = wrapper(buf, NATIVE_ENDIAN);
                     return s.ldOp(wb, off,
-                            (wb_, o, i) -> wb_.getDouble(o + i * 8));
-                });
-    }
-
-    abstract
-    DoubleVector fromByteBuffer0(ByteBuffer bb, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    DoubleVector fromByteBuffer0Template(Class<M> maskClass, ByteBuffer bb, int offset, M m) {
-        DoubleSpecies vsp = vspecies();
-        m.check(vsp);
-        return ScopedMemoryAccess.loadFromByteBufferMasked(
-                vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-                bb, offset, m, vsp,
-                (buf, off, s, vm) -> {
-                    ByteBuffer wb = wrapper(buf, NATIVE_ENDIAN);
-                    return s.ldOp(wb, off, vm,
                             (wb_, o, i) -> wb_.getDouble(o + i * 8));
                 });
     }
@@ -3412,77 +3204,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
     }
 
     abstract
-    void intoArray0(double[] a, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    void intoArray0Template(Class<M> maskClass, double[] a, int offset, M m) {
-        m.check(species());
-        DoubleSpecies vsp = vspecies();
-        VectorSupport.storeMasked(
-            vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-            a, arrayAddress(a, offset),
-            this, m, a, offset,
-            (arr, off, v, vm)
-            -> v.stOp(arr, off, vm,
-                      (arr_, off_, i, e) -> arr_[off_ + i] = e));
-    }
-
-    abstract
-    void intoArray0(double[] a, int offset,
-                    int[] indexMap, int mapOffset,
-                    VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    void intoArray0Template(Class<M> maskClass, double[] a, int offset,
-                            int[] indexMap, int mapOffset, M m) {
-        m.check(species());
-        DoubleSpecies vsp = vspecies();
-        IntVector.IntSpecies isp = IntVector.species(vsp.indexShape());
-        if (vsp.laneCount() == 1) {
-            intoArray(a, offset + indexMap[mapOffset], m);
-            return;
-        }
-
-        // Index vector: vix[0:n] = i -> offset + indexMap[mo + i]
-        IntVector vix;
-        if (isp.laneCount() != vsp.laneCount()) {
-            // For DoubleMaxVector,  if vector length  is 2048 bits, indexShape
-            // of Double species is S_MAX_BIT. and the lane count of Double
-            // vector is 32. When converting Double species to int species,
-            // indexShape is still S_MAX_BIT, but the lane count of int vector
-            // is 64. So when loading index vector (IntVector), only lower half
-            // of index data is needed.
-            vix = IntVector
-                .fromArray(isp, indexMap, mapOffset, IntMaxVector.IntMaxMask.LOWER_HALF_TRUE_MASK)
-                .add(offset);
-        } else {
-            vix = IntVector
-                .fromArray(isp, indexMap, mapOffset)
-                .add(offset);
-        }
-
-
-        // FIXME: Check index under mask controlling.
-        vix = VectorIntrinsics.checkIndex(vix, a.length);
-
-        VectorSupport.storeWithMap(
-            vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-            isp.vectorType(),
-            a, arrayAddress(a, 0), vix,
-            this, m,
-            a, offset, indexMap, mapOffset,
-            (arr, off, v, map, mo, vm)
-            -> v.stOp(arr, off, vm,
-                      (arr_, off_, i, e) -> {
-                          int j = map[mo + i];
-                          arr[off + j] = e;
-                      }));
-    }
-
-
-    abstract
     void intoByteArray0(byte[] a, int offset);
     @ForceInline
     final
@@ -3495,25 +3216,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
             (arr, off, v) -> {
                 ByteBuffer wb = wrapper(arr, NATIVE_ENDIAN);
                 v.stOp(wb, off,
-                        (tb_, o, i, e) -> tb_.putDouble(o + i * 8, e));
-            });
-    }
-
-    abstract
-    void intoByteArray0(byte[] a, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    void intoByteArray0Template(Class<M> maskClass, byte[] a, int offset, M m) {
-        DoubleSpecies vsp = vspecies();
-        m.check(vsp);
-        VectorSupport.storeMasked(
-            vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-            a, byteArrayAddress(a, offset),
-            this, m, a, offset,
-            (arr, off, v, vm) -> {
-                ByteBuffer wb = wrapper(arr, NATIVE_ENDIAN);
-                v.stOp(wb, off, vm,
                         (tb_, o, i, e) -> tb_.putDouble(o + i * 8, e));
             });
     }
@@ -3531,25 +3233,6 @@ public abstract class DoubleVector extends AbstractVector<Double> {
                             (wb_, o, i, e) -> wb_.putDouble(o + i * 8, e));
                 });
     }
-
-    abstract
-    void intoByteBuffer0(ByteBuffer bb, int offset, VectorMask<Double> m);
-    @ForceInline
-    final
-    <M extends VectorMask<Double>>
-    void intoByteBuffer0Template(Class<M> maskClass, ByteBuffer bb, int offset, M m) {
-        DoubleSpecies vsp = vspecies();
-        m.check(vsp);
-        ScopedMemoryAccess.storeIntoByteBufferMasked(
-                vsp.vectorType(), maskClass, vsp.elementType(), vsp.laneCount(),
-                this, m, bb, offset,
-                (buf, off, v, vm) -> {
-                    ByteBuffer wb = wrapper(buf, NATIVE_ENDIAN);
-                    v.stOp(wb, off, vm,
-                            (wb_, o, i, e) -> wb_.putDouble(o + i * 8, e));
-                });
-    }
-
 
     // End of low-level memory operations.
 
@@ -3868,7 +3551,7 @@ public abstract class DoubleVector extends AbstractVector<Double> {
         /*package-private*/
         @ForceInline
         <M> DoubleVector ldOp(M memory, int offset,
-                                      VectorMask<Double> m,
+                                      AbstractMask<Double> m,
                                       FLdOp<M> f) {
             return dummyVector().ldOp(memory, offset, m, f);
         }

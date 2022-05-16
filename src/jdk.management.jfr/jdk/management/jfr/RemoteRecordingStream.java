@@ -520,44 +520,47 @@ public final class RemoteRecordingStream implements EventStream {
 
     @Override
     public void start() {
-        ensureStartable();
-        try {
+        synchronized (lock) { // ensure one starter
+            ensureStartable();
             try {
-                mbean.startRecording(recordingId);
-            } catch (IllegalStateException ise) {
-                throw ise;
+                try {
+                    mbean.startRecording(recordingId);
+                } catch (IllegalStateException ise) {
+                    throw ise;
+                }
+                startDownload();
+            } catch (Exception e) {
+                ManagementSupport.logDebug(e.getMessage());
+                close();
+                return;
             }
-            startDownload();
-        } catch (Exception e) {
-            ManagementSupport.logDebug(e.getMessage());
-            close();
-            return;
+            stream.start();
+            started = true;
         }
-        stream.start();
     }
 
     @Override
     public void startAsync() {
-        ensureStartable();
-        stream.startAsync();
-        try {
-            mbean.startRecording(recordingId);
-            startDownload();
-        } catch (Exception e) {
-            ManagementSupport.logDebug(e.getMessage());
-            close();
+        synchronized (lock) { // ensure one starter
+            ensureStartable();
+            stream.startAsync();
+            try {
+                mbean.startRecording(recordingId);
+                startDownload();
+            } catch (Exception e) {
+                ManagementSupport.logDebug(e.getMessage());
+                close();
+            }
+            started = true;
         }
     }
 
     private void ensureStartable() {
-        synchronized (lock) {
-            if (closed) {
-                throw new IllegalStateException("Event stream is closed");
-            }
-            if (started) {
-                throw new IllegalStateException("Event stream can only be started once");
-            }
-            started = true;
+        if (closed) {
+            throw new IllegalStateException("Event stream is closed");
+        }
+        if (started) {
+            throw new IllegalStateException("Event stream can only be started once");
         }
     }
 

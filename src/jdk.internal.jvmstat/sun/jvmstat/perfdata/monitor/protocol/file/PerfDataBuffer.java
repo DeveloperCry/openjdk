@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,7 @@ package sun.jvmstat.perfdata.monitor.protocol.file;
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.perfdata.monitor.*;
 import java.io.*;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -59,9 +60,9 @@ public class PerfDataBuffer extends AbstractPerfDataBuffer {
             FileChannel fc = new RandomAccessFile(f, mode).getChannel();
             ByteBuffer bb = null;
 
-            if (mode.equals("r")) {
+            if (mode.compareTo("r") == 0) {
                 bb = fc.map(FileChannel.MapMode.READ_ONLY, 0L, (int)fc.size());
-            } else if (mode.equals("rw")) {
+            } else if (mode.compareTo("rw") == 0) {
                 bb = fc.map(FileChannel.MapMode.READ_WRITE, 0L, (int)fc.size());
             } else {
                 throw new IllegalArgumentException("Invalid mode: " + mode);

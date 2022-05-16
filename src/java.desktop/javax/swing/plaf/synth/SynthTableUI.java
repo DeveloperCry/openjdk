@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -713,7 +713,7 @@ public class SynthTableUI extends BasicTableUI
      * The renderer installed by the UI to render the boolean data.
      */
     @SuppressWarnings("serial") // Superclass is not serializable across versions
-    private static class SynthBooleanTableCellRenderer extends JCheckBox implements
+    private class SynthBooleanTableCellRenderer extends JCheckBox implements
                       TableCellRenderer {
         private boolean isRowSelected;
 

@@ -68,7 +68,7 @@ import sun.swing.SwingUtilities2.RepaintListener;
  * @author Artem Ananiev
  * @author Anton Tarasov
  */
-@SuppressWarnings("serial") // JDK-implementation class
+@SuppressWarnings({"removal","serial"}) // JDK-implementation class
 public final class JLightweightFrame extends LightweightFrame implements RootPaneContainer {
 
     private final JRootPane rootPane = new JRootPane();
@@ -83,18 +83,6 @@ public final class JLightweightFrame extends LightweightFrame implements RootPan
     private volatile double scaleFactorX;
     private volatile double scaleFactorY;
 
-    private PropertyChangeListener layoutSizeListener;
-    private RepaintListener repaintListener;
-
-    static {
-        SwingAccessor.setJLightweightFrameAccessor(new SwingAccessor.JLightweightFrameAccessor() {
-            @Override
-            public void updateCursor(JLightweightFrame frame) {
-                frame.updateClientCursor();
-            }
-        });
-    }
-
     /**
      * {@code copyBufferEnabled}, true by default, defines the following strategy.
      * A duplicating (copy) buffer is created for the original pixel buffer.
@@ -105,16 +93,27 @@ public final class JLightweightFrame extends LightweightFrame implements RootPan
      * by the lock (managed with the {@link LightweightContent#paintLock()},
      * {@link LightweightContent#paintUnlock()} methods).
      */
-    @SuppressWarnings("removal")
-    private static boolean copyBufferEnabled = "true".equals(AccessController.
-            doPrivileged(new GetPropertyAction("swing.jlf.copyBufferEnabled", "true")));
+    private static boolean copyBufferEnabled;
     private int[] copyBuffer;
+
+    private PropertyChangeListener layoutSizeListener;
+    private RepaintListener repaintListener;
+
+    static {
+        SwingAccessor.setJLightweightFrameAccessor(new SwingAccessor.JLightweightFrameAccessor() {
+            @Override
+            public void updateCursor(JLightweightFrame frame) {
+                frame.updateClientCursor();
+            }
+        });
+        copyBufferEnabled = "true".equals(AccessController.
+            doPrivileged(new GetPropertyAction("swing.jlf.copyBufferEnabled", "true")));
+    }
 
     /**
      * Constructs a new, initially invisible {@code JLightweightFrame}
      * instance.
      */
-    @SuppressWarnings("removal")
     public JLightweightFrame() {
         super();
         AffineTransform defaultTransform =
@@ -331,7 +330,7 @@ public final class JLightweightFrame extends LightweightFrame implements RootPan
         content.imageUpdated(x, y, width, height);
     }
 
-    @SuppressWarnings({"removal","serial"}) // anonymous class inside
+    @SuppressWarnings("serial") // anonymous class inside
     private void initInterior() {
         contentPane = new JPanel() {
             @Override

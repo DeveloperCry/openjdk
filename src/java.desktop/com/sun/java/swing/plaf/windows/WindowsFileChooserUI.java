@@ -47,7 +47,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Vector;
@@ -1054,7 +1053,7 @@ public class WindowsFileChooserUI extends BasicFileChooserUI {
     }
 
     static final int space = 10;
-    static class IndentIcon implements Icon {
+    class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -1140,9 +1139,9 @@ public class WindowsFileChooserUI extends BasicFileChooserUI {
                 File sf = useShellFolder ? ShellFolder.getShellFolder(canonical)
                                          : canonical;
                 File f = sf;
-                ArrayList<File> path = new ArrayList<File>(10);
+                Vector<File> path = new Vector<File>(10);
                 do {
-                    path.add(f);
+                    path.addElement(f);
                 } while ((f = f.getParentFile()) != null);
 
                 int pathCount = path.size();
@@ -1221,8 +1220,8 @@ public class WindowsFileChooserUI extends BasicFileChooserUI {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            if (value instanceof FileFilter fileFilter) {
-                setText(fileFilter.getDescription());
+            if (value != null && value instanceof FileFilter) {
+                setText(((FileFilter)value).getDescription());
             }
 
             return this;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,7 @@
 
 package jdk.jfr.internal.dcmd;
 
-import java.io.IOException;
+
 
 import jdk.jfr.FlightRecorder;
 import jdk.jfr.internal.LogLevel;
@@ -106,11 +106,7 @@ final class DCmdConfigure extends AbstractDCmd {
         }
 
         if (dumpPath != null)  {
-            try {
-                Options.setDumpPath(new SafePath(dumpPath));
-            } catch (IOException e) {
-                throw new DCmdException("Could not set " + dumpPath + " to emergency dump path. " + e.getMessage(), e);
-            }
+            Options.setDumpPath(new SafePath(dumpPath));
             Logger.log(LogTag.JFR, LogLevel.INFO, "Emergency dump path set to " + dumpPath);
            if (verbose) {
                printDumpPath();
@@ -187,7 +183,6 @@ final class DCmdConfigure extends AbstractDCmd {
             println("Current configuration:");
             println();
             printRepositoryPath();
-            printDumpPath();
             printStackDepth();
             printGlobalBufferCount();
             printGlobalBufferSize();

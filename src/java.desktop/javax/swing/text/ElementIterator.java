@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -78,7 +78,7 @@ public class ElementIterator implements Cloneable {
      * vector of children of the element. In this case, the item on the stack
      * represents the "index"th child of the element.
      */
-    private static class StackItem implements Cloneable {
+    private class StackItem implements Cloneable {
         Element item;
         int childIndex;
 

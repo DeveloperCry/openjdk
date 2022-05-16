@@ -33,14 +33,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +51,7 @@ import sun.jvm.hotspot.debugger.Address;
 import sun.jvm.hotspot.debugger.OopHandle;
 import sun.jvm.hotspot.classfile.ClassLoaderDataGraph;
 import sun.jvm.hotspot.memory.FileMapInfo;
+import sun.jvm.hotspot.memory.SystemDictionary;
 import sun.jvm.hotspot.memory.Universe;
 import sun.jvm.hotspot.gc.shared.CollectedHeap;
 import sun.jvm.hotspot.gc.g1.G1CollectedHeap;
@@ -93,9 +93,11 @@ import sun.jvm.hotspot.ui.tree.OopTreeNodeAdapter;
 import sun.jvm.hotspot.ui.tree.SimpleTreeNode;
 import sun.jvm.hotspot.utilities.AddressOps;
 import sun.jvm.hotspot.utilities.Assert;
+import sun.jvm.hotspot.utilities.CompactHashTable;
 import sun.jvm.hotspot.utilities.HeapProgressThunk;
 import sun.jvm.hotspot.utilities.LivenessPathElement;
 import sun.jvm.hotspot.utilities.MethodArray;
+import sun.jvm.hotspot.utilities.ObjectReader;
 import sun.jvm.hotspot.utilities.PointerFinder;
 import sun.jvm.hotspot.utilities.PointerLocation;
 import sun.jvm.hotspot.utilities.ReversePtrs;
@@ -129,7 +131,7 @@ public class CommandProcessor {
             if (kls.getClassLoader() == null) return false;
             if (emitted.get(kls.getName()) != null) {
                 // Since multiple class loaders are being shoved
-                // together duplicate classes are a possibility.  For
+                // together duplicate classes are a possibilty.  For
                 // now just ignore them.
                 return false;
             }
@@ -234,7 +236,9 @@ public class CommandProcessor {
         }
 
         String at(int i) {
-            Objects.checkIndex(i, length);
+            if (i < 0 || i >= length) {
+                throw new IndexOutOfBoundsException(String.valueOf(i));
+            }
             return tokens[i];
         }
     }
@@ -433,6 +437,7 @@ public class CommandProcessor {
                     Matcher m2 = args2.matcher(arg);
                     Address start = null;
                     Address end   = null;
+                    String format = "";
                     int formatSize = (int)VM.getVM().getAddressSize();
 
                     if (m1.matches()) {
@@ -981,7 +986,7 @@ public class CommandProcessor {
                 Iterator i = agent.getTypeDataBase().getTypes();
                 // Make sure the types are emitted in an order than can be read back in
                 HashSet<String> emitted = new HashSet<>();
-                ArrayDeque<Type> pending = new ArrayDeque<>();
+                Stack<Type> pending = new Stack<>();
                 while (i.hasNext()) {
                     Type n = (Type)i.next();
                     if (emitted.contains(n.getName())) {
@@ -992,7 +997,7 @@ public class CommandProcessor {
                         pending.push(n);
                         n = n.getSuperclass();
                     }
-                    while (!pending.isEmpty()) {
+                    while (!pending.empty()) {
                         n = (Type)pending.pop();
                         dumpType(n);
                         emitted.add(n.getName());
@@ -1377,7 +1382,7 @@ public class CommandProcessor {
                     Iterator i = agent.getTypeDataBase().getTypes();
                     // Make sure the types are emitted in an order than can be read back in
                     HashSet<String> emitted = new HashSet<>();
-                    ArrayDeque<Type> pending = new ArrayDeque<>();
+                    Stack<Type> pending = new Stack<>();
                     while (i.hasNext()) {
                         Type n = (Type)i.next();
                         if (emitted.contains(n.getName())) {
@@ -1388,7 +1393,7 @@ public class CommandProcessor {
                             pending.push(n);
                             n = n.getSuperclass();
                         }
-                        while (!pending.isEmpty()) {
+                        while (!pending.empty()) {
                             n = (Type)pending.pop();
                             dumpType(n);
                             emitted.add(n.getName());

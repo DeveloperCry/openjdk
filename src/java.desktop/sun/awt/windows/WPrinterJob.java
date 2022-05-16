@@ -731,7 +731,8 @@ public final class WPrinterJob extends RasterPrinterJob
                      */
                     if (attr.getCategory() == SunAlternateMedia.class) {
                         Media media = (Media)attributes.get(Media.class);
-                        if (!(media instanceof MediaTray)) {
+                        if (media == null ||
+                            !(media instanceof MediaTray)) {
                             attr = ((SunAlternateMedia)attr).getMedia();
                         }
                     }
@@ -2296,7 +2297,7 @@ public final class WPrinterJob extends RasterPrinterJob
     }
 
 @SuppressWarnings("serial") // JDK-implementation class
-static class PrintToFileErrorDialog extends Dialog implements ActionListener {
+class PrintToFileErrorDialog extends Dialog implements ActionListener{
     public PrintToFileErrorDialog(Frame parent, String title, String message,
                            String buttonText) {
         super(parent, title, true);

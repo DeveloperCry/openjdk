@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -299,9 +299,8 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      * The returned array represents the union of locales supported by the
      * Java runtime and by installed
      * {@link java.text.spi.DateFormatSymbolsProvider DateFormatSymbolsProvider}
-     * implementations. At a minimum, the returned array must contain a
-     * {@code Locale} instance equal to {@link Locale#ROOT Locale.ROOT} and
-     * a {@code Locale} instance equal to {@link Locale#US Locale.US}.
+     * implementations.  It must contain at least a {@code Locale}
+     * instance equal to {@link java.util.Locale#US Locale.US}.
      *
      * @return An array of locales for which localized
      *         {@code DateFormatSymbols} instances are available.

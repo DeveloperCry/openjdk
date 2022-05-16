@@ -118,13 +118,11 @@ public class PrintWriter extends Writer {
      * Creates a new PrintWriter, without automatic line flushing, from an
      * existing OutputStream.  This convenience constructor creates the
      * necessary intermediate OutputStreamWriter, which will convert characters
-     * into bytes using the default charset, or where {@code out} is a
-     * {@code PrintStream}, the charset used by the print stream.
+     * into bytes using the default character encoding.
      *
      * @param  out        An output stream
      *
-     * @see OutputStreamWriter#OutputStreamWriter(OutputStream)
-     * @see Charset#defaultCharset()
+     * @see java.io.OutputStreamWriter#OutputStreamWriter(java.io.OutputStream)
      */
     public PrintWriter(OutputStream out) {
         this(out, false);
@@ -133,20 +131,18 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter from an existing OutputStream.  This
      * convenience constructor creates the necessary intermediate
-     * OutputStreamWriter, which will convert characters into bytes using
-     * the default charset, or where {@code out} is a {@code PrintStream},
-     * the charset used by the print stream.
+     * OutputStreamWriter, which will convert characters into bytes using the
+     * default character encoding.
      *
      * @param  out        An output stream
      * @param  autoFlush  A boolean; if true, the {@code println},
      *                    {@code printf}, or {@code format} methods will
      *                    flush the output buffer
      *
-     * @see OutputStreamWriter#OutputStreamWriter(OutputStream)
-     * @see Charset#defaultCharset()
+     * @see java.io.OutputStreamWriter#OutputStreamWriter(java.io.OutputStream)
      */
     public PrintWriter(OutputStream out, boolean autoFlush) {
-        this(out, autoFlush, out instanceof PrintStream ps ? ps.charset() : Charset.defaultCharset());
+        this(out, autoFlush, Charset.defaultCharset());
     }
 
     /**
@@ -160,7 +156,7 @@ public class PrintWriter extends Writer {
      *                    {@code printf}, or {@code format} methods will
      *                    flush the output buffer
      * @param  charset
-     *         A {@linkplain Charset charset}
+     *         A {@linkplain java.nio.charset.Charset charset}
      *
      * @since 10
      */
@@ -176,9 +172,9 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file name.  This convenience constructor creates the necessary
-     * intermediate {@link OutputStreamWriter OutputStreamWriter},
+     * intermediate {@link java.io.OutputStreamWriter OutputStreamWriter},
      * which will encode characters using the {@linkplain
-     * Charset#defaultCharset() default charset} for this
+     * java.nio.charset.Charset#defaultCharset() default charset} for this
      * instance of the Java virtual machine.
      *
      * @param  fileName
@@ -197,7 +193,6 @@ public class PrintWriter extends Writer {
      *          If a security manager is present and {@link
      *          SecurityManager#checkWrite checkWrite(fileName)} denies write
      *          access to the file
-     * @see Charset#defaultCharset()
      *
      * @since  1.5
      */
@@ -217,7 +212,7 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file name and charset.  This convenience constructor creates
-     * the necessary intermediate {@link OutputStreamWriter
+     * the necessary intermediate {@link java.io.OutputStreamWriter
      * OutputStreamWriter}, which will encode characters using the provided
      * charset.
      *
@@ -228,7 +223,8 @@ public class PrintWriter extends Writer {
      *         written to the file and is buffered.
      *
      * @param  csn
-     *         The name of a supported {@linkplain Charset charset}
+     *         The name of a supported {@linkplain java.nio.charset.Charset
+     *         charset}
      *
      * @throws  FileNotFoundException
      *          If the given string does not denote an existing, writable
@@ -255,7 +251,7 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file name and charset.  This convenience constructor creates
-     * the necessary intermediate {@link OutputStreamWriter
+     * the necessary intermediate {@link java.io.OutputStreamWriter
      * OutputStreamWriter}, which will encode characters using the provided
      * charset.
      *
@@ -266,7 +262,7 @@ public class PrintWriter extends Writer {
      *         written to the file and is buffered.
      *
      * @param  charset
-     *         A {@linkplain Charset charset}
+     *         A {@linkplain java.nio.charset.Charset charset}
      *
      * @throws  IOException
      *          if an I/O error occurs while opening or creating the file
@@ -285,9 +281,9 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file.  This convenience constructor creates the necessary
-     * intermediate {@link OutputStreamWriter OutputStreamWriter},
+     * intermediate {@link java.io.OutputStreamWriter OutputStreamWriter},
      * which will encode characters using the {@linkplain
-     * Charset#defaultCharset() default charset} for this
+     * java.nio.charset.Charset#defaultCharset() default charset} for this
      * instance of the Java virtual machine.
      *
      * @param  file
@@ -306,7 +302,6 @@ public class PrintWriter extends Writer {
      *          If a security manager is present and {@link
      *          SecurityManager#checkWrite checkWrite(file.getPath())}
      *          denies write access to the file
-     * @see Charset#defaultCharset()
      *
      * @since  1.5
      */
@@ -318,7 +313,7 @@ public class PrintWriter extends Writer {
     /**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file and charset.  This convenience constructor creates the
-     * necessary intermediate {@link OutputStreamWriter
+     * necessary intermediate {@link java.io.OutputStreamWriter
      * OutputStreamWriter}, which will encode characters using the provided
      * charset.
      *
@@ -329,7 +324,8 @@ public class PrintWriter extends Writer {
      *         and is buffered.
      *
      * @param  csn
-     *         The name of a supported {@linkplain Charset charset}
+     *         The name of a supported {@linkplain java.nio.charset.Charset
+     *         charset}
      *
      * @throws  FileNotFoundException
      *          If the given file object does not denote an existing, writable
@@ -367,7 +363,7 @@ public class PrintWriter extends Writer {
      *         and is buffered.
      *
      * @param  charset
-     *         A {@linkplain Charset charset}
+     *         A {@linkplain java.nio.charset.Charset charset}
      *
      * @throws  IOException
      *          if an I/O error occurs while opening or creating the file
@@ -503,7 +499,7 @@ public class PrintWriter extends Writer {
      *          cause the corresponding method of the underlying {@code Writer}
      *          to throw an {@code IndexOutOfBoundsException}
      */
-    public void write(char[] buf, int off, int len) {
+    public void write(char buf[], int off, int len) {
         try {
             synchronized (lock) {
                 ensureOpen();
@@ -523,7 +519,7 @@ public class PrintWriter extends Writer {
      * Writer class because it must suppress I/O exceptions.
      * @param buf Array of characters to be written
      */
-    public void write(char[] buf) {
+    public void write(char buf[]) {
         write(buf, 0, buf.length);
     }
 
@@ -584,12 +580,11 @@ public class PrintWriter extends Writer {
     /**
      * Prints a boolean value.  The string produced by {@link
      * java.lang.String#valueOf(boolean)} is translated into bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link
      * #write(int)} method.
      *
      * @param      b   The {@code boolean} to be printed
-     * @see Charset#defaultCharset()
      */
     public void print(boolean b) {
         write(String.valueOf(b));
@@ -597,12 +592,11 @@ public class PrintWriter extends Writer {
 
     /**
      * Prints a character.  The character is translated into one or more bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link
      * #write(int)} method.
      *
      * @param      c   The {@code char} to be printed
-     * @see Charset#defaultCharset()
      */
     public void print(char c) {
         write(c);
@@ -611,13 +605,12 @@ public class PrintWriter extends Writer {
     /**
      * Prints an integer.  The string produced by {@link
      * java.lang.String#valueOf(int)} is translated into bytes according
-     * to the default charset, and these bytes are
+     * to the platform's default character encoding, and these bytes are
      * written in exactly the manner of the {@link #write(int)}
      * method.
      *
      * @param      i   The {@code int} to be printed
      * @see        java.lang.Integer#toString(int)
-     * @see Charset#defaultCharset()
      */
     public void print(int i) {
         write(String.valueOf(i));
@@ -626,13 +619,12 @@ public class PrintWriter extends Writer {
     /**
      * Prints a long integer.  The string produced by {@link
      * java.lang.String#valueOf(long)} is translated into bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link #write(int)}
      * method.
      *
      * @param      l   The {@code long} to be printed
      * @see        java.lang.Long#toString(long)
-     * @see Charset#defaultCharset()
      */
     public void print(long l) {
         write(String.valueOf(l));
@@ -641,13 +633,12 @@ public class PrintWriter extends Writer {
     /**
      * Prints a floating-point number.  The string produced by {@link
      * java.lang.String#valueOf(float)} is translated into bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link #write(int)}
      * method.
      *
      * @param      f   The {@code float} to be printed
      * @see        java.lang.Float#toString(float)
-     * @see Charset#defaultCharset()
      */
     public void print(float f) {
         write(String.valueOf(f));
@@ -656,13 +647,12 @@ public class PrintWriter extends Writer {
     /**
      * Prints a double-precision floating-point number.  The string produced by
      * {@link java.lang.String#valueOf(double)} is translated into
-     * bytes according to the default charset, and these
+     * bytes according to the platform's default character encoding, and these
      * bytes are written in exactly the manner of the {@link
      * #write(int)} method.
      *
      * @param      d   The {@code double} to be printed
      * @see        java.lang.Double#toString(double)
-     * @see Charset#defaultCharset()
      */
     public void print(double d) {
         write(String.valueOf(d));
@@ -670,28 +660,26 @@ public class PrintWriter extends Writer {
 
     /**
      * Prints an array of characters.  The characters are converted into bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link #write(int)}
      * method.
      *
      * @param      s   The array of chars to be printed
-     * @see Charset#defaultCharset()
      *
      * @throws  NullPointerException  If {@code s} is {@code null}
      */
-    public void print(char[] s) {
+    public void print(char s[]) {
         write(s);
     }
 
     /**
      * Prints a string.  If the argument is {@code null} then the string
      * {@code "null"} is printed.  Otherwise, the string's characters are
-     * converted into bytes according to the default charset,
-     * and these bytes are written in exactly the manner of the
+     * converted into bytes according to the platform's default character
+     * encoding, and these bytes are written in exactly the manner of the
      * {@link #write(int)} method.
      *
      * @param      s   The {@code String} to be printed
-     * @see Charset#defaultCharset()
      */
     public void print(String s) {
         write(String.valueOf(s));
@@ -700,13 +688,12 @@ public class PrintWriter extends Writer {
     /**
      * Prints an object.  The string produced by the {@link
      * java.lang.String#valueOf(Object)} method is translated into bytes
-     * according to the default charset, and these bytes
+     * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the {@link #write(int)}
      * method.
      *
      * @param      obj   The {@code Object} to be printed
      * @see        java.lang.Object#toString()
-     * @see Charset#defaultCharset()
      */
     public void print(Object obj) {
         write(String.valueOf(obj));
@@ -814,7 +801,7 @@ public class PrintWriter extends Writer {
      *
      * @param x the array of {@code char} values to be printed
      */
-    public void println(char[] x) {
+    public void println(char x[]) {
         synchronized (lock) {
             print(x);
             println();

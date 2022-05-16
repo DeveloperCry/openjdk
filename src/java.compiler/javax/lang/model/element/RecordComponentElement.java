@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,7 +28,6 @@ package javax.lang.model.element;
 /**
  * Represents a record component.
  *
- * @jls 8.10.1 Record Components
  * @since 16
  */
 public interface RecordComponentElement extends Element {

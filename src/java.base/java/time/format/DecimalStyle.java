@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -115,9 +115,7 @@ public final class DecimalStyle {
     /**
      * Lists all the locales that are supported.
      * <p>
-     * At a minimum, the returned {@code Set} must contain a {@code Locale} instance equal to
-     * {@link Locale#ROOT Locale.ROOT} and a {@code Locale} instance equal to
-     * {@link Locale#US Locale.US}.
+     * The locale 'en_US' will always be present.
      *
      * @return a Set of Locales for which localization is supported
      */

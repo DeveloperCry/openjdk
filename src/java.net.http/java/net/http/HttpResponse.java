@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1273,7 +1273,7 @@ public interface HttpResponse<T> {
          * @return a response body subscriber
          */
         public static BodySubscriber<Void> discarding() {
-            return new ResponseSubscribers.NullSubscriber<>(Optional.empty());
+            return new ResponseSubscribers.NullSubscriber<>(Optional.ofNullable(null));
         }
 
         /**

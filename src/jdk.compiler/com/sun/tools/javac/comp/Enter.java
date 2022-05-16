@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -376,7 +376,7 @@ public class Enter extends JCTree.Visitor {
                 Name name = names.package_info;
                 ClassSymbol c = syms.enterClass(tree.modle, name, tree.packge);
                 c.flatname = names.fromString(tree.packge + "." + name);
-                c.classfile = c.sourcefile = tree.sourcefile;
+                c.sourcefile = tree.sourcefile;
             c.completer = Completer.NULL_COMPLETER;
                 c.members_field = WriteableScope.create(c);
                 tree.packge.package_info = c;
@@ -495,7 +495,7 @@ public class Enter extends JCTree.Visitor {
         // Fill out class fields.
         c.completer = Completer.NULL_COMPLETER; // do not allow the initial completer linger on.
         c.flags_field = chk.checkFlags(tree.pos(), tree.mods.flags, c, tree);
-        c.classfile = c.sourcefile = env.toplevel.sourcefile;
+        c.sourcefile = env.toplevel.sourcefile;
         c.members_field = WriteableScope.create(c);
         c.clearAnnotationMetadata();
 

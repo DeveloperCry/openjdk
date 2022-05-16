@@ -241,9 +241,4 @@ public final class EventType {
     PlatformEventType getPlatformEventType() {
         return platformEventType;
     }
-
-    // package private
-    boolean isVisible() {
-        return platformEventType.isVisible();
-    }
 }

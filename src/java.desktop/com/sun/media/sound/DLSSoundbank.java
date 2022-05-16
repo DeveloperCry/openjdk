@@ -31,12 +31,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.Patch;
@@ -46,8 +46,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * A DLS Level 1 and Level 2 soundbank reader (from files/url/streams).
@@ -105,7 +103,7 @@ public final class DLSSoundbank implements Soundbank {
 
         @Override
         public int hashCode() {
-            return Long.hashCode(i1);
+            return (int)i1;
         }
 
         @Override
@@ -305,7 +303,7 @@ public final class DLSSoundbank implements Soundbank {
         DLSID uuid;
         long x;
         long y;
-        ArrayDeque<Long> stack = new ArrayDeque<>();
+        Stack<Long> stack = new Stack<>();
 
         while (riff.available() != 0) {
             int opcode = riff.readUnsignedShort();
@@ -1149,7 +1147,7 @@ public final class DLSSoundbank implements Soundbank {
             return;
         RIFFWriter chunk = writer.writeChunk(name);
         chunk.writeString(value);
-        int len = value.getBytes(US_ASCII).length;
+        int len = value.getBytes("ascii").length;
         chunk.write(0);
         len++;
         if (len % 2 != 0)

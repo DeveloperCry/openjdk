@@ -619,7 +619,8 @@ public class JMXConnectorFactory {
                             if (e instanceof IOException) {
                                 exception = (IOException) e;
                             } else {
-                                exception = new IOException(e.getMessage(), e);
+                                exception = EnvHelp.initCause(
+                                    new IOException(e.getMessage()), e);
                             }
                         }
                     }

@@ -868,11 +868,11 @@ public class JFormattedTextField extends JTextField {
             return new DefaultFormatterFactory(new DateFormatter());
         }
         if (type instanceof Number) {
-            NumberFormatter displayFormatter = new NumberFormatter();
-            displayFormatter.setValueClass(type.getClass());
-            NumberFormatter editFormatter = new NumberFormatter(
+            AbstractFormatter displayFormatter = new NumberFormatter();
+            ((NumberFormatter)displayFormatter).setValueClass(type.getClass());
+            AbstractFormatter editFormatter = new NumberFormatter(
                                   new DecimalFormat("#.#"));
-            editFormatter.setValueClass(type.getClass());
+            ((NumberFormatter)editFormatter).setValueClass(type.getClass());
 
             return new DefaultFormatterFactory(displayFormatter,
                                                displayFormatter,editFormatter);

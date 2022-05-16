@@ -30,6 +30,7 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 import javax.security.auth.kerberos.KeyTab;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
+import java.security.AccessControlContext;
 
 import sun.security.action.GetBooleanAction;
 import sun.security.jgss.GSSUtil;
@@ -61,12 +62,14 @@ public class Krb5Util {
      * pair from the Subject in the specified AccessControlContext.
      */
     static KerberosTicket getServiceTicket(GSSCaller caller,
-            String clientPrincipal, String serverPrincipal) {
-        // Try to get ticket from current Subject
+        String clientPrincipal, String serverPrincipal,
+        @SuppressWarnings("removal") AccessControlContext acc) throws LoginException {
+
+        // Try to get ticket from acc's Subject
         @SuppressWarnings("removal")
-        Subject currSubj = Subject.current();
+        Subject accSubj = Subject.getSubject(acc);
         KerberosTicket ticket =
-            SubjectComber.find(currSubj, serverPrincipal, clientPrincipal,
+            SubjectComber.find(accSubj, serverPrincipal, clientPrincipal,
                   KerberosTicket.class);
 
         return ticket;
@@ -80,11 +83,14 @@ public class Krb5Util {
      * a LoginContext.
      */
     static KerberosTicket getInitialTicket(GSSCaller caller,
-            String clientPrincipal) throws LoginException {
+            String clientPrincipal,
+            @SuppressWarnings("removal") AccessControlContext acc) throws LoginException {
 
-        Subject currSubj = Subject.current();
+        // Try to get ticket from acc's Subject
+        @SuppressWarnings("removal")
+        Subject accSubj = Subject.getSubject(acc);
         KerberosTicket ticket =
-                SubjectComber.find(currSubj, null, clientPrincipal,
+                SubjectComber.find(accSubj, null, clientPrincipal,
                         KerberosTicket.class);
 
         // Try to get ticket from Subject obtained from GSSUtil
@@ -100,14 +106,18 @@ public class Krb5Util {
      * Retrieves the ServiceCreds for the specified server principal from
      * the Subject in the specified AccessControlContext. If not found, and if
      * useSubjectCredsOnly is false, then obtain from a LoginContext.
+     *
+     * NOTE: This method is also used by JSSE Kerberos Cipher Suites
      */
     public static ServiceCreds getServiceCreds(GSSCaller caller,
-            String serverPrincipal) throws LoginException {
+        String serverPrincipal, @SuppressWarnings("removal") AccessControlContext acc)
+                throws LoginException {
 
-        Subject currSubj = Subject.current();
+        @SuppressWarnings("removal")
+        Subject accSubj = Subject.getSubject(acc);
         ServiceCreds sc = null;
-        if (currSubj != null) {
-            sc = ServiceCreds.getInstance(currSubj, serverPrincipal);
+        if (accSubj != null) {
+            sc = ServiceCreds.getInstance(accSubj, serverPrincipal);
         }
         if (sc == null && !GSSUtil.useSubjectCredsOnly(caller)) {
             Subject subject = GSSUtil.login(caller, GSSUtil.GSS_KRB5_MECH_OID);

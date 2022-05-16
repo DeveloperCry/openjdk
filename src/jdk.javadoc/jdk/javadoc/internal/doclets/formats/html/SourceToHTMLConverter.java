@@ -151,13 +151,13 @@ public class SourceToHTMLConverter {
         if (pkg == null) {
             return;
         }
-        for (TypeElement te : utils.getAllClasses(pkg)) {
+        for (Element te : utils.getAllClasses(pkg)) {
             // If -nodeprecated option is set and the class is marked as deprecated,
             // do not convert the package files to HTML. We do not check for
             // containing package deprecation since it is already check in
             // the calling method above.
             if (!(options.noDeprecated() && utils.isDeprecated(te)))
-                convertClass(te, outputdir);
+                convertClass((TypeElement)te, outputdir);
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,8 +32,6 @@ import java.util.List;
 import jdk.jpackage.internal.Arguments.CLIOptions;
 import static jdk.jpackage.internal.StandardBundlerParam.LAUNCHER_DATA;
 import static jdk.jpackage.internal.StandardBundlerParam.APP_NAME;
-import static jdk.jpackage.internal.StandardBundlerParam.MENU_HINT;
-import static jdk.jpackage.internal.StandardBundlerParam.SHORTCUT_HINT;
 
 /*
  * AddLauncherArguments
@@ -61,10 +59,7 @@ import static jdk.jpackage.internal.StandardBundlerParam.SHORTCUT_HINT;
  * arguments
  * java-options
  * win-console
- * win-shortcut
- * win-menu
  * linux-app-category
- * linux-shortcut
  *
  */
 class AddLauncherArguments {
@@ -114,26 +109,16 @@ class AddLauncherArguments {
         Arguments.putUnlessNull(bundleParams, CLIOptions.RELEASE.getId(),
                 getOptionValue(CLIOptions.RELEASE));
 
+        Arguments.putUnlessNull(bundleParams, CLIOptions.LINUX_CATEGORY.getId(),
+                getOptionValue(CLIOptions.LINUX_CATEGORY));
+
+        Arguments.putUnlessNull(bundleParams,
+                CLIOptions.WIN_CONSOLE_HINT.getId(),
+                getOptionValue(CLIOptions.WIN_CONSOLE_HINT));
+
         String value = getOptionValue(CLIOptions.ICON);
         Arguments.putUnlessNull(bundleParams, CLIOptions.ICON.getId(),
                 (value == null) ? null : Path.of(value));
-
-        if (Platform.isWindows())  {
-            Arguments.putUnlessNull(bundleParams,
-                    CLIOptions.WIN_CONSOLE_HINT.getId(),
-                    getOptionValue(CLIOptions.WIN_CONSOLE_HINT));
-            Arguments.putUnlessNull(bundleParams, SHORTCUT_HINT.getID(),
-                    getOptionValue(CLIOptions.WIN_SHORTCUT_HINT));
-            Arguments.putUnlessNull(bundleParams, MENU_HINT.getID(),
-                    getOptionValue(CLIOptions.WIN_MENU_HINT));
-        }
-
-        if (Platform.isLinux())  {
-            Arguments.putUnlessNull(bundleParams, CLIOptions.LINUX_CATEGORY.getId(),
-                    getOptionValue(CLIOptions.LINUX_CATEGORY));
-            Arguments.putUnlessNull(bundleParams, SHORTCUT_HINT.getID(),
-                    getOptionValue(CLIOptions.LINUX_SHORTCUT_HINT));
-        }
 
         // "arguments" and "java-options" even if value is null:
         if (allArgs.containsKey(CLIOptions.ARGUMENTS.getId())) {

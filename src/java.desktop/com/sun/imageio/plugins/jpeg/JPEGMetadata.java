@@ -371,8 +371,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         JPEGImageWriteParam jparam = null;
 
-        if (param instanceof JPEGImageWriteParam p) {
-            jparam = p;
+        if ((param != null) && (param instanceof JPEGImageWriteParam)) {
+            jparam = (JPEGImageWriteParam) param;
             if (!jparam.areTablesSet()) {
                 jparam = null;
             }
@@ -1711,7 +1711,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 }
                 if (idsDiffer) {
                     // update the ids in each SOS marker segment
-                    for (MarkerSegment seg : markerSequence) {
+                    for (Iterator<MarkerSegment> iter = markerSequence.iterator();
+                            iter.hasNext();) {
+                        MarkerSegment seg = iter.next();
                         if (seg instanceof SOSMarkerSegment) {
                             SOSMarkerSegment target = (SOSMarkerSegment) seg;
                             for (int i = 0; i < target.componentSpecs.length; i++) {
@@ -1764,7 +1766,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         if (updateQtables) {
             List<DQTMarkerSegment> tableSegments = new ArrayList<>();
-            for (MarkerSegment seg : markerSequence) {
+            for (Iterator<MarkerSegment> iter = markerSequence.iterator();
+                    iter.hasNext();) {
+                MarkerSegment seg = iter.next();
                 if (seg instanceof DQTMarkerSegment) {
                     tableSegments.add((DQTMarkerSegment) seg);
                 }
@@ -1780,8 +1784,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
                 // Find the table with selector 1.
                 boolean found = false;
-                for (DQTMarkerSegment testdqt : tableSegments) {
-                    for (DQTMarkerSegment.Qtable tab : testdqt.tables) {
+                for (Iterator<DQTMarkerSegment> iter = tableSegments.iterator();
+                        iter.hasNext();) {
+                    DQTMarkerSegment testdqt = iter.next();
+                    for (Iterator<DQTMarkerSegment.Qtable> tabiter =
+                            testdqt.tables.iterator(); tabiter.hasNext();) {
+                        DQTMarkerSegment.Qtable tab = tabiter.next();
                         if (tab.tableID == 1) {
                             found = true;
                         }
@@ -1790,8 +1798,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (!found) {
                     //    find the table with selector 0.  There should be one.
                     DQTMarkerSegment.Qtable table0 = null;
-                    for (DQTMarkerSegment testdqt : tableSegments) {
-                        for (DQTMarkerSegment.Qtable tab : testdqt.tables) {
+                    for (Iterator<DQTMarkerSegment> iter =
+                            tableSegments.iterator(); iter.hasNext();) {
+                        DQTMarkerSegment testdqt = iter.next();
+                        for (Iterator<DQTMarkerSegment.Qtable> tabiter =
+                                testdqt.tables.iterator(); tabiter.hasNext();) {
+                            DQTMarkerSegment.Qtable tab = tabiter.next();
                             if (tab.tableID == 0) {
                                 table0 = tab;
                             }
@@ -1809,7 +1821,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         if (updateHtables) {
             List<DHTMarkerSegment> tableSegments = new ArrayList<>();
-            for (MarkerSegment seg : markerSequence) {
+            for (Iterator<MarkerSegment> iter = markerSequence.iterator();
+                    iter.hasNext();) {
+                MarkerSegment seg = iter.next();
                 if (seg instanceof DHTMarkerSegment) {
                     tableSegments.add((DHTMarkerSegment) seg);
                 }
@@ -1824,8 +1838,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
                 // find a table with selector 1. AC/DC is irrelevant
                 boolean found = false;
-                for (DHTMarkerSegment testdht : tableSegments) {
-                    for (DHTMarkerSegment.Htable tab : testdht.tables) {
+                for (Iterator<DHTMarkerSegment> iter = tableSegments.iterator();
+                        iter.hasNext();) {
+                    DHTMarkerSegment testdht = iter.next();
+                    for (Iterator<DHTMarkerSegment.Htable> tabiter =
+                            testdht.tables.iterator(); tabiter.hasNext();) {
+                        DHTMarkerSegment.Htable tab = tabiter.next();
                         if (tab.tableID == 1) {
                             found = true;
                         }

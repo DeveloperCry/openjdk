@@ -600,7 +600,7 @@ public abstract class HttpURLConnection extends URLConnection {
     public long getHeaderFieldDate(String name, long Default) {
         String dateString = getHeaderField(name);
         try {
-            if (!dateString.contains("GMT")) {
+            if (dateString.indexOf("GMT") == -1) {
                 dateString = dateString+" GMT";
             }
             return Date.parse(dateString);

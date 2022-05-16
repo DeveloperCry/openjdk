@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1150,9 +1150,9 @@ public class BoxView extends CompositeView {
             int index = getViewIndexAtPosition(testPos);
             if(index != -1) {
                 View v = getView(index);
-                if (v instanceof CompositeView compositeView) {
-                    return compositeView.flipEastAndWestAtEnds(position,
-                                                               bias);
+                if(v != null && v instanceof CompositeView) {
+                    return ((CompositeView)v).flipEastAndWestAtEnds(position,
+                                                                    bias);
                 }
             }
         }

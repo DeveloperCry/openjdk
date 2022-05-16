@@ -42,7 +42,7 @@ import sun.security.rsa.RSAPadding;
 
 import sun.security.pkcs11.wrapper.*;
 import static sun.security.pkcs11.wrapper.PKCS11Constants.*;
-import static sun.security.pkcs11.wrapper.PKCS11Exception.RV.*;
+import static sun.security.pkcs11.wrapper.PKCS11Exception.*;
 import sun.security.util.KeyUtil;
 
 /**
@@ -118,9 +118,6 @@ final class P11Signature extends SignatureSpi {
 
     // key instance used, if init*() was called
     private P11Key p11Key;
-
-    // signature length expected or 0 for unknown
-    private int sigLen;
 
     // message digest, if we do the digesting ourselves
     private final MessageDigest md;
@@ -283,18 +280,12 @@ final class P11Signature extends SignatureSpi {
 
     private void cancelOperation() {
         token.ensureValid();
-
-        if (P11Util.trySessionCancel(token, session,
-                (mode == M_SIGN ? CKF_SIGN : CKF_VERIFY))) {
-            return;
-        }
-
-        // cancel by finishing operations; avoid killSession call as some
+        // cancel operation by finishing it; avoid killSession as some
         // hardware vendors may require re-login
         try {
             if (mode == M_SIGN) {
                 if (type == T_UPDATE) {
-                    token.p11.C_SignFinal(session.id(), sigLen);
+                    token.p11.C_SignFinal(session.id(), 0);
                 } else {
                     byte[] digest;
                     if (type == T_DIGEST) {
@@ -305,7 +296,12 @@ final class P11Signature extends SignatureSpi {
                     token.p11.C_Sign(session.id(), digest);
                 }
             } else { // M_VERIFY
-                byte[] signature = new byte[sigLen];
+                byte[] signature;
+                if (mechanism == CKM_DSA) {
+                    signature = new byte[64]; // assume N = 256
+                } else {
+                    signature = new byte[(p11Key.length() + 7) >> 3];
+                }
                 if (type == T_UPDATE) {
                     token.p11.C_VerifyFinal(session.id(), signature);
                 } else {
@@ -319,16 +315,17 @@ final class P11Signature extends SignatureSpi {
                 }
             }
         } catch (PKCS11Exception e) {
-            if (e.match(CKR_OPERATION_NOT_INITIALIZED)) {
+            if (e.getErrorCode() == CKR_OPERATION_NOT_INITIALIZED) {
                 // Cancel Operation may be invoked after an error on a PKCS#11
-                // call. If the operation was already cancelled, do not fail
-                // here. This is part of a defensive mechanism for PKCS#11
-                // libraries that do not strictly follow the standard.
+                // call. If the operation inside the token was already cancelled,
+                // do not fail here. This is part of a defensive mechanism for
+                // PKCS#11 libraries that do not strictly follow the standard.
                 return;
             }
             if (mode == M_VERIFY) {
-                if (e.match(CKR_SIGNATURE_INVALID) ||
-                         e.match(CKR_SIGNATURE_LEN_RANGE)) {
+                long errorCode = e.getErrorCode();
+                if ((errorCode == CKR_SIGNATURE_INVALID) ||
+                     (errorCode == CKR_SIGNATURE_LEN_RANGE)) {
                      // expected since signature is incorrect
                      return;
                 }
@@ -374,15 +371,6 @@ final class P11Signature extends SignatureSpi {
             bytesProcessed = 0;
             if (md != null) {
                 md.reset();
-            }
-        }
-        sigLen = 0;
-        if ("DSA".equals(p11Key.getAlgorithm())) {
-            if (p11Key instanceof P11Key.P11DSAPrivateKeyInternal) {
-                sigLen = ((P11Key.P11DSAPrivateKeyInternal)p11Key).getParams()
-                        .getQ().bitLength() >> 2;
-            } else if (p11Key instanceof DSAKey) {
-                sigLen = ((DSAKey)p11Key).getParams().getQ().bitLength() >> 2;
             }
         }
         initialized = true;
@@ -630,7 +618,7 @@ final class P11Signature extends SignatureSpi {
         try {
             byte[] signature;
             if (type == T_UPDATE) {
-                signature = token.p11.C_SignFinal(session.id(), sigLen);
+                signature = token.p11.C_SignFinal(session.id(), 0);
             } else {
                 byte[] digest;
                 if (type == T_DIGEST) {
@@ -697,7 +685,7 @@ final class P11Signature extends SignatureSpi {
         try {
             if (!p1363Format) {
                 if (keyAlgorithm.equals("DSA")) {
-                    signature = asn1ToDSA(signature, sigLen);
+                    signature = asn1ToDSA(signature);
                 } else if (keyAlgorithm.equals("EC")) {
                     signature = asn1ToECDSA(signature);
                 }
@@ -739,9 +727,16 @@ final class P11Signature extends SignatureSpi {
             return true;
         } catch (PKCS11Exception pe) {
             doCancel = false;
-            if (pe.match(CKR_SIGNATURE_INVALID) ||
-                    pe.match(CKR_SIGNATURE_LEN_RANGE) ||
-                    pe.match(CKR_DATA_LEN_RANGE)) { // ECF bug?
+            long errorCode = pe.getErrorCode();
+            if (errorCode == CKR_SIGNATURE_INVALID) {
+                return false;
+            }
+            if (errorCode == CKR_SIGNATURE_LEN_RANGE) {
+                // return false rather than throwing an exception
+                return false;
+            }
+            // ECF bug?
+            if (errorCode == CKR_DATA_LEN_RANGE) {
                 return false;
             }
             throw new ProviderException(pe);
@@ -814,8 +809,7 @@ final class P11Signature extends SignatureSpi {
         }
     }
 
-    private static byte[] asn1ToDSA(byte[] sig, int sigLen)
-            throws SignatureException {
+    private static byte[] asn1ToDSA(byte[] sig) throws SignatureException {
         try {
             // Enforce strict DER checking for signatures
             DerInputStream in = new DerInputStream(sig, 0, sig.length, false);
@@ -830,8 +824,8 @@ final class P11Signature extends SignatureSpi {
             BigInteger r = values[0].getPositiveBigInteger();
             BigInteger s = values[1].getPositiveBigInteger();
 
-            byte[] br = toByteArray(r, sigLen/2);
-            byte[] bs = toByteArray(s, sigLen/2);
+            byte[] br = toByteArray(r, 20);
+            byte[] bs = toByteArray(s, 20);
             if ((br == null) || (bs == null)) {
                 throw new SignatureException("Out of range value for R or S");
             }
@@ -843,7 +837,7 @@ final class P11Signature extends SignatureSpi {
         }
     }
 
-    private static byte[] asn1ToECDSA(byte[] sig) throws SignatureException {
+    private byte[] asn1ToECDSA(byte[] sig) throws SignatureException {
         try {
             // Enforce strict DER checking for signatures
             DerInputStream in = new DerInputStream(sig, 0, sig.length, false);
@@ -923,4 +917,3 @@ final class P11Signature extends SignatureSpi {
         return null;
     }
 }
-

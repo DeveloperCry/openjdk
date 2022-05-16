@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -55,7 +55,7 @@ public class SettingsFrame extends Http2Frame {
             if (parameters[i] != -1) {
                 sb.append(name(i))
                   .append("=")
-                  .append(parameters[i])
+                  .append(Integer.toString(parameters[i]))
                   .append(' ');
             }
         }

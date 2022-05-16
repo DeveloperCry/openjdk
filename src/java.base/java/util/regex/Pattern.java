@@ -755,14 +755,6 @@ import jdk.internal.util.ArraysSupport;
  *    within a group; in the latter case, flags are restored at the end of the
  *    group just as in Perl.  </p></li>
  *
- *    <li><p><i>Free-spacing mode</i> in Perl (called <i>comments
- *    mode</i> in this class) denoted by {@code (?x)} in the regular
- *    expression (or by the {@link Pattern#COMMENTS} flag when compiling
- *    the expression) will not ignore whitespace inside of character classes. In
- *    this class, whitespace inside of character classes must be escaped to be
- *    considered as part of the regular expression when in comments mode.
- *    </p></li>
- *
  * </ul>
  *
  *
@@ -824,9 +816,7 @@ public final class Pattern
      * Permits whitespace and comments in pattern.
      *
      * <p> In this mode, whitespace is ignored, and embedded comments starting
-     * with {@code #} are ignored until the end of a line. Comments mode ignores
-     * whitespace within a character class contained in a pattern string. Such
-     * whitespace must be escaped in order to be considered significant.  </p>
+     * with {@code #} are ignored until the end of a line.
      *
      * <p> Comments mode can also be enabled via the embedded flag
      * expression&nbsp;{@code (?x)}.
@@ -5605,69 +5595,50 @@ NEXT:       while (i <= last) {
         }
     }
 
-    private static CharPredicate and(CharPredicate p1, CharPredicate p2,
-                                     boolean bmpChar) {
-        if (bmpChar) {
-            return (BmpCharPredicate)(ch -> p1.is(ch) && p2.is(ch));
-        } else {
-            return (CharPredicate)(ch -> p1.is(ch) && p2.is(ch));
-        }
-    }
-
-    private static CharPredicate union(CharPredicate p1, CharPredicate p2,
-                                       boolean bmpChar) {
-        if (bmpChar) {
-            return (BmpCharPredicate)(ch -> p1.is(ch) || p2.is(ch));
-        } else {
-            return (CharPredicate)(ch -> p1.is(ch) || p2.is(ch));
-        }
-    }
-
-    private static CharPredicate union(CharPredicate p1, CharPredicate p2,
-                                       CharPredicate p3, boolean bmpChar) {
-        if (bmpChar) {
-            return (BmpCharPredicate)(ch -> p1.is(ch) || p2.is(ch) || p3.is(ch));
-        } else {
-            return (CharPredicate)(ch -> p1.is(ch) || p2.is(ch) || p3.is(ch));
-        }
-    }
-
-    private static CharPredicate negate(CharPredicate p1) {
-        return (CharPredicate)(ch -> !p1.is(ch));
-    }
-
     @FunctionalInterface
     static interface CharPredicate {
         boolean is(int ch);
 
         default CharPredicate and(CharPredicate p) {
-            return Pattern.and(this, p, false);
+            return ch -> is(ch) && p.is(ch);
         }
         default CharPredicate union(CharPredicate p) {
-            return Pattern.union(this, p, false);
+            return ch -> is(ch) || p.is(ch);
         }
         default CharPredicate union(CharPredicate p1,
                                     CharPredicate p2) {
-            return Pattern.union(this, p1, p2, false);
+            return ch -> is(ch) || p1.is(ch) || p2.is(ch);
         }
         default CharPredicate negate() {
-            return Pattern.negate(this);
+            return ch -> !is(ch);
         }
     }
 
     static interface BmpCharPredicate extends CharPredicate {
 
         default CharPredicate and(CharPredicate p) {
-            return Pattern.and(this, p, p instanceof BmpCharPredicate);
+            if (p instanceof BmpCharPredicate)
+                return (BmpCharPredicate)(ch -> is(ch) && p.is(ch));
+            return ch -> is(ch) && p.is(ch);
         }
         default CharPredicate union(CharPredicate p) {
-            return Pattern.union(this, p, p instanceof BmpCharPredicate);
+            if (p instanceof BmpCharPredicate)
+                return (BmpCharPredicate)(ch -> is(ch) || p.is(ch));
+            return ch -> is(ch) || p.is(ch);
         }
-        default CharPredicate union(CharPredicate p1,
-                                    CharPredicate p2) {
-            return Pattern.union(this, p1, p2,
-                                 p1 instanceof BmpCharPredicate &&
-                                 p2 instanceof BmpCharPredicate);
+        static CharPredicate union(CharPredicate... predicates) {
+            CharPredicate cp = ch -> {
+                for (CharPredicate p : predicates) {
+                    if (!p.is(ch))
+                        return false;
+                }
+                return true;
+            };
+            for (CharPredicate p : predicates) {
+                if (! (p instanceof BmpCharPredicate))
+                    return cp;
+            }
+            return (BmpCharPredicate)cp;
         }
     }
 

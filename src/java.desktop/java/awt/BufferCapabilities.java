@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,7 +33,6 @@ package java.awt;
  * @author Michael Martak
  * @since 1.4
  */
-@SuppressWarnings("doclint:missing")
 public class BufferCapabilities implements Cloneable {
 
     private ImageCapabilities frontCaps;

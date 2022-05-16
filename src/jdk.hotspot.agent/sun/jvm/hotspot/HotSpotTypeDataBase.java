@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -426,6 +426,7 @@ public class HotSpotTypeDataBase extends BasicTypeDataBase {
     boolean isStatic = false;
     long offset = 0;
     Address staticFieldAddr = null;
+    long size = 0;
     long index = 0;
     String opaqueName = "<opaque>";
     lookupOrCreateClass(opaqueName, false, false, false);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -98,8 +98,11 @@ class MarkerSegment implements Cloneable {
             try {
                 data = (byte []) iioNode.getUserObject();
             } catch (Exception e) {
-                throw new IIOInvalidTreeException
-                        ("Can't get User Object", e, node);
+                IIOInvalidTreeException newGuy =
+                    new IIOInvalidTreeException
+                    ("Can't get User Object", node);
+                newGuy.initCause(e);
+                throw newGuy;
             }
         } else {
             throw new IIOInvalidTreeException

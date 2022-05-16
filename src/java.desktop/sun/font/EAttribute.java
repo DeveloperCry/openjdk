@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -75,7 +75,7 @@ public enum EAttribute {
         att = ta;
     }
 
-    /* package */ static final EAttribute[] atts = EAttribute.values();
+    /* package */ static final EAttribute[] atts = EAttribute.class.getEnumConstants();
 
     public static EAttribute forAttribute(Attribute ta) {
         for (EAttribute ea: atts) {

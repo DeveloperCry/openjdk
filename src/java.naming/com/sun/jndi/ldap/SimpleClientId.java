@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2016, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -69,9 +69,11 @@ class SimpleClientId extends ClientId {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof SimpleClientId other)) {
+        if (obj == null || !(obj instanceof SimpleClientId)) {
             return false;
         }
+
+        SimpleClientId other = (SimpleClientId)obj;
 
         return super.equals(obj)
             && (username == other.username // null OK

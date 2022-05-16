@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -71,7 +71,7 @@ public interface DataOutput {
      * @param      b   the data.
      * @throws     IOException  if an I/O error occurs.
      */
-    void write(byte[] b) throws IOException;
+    void write(byte b[]) throws IOException;
 
     /**
      * Writes {@code len} bytes from array
@@ -92,11 +92,8 @@ public interface DataOutput {
      * @param      off   the start offset in the data.
      * @param      len   the number of bytes to write.
      * @throws     IOException  if an I/O error occurs.
-     * @throws     IndexOutOfBoundsException If {@code off} is negative,
-     *             {@code len} is negative, or {@code len} is greater than
-     *             {@code b.length - off}
      */
-    void write(byte[] b, int off, int len) throws IOException;
+    void write(byte b[], int off, int len) throws IOException;
 
     /**
      * Writes a {@code boolean} value to this output stream.

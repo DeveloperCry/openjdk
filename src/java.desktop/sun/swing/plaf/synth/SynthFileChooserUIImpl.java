@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,8 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
 import java.util.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -695,7 +697,7 @@ public class SynthFileChooserUIImpl extends SynthFileChooserUI {
     }
 
     static final int space = 10;
-    static class IndentIcon implements Icon {
+    class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -787,9 +789,9 @@ public class SynthFileChooserUIImpl extends SynthFileChooserUI {
                 File sf = useShellFolder ? ShellFolder.getShellFolder(canonical)
                                          : canonical;
                 File f = sf;
-                ArrayList<File> path = new ArrayList<File>(10);
+                Vector<File> path = new Vector<File>(10);
                 do {
-                    path.add(f);
+                    path.addElement(f);
                 } while ((f = f.getParentFile()) != null);
 
                 int pathCount = path.size();
@@ -1066,7 +1068,7 @@ public class SynthFileChooserUIImpl extends SynthFileChooserUI {
     }
 
     @SuppressWarnings("serial") // JDK-implementation class
-    private static class AlignedLabel extends JLabel {
+    private class AlignedLabel extends JLabel {
         private AlignedLabel[] group;
         private int maxWidth = 0;
 

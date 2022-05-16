@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -86,8 +86,13 @@ public class ClassBuilder extends AbstractBuilder {
         this.writer = writer;
         this.utils = configuration.utils;
         switch (typeElement.getKind()) {
-            case ENUM   -> setEnumDocumentation(typeElement);
-            case RECORD -> setRecordDocumentation(typeElement);
+            case ENUM:
+                setEnumDocumentation(typeElement);
+                break;
+
+            case RECORD:
+                setRecordDocumentation(typeElement);
+                break;
         }
     }
 
@@ -114,15 +119,27 @@ public class ClassBuilder extends AbstractBuilder {
       * @throws DocletException if there is a problem while building the documentation
       */
      protected void buildClassDoc() throws DocletException {
-        String key = switch (typeElement.getKind()) {
-            case INTERFACE       -> "doclet.Interface";
-            case ENUM            -> "doclet.Enum";
-            case RECORD          -> "doclet.RecordClass";
-            case ANNOTATION_TYPE -> "doclet.AnnotationType";
-            case CLASS           -> "doclet.Class";
-            default -> throw new IllegalStateException(typeElement.getKind() + " " + typeElement);
-        };
-         Content contentTree = writer.getHeader(resources.getText(key) + " "
+        String key;
+         switch (typeElement.getKind()) {
+             case INTERFACE:
+                 key = "doclet.Interface";
+                 break;
+             case ENUM:
+                 key = "doclet.Enum";
+                 break;
+             case RECORD:
+                 key = "doclet.RecordClass";
+                 break;
+             case ANNOTATION_TYPE:
+                 key = "doclet.AnnotationType";
+                 break;
+             case CLASS:
+                 key = "doclet.Class";
+                 break;
+             default:
+                 throw new IllegalStateException(typeElement.getKind() + " " + typeElement);
+         }
+        Content contentTree = writer.getHeader(resources.getText(key) + " "
                 + utils.getSimpleName(typeElement));
         Content classContentTree = writer.getClassContentHeader();
 
@@ -324,7 +341,8 @@ public class ClassBuilder extends AbstractBuilder {
         buildPropertyDetails(detailsList);
         buildFieldDetails(detailsList);
         buildConstructorDetails(detailsList);
-        buildAnnotationTypeMemberDetails(detailsList);
+        buildAnnotationTypeRequiredMemberDetails(detailsList);
+        buildAnnotationTypeOptionalMemberDetails(detailsList);
         buildMethodDetails(detailsList);
 
         classContentTree.add(writer.getMemberDetailsTree(detailsList));
@@ -386,9 +404,20 @@ public class ClassBuilder extends AbstractBuilder {
      * @param memberDetailsTree the content tree to which the documentation will be added
      * @throws DocletException if there is a problem building the documentation
      */
-    protected void buildAnnotationTypeMemberDetails(Content memberDetailsTree)
+    protected void buildAnnotationTypeOptionalMemberDetails(Content memberDetailsTree)
             throws DocletException {
-        builderFactory.getAnnotationTypeMemberBuilder(writer).build(memberDetailsTree);
+        builderFactory.getAnnotationTypeOptionalMemberBuilder(writer).build(memberDetailsTree);
+    }
+
+    /**
+     * Build the annotation type required member documentation.
+     *
+     * @param memberDetailsTree the content tree to which the documentation will be added
+     * @throws DocletException if there is a problem building the documentation
+     */
+    protected void buildAnnotationTypeRequiredMemberDetails(Content memberDetailsTree)
+            throws DocletException {
+        builderFactory.getAnnotationTypeRequiredMemberBuilder(writer).build(memberDetailsTree);
     }
 
     /**
@@ -438,10 +467,7 @@ public class ClassBuilder extends AbstractBuilder {
             }
         }
 
-        var fields = utils.isSerializable(elem)
-                ? utils.getFieldsUnfiltered(elem)
-                : utils.getFields(elem);
-        for (VariableElement ve : fields) {
+        for (VariableElement ve : utils.getFields(elem)) {
             // The fields for the record component cannot be declared by the
             // user and so cannot have any pre-existing comment.
             Name name = ve.getSimpleName();

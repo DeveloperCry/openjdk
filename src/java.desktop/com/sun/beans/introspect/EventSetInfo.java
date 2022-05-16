@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -132,7 +132,12 @@ public final class EventSetInfo {
                 }
             }
         }
-        map.values().removeIf(eventSetInfo -> !eventSetInfo.initialize());
+        Iterator<EventSetInfo> iterator = map.values().iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().initialize()) {
+                iterator.remove();
+            }
+        }
         return !map.isEmpty()
                 ? Collections.unmodifiableMap(map)
                 : Collections.emptyMap();

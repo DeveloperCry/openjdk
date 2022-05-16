@@ -38,9 +38,9 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.InputStream;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Hashtable;
+import java.util.Vector;
 import java.util.StringTokenizer;
 
 import java.lang.reflect.Proxy;
@@ -205,13 +205,13 @@ final class Obj {
         } else {
             StringTokenizer parser =
                 new StringTokenizer((String)codebaseAttr.get());
-            ArrayList<String> list = new ArrayList<>(10);
+            Vector<String> vec = new Vector<>(10);
             while (parser.hasMoreTokens()) {
-                list.add(parser.nextToken());
+                vec.addElement(parser.nextToken());
             }
-            String[] answer = new String[list.size()];
+            String[] answer = new String[vec.size()];
             for (int i = 0; i < answer.length; i++) {
-                answer[i] = list.get(i);
+                answer[i] = vec.elementAt(i);
             }
             return answer;
         }
@@ -409,10 +409,11 @@ final class Obj {
             ClassLoader cl = helper.getURLClassLoader(codebases);
 
             /*
-             * Temporary array for decoded RefAddr addresses - used to ensure
+             * Temporary Vector for decoded RefAddr addresses - used to ensure
              * unordered addresses are correctly re-ordered.
              */
-            RefAddr[] refAddrList = new RefAddr[attr.size()];
+            Vector<RefAddr> refAddrList = new Vector<>();
+            refAddrList.setSize(attr.size());
 
             for (NamingEnumeration<?> vals = attr.getAll(); vals.hasMore(); ) {
 
@@ -463,7 +464,7 @@ final class Obj {
                 // extract content
                 if (start == val.length()) {
                     // Empty content
-                    refAddrList[posn] = new StringRefAddr(type, null);
+                    refAddrList.setElementAt(new StringRefAddr(type, null), posn);
                 } else if (val.charAt(start) == separator) {
                     // Check if deserialization of binary RefAddr is allowed from
                     // 'javaReferenceAddress' LDAP attribute.
@@ -485,17 +486,17 @@ final class Obj {
                             decoder.decode(val.substring(start).getBytes()),
                             cl);
 
-                    refAddrList[posn] = ra;
+                    refAddrList.setElementAt(ra, posn);
                 } else {
                     // Single separator indicates a StringRefAddr
-                    refAddrList[posn] = new StringRefAddr(type,
-                        val.substring(start));
+                    refAddrList.setElementAt(new StringRefAddr(type,
+                        val.substring(start)), posn);
                 }
             }
 
             // Copy to real reference
-            for (int i = 0; i < refAddrList.length; i++) {
-                ref.add(refAddrList[i]);
+            for (int i = 0; i < refAddrList.size(); i++) {
+                ref.add(refAddrList.elementAt(i));
             }
         }
 

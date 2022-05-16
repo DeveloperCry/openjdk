@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2016, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -98,11 +98,11 @@ final class DateTimePrintContext {
     /**
      * The temporal being output.
      */
-    private final TemporalAccessor temporal;
+    private TemporalAccessor temporal;
     /**
      * The formatter, not null.
      */
-    private final DateTimeFormatter formatter;
+    private DateTimeFormatter formatter;
     /**
      * Whether the current formatter is optional.
      */

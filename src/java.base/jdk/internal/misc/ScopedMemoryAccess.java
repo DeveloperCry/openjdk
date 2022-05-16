@@ -103,13 +103,19 @@ public class ScopedMemoryAccess {
      */
     public interface Scope {
 
+       interface Handle {
+            Scope scope();
+        }
+
         void checkValidState();
 
         Thread ownerThread();
 
-        void acquire0();
+        boolean isImplicit();
 
-        void release0();
+        Handle acquire();
+
+        void release(Handle handle);
 
         /**
          * Error thrown when memory access fails because the memory has already been released.
@@ -347,9 +353,6 @@ public class ScopedMemoryAccess {
         static final long BYTE_BUFFER_HB
                 = UNSAFE.objectFieldOffset(ByteBuffer.class, "hb");
 
-        static final long BYTE_BUFFER_IS_READ_ONLY
-                = UNSAFE.objectFieldOffset(ByteBuffer.class, "isReadOnly");
-
         @ForceInline
         static Object bufferBase(ByteBuffer bb) {
             return UNSAFE.getReference(bb, BYTE_BUFFER_HB);
@@ -371,17 +374,12 @@ public class ScopedMemoryAccess {
     }
 
     @ForceInline
-    public static boolean isReadOnly(ByteBuffer bb) {
-        return UNSAFE.getBoolean(bb, BufferAccess.BYTE_BUFFER_IS_READ_ONLY);
-    }
-
-    @ForceInline
     public static
     <V extends VectorSupport.Vector<E>, E, S extends VectorSupport.VectorSpecies<E>>
     V loadFromByteBuffer(Class<? extends V> vmClass, Class<E> e, int length,
                           ByteBuffer bb, int offset,
                           S s,
-                          VectorSupport.LoadOperation<ByteBuffer, V, S> defaultImpl) {
+                          VectorSupport.LoadOperation<ByteBuffer, V, E, S> defaultImpl) {
         try {
             return loadFromByteBufferScoped(
                     BufferAccess.scope(bb),
@@ -402,59 +400,14 @@ public class ScopedMemoryAccess {
                           Class<? extends V> vmClass, Class<E> e, int length,
                           ByteBuffer bb, int offset,
                           S s,
-                          VectorSupport.LoadOperation<ByteBuffer, V, S> defaultImpl) {
+                          VectorSupport.LoadOperation<ByteBuffer, V, E, S> defaultImpl) {
         try {
             if (scope != null) {
                 scope.checkValidState();
             }
-
-            final byte[] base = (byte[]) BufferAccess.bufferBase(bb);
 
             return VectorSupport.load(vmClass, e, length,
-                      base, BufferAccess.bufferAddress(bb, offset),
-                      bb, offset, s,
-                      defaultImpl);
-        } finally {
-            Reference.reachabilityFence(scope);
-        }
-    }
-
-    @ForceInline
-    public static
-    <V extends VectorSupport.Vector<E>, E, S extends VectorSupport.VectorSpecies<E>,
-     M extends VectorSupport.VectorMask<E>>
-    V loadFromByteBufferMasked(Class<? extends V> vmClass, Class<M> maskClass, Class<E> e,
-                               int length, ByteBuffer bb, int offset, M m, S s,
-                               VectorSupport.LoadVectorMaskedOperation<ByteBuffer, V, S, M> defaultImpl) {
-        try {
-            return loadFromByteBufferMaskedScoped(
-                    BufferAccess.scope(bb),
-                    vmClass, maskClass, e, length,
-                    bb, offset, m,
-                    s,
-                    defaultImpl);
-        } catch (ScopedMemoryAccess.Scope.ScopedAccessError ex) {
-            throw new IllegalStateException("This segment is already closed");
-        }
-    }
-
-    @Scoped
-    @ForceInline
-    private static
-    <V extends VectorSupport.Vector<E>, E, S extends VectorSupport.VectorSpecies<E>,
-     M extends VectorSupport.VectorMask<E>>
-    V loadFromByteBufferMaskedScoped(ScopedMemoryAccess.Scope scope, Class<? extends V> vmClass,
-                                     Class<M> maskClass, Class<E> e, int length,
-                                     ByteBuffer bb, int offset, M m,
-                                     S s,
-                                     VectorSupport.LoadVectorMaskedOperation<ByteBuffer, V, S, M> defaultImpl) {
-        try {
-            if (scope != null) {
-                scope.checkValidState();
-            }
-
-            return VectorSupport.loadMasked(vmClass, maskClass, e, length,
-                    BufferAccess.bufferBase(bb), BufferAccess.bufferAddress(bb, offset), m,
+                    BufferAccess.bufferBase(bb), BufferAccess.bufferAddress(bb, offset),
                     bb, offset, s,
                     defaultImpl);
         } finally {
@@ -495,60 +448,16 @@ public class ScopedMemoryAccess {
                 scope.checkValidState();
             }
 
-            final byte[] base = (byte[]) BufferAccess.bufferBase(bb);
-
             VectorSupport.store(vmClass, e, length,
-                                base, BufferAccess.bufferAddress(bb, offset),
-                                v,
-                                bb, offset,
-                                defaultImpl);
-        } finally {
-            Reference.reachabilityFence(scope);
-        }
-    }
-
-    @ForceInline
-    public static
-    <V extends VectorSupport.Vector<E>, E, M extends VectorSupport.VectorMask<E>>
-    void storeIntoByteBufferMasked(Class<? extends V> vmClass, Class<M> maskClass, Class<E> e,
-                                   int length, V v, M m,
-                                   ByteBuffer bb, int offset,
-                                   VectorSupport.StoreVectorMaskedOperation<ByteBuffer, V, M> defaultImpl) {
-        try {
-            storeIntoByteBufferMaskedScoped(
-                    BufferAccess.scope(bb),
-                    vmClass, maskClass, e, length,
-                    v, m,
-                    bb, offset,
-                    defaultImpl);
-        } catch (ScopedMemoryAccess.Scope.ScopedAccessError ex) {
-            throw new IllegalStateException("This segment is already closed");
-        }
-    }
-
-    @Scoped
-    @ForceInline
-    private static
-    <V extends VectorSupport.Vector<E>, E, M extends VectorSupport.VectorMask<E>>
-    void storeIntoByteBufferMaskedScoped(ScopedMemoryAccess.Scope scope,
-                                         Class<? extends V> vmClass, Class<M> maskClass,
-                                         Class<E> e, int length, V v, M m,
-                                         ByteBuffer bb, int offset,
-                                         VectorSupport.StoreVectorMaskedOperation<ByteBuffer, V, M> defaultImpl) {
-        try {
-            if (scope != null) {
-                scope.checkValidState();
-            }
-
-            VectorSupport.storeMasked(vmClass, maskClass, e, length,
                     BufferAccess.bufferBase(bb), BufferAccess.bufferAddress(bb, offset),
-                    v, m,
+                    v,
                     bb, offset,
                     defaultImpl);
         } finally {
             Reference.reachabilityFence(scope);
         }
     }
+
 
     // typed-ops here
 

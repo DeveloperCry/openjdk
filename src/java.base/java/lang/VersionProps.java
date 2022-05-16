@@ -38,7 +38,7 @@ class VersionProps {
 
     // This field is read by HotSpot
     private static final String java_version =
-        "18.0.1.1";
+        "17.0.3.1";
 
     private static final String java_version_date =
         "2022-04-22";
@@ -49,13 +49,13 @@ class VersionProps {
 
     // This field is read by HotSpot
     private static final String java_runtime_version =
-        "18.0.1.1+2-6";
+        "17.0.3.1+2-LTS-6";
 
     private static final String VERSION_NUMBER =
-        "18.0.1.1";
+        "17.0.3.1";
 
     private static final String VERSION_SPECIFICATION =
-        "18";
+        "17";
 
     private static final String VERSION_BUILD =
         "2";
@@ -64,13 +64,13 @@ class VersionProps {
         "";
 
     private static final String VERSION_OPT =
-        "6";
+        "LTS-6";
 
     private static final boolean isLTS =
-        "6".startsWith("LTS");
+        "LTS-6".startsWith("LTS");
 
     private static final String CLASSFILE_MAJOR_MINOR =
-        "62.0";
+        "61.0";
 
     private static final String VENDOR =
         "Oracle Corporation";

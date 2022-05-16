@@ -185,7 +185,8 @@ public class SslRMIServerSocketFactory implements RMIServerSocketFactory {
             } catch (Exception e) {
                 final String msg = "Unable to check if the cipher suites " +
                         "and protocols to enable are supported";
-                throw new IllegalArgumentException(msg, e);
+                throw (IllegalArgumentException)
+                new IllegalArgumentException(msg).initCause(e);
             }
         }
 

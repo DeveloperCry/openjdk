@@ -134,7 +134,7 @@ public final class DebugSettings {
             String value = props.getProperty(key, "");
             pout.println(key + " = " + value);
         }
-        return bout.toString();
+        return new String(bout.toByteArray());
     }
 
     /*

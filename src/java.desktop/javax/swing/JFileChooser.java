@@ -55,7 +55,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
@@ -1457,7 +1456,7 @@ public class JFileChooser extends JComponent implements Accessible {
         fileFilter = filter;
         if (filter != null) {
             if (isMultiSelectionEnabled() && selectedFiles != null && selectedFiles.length > 0) {
-                ArrayList<File> fList = new ArrayList<File>();
+                Vector<File> fList = new Vector<File>();
                 boolean failed = false;
                 for (File file : selectedFiles) {
                     if (filter.accept(file)) {

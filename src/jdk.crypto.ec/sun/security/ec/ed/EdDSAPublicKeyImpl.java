@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,9 +41,7 @@ public final class EdDSAPublicKeyImpl extends X509Key implements EdECPublicKey {
 
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private final EdECPoint point;
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private final NamedParameterSpec paramSpec;
 
     public EdDSAPublicKeyImpl(EdDSAParameters params, EdECPoint point)

@@ -304,15 +304,15 @@ class VMConnection {
         return al;
     }
 
-    private static boolean isPreviousCharWhitespace(char[] arr, int curr_pos) {
+    static private boolean isPreviousCharWhitespace(char[] arr, int curr_pos) {
         return isCharWhitespace(arr, curr_pos - 1);
     }
 
-    private static boolean isNextCharWhitespace(char[] arr, int curr_pos) {
+    static private boolean isNextCharWhitespace(char[] arr, int curr_pos) {
         return isCharWhitespace(arr, curr_pos + 1);
     }
 
-    private static boolean isCharWhitespace(char[] arr, int pos) {
+    static private boolean isCharWhitespace(char[] arr, int pos) {
         if (pos < 0 || pos >= arr.length) {
             // outside arraybounds is considered an implicit space
             return true;
@@ -323,7 +323,7 @@ class VMConnection {
         return false;
     }
 
-    private static boolean isLastChar(char[] arr, int pos) {
+    static private boolean isLastChar(char[] arr, int pos) {
         return (pos + 1 == arr.length);
     }
 

@@ -192,6 +192,9 @@ class DirectLongBufferRS
 
 
 
+
+
+
     // For duplicates and slices
     //
     DirectLongBufferRS(DirectBuffer db,         // package-private

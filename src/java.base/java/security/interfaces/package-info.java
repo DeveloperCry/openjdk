@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -60,7 +60,7 @@
  *
  * For further documentation, please see:
  * <ul>
- *   <li> {@extLink security_guide_jca
+ *   <li> {extLink security_guide_jca
  *       Java Cryptography Architecture Reference Guide}</li>
  * </ul>
  *

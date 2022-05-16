@@ -30,7 +30,6 @@ import com.sun.source.tree.Tree;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.tools.Diagnostic;
@@ -190,7 +189,7 @@ class TaskFactory {
                        worker);
     }
 
-    private <S, T extends BaseTask<S>, Z> Z runTask(Stream<S> inputs,
+    private <S, T extends BaseTask, Z> Z runTask(Stream<S> inputs,
                                                  SourceHandler<S> sh,
                                                  List<String> options,
                                                  BiFunction<JavacTaskImpl, DiagnosticCollector<JavaFileObject>, T> creator,
@@ -231,7 +230,7 @@ class TaskFactory {
             });
     }
 
-    interface Worker<T extends BaseTask<?>, Z> {
+    interface Worker<T extends BaseTask, Z> {
         public Z withTask(T task);
     }
 
@@ -259,26 +258,15 @@ class TaskFactory {
     private interface SourceHandler<T> {
 
         JavaFileObject sourceToFileObject(MemoryFileManager fm, T t);
-        T sourceForFileObject(JavaFileObject file);
 
         Diag diag(Diagnostic<? extends JavaFileObject> d);
     }
 
     private class StringSourceHandler implements SourceHandler<String> {
 
-        private final Map<URI, String> file2Snippet = new HashMap<>();
-
         @Override
         public JavaFileObject sourceToFileObject(MemoryFileManager fm, String src) {
-            JavaFileObject result = fm.createSourceFileObject(src, "$NeverUsedName$", src);
-
-            file2Snippet.put(result.toUri(), src);
-            return result;
-        }
-
-        @Override
-        public String sourceForFileObject(JavaFileObject file) {
-            return file2Snippet.get(file.toUri());
+            return fm.createSourceFileObject(src, "$NeverUsedName$", src);
         }
 
         @Override
@@ -320,19 +308,9 @@ class TaskFactory {
 
     private class WrapSourceHandler implements SourceHandler<OuterWrap> {
 
-        private final Map<URI, OuterWrap> file2Snippet = new HashMap<>();
-
         @Override
         public JavaFileObject sourceToFileObject(MemoryFileManager fm, OuterWrap w) {
-            JavaFileObject result = fm.createSourceFileObject(w, w.classFullName(), w.wrapped());
-
-            file2Snippet.put(result.toUri(), w);
-            return result;
-        }
-
-        @Override
-        public OuterWrap sourceForFileObject(JavaFileObject file) {
-            return file2Snippet.get(file.toUri());
+            return fm.createSourceFileObject(w, w.classFullName(), w.wrapped());
         }
 
         /**
@@ -354,7 +332,7 @@ class TaskFactory {
      * Parse a snippet of code (as a String) using the parser subclass.  Return
      * the parse tree (and errors).
      */
-    class ParseTask extends BaseTask<String> {
+    class ParseTask extends BaseTask {
 
         private final Iterable<? extends CompilationUnitTree> cuts;
         private final List<? extends Tree> units;
@@ -395,7 +373,7 @@ class TaskFactory {
     /**
      * Run the normal "analyze()" pass of the compiler over the wrapped snippet.
      */
-    class AnalyzeTask extends BaseTask<OuterWrap> {
+    class AnalyzeTask extends BaseTask {
 
         private final Iterable<? extends CompilationUnitTree> cuts;
 
@@ -433,7 +411,7 @@ class TaskFactory {
     /**
      * Unit the wrapped snippet to class files.
      */
-    class CompileTask extends BaseTask<OuterWrap> {
+    class CompileTask extends BaseTask {
 
         private final Map<OuterWrap, List<OutputMemoryJavaFileObject>> classObjs = new HashMap<>();
 
@@ -491,18 +469,18 @@ class TaskFactory {
         javacTaskPool = new JavacTaskPool(5);
     }
 
-    abstract class BaseTask<S> {
+    abstract class BaseTask {
 
         final DiagnosticCollector<JavaFileObject> diagnostics;
         final JavacTaskImpl task;
         private DiagList diags = null;
-        private final SourceHandler<S> sourceHandler;
+        private final SourceHandler<?> sourceHandler;
         final Context context;
         private Types types;
         private JavacMessages messages;
         private Trees trees;
 
-        private BaseTask(SourceHandler<S> sh,
+        private <T>BaseTask(SourceHandler<T> sh,
                             JavacTaskImpl task,
                             DiagnosticCollector<JavaFileObject> diagnostics) {
             this.sourceHandler = sh;
@@ -612,10 +590,6 @@ class TaskFactory {
                 state.debug(DBG_GEN, "Pos: %d (%d - %d) -- %s\n", diag.getPosition(),
                         diag.getStartPosition(), diag.getEndPosition(), diag.getMessage(null));
             }
-        }
-
-        S sourceForFile(JavaFileObject sourceFile) {
-            return sourceHandler.sourceForFileObject(sourceFile);
         }
     }
 

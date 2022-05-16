@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,7 +37,6 @@ import javax.crypto.spec.*;
 import static sun.security.pkcs11.TemplateManager.*;
 import sun.security.pkcs11.wrapper.*;
 import static sun.security.pkcs11.wrapper.PKCS11Constants.*;
-import static sun.security.pkcs11.wrapper.PKCS11Exception.RV.*;
 import sun.security.internal.spec.TlsRsaPremasterSecretParameterSpec;
 import sun.security.util.KeyUtil;
 
@@ -267,21 +266,7 @@ final class P11RSACipher extends CipherSpi {
     // state variables such as "initialized"
     private void cancelOperation() {
         token.ensureValid();
-
-        long flags = switch(mode) {
-            case MODE_ENCRYPT -> CKF_ENCRYPT;
-            case MODE_DECRYPT -> CKF_DECRYPT;
-            case MODE_SIGN -> CKF_SIGN;
-            case MODE_VERIFY -> CKF_VERIFY;
-            default -> {
-                throw new AssertionError("Unexpected value: " + mode);
-            }
-        };
-        if (P11Util.trySessionCancel(token, session, flags)) {
-            return;
-        }
-
-        // cancel by finishing operations; avoid killSession as some
+        // cancel operation by finishing it; avoid killSession as some
         // hardware vendors may require re-login
         try {
             PKCS11 p11 = token.p11;

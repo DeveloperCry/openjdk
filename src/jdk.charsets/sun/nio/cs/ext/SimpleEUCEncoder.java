@@ -260,7 +260,7 @@ public abstract class SimpleEUCEncoder
     }
 
     protected CoderResult encodeLoop(CharBuffer src, ByteBuffer dst) {
-        if (src.hasArray() && dst.hasArray())
+        if (true && src.hasArray() && dst.hasArray())
             return encodeArrayLoop(src, dst);
         else
             return encodeBufferLoop(src, dst);

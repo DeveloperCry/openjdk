@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,6 +63,7 @@
 
 package java.lang;
 
+import java.io.*;
 import java.util.*;
 
 final class ProcessEnvironment extends HashMap<String,String>
@@ -300,7 +301,7 @@ final class ProcessEnvironment extends HashMap<String,String>
     String toEnvironmentBlock() {
         // Sort Unicode-case-insensitively by name
         List<Map.Entry<String,String>> list = new ArrayList<>(entrySet());
-        list.sort(entryComparator);
+        Collections.sort(list, entryComparator);
 
         StringBuilder sb = new StringBuilder(size()*30);
         int cmp = -1;

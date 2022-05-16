@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -454,11 +454,11 @@ public class SpinnerDateModel extends AbstractSpinnerModel implements Serializab
      * @see #addChangeListener
      */
     public void setValue(Object value) {
-        if (!(value instanceof Date date)) {
+        if ((value == null) || !(value instanceof Date)) {
             throw new IllegalArgumentException("illegal value");
         }
-        if (!date.equals(this.value.getTime())) {
-            this.value.setTime(date);
+        if (!value.equals(this.value.getTime())) {
+            this.value.setTime((Date)value);
             fireStateChanged();
         }
     }

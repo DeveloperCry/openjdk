@@ -99,8 +99,7 @@ import javax.accessibility.AccessibleContext;
 @Deprecated(since = "9", forRemoval = true)
 @JavaBean(defaultProperty = "JMenuBar", description = "Swing's Applet subclass.")
 @SwingContainer(delegate = "getContentPane")
-@SuppressWarnings({"serial", "removal", // Same-version serialization only
-                   "doclint:missing"})
+@SuppressWarnings({"serial", "removal"}) // Same-version serialization only
 public class JApplet extends Applet implements Accessible,
                                                RootPaneContainer,
                                TransferHandler.HasGetTransferHandler

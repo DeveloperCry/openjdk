@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,7 +73,7 @@ class MemoryFileManager implements JavaFileManager {
         return this.stdFileManager.getLocationAsPaths(loc);
     }
 
-    abstract static class MemoryJavaFileObject extends SimpleJavaFileObject {
+    static abstract class MemoryJavaFileObject extends SimpleJavaFileObject {
 
         public MemoryJavaFileObject(String name, JavaFileObject.Kind kind) {
             super(URI.create("string:///" + name.replace('.', '/')

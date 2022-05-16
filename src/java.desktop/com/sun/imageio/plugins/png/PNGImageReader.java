@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,35 +36,29 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.SequenceInputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-
 import javax.imageio.IIOException;
-import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-
 import com.sun.imageio.plugins.common.InputStreamAdapter;
 import com.sun.imageio.plugins.common.ReaderUtil;
 import com.sun.imageio.plugins.common.SubImageInputStream;
+import java.io.ByteArrayOutputStream;
 import sun.awt.image.ByteInterleavedRaster;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 class PNGImageDataEnumeration implements Enumeration<InputStream> {
 
@@ -217,7 +211,7 @@ public class PNGImageReader extends ImageReader {
         resetStreamSettings();
     }
 
-    private String readNullTerminatedString(Charset charset, int maxLen) throws IOException {
+    private String readNullTerminatedString(String charset, int maxLen) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int b = 0;
         int count = 0;
@@ -228,7 +222,7 @@ public class PNGImageReader extends ImageReader {
         if (b != 0) {
             throw new IIOException("Found non null terminated string");
         }
-        return baos.toString(charset);
+        return new String(baos.toByteArray(), charset);
     }
 
     private void readHeader() throws IIOException {
@@ -439,7 +433,7 @@ public class PNGImageReader extends ImageReader {
     }
 
     private void parse_iCCP_chunk(int chunkLength) throws IOException {
-        String keyword = readNullTerminatedString(ISO_8859_1, 80);
+        String keyword = readNullTerminatedString("ISO-8859-1", 80);
         int compressedProfileLength = chunkLength - keyword.length() - 2;
         if (compressedProfileLength <= 0) {
             throw new IIOException("iCCP chunk length is not proper");
@@ -459,7 +453,7 @@ public class PNGImageReader extends ImageReader {
     private void parse_iTXt_chunk(int chunkLength) throws IOException {
         long chunkStart = stream.getStreamPosition();
 
-        String keyword = readNullTerminatedString(ISO_8859_1, 80);
+        String keyword = readNullTerminatedString("ISO-8859-1", 80);
         metadata.iTXt_keyword.add(keyword);
 
         int compressionFlag = stream.readUnsignedByte();
@@ -470,7 +464,7 @@ public class PNGImageReader extends ImageReader {
 
         long pos = stream.getStreamPosition();
         int remainingLen = (int)(chunkStart + chunkLength - pos);
-        String languageTag = readNullTerminatedString(UTF_8, remainingLen);
+        String languageTag = readNullTerminatedString("UTF8", remainingLen);
         metadata.iTXt_languageTag.add(languageTag);
 
         pos = stream.getStreamPosition();
@@ -479,7 +473,7 @@ public class PNGImageReader extends ImageReader {
             throw new IIOException("iTXt chunk length is not proper");
         }
         String translatedKeyword =
-            readNullTerminatedString(UTF_8, remainingLen);
+            readNullTerminatedString("UTF8", remainingLen);
         metadata.iTXt_translatedKeyword.add(translatedKeyword);
 
         String text;
@@ -492,9 +486,9 @@ public class PNGImageReader extends ImageReader {
         stream.readFully(b);
 
         if (compressionFlag == 1) { // Decompress the text
-            text = new String(inflate(b), UTF_8);
+            text = new String(inflate(b), "UTF8");
         } else {
-            text = new String(b, UTF_8);
+            text = new String(b, "UTF8");
         }
         metadata.iTXt_text.add(text);
 
@@ -539,7 +533,7 @@ public class PNGImageReader extends ImageReader {
 
     private void parse_sPLT_chunk(int chunkLength)
         throws IOException, IIOException {
-        metadata.sPLT_paletteName = readNullTerminatedString(ISO_8859_1, 80);
+        metadata.sPLT_paletteName = readNullTerminatedString("ISO-8859-1", 80);
         int remainingChunkLength = chunkLength -
                 (metadata.sPLT_paletteName.length() + 1);
         if (remainingChunkLength <= 0) {
@@ -586,7 +580,7 @@ public class PNGImageReader extends ImageReader {
     }
 
     private void parse_tEXt_chunk(int chunkLength) throws IOException {
-        String keyword = readNullTerminatedString(ISO_8859_1, 80);
+        String keyword = readNullTerminatedString("ISO-8859-1", 80);
         int textLength = chunkLength - keyword.length() - 1;
         if (textLength < 0) {
             throw new IIOException("tEXt chunk length is not proper");
@@ -595,7 +589,7 @@ public class PNGImageReader extends ImageReader {
 
         byte[] b = new byte[textLength];
         stream.readFully(b);
-        metadata.tEXt_text.add(new String(b, ISO_8859_1));
+        metadata.tEXt_text.add(new String(b, "ISO-8859-1"));
 
         // Check if the text chunk contains image creation time
         if (keyword.equals(PNGMetadata.tEXt_creationTimeKey)) {
@@ -684,7 +678,7 @@ public class PNGImageReader extends ImageReader {
     }
 
     private void parse_zTXt_chunk(int chunkLength) throws IOException {
-        String keyword = readNullTerminatedString(ISO_8859_1, 80);
+        String keyword = readNullTerminatedString("ISO-8859-1", 80);
         int textLength = chunkLength - keyword.length() - 2;
         if (textLength < 0) {
             throw new IIOException("zTXt chunk length is not proper");
@@ -696,7 +690,7 @@ public class PNGImageReader extends ImageReader {
 
         byte[] b = new byte[textLength];
         stream.readFully(b);
-        metadata.zTXt_text.add(new String(inflate(b), ISO_8859_1));
+        metadata.zTXt_text.add(new String(inflate(b), "ISO-8859-1"));
 
         // Check if the text chunk contains image creation time
         if (keyword.equals(PNGMetadata.tEXt_creationTimeKey)) {

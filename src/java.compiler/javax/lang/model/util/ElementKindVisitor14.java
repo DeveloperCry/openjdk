@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -61,7 +61,7 @@ import javax.lang.model.SourceVersion;
  * @see ElementKindVisitor9
  * @since 16
  */
-@SupportedSourceVersion(RELEASE_18)
+@SupportedSourceVersion(RELEASE_17)
 public class ElementKindVisitor14<R, P> extends ElementKindVisitor9<R, P> {
     /**
      * Constructor for concrete subclasses; uses {@code null} for the

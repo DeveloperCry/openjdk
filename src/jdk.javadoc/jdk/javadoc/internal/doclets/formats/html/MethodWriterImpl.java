@@ -157,13 +157,13 @@ public class MethodWriterImpl extends AbstractExecutableMemberWriter
                                             ? utils.getSimpleName(holder)
                                             : utils.getFullyQualifiedName(holder));
                     Content codeLink = HtmlTree.CODE(link);
-                    Content descriptionFromTypeLabel = HtmlTree.SPAN(HtmlStyle.descriptionFromTypeLabel,
+                    Content descfrmLabel = HtmlTree.SPAN(HtmlStyle.descfrmTypeLabel,
                             utils.isClass(holder)
-                                    ? contents.descriptionFromClassLabel
-                                    : contents.descriptionFromInterfaceLabel);
-                    descriptionFromTypeLabel.add(Entity.NO_BREAK_SPACE);
-                    descriptionFromTypeLabel.add(codeLink);
-                    methodDocTree.add(HtmlTree.DIV(HtmlStyle.block, descriptionFromTypeLabel));
+                                    ? contents.descfrmClassLabel
+                                    : contents.descfrmInterfaceLabel);
+                    descfrmLabel.add(Entity.NO_BREAK_SPACE);
+                    descfrmLabel.add(codeLink);
+                    methodDocTree.add(HtmlTree.DIV(HtmlStyle.block, descfrmLabel));
                 }
                 writer.addInlineComment(method, methodDocTree);
             }

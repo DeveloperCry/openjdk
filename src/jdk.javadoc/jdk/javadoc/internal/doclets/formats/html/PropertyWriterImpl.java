@@ -118,13 +118,13 @@ public class PropertyWriterImpl extends AbstractMemberWriter
                                     utils.isIncluded(holder)
                                             ? holder.getSimpleName() : holder.getQualifiedName());
                     Content codeLink = HtmlTree.CODE(link);
-                    Content descriptionFromLabel = HtmlTree.SPAN(HtmlStyle.descriptionFromTypeLabel,
+                    Content descfrmLabel = HtmlTree.SPAN(HtmlStyle.descfrmTypeLabel,
                             utils.isClass(holder)
-                                    ? contents.descriptionFromClassLabel
-                                    : contents.descriptionFromInterfaceLabel);
-                    descriptionFromLabel.add(Entity.NO_BREAK_SPACE);
-                    descriptionFromLabel.add(codeLink);
-                    propertyDocTree.add(HtmlTree.DIV(HtmlStyle.block, descriptionFromLabel));
+                                    ? contents.descfrmClassLabel
+                                    : contents.descfrmInterfaceLabel);
+                    descfrmLabel.add(Entity.NO_BREAK_SPACE);
+                    descfrmLabel.add(codeLink);
+                    propertyDocTree.add(HtmlTree.DIV(HtmlStyle.block, descfrmLabel));
                 }
                 writer.addInlineComment(property, propertyDocTree);
             }

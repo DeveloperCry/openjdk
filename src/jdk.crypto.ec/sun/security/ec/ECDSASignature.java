@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -374,7 +374,6 @@ abstract class ECDSASignature extends SignatureSpi {
             throw new InvalidKeyException("Key params does not match signature params");
         }
 
-        ECUtil.checkPrivateKey(key);
         // Should check that the supplied key is appropriate for signature
         // algorithm (e.g. P-256 for SHA256withECDSA)
         this.privateKey = key;

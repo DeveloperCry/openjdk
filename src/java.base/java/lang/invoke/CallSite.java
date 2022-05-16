@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2016, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -84,8 +84,8 @@ private static CallSite bootstrapDynamic(MethodHandles.Lookup caller, String nam
  * @author John Rose, JSR 292 EG
  * @since 1.7
  */
-public
-abstract class CallSite {
+abstract
+public class CallSite {
 
     // The actual payload of this call site.
     // Can be modified using {@link MethodHandleNatives#setCallSiteTargetNormal} or {@link MethodHandleNatives#setCallSiteTargetVolatile}.

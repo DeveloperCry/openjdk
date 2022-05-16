@@ -244,9 +244,9 @@ public class HeapSummary extends Tool {
    }
 
    public void printG1HeapSummary(PrintStream tty, G1CollectedHeap g1h) {
-      G1MonitoringSupport monitoringSupport = g1h.monitoringSupport();
-      long edenSpaceRegionNum = monitoringSupport.edenSpaceRegionNum();
-      long survivorSpaceRegionNum = monitoringSupport.survivorSpaceRegionNum();
+      G1MonitoringSupport g1mm = g1h.g1mm();
+      long edenSpaceRegionNum = g1mm.edenSpaceRegionNum();
+      long survivorSpaceRegionNum = g1mm.survivorSpaceRegionNum();
       HeapRegionSetBase oldSet = g1h.oldSet();
       HeapRegionSetBase archiveSet = g1h.archiveSet();
       HeapRegionSetBase humongousSet = g1h.humongousSet();
@@ -255,11 +255,11 @@ public class HeapSummary extends Tool {
                    g1h.used(), g1h.capacity());
       tty.println("G1 Young Generation:");
       printG1Space(tty, "Eden Space:", edenSpaceRegionNum,
-                   monitoringSupport.edenSpaceUsed(), monitoringSupport.edenSpaceCommitted());
+                   g1mm.edenSpaceUsed(), g1mm.edenSpaceCommitted());
       printG1Space(tty, "Survivor Space:", survivorSpaceRegionNum,
-                   monitoringSupport.survivorSpaceUsed(), monitoringSupport.survivorSpaceCommitted());
+                   g1mm.survivorSpaceUsed(), g1mm.survivorSpaceCommitted());
       printG1Space(tty, "G1 Old Generation:", oldGenRegionNum,
-                   monitoringSupport.oldGenUsed(), monitoringSupport.oldGenCommitted());
+                   g1mm.oldGenUsed(), g1mm.oldGenCommitted());
    }
 
    private void printG1Space(PrintStream tty, String spaceName, long regionNum,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -685,7 +685,7 @@ public abstract class ClassValue<T> {
             if (haveReplacement >= 0) {
                 if (cache[(replacementPos+1) & mask] != null) {
                     // Be conservative, to avoid breaking up a non-null run.
-                    cache[replacementPos & mask] = Entry.DEAD_ENTRY;
+                    cache[replacementPos & mask] = (Entry<?>) Entry.DEAD_ENTRY;
                 } else {
                     cache[replacementPos & mask] = null;
                     cacheLoad -= 1;

@@ -132,7 +132,7 @@ public class GSSCredElement implements GSSCredentialSpi {
         return "N/A";
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         dispose();
     }

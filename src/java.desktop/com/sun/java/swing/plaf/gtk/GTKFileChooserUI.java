@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -212,7 +212,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
             directoryList : fileList;
         Object[] files = list.getSelectedValues();
         int len = files.length;
-        ArrayList<String> result = new ArrayList<String>(len + 1);
+        Vector<String> result = new Vector<String>(len + 1);
 
         // we return all selected file names
         for (int i = 0; i < len; i++) {

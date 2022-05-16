@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -211,7 +211,7 @@ public final class AttributeValues implements Cloneable {
     }
 
     public static final int MASK_ALL =
-        getMask(EAttribute.values());
+        getMask(EAttribute.class.getEnumConstants());
 
     public void unsetDefault() {
         defined &= nondefault;
@@ -764,8 +764,8 @@ public final class AttributeValues implements Cloneable {
                 return ((AttributeMap)map).getValues().justification;
             }
             Object obj = map.get(TextAttribute.JUSTIFICATION);
-            if (obj instanceof Number number) {
-                return max(0, min(1, number.floatValue()));
+            if (obj != null && obj instanceof Number) {
+                return max(0, min(1, ((Number)obj).floatValue()));
             }
         }
         return DEFAULT.justification;
@@ -778,8 +778,8 @@ public final class AttributeValues implements Cloneable {
                 return ((AttributeMap)map).getValues().numericShaping;
             }
             Object obj = map.get(TextAttribute.NUMERIC_SHAPING);
-            if (obj instanceof NumericShaper shaper) {
-                return shaper;
+            if (obj != null && obj instanceof NumericShaper) {
+                return (NumericShaper)obj;
             }
         }
         return DEFAULT.numericShaping;

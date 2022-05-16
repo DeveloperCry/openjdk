@@ -59,7 +59,7 @@ public class RegistryContextFactory
     /**
      * The type of each address in an RMI registry reference.
      */
-    public static final String ADDRESS_TYPE = "URL";
+    public final static String ADDRESS_TYPE = "URL";
 
     public Context getInitialContext(Hashtable<?,?> env) throws NamingException {
 

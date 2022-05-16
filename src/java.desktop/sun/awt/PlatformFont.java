@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,8 +26,8 @@
 package sun.awt;
 
 import java.awt.peer.FontPeer;
-import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Vector;
 import sun.font.SunFontManager;
 import sun.java2d.FontSupport;
 import java.nio.CharBuffer;
@@ -143,7 +143,7 @@ public abstract class PlatformFont implements FontPeer {
         if (len < 1) {
             return new CharsetString[0];
         }
-        ArrayList<CharsetString> mcs = null;
+        Vector<CharsetString> mcs = null;
         char[] tmpStr = new char[len];
         char tmpChar = defaultChar;
         boolean encoded = false;
@@ -198,10 +198,10 @@ public abstract class PlatformFont implements FontPeer {
             }
             if (currentFont != fd){
                 if (mcs == null) {
-                    mcs = new ArrayList<>(3);
+                    mcs = new Vector<>(3);
                 }
-                mcs.add(new CharsetString(tmpStr, lastIndex,
-                                          i-lastIndex, currentFont));
+                mcs.addElement(new CharsetString(tmpStr, lastIndex,
+                                                 i-lastIndex, currentFont));
                 currentFont = fd;
                 fd = defaultFont;
                 lastIndex = i;
@@ -214,7 +214,7 @@ public abstract class PlatformFont implements FontPeer {
             result = new CharsetString[1];
             result[0] = cs;
         } else {
-            mcs.add(cs);
+            mcs.addElement(cs);
             result = mcs.toArray(new CharsetString[mcs.size()]);
         }
         return result;
@@ -428,7 +428,8 @@ public abstract class PlatformFont implements FontPeer {
      */
     private static native void initIDs();
 
-    static class PlatformFontCache {
+    class PlatformFontCache
+    {
         char uniChar;
         FontDescriptor fontDescriptor;
         ByteBuffer bb = ByteBuffer.allocate(4);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -118,7 +118,7 @@ final class StackStreamFactory {
      *            For example, StackFrameInfo for StackWalker::walk or
      *            Class<?> for StackWalker::getCallerClass
      */
-    abstract static class AbstractStackWalker<R, T> {
+    static abstract class AbstractStackWalker<R, T> {
         protected final StackWalker walker;
         protected final Thread thread;
         protected final int maxDepth;
@@ -783,7 +783,7 @@ final class StackStreamFactory {
      *
      * Each specialized AbstractStackWalker subclass may subclass the FrameBuffer.
      */
-    abstract static class FrameBuffer<F> {
+    static abstract class FrameBuffer<F> {
         static final int START_POS = 2;     // 0th and 1st elements are reserved
 
         // buffers for VM to fill stack frame info

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -36,7 +36,6 @@ import java.net.http.HttpResponse;
 import jdk.internal.net.http.common.Logger;
 import jdk.internal.net.http.common.Utils;
 import static java.lang.String.format;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Implements chunked/fixed transfer encodings of HTTP/1.1 responses.
@@ -160,7 +159,7 @@ class ResponseContent {
             printable.get(bytes, 0, bytes.length);
             String msg = "============== accepted ==================\n";
             try {
-                var str = new String(bytes, UTF_8);
+                var str = new String(bytes, "UTF-8");
                 msg += str;
             } catch (Exception x) {
                 msg += x;
@@ -489,6 +488,7 @@ class ResponseContent {
                     debug.log("already closed: " + closedExceptionally);
                 return;
             }
+            boolean completed = false;
             try {
                 if (debug.on())
                     debug.log("Parser got %d bytes ", b.remaining());
@@ -505,7 +505,9 @@ class ResponseContent {
             } catch (Throwable t) {
                 if (debug.on()) debug.log("Unexpected exception", t);
                 closedExceptionally = t;
-                onComplete.accept(t);
+                if (!completed) {
+                    onComplete.accept(t);
+                }
             }
         }
 

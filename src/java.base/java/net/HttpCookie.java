@@ -474,7 +474,7 @@ public final class HttpCookie implements Cloneable {
 
     /**
      * Returns {@code true} if sending this cookie should be restricted to a
-     * secure protocol, or {@code false} if it can be sent using any
+     * secure protocol, or {@code false} if the it can be sent using any
      * protocol.
      *
      * @return  {@code false} if the cookie can be sent over any standard
@@ -1078,13 +1078,13 @@ public final class HttpCookie implements Cloneable {
         int version = 0;
 
         header = header.toLowerCase();
-        if (header.contains("expires=")) {
+        if (header.indexOf("expires=") != -1) {
             // only netscape cookie using 'expires'
             version = 0;
-        } else if (header.contains("version=")) {
+        } else if (header.indexOf("version=") != -1) {
             // version is mandatory for rfc 2965/2109 cookie
             version = 1;
-        } else if (header.contains("max-age")) {
+        } else if (header.indexOf("max-age") != -1) {
             // rfc 2965/2109 use 'max-age'
             version = 1;
         } else if (startsWithIgnoreCase(header, SET_COOKIE2)) {

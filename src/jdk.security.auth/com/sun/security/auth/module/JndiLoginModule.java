@@ -38,8 +38,6 @@ import java.util.LinkedList;
 import com.sun.security.auth.UnixPrincipal;
 import com.sun.security.auth.UnixNumericUserPrincipal;
 import com.sun.security.auth.UnixNumericGroupPrincipal;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static sun.security.util.ResourcesMgr.getAuthResourceString;
 
 
@@ -552,7 +550,7 @@ public class JndiLoginModule implements LoginModule {
                 // channels. For nonsecure channels, SSL is recommended.
 
                 Attribute pwd = attributes.get(USER_PWD);
-                String encryptedPwd = new String((byte[])pwd.get(), UTF_8);
+                String encryptedPwd = new String((byte[])pwd.get(), "UTF8");
                 encryptedPassword = encryptedPwd.substring(CRYPT.length());
 
                 // check the password
@@ -642,6 +640,15 @@ public class JndiLoginModule implements LoginModule {
                 ne.printStackTrace();
             }
             throw new FailedLoginException("User not found");
+        } catch (java.io.UnsupportedEncodingException uee) {
+            // password stored in incorrect format
+            if (debug) {
+                System.out.println("\t\t[JndiLoginModule]:  " +
+                                "password incorrectly encoded");
+                uee.printStackTrace();
+            }
+            throw new LoginException("Login failure due to incorrect " +
+                                "password encoding in the password database");
         }
 
         // authentication succeeded
@@ -722,14 +729,19 @@ public class JndiLoginModule implements LoginModule {
             return false;
 
         Crypt c = new Crypt();
-        byte[] oldCrypt = encryptedPassword.getBytes(UTF_8);
-        byte[] newCrypt = c.crypt(password.getBytes(UTF_8),
-                                  oldCrypt);
-        if (newCrypt.length != oldCrypt.length)
-            return false;
-        for (int i = 0; i < newCrypt.length; i++) {
-            if (oldCrypt[i] != newCrypt[i])
+        try {
+            byte[] oldCrypt = encryptedPassword.getBytes("UTF8");
+            byte[] newCrypt = c.crypt(password.getBytes("UTF8"),
+                                      oldCrypt);
+            if (newCrypt.length != oldCrypt.length)
                 return false;
+            for (int i = 0; i < newCrypt.length; i++) {
+                if (oldCrypt[i] != newCrypt[i])
+                    return false;
+            }
+        } catch (java.io.UnsupportedEncodingException uee) {
+            // cannot happen, but return false just to be safe
+            return false;
         }
         return true;
     }

@@ -98,7 +98,7 @@ public class LinuxDebuggerLocal extends DebuggerBase implements LinuxDebugger {
 
     // native methods
 
-    private static native void init0()
+    private native static void init0()
                                 throws DebuggerException;
     private native void setSAAltRoot0(String altroot);
     private native void attach0(int pid)
@@ -115,7 +115,7 @@ public class LinuxDebuggerLocal extends DebuggerBase implements LinuxDebugger {
                                 throws DebuggerException;
     private native byte[] readBytesFromProcess0(long address, long numBytes)
                                 throws DebuggerException;
-    public static native int  getAddressSize() ;
+    public native static int  getAddressSize() ;
 
     @Override
     public native String demangle(String sym);

@@ -1712,7 +1712,9 @@ public class ObjectStreamClass implements Serializable {
         } else if (th instanceof Error) {
             throw (Error) th;
         } else {
-            throw new IOException("unexpected exception type", th);
+            IOException ex = new IOException("unexpected exception type");
+            ex.initCause(th);
+            throw ex;
         }
     }
 
@@ -2515,7 +2517,7 @@ public class ObjectStreamClass implements Serializable {
         }
 
         // a key composed of ObjectStreamField[] names and types
-        abstract static class Key {
+        static abstract class Key {
             abstract int length();
             abstract String fieldName(int i);
             abstract Class<?> fieldType(int i);

@@ -105,11 +105,13 @@ public class PackageIndexWriter extends AbstractOverviewIndexWriter {
             }
 
             for (PackageElement pkg : configuration.packages) {
-                if (!(options.noDeprecated() && utils.isDeprecated(pkg))) {
-                    Content packageLinkContent = getPackageLink(pkg, getLocalizedPackageName(pkg));
-                    Content summaryContent = new ContentBuilder();
-                    addSummaryComment(pkg, summaryContent);
-                    table.addRow(pkg, packageLinkContent, summaryContent);
+                if (!pkg.isUnnamed()) {
+                    if (!(options.noDeprecated() && utils.isDeprecated(pkg))) {
+                        Content packageLinkContent = getPackageLink(pkg, getLocalizedPackageName(pkg));
+                        Content summaryContent = new ContentBuilder();
+                        addSummaryComment(pkg, summaryContent);
+                        table.addRow(pkg, packageLinkContent, summaryContent);
+                    }
                 }
             }
 

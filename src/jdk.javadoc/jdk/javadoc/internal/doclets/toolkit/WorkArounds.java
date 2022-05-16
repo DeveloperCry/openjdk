@@ -122,8 +122,9 @@ public class WorkArounds {
         return false;
     }
 
-    public boolean isMandated(AnnotationMirror aDesc) {
-        return elementUtils.getOrigin(null, aDesc) == Elements.Origin.MANDATED;
+    // TODO: fix jx.l.m add this method.
+    public boolean isSynthesized(AnnotationMirror aDesc) {
+        return ((Attribute)aDesc).isSynthesized();
     }
 
     // TODO: DocTrees: Trees.getPath(Element e) is slow a factor 4-5 times.

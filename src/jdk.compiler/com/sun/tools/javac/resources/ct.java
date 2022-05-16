@@ -143,7 +143,7 @@ public final class ct extends java.util.ListResourceBundle {
             { "com.sun.net.httpserver.spi.*", "compact2" },
             { "com.sun.net.ssl.*", "compact1" },
             { "com.sun.net.ssl.internal.www.protocol.https.*", "proprietary compact1" },
-            { "com.sun.nio.file.*", "proprietary compact1" },
+            { "com.sun.nio.file.*", "compact1" },
             { "com.sun.nio.sctp.*", "compact3" },
             { "com.sun.org.apache.bcel.internal.*", "proprietary compact2" },
             { "com.sun.org.apache.bcel.internal.classfile.*", "proprietary compact2" },

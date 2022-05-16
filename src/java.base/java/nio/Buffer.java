@@ -34,9 +34,9 @@ import jdk.internal.misc.ScopedMemoryAccess.Scope;
 import jdk.internal.misc.Unsafe;
 import jdk.internal.misc.VM.BufferPool;
 import jdk.internal.vm.annotation.ForceInline;
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 
 import java.io.FileDescriptor;
-import java.util.Objects;
 import java.util.Spliterator;
 
 /**
@@ -737,8 +737,11 @@ public abstract class Buffer {
      * IndexOutOfBoundsException} if it is not smaller than the limit
      * or is smaller than zero.
      */
+    @IntrinsicCandidate
     final int checkIndex(int i) {                       // package-private
-        return Objects.checkIndex(i, limit);
+        if ((i < 0) || (i >= limit))
+            throw new IndexOutOfBoundsException();
+        return i;
     }
 
     final int checkIndex(int i, int nb) {               // package-private
@@ -767,11 +770,7 @@ public abstract class Buffer {
     final void checkScope() {
         ScopedMemoryAccess.Scope scope = scope();
         if (scope != null) {
-            try {
-                scope.checkValidState();
-            } catch (ScopedMemoryAccess.Scope.ScopedAccessError e) {
-                throw new IllegalStateException("This segment is already closed");
-            }
+            scope.checkValidState();
         }
     }
 
@@ -824,7 +823,7 @@ public abstract class Buffer {
                 }
 
                 @Override
-                public Runnable acquireScope(Buffer buffer, boolean async) {
+                public Scope.Handle acquireScope(Buffer buffer, boolean async) {
                     var scope = buffer.scope();
                     if (scope == null) {
                         return null;
@@ -832,8 +831,7 @@ public abstract class Buffer {
                     if (async && scope.ownerThread() != null) {
                         throw new IllegalStateException("Confined scope not supported");
                     }
-                    scope.acquire0();
-                    return scope::release0;
+                    return scope.acquire();
                 }
 
                 @Override

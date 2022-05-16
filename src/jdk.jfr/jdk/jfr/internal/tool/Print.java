@@ -28,6 +28,7 @@ package jdk.jfr.internal.tool;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -35,8 +36,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import jdk.jfr.EventType;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 final class Print extends Command {
     @Override
@@ -101,7 +100,7 @@ final class Print extends Command {
     @Override
     public void execute(Deque<String> options) throws UserSyntaxException, UserDataException {
         Path file = getJFRInputFile(options);
-        PrintWriter pw = new PrintWriter(System.out, false, UTF_8);
+        PrintWriter pw = new PrintWriter(System.out, false, Charset.forName("UTF-8"));
         Predicate<EventType> eventFilter = null;
         int stackDepth = 5;
         EventPrintWriter eventWriter = null;

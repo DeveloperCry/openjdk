@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,12 +28,12 @@ package com.sun.tools.jdi;
 import java.io.IOException;
 
 public class Packet extends Object {
-    public static final short NoFlags = 0x0;
-    public static final short Reply = 0x80;
-    public static final short ReplyNoError = 0x0;
+    public final static short NoFlags = 0x0;
+    public final static short Reply = 0x80;
+    public final static short ReplyNoError = 0x0;
 
     static int uID = 1;
-    static final byte[] nullData = new byte[0];
+    final static byte[] nullData = new byte[0];
 
     // Note! flags, cmdSet, and cmd are all byte values.
     // We represent them as shorts to make them easier
@@ -121,7 +121,7 @@ public class Packet extends Object {
         data = nullData;
     }
 
-    private static synchronized int uniqID() {
+    static synchronized private int uniqID() {
         /*
          * JDWP spec does not require this id to be sequential and
          * increasing, but our implementation does. See

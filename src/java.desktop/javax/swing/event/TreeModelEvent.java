@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -294,13 +294,14 @@ public class TreeModelEvent extends EventObject {
     public String toString() {
         StringBuilder   sb = new StringBuilder();
 
-        sb.append(getClass().getName() + " " + hashCode());
+        sb.append(getClass().getName() + " " +
+                  Integer.toString(hashCode()));
         if(path != null)
             sb.append(" path " + path);
         if(childIndices != null) {
             sb.append(" indices [ ");
             for(int counter = 0; counter < childIndices.length; counter++)
-                sb.append(childIndices[counter] + " ");
+                sb.append(Integer.toString(childIndices[counter])+ " ");
             sb.append("]");
         }
         if(children != null) {

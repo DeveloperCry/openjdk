@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +53,8 @@ public class TargetVM implements Runnable {
      * TO DO: The limit numbers below are somewhat arbitrary and should
      * be configurable in the future.
      */
-    private static final int OVERLOADED_QUEUE = 10000;
-    private static final int UNDERLOADED_QUEUE = 100;
+    static private final int OVERLOADED_QUEUE = 10000;
+    static private final int UNDERLOADED_QUEUE = 100;
 
     TargetVM(VirtualMachineImpl vm, Connection connection) {
         this.vm = vm;
@@ -186,16 +187,19 @@ public class TargetVM implements Runnable {
         // Closing a queue causes a VMDisconnectEvent to
         // be put onto the queue.
         synchronized(eventQueues) {
-            for (EventQueue eventQueue : eventQueues) {
-                ((EventQueueImpl)eventQueue).close();
+            Iterator<EventQueue> iter = eventQueues.iterator();
+            while (iter.hasNext()) {
+                ((EventQueueImpl)iter.next()).close();
             }
         }
 
         // indirectly throw VMDisconnectedException to
         // command requesters.
         synchronized(waitingQueue) {
-            for (Packet packet : waitingQueue.values()) {
-                synchronized (packet) {
+            Iterator<Packet> iter = waitingQueue.values().iterator();
+            while (iter.hasNext()) {
+                Packet packet = iter.next();
+                synchronized(packet) {
                     packet.notify();
                 }
             }
@@ -254,8 +258,9 @@ public class TargetVM implements Runnable {
     void notifyDequeueEventSet() {
         int maxQueueSize = 0;
         synchronized(eventQueues) {
-            for (EventQueue eventQueue : eventQueues) {
-                EventQueueImpl queue = (EventQueueImpl)eventQueue;
+            Iterator<EventQueue> iter = eventQueues.iterator();
+            while (iter.hasNext()) {
+                EventQueueImpl queue = (EventQueueImpl)iter.next();
                 maxQueueSize = Math.max(maxQueueSize, queue.size());
             }
         }
@@ -266,8 +271,9 @@ public class TargetVM implements Runnable {
         int maxQueueSize = 0;
 
         synchronized(eventQueues) {
-            for (EventQueue eventQueue : eventQueues) {
-                EventQueueImpl queue = (EventQueueImpl)eventQueue;
+            Iterator<EventQueue> iter = eventQueues.iterator();
+            while (iter.hasNext()) {
+                EventQueueImpl queue = (EventQueueImpl)iter.next();
                 queue.enqueue(eventSet);
                 maxQueueSize = Math.max(maxQueueSize, queue.size());
             }

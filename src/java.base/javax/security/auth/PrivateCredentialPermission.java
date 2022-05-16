@@ -145,7 +145,9 @@ public final class PrivateCredentialPermission extends Permission {
             } else {
                 this.credOwners = new CredOwner[principals.size()];
                 int index = 0;
-                for (Principal p : principals) {
+                Iterator<Principal> i = principals.iterator();
+                while (i.hasNext()) {
+                    Principal p = i.next();
                     this.credOwners[index++] = new CredOwner
                                                 (p.getClass().getName(),
                                                 p.getName());

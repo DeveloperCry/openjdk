@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1621,7 +1621,7 @@ public class MetalIconFactory implements Serializable {
         Vector<ImageGcPair> images = new Vector<ImageGcPair>(1, 1);
         ImageGcPair currentImageGcPair;
 
-        static class ImageGcPair {
+        class ImageGcPair {
             Image image;
             GraphicsConfiguration gc;
             ImageGcPair(Image image, GraphicsConfiguration gc) {

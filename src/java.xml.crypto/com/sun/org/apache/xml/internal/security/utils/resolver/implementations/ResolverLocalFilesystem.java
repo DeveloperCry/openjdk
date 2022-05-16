@@ -51,7 +51,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
 
-            InputStream inputStream = Files.newInputStream(Paths.get(uriNew));  //NOPMD
+            InputStream inputStream = Files.newInputStream(Paths.get(uriNew));
             XMLSignatureInput result = new XMLSignatureInput(inputStream);
             result.setSecureValidation(context.secureValidation);
 
@@ -72,7 +72,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         }
 
         if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#' ||
-            context.uriToResolve.startsWith("http:") || context.uriToResolve.startsWith("https:")) {
+            context.uriToResolve.startsWith("http:")) {
             return false;
         }
 
@@ -94,7 +94,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
     private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
         URI newUri = null;
-        if (baseURI == null || baseURI.length() == 0) {
+        if (baseURI == null || "".equals(baseURI)) {
             newUri = new URI(uri);
         } else {
             newUri = new URI(baseURI).resolve(uri);

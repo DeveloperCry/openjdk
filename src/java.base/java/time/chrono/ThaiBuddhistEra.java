@@ -135,11 +135,14 @@ public enum ThaiBuddhistEra implements Era {
      * @throws DateTimeException if the era is invalid
      */
     public static ThaiBuddhistEra of(int thaiBuddhistEra) {
-        return switch (thaiBuddhistEra) {
-            case 0  -> BEFORE_BE;
-            case 1  -> BE;
-            default -> throw new DateTimeException("Invalid era: " + thaiBuddhistEra);
-        };
+        switch (thaiBuddhistEra) {
+            case 0:
+                return BEFORE_BE;
+            case 1:
+                return BE;
+            default:
+                throw new DateTimeException("Invalid era: " + thaiBuddhistEra);
+        }
     }
 
     //-----------------------------------------------------------------------

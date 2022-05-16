@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,7 +34,7 @@ import sun.jvm.hotspot.types.*;
 import sun.jvm.hotspot.utilities.Observable;
 import sun.jvm.hotspot.utilities.Observer;
 
-public abstract class Metadata extends VMObject {
+abstract public class Metadata extends VMObject {
   static {
     VM.registerVMInitializedObserver(new Observer() {
         public void update(Observable o, Object data) {
@@ -86,7 +86,7 @@ public abstract class Metadata extends VMObject {
   void iterateFields(MetadataVisitor visitor) {
   }
 
-  public abstract void printValueOn(PrintStream tty);
+  abstract public void printValueOn(PrintStream tty);
   public void dumpReplayData(PrintStream out) {
       out.println("# Unknown Metadata");
   }

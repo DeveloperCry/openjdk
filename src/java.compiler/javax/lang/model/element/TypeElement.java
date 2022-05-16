@@ -108,7 +108,6 @@ public interface TypeElement extends Element, Parameterizable, QualifiedNameable
      *
      * @jls 8.8.9 Default Constructor
      * @jls 8.9.3 Enum Members
-     * @jls 8.10.3 Record Members
      */
     @Override
     List<? extends Element> getEnclosedElements();

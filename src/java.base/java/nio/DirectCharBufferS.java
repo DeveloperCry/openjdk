@@ -48,6 +48,9 @@ class DirectCharBufferS
 
 
 
+    // Cached array base offset
+    private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(char[].class);
+
     // Cached unaligned-access capability
     protected static final boolean UNALIGNED = Bits.unaligned();
 

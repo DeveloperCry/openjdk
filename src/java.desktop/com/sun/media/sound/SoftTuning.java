@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,11 +25,10 @@
 
 package com.sun.media.sound;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import javax.sound.midi.Patch;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * A tuning program container, for use with MIDI Tuning.
@@ -100,7 +99,11 @@ public final class SoftTuning {
                     // http://www.midi.org/about-midi/tuning.shtml
                     //if (!checksumOK2(data))
                     //    break;
-                    name = new String(data, 6, 16, US_ASCII);
+                    try {
+                        name = new String(data, 6, 16, "ascii");
+                    } catch (UnsupportedEncodingException e) {
+                        name = null;
+                    }
                     int r = 22;
                     for (int i = 0; i < 128; i++) {
                         int xx = data[r++] & 0xFF;
@@ -132,7 +135,11 @@ public final class SoftTuning {
                     // http://www.midi.org/about-midi/tuning_extens.shtml
                     if (!checksumOK(data))
                         break;
-                    name = new String(data, 7, 16, US_ASCII);
+                    try {
+                        name = new String(data, 7, 16, "ascii");
+                    } catch (UnsupportedEncodingException e) {
+                        name = null;
+                    }
                     int r = 23;
                     for (int i = 0; i < 128; i++) {
                         int xx = data[r++] & 0xFF;
@@ -149,7 +156,11 @@ public final class SoftTuning {
                     // http://www.midi.org/about-midi/tuning_extens.shtml
                     if (!checksumOK(data))
                         break;
-                    name = new String(data, 7, 16, US_ASCII);
+                    try {
+                        name = new String(data, 7, 16, "ascii");
+                    } catch (UnsupportedEncodingException e) {
+                        name = null;
+                    }
                     int[] octave_tuning = new int[12];
                     for (int i = 0; i < 12; i++)
                         octave_tuning[i] = (data[i + 23] & 0xFF) - 64;
@@ -163,7 +174,11 @@ public final class SoftTuning {
                     // http://www.midi.org/about-midi/tuning_extens.shtml
                     if (!checksumOK(data))
                         break;
-                    name = new String(data, 7, 16, US_ASCII);
+                    try {
+                        name = new String(data, 7, 16, "ascii");
+                    } catch (UnsupportedEncodingException e) {
+                        name = null;
+                    }
                     double[] octave_tuning = new double[12];
                     for (int i = 0; i < 12; i++) {
                         int v = (data[i * 2 + 23] & 0xFF) * 128

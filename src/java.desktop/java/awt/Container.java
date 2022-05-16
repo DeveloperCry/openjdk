@@ -3861,7 +3861,7 @@ public class Container extends Component {
          * Number of PropertyChangeListener objects registered. It's used
          * to add/remove ContainerListener to track target Container's state.
          */
-        private transient volatile int propertyListenersCount;
+        private transient volatile int propertyListenersCount = 0;
 
         /**
          * The handler to fire {@code PropertyChange}
@@ -3891,18 +3891,18 @@ public class Container extends Component {
 
             public void componentAdded(ContainerEvent e) {
                 Component c = e.getChild();
-                if (c instanceof Accessible accessible) {
+                if (c != null && c instanceof Accessible) {
                     AccessibleAWTContainer.this.firePropertyChange(
                         AccessibleContext.ACCESSIBLE_CHILD_PROPERTY,
-                        null, accessible.getAccessibleContext());
+                        null, ((Accessible) c).getAccessibleContext());
                 }
             }
             public void componentRemoved(ContainerEvent e) {
                 Component c = e.getChild();
-                if (c instanceof Accessible accessible) {
+                if (c != null && c instanceof Accessible) {
                     AccessibleAWTContainer.this.firePropertyChange(
                         AccessibleContext.ACCESSIBLE_CHILD_PROPERTY,
-                        accessible.getAccessibleContext(), null);
+                        ((Accessible) c).getAccessibleContext(), null);
                 }
             }
         }

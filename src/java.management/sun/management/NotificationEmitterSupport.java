@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -167,7 +167,7 @@ public abstract class NotificationEmitterSupport implements NotificationEmitter 
         }
     }
 
-    private static class ListenerInfo {
+    private class ListenerInfo {
         public NotificationListener listener;
         NotificationFilter filter;
         Object handback;
@@ -193,5 +193,5 @@ public abstract class NotificationEmitterSupport implements NotificationEmitter 
      */
     private List<ListenerInfo> listenerList = Collections.emptyList();
 
-    public abstract MBeanNotificationInfo[] getNotificationInfo();
+    abstract public MBeanNotificationInfo[] getNotificationInfo();
 }

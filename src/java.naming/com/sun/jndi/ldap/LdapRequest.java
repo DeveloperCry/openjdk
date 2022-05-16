@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -103,17 +103,17 @@ final class LdapRequest {
      * @param millis timeout, infinite if the value is negative
      * @return BerDecoder if reply was read successfully
      * @throws CommunicationException request has been canceled and request does not need to be abandoned
-     * @throws IOException            request has been closed or timed out. Request does need to be abandoned
-     * @throws InterruptedException   LDAP operation has been interrupted
+     * @throws NamingException request has been closed or timed out. Request does need to be abandoned
+     * @throws InterruptedException LDAP operation has been interrupted
      */
-    BerDecoder getReplyBer(long millis) throws IOException, CommunicationException,
+    BerDecoder getReplyBer(long millis) throws NamingException,
                                                InterruptedException {
         if (cancelled) {
             throw new CommunicationException("Request: " + msgId +
                 " cancelled");
         }
         if (isClosed()) {
-            throw new IOException(CLOSE_MSG);
+            throw new NamingException(CLOSE_MSG);
         }
 
         BerDecoder result = millis > 0 ?
@@ -126,11 +126,11 @@ final class LdapRequest {
 
         // poll from 'replies' blocking queue ended-up with timeout
         if (result == null) {
-            throw new IOException(String.format(TIMEOUT_MSG_FMT, millis));
+            throw new NamingException(String.format(TIMEOUT_MSG_FMT, millis));
         }
         // Unexpected EOF can be caused by connection closure or cancellation
         if (result == EOF) {
-            throw new IOException(CLOSE_MSG);
+            throw new NamingException(CLOSE_MSG);
         }
         return result;
     }

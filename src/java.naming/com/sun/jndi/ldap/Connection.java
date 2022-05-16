@@ -425,7 +425,7 @@ public final class Connection implements Runnable {
     /**
      * Reads a reply; waits until one is ready.
      */
-    BerDecoder readReply(LdapRequest ldr) throws NamingException {
+    BerDecoder readReply(LdapRequest ldr) throws IOException, NamingException {
         BerDecoder rber;
 
         // If socket closed, don't even try
@@ -436,7 +436,7 @@ public final class Connection implements Runnable {
             }
         }
 
-        IOException ioException = null;
+        NamingException namingException = null;
         try {
             // if no timeout is set so we wait infinitely until
             // a response is received OR until the connection is closed or cancelled
@@ -445,29 +445,25 @@ public final class Connection implements Runnable {
         } catch (InterruptedException ex) {
             throw new InterruptedNamingException(
                 "Interrupted during LDAP operation");
-        } catch (IOException ioe) {
+        } catch (CommunicationException ce) {
+            // Re-throw
+            throw ce;
+        } catch (NamingException ne) {
             // Connection is timed out OR closed/cancelled
-            // getReplyBer throws IOException when the requests needs to be abandoned
-            ioException = ioe;
+            namingException = ne;
             rber = null;
         }
 
         if (rber == null) {
             abandonRequest(ldr, null);
         }
-        // ioException can be not null in the following cases:
+        // namingException can be not null in the following cases:
         //  a) The response is timed-out
-        //  b) LDAP request connection has been closed
-        // If the request has been cancelled - CommunicationException is
-        // thrown directly from LdapRequest.getReplyBer, since there is no
-        // need to abandon request.
+        //  b) LDAP request connection has been closed or cancelled
         // The exception message is initialized in LdapRequest::getReplyBer
-        if (ioException != null) {
-            // Throw CommunicationException after all cleanups are done
-            String message = ioException.getMessage();
-            var ce = new CommunicationException(message);
-            ce.initCause(ioException);
-            throw ce;
+        if (namingException != null) {
+            // Re-throw NamingException after all cleanups are done
+            throw namingException;
         }
         return rber;
     }
@@ -689,7 +685,7 @@ public final class Connection implements Runnable {
     // "synchronize" might lead to deadlock so don't synchronize method
     // Use streamLock instead for synchronizing update to stream
 
-    public synchronized void replaceStreams(InputStream newIn, OutputStream newOut) {
+    synchronized public void replaceStreams(InputStream newIn, OutputStream newOut) {
         if (debug) {
             System.err.println("Replacing " + inStream + " with: " + newIn);
             System.err.println("Replacing " + outStream + " with: " + newOut);
@@ -712,7 +708,7 @@ public final class Connection implements Runnable {
     /*
      * Replace streams and set isUpdradedToStartTls flag to the provided value
      */
-    public synchronized void replaceStreams(InputStream newIn, OutputStream newOut, boolean isStartTls) {
+    synchronized public void replaceStreams(InputStream newIn, OutputStream newOut, boolean isStartTls) {
         synchronized (startTlsLock) {
             replaceStreams(newIn, newOut);
             isUpgradedToStartTls = isStartTls;
@@ -731,7 +727,7 @@ public final class Connection implements Runnable {
      * This ensures that there is no contention between the main thread
      * and the Connection thread when the main thread updates inStream.
      */
-    private synchronized InputStream getInputStream() {
+    synchronized private InputStream getInputStream() {
         return inStream;
     }
 
@@ -1043,7 +1039,7 @@ public final class Connection implements Runnable {
      */
     private volatile HandshakeListener tlsHandshakeListener;
 
-    public synchronized void setHandshakeCompletedListener(SSLSocket sslSocket) {
+    synchronized public void setHandshakeCompletedListener(SSLSocket sslSocket) {
         if (tlsHandshakeListener != null)
             tlsHandshakeListener.tlsHandshakeCompleted.cancel(false);
 

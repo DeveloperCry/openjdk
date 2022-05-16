@@ -30,10 +30,9 @@ import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.ResourceScope;
 import jdk.internal.foreign.Utils;
 import jdk.internal.foreign.abi.CallingSequenceBuilder;
+import jdk.internal.foreign.abi.UpcallHandler;
 import jdk.internal.foreign.abi.ABIDescriptor;
 import jdk.internal.foreign.abi.Binding;
 import jdk.internal.foreign.abi.CallingSequence;
@@ -41,8 +40,6 @@ import jdk.internal.foreign.abi.ProgrammableInvoker;
 import jdk.internal.foreign.abi.ProgrammableUpcallHandler;
 import jdk.internal.foreign.abi.VMStorage;
 import jdk.internal.foreign.abi.SharedUtils;
-import jdk.internal.foreign.abi.aarch64.linux.LinuxAArch64CallArranger;
-import jdk.internal.foreign.abi.aarch64.macos.MacOsAArch64CallArranger;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
@@ -57,12 +54,8 @@ import static jdk.internal.foreign.abi.aarch64.AArch64Architecture.*;
  * to translate a C FunctionDescriptor into a CallingSequence2, which can then be turned into a MethodHandle.
  *
  * This includes taking care of synthetic arguments like pointers to return buffers for 'in-memory' returns.
- *
- * There are minor differences between the ABIs implemented on Linux, macOS, and Windows
- * which are handled in sub-classes. Clients should access these through the provided
- * public constants CallArranger.LINUX and CallArranger.MACOS.
  */
-public abstract class CallArranger {
+public class CallArranger {
     private static final int STACK_SLOT_SIZE = 8;
     public static final int MAX_REGISTER_ARGUMENTS = 8;
 
@@ -102,20 +95,9 @@ public abstract class CallArranger {
         }
     }
 
-    public static final CallArranger LINUX = new LinuxAArch64CallArranger();
-    public static final CallArranger MACOS = new MacOsAArch64CallArranger();
+    public static Bindings getBindings(MethodType mt, FunctionDescriptor cDesc, boolean forUpcall) {
+        SharedUtils.checkFunctionTypes(mt, cDesc, AArch64.C_POINTER.bitSize());
 
-    /**
-     * Are variadic arguments assigned to registers as in the standard calling
-     * convention, or always passed on the stack?
-     *
-     * @returns true if variadic arguments should be spilled to the stack.
-     */
-    protected abstract boolean varArgsOnStack();
-
-    protected CallArranger() {}
-
-    public Bindings getBindings(MethodType mt, FunctionDescriptor cDesc, boolean forUpcall) {
         CallingSequenceBuilder csb = new CallingSequenceBuilder(forUpcall);
 
         BindingCalculator argCalc = forUpcall ? new BoxBindingCalculator(true) : new UnboxBindingCalculator(true);
@@ -134,9 +116,6 @@ public abstract class CallArranger {
         for (int i = 0; i < mt.parameterCount(); i++) {
             Class<?> carrier = mt.parameterType(i);
             MemoryLayout layout = cDesc.argumentLayouts().get(i);
-            if (varArgsOnStack() && SharedUtils.isVarargsIndex(cDesc, i)) {
-                argCalc.storageCalculator.adjustForVarArgs();
-            }
             csb.addArgumentBindings(carrier, layout, argCalc.getBindings(carrier, layout));
         }
 
@@ -145,7 +124,7 @@ public abstract class CallArranger {
         return new Bindings(csb.build(), returnInMemory);
     }
 
-    public MethodHandle arrangeDowncall(MethodType mt, FunctionDescriptor cDesc) {
+    public static MethodHandle arrangeDowncall(MethodType mt, FunctionDescriptor cDesc) {
         Bindings bindings = getBindings(mt, cDesc, false);
 
         MethodHandle handle = new ProgrammableInvoker(C, bindings.callingSequence).getBoundMethodHandle();
@@ -157,14 +136,14 @@ public abstract class CallArranger {
         return handle;
     }
 
-    public NativeSymbol arrangeUpcall(MethodHandle target, MethodType mt, FunctionDescriptor cDesc, ResourceScope scope) {
+    public static UpcallHandler arrangeUpcall(MethodHandle target, MethodType mt, FunctionDescriptor cDesc) {
         Bindings bindings = getBindings(mt, cDesc, true);
 
         if (bindings.isInMemoryReturn) {
             target = SharedUtils.adaptUpcallForIMR(target, true /* drop return, since we don't have bindings for it */);
         }
 
-        return ProgrammableUpcallHandler.make(C, target, bindings.callingSequence,scope);
+        return ProgrammableUpcallHandler.make(C, target, bindings.callingSequence);
     }
 
     private static boolean isInMemoryReturn(Optional<MemoryLayout> returnLayout) {
@@ -229,15 +208,18 @@ public abstract class CallArranger {
             return storage[0];
         }
 
-        void adjustForVarArgs() {
-            // This system passes all variadic parameters on the stack. Ensure
-            // no further arguments are allocated to registers.
-            nRegs[StorageClasses.INTEGER] = MAX_REGISTER_ARGUMENTS;
-            nRegs[StorageClasses.VECTOR] = MAX_REGISTER_ARGUMENTS;
+        void adjustForVarArgs(MemoryLayout layout) {
+            if (layout.attribute(AArch64.STACK_VARARGS_ATTRIBUTE_NAME)
+                    .map(Boolean.class::cast).orElse(false)) {
+                // This system passes all variadic parameters on the stack. Ensure
+                // no further arguments are allocated to registers.
+                nRegs[StorageClasses.INTEGER] = MAX_REGISTER_ARGUMENTS;
+                nRegs[StorageClasses.VECTOR] = MAX_REGISTER_ARGUMENTS;
+            }
         }
     }
 
-    abstract static class BindingCalculator {
+    static abstract class BindingCalculator {
         protected final StorageCalculator storageCalculator;
 
         protected BindingCalculator(boolean forArguments) {
@@ -306,6 +288,7 @@ public abstract class CallArranger {
         List<Binding> getBindings(Class<?> carrier, MemoryLayout layout) {
             TypeClass argumentClass = TypeClass.classifyLayout(layout);
             Binding.Builder bindings = Binding.builder();
+            storageCalculator.adjustForVarArgs(layout);
             switch (argumentClass) {
                 case STRUCT_REGISTER: {
                     assert carrier == MemorySegment.class;
@@ -334,7 +317,8 @@ public abstract class CallArranger {
                 case STRUCT_REFERENCE: {
                     assert carrier == MemorySegment.class;
                     bindings.copy(layout)
-                            .unboxAddress(MemorySegment.class);
+                            .baseAddress()
+                            .unboxAddress();
                     VMStorage storage = storageCalculator.nextStorage(
                         StorageClasses.INTEGER, AArch64.C_POINTER);
                     bindings.vmStore(storage, long.class);
@@ -365,7 +349,7 @@ public abstract class CallArranger {
                     break;
                 }
                 case POINTER: {
-                    bindings.unboxAddress(carrier);
+                    bindings.unboxAddress();
                     VMStorage storage =
                         storageCalculator.nextStorage(StorageClasses.INTEGER, layout);
                     bindings.vmStore(storage, long.class);
@@ -407,6 +391,7 @@ public abstract class CallArranger {
         List<Binding> getBindings(Class<?> carrier, MemoryLayout layout) {
             TypeClass argumentClass = TypeClass.classifyLayout(layout);
             Binding.Builder bindings = Binding.builder();
+            assert !layout.attribute(AArch64.STACK_VARARGS_ATTRIBUTE_NAME).isPresent() : "no variadic upcalls";
             switch (argumentClass) {
                 case STRUCT_REGISTER: {
                     assert carrier == MemorySegment.class;

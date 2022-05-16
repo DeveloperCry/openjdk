@@ -81,8 +81,8 @@ public class Contents {
     public final Content deprecatedLabel;
     public final Content deprecatedPhrase;
     public final Content deprecatedForRemovalPhrase;
-    public final Content descriptionFromClassLabel;
-    public final Content descriptionFromInterfaceLabel;
+    public final Content descfrmClassLabel;
+    public final Content descfrmInterfaceLabel;
     public final Content descriptionLabel;
     public final Content detailLabel;
     public final Content enclosingClassLabel;
@@ -92,8 +92,10 @@ public class Contents {
     public final Content enumConstantSummary;
     public final Content enum_;
     public final Content enums;
-    public final Content exceptionClass;
-    public final Content exceptionClasses;
+    public final Content error;
+    public final Content errors;
+    public final Content exception;
+    public final Content exceptions;
     public final Content exportedTo;
     public final Content fieldLabel;
     public final Content fieldDetailsLabel;
@@ -225,8 +227,8 @@ public class Contents {
         deprecatedLabel = getContent("doclet.navDeprecated");
         deprecatedPhrase = getContent("doclet.Deprecated");
         deprecatedForRemovalPhrase = getContent("doclet.DeprecatedForRemoval");
-        descriptionFromClassLabel = getContent("doclet.Description_From_Class");
-        descriptionFromInterfaceLabel = getContent("doclet.Description_From_Interface");
+        descfrmClassLabel = getContent("doclet.Description_From_Class");
+        descfrmInterfaceLabel = getContent("doclet.Description_From_Interface");
         descriptionLabel = getContent("doclet.Description");
         detailLabel = getContent("doclet.Detail");
         enclosingClassLabel = getContent("doclet.Enclosing_Class");
@@ -236,8 +238,10 @@ public class Contents {
         enumConstantSummary = getContent("doclet.Enum_Constant_Summary");
         enum_ = getContent("doclet.Enum");
         enums = getContent("doclet.Enums");
-        exceptionClass = getContent("doclet.ExceptionClass");
-        exceptionClasses = getContent("doclet.ExceptionClasses");
+        error = getContent("doclet.Error");
+        errors = getContent("doclet.Errors");
+        exception = getContent("doclet.Exception");
+        exceptions = getContent("doclet.Exceptions");
         exportedTo = getContent("doclet.ExportedTo");
         fieldDetailsLabel = getContent("doclet.Field_Detail");
         fieldSummaryLabel = getContent("doclet.Field_Summary");

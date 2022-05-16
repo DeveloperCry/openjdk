@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -685,7 +685,7 @@ public interface Tree {
         USES(UsesTree.class),
 
         /**
-         * An implementation-reserved node. This is not the node
+         * An implementation-reserved node. This is the not the node
          * you are looking for.
          */
         OTHER(null),

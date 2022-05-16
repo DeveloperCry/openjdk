@@ -638,10 +638,7 @@ public final class OCSPResponse {
 
         try {
             Signature respSignature = Signature.getInstance(sigAlgId.getName());
-            SignatureUtil.initVerifyWithParam(respSignature,
-                    cert.getPublicKey(),
-                    SignatureUtil.getParamSpec(sigAlgId.getName(),
-                            sigAlgId.getEncodedParams()));
+            respSignature.initVerify(cert.getPublicKey());
             respSignature.update(tbsResponseData);
 
             if (respSignature.verify(signature)) {
@@ -657,8 +654,8 @@ public final class OCSPResponse {
                 }
                 return false;
             }
-        } catch (InvalidAlgorithmParameterException | InvalidKeyException
-                | NoSuchAlgorithmException | SignatureException e)
+        } catch (InvalidKeyException | NoSuchAlgorithmException |
+                 SignatureException e)
         {
             throw new CertPathValidatorException(e);
         }

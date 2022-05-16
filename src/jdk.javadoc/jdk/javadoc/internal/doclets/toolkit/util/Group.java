@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -147,7 +147,7 @@ public class Group {
                 elementNameGroupMap.put(mdlPattern, groupname);
             }
         }
-        sortedRegExpList.sort(new MapKeyComparator());
+        Collections.sort(sortedRegExpList, new MapKeyComparator());
         return true;
     }
 
@@ -193,7 +193,7 @@ public class Group {
                 elementNameGroupMap.put(pkgPattern, groupname);
             }
         }
-        sortedRegExpList.sort(new MapKeyComparator());
+        Collections.sort(sortedRegExpList, new MapKeyComparator());
         return true;
     }
 

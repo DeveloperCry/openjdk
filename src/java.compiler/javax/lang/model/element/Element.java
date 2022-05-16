@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -117,9 +117,8 @@ public interface Element extends javax.lang.model.AnnotatedConstruct {
 
     /**
      * Returns the modifiers of this element, excluding annotations.
-     * Implicit modifiers, such as the {@code public} and {@code
-     * static} modifiers of interface members (JLS section {@jls
-     * 9.3}), are included.
+     * Implicit modifiers, such as the {@code public} and {@code static}
+     * modifiers of interface members, are included.
      *
      * @return the modifiers of this element, or an empty set if there are none
      */
@@ -231,7 +230,6 @@ public interface Element extends javax.lang.model.AnnotatedConstruct {
      * @see Elements#getAllMembers
      * @jls 8.8.9 Default Constructor
      * @jls 8.9 Enum Classes
-     * @jls 8.10 Record Classes
      * @revised 9
      */
     List<? extends Element> getEnclosedElements();
@@ -294,7 +292,7 @@ public interface Element extends javax.lang.model.AnnotatedConstruct {
      * <p>Note that any annotations returned by this method are
      * declaration annotations.
      *
-     * @since 1.8
+     * @since 8
      */
     @Override
     <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType);

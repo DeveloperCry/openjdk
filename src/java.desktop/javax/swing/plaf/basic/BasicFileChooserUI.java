@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.regex.*;
 import sun.awt.shell.ShellFolder;
 import sun.swing.*;
+import sun.swing.SwingUtilities2;
 
 /**
  * Basic L&amp;F implementation of a FileChooser.
@@ -1203,7 +1204,7 @@ public class BasicFileChooserUI extends FileChooserUI {
     /* A file filter which accepts file patterns containing
      * the special wildcards *? on Windows and *?[] on Unix.
      */
-    static class GlobFilter extends FileFilter {
+    class GlobFilter extends FileFilter {
         Pattern pattern;
         String globPattern;
 

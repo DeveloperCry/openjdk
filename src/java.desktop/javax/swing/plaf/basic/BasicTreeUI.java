@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ import java.beans.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -1131,8 +1132,10 @@ public class BasicTreeUI extends TreeUI
      * @return a default cell editor
      */
     protected TreeCellEditor createDefaultCellEditor() {
-        if (currentCellRenderer instanceof DefaultTreeCellRenderer defaultRenderer) {
-            DefaultTreeCellEditor editor = new DefaultTreeCellEditor(tree, defaultRenderer);
+        if(currentCellRenderer != null &&
+           (currentCellRenderer instanceof DefaultTreeCellRenderer)) {
+            DefaultTreeCellEditor editor = new DefaultTreeCellEditor
+                        (tree, (DefaultTreeCellRenderer)currentCellRenderer);
 
             return editor;
         }
@@ -3748,7 +3751,7 @@ public class BasicTreeUI extends TreeUI
             for (TreePath path : paths) {
                 selOrder.add(path);
             }
-            selOrder.sort(this);
+            Collections.sort(selOrder, this);
             int n = selOrder.size();
             TreePath[] displayPaths = new TreePath[n];
             for (int i = 0; i < n; i++) {

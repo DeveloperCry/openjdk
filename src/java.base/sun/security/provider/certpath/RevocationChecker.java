@@ -792,7 +792,8 @@ class RevocationChecker extends PKIXRevocationChecker {
                 e, null, -1, BasicReason.UNDETERMINED_REVOCATION_STATUS);
         }
 
-        RevocationStatus rs = response.getSingleResponse(certId);
+        RevocationStatus rs =
+            (RevocationStatus)response.getSingleResponse(certId);
         RevocationStatus.CertStatus certStatus = rs.getCertStatus();
         if (certStatus == RevocationStatus.CertStatus.REVOKED) {
             Date revocationTime = rs.getRevocationTime();

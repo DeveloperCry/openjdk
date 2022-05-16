@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -63,8 +63,8 @@ public class RemoteExecutionControl extends DirectExecutionControl implements Ex
         InputStream inStream = socket.getInputStream();
         OutputStream outStream = socket.getOutputStream();
         Map<String, Consumer<OutputStream>> outputs = new HashMap<>();
-        outputs.put("out", st -> System.setOut(new PrintStream(st, true, System.out.charset())));
-        outputs.put("err", st -> System.setErr(new PrintStream(st, true, System.err.charset())));
+        outputs.put("out", st -> System.setOut(new PrintStream(st, true)));
+        outputs.put("err", st -> System.setErr(new PrintStream(st, true)));
         Map<String, Consumer<InputStream>> input = new HashMap<>();
         input.put("in", System::setIn);
         forwardExecutionControlAndIO(new RemoteExecutionControl(), inStream, outStream, outputs, input);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -210,8 +210,10 @@ public class BMPImageWriter extends ImageWriter implements BMPConstants {
 
         IIOMetadata imageMetadata = image.getMetadata();
         BMPMetadata bmpImageMetadata = null;
-        if (imageMetadata instanceof BMPMetadata bmp) {
-            bmpImageMetadata = bmp;
+        if (imageMetadata != null
+            && imageMetadata instanceof BMPMetadata)
+        {
+            bmpImageMetadata = (BMPMetadata)imageMetadata;
         } else {
             ImageTypeSpecifier imageType =
                 new ImageTypeSpecifier(colorModel, sampleModel);

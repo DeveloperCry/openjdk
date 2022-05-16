@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -344,7 +344,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
 
         Border    b = divider.getBorder();
 
-        if (!(b instanceof UIResource)) {
+        if (b == null || !(b instanceof UIResource)) {
             divider.setBorder(UIManager.getBorder("SplitPaneDivider.border"));
         }
 
@@ -2359,7 +2359,8 @@ public class BasicSplitPaneUI extends SplitPaneUI
         }
 
         private Component getFirstAvailableComponent(Component c) {
-            if (c instanceof JSplitPane sp) {
+            if (c!=null && c instanceof JSplitPane) {
+                JSplitPane sp = (JSplitPane)c;
                 Component left = getFirstAvailableComponent(sp.getLeftComponent());
                 if (left != null) {
                     c = left;

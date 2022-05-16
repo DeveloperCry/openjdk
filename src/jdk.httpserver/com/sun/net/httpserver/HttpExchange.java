@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.Map;
 
 /**
  * This class encapsulates a HTTP request received and a
@@ -69,7 +70,7 @@ import java.net.URI;
  * @since 1.6
  */
 
-public abstract class HttpExchange implements AutoCloseable, Request {
+public abstract class HttpExchange implements AutoCloseable {
 
     /**
      * Constructor for subclasses to call.
@@ -78,41 +79,51 @@ public abstract class HttpExchange implements AutoCloseable, Request {
     }
 
     /**
-     * {@inheritDoc}
-     * @return {@inheritDoc}
+     * Returns an immutable {@link Map} containing the HTTP headers that were
+     * included with this request. The keys in this {@code Map} will be the header
+     * names, while the values will be a {@link java.util.List} of
+     * {@linkplain java.lang.String Strings} containing each value that was
+     * included (either for a header that was listed several times, or one that
+     * accepts a comma-delimited list of values on a single line). In either of
+     * these cases, the values for the header name will be presented in the
+     * order that they were included in the request.
+     *
+     * <p> The keys in {@code Map} are case-insensitive.
+     *
+     * @return a read-only {@code Map} which can be used to access request headers
      */
     public abstract Headers getRequestHeaders();
 
     /**
-     * Returns a mutable {@link Headers} into which the HTTP response headers
-     * can be stored and which will be transmitted as part of this response.
+     * Returns a mutable {@link Map} into which the HTTP response headers can be
+     * stored and which will be transmitted as part of this response. The keys in
+     * the {@code Map} will be the header names, while the values must be a
+     * {@link java.util.List} of {@linkplain java.lang.String Strings} containing
+     * each value that should be included multiple times (in the order that they
+     * should be included).
      *
-     * <p> The keys in the {@code Headers} are the header names, while the
-     * values must be a {@link java.util.List} of {@linkplain java.lang.String Strings}
-     * containing each value that should be included multiple times (in the
-     * order that they should be included).
+     * <p> The keys in {@code Map} are case-insensitive.
      *
-     * <p> The keys in {@code Headers} are case-insensitive.
-     *
-     * @return a writable {@code Headers} which can be used to set response
-     *         headers.
+     * @return a writable {@code Map} which can be used to set response headers.
      */
     public abstract Headers getResponseHeaders();
 
     /**
-     * {@inheritDoc}
-     * @return {@inheritDoc}
+     * Get the request {@link URI}.
+     *
+     * @return the request {@code URI}
      */
     public abstract URI getRequestURI();
 
     /**
-     * {@inheritDoc}
-     * @return {@inheritDoc}
+     * Get the request method.
+     *
+     * @return the request method
      */
     public abstract String getRequestMethod();
 
     /**
-     * Returns the {@link HttpContext} for this exchange.
+     * Get the {@link HttpContext} for this exchange.
      *
      * @return the {@code HttpContext}
      */

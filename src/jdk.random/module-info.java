@@ -40,7 +40,8 @@ import jdk.internal.util.random.RandomSupport;
  * @provides jdk.random.Xoroshiro128PlusPlus
  * @provides jdk.random.Xoshiro256PlusPlus
  *
- * @uses java.util.random.RandomGenerator
+ * @use java.util.random.RandomGenerator
+ * @use jdk.internal.util.random.RandomSupport
  *
  * @moduleGraph
  * @since 16

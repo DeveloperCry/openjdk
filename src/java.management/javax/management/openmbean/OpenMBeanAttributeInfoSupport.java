@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,8 @@
 package javax.management.openmbean;
 
 
+// java import
+//
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -42,6 +44,7 @@ import javax.management.Descriptor;
 import javax.management.DescriptorRead;
 import javax.management.ImmutableDescriptor;
 import javax.management.MBeanAttributeInfo;
+import com.sun.jmx.remote.util.EnvHelp;
 import sun.reflect.misc.MethodUtil;
 import sun.reflect.misc.ReflectUtil;
 
@@ -623,7 +626,7 @@ public class OpenMBeanAttributeInfoSupport
             final String msg =
                 "Cannot convert descriptor field " + name + "  to " +
                 openType.getTypeName();
-            throw new IllegalArgumentException(msg, e);
+            throw EnvHelp.initCause(new IllegalArgumentException(msg), e);
         }
     }
 

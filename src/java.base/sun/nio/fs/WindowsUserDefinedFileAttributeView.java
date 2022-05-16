@@ -51,17 +51,8 @@ class WindowsUserDefinedFileAttributeView
             throw new NullPointerException("'name' is null");
         return file + ":" + name;
     }
-
     private String join(WindowsPath file, String name) throws WindowsException {
-        if (name == null)
-            throw new NullPointerException("'name' is null");
-        WindowsFileSystem wfs = file.getFileSystem();
-        WindowsPath namePath = WindowsPath.parse(wfs, name);
-        if (namePath.getRoot() != null)
-            throw new IllegalArgumentException("'name' has a root component");
-        if (namePath.getParent() != null)
-            throw new IllegalArgumentException("'name' has more than one element");
-        return join(file.getPathWithPrefixForWin32Calls(), name);
+        return join(file.getPathForWin32Calls(), name);
     }
 
     private final WindowsPath file;

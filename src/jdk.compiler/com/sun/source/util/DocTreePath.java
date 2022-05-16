@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -64,7 +64,6 @@ public class DocTreePath implements Iterable<DocTree> {
 
         class Result extends Error {
             static final long serialVersionUID = -5942088234594905625L;
-            @SuppressWarnings("serial") // Type of field is not Serializable
             DocTreePath path;
             Result(DocTreePath path) {
                 this.path = path;

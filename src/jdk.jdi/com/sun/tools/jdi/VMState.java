@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -174,7 +174,9 @@ class VMState {
     }
 
     synchronized boolean hasListener(VMListener listener) {
-        for (WeakReference<VMListener> ref : listeners) {
+        Iterator<WeakReference<VMListener>> iter = listeners.iterator();
+        while (iter.hasNext()) {
+            WeakReference<VMListener> ref = iter.next();
             if (listener.equals(ref.get())) {
                 return true;
             }

@@ -98,7 +98,6 @@ public class VM {
   private boolean      isLP64;
   private int          bytesPerLong;
   private int          bytesPerWord;
-  private int          logBytesPerWord;
   private int          objectAlignmentInBytes;
   private int          minObjAlignmentInBytes;
   private int          logMinObjAlignmentInBytes;
@@ -359,26 +358,26 @@ public class VM {
      if (System.getProperty("sun.jvm.hotspot.runtime.VM.disableVersionCheck") == null) {
         // read sa build version.
         String versionProp = "sun.jvm.hotspot.runtime.VM.saBuildVersion";
-        String versionPropVal = saProps.getProperty(versionProp);
-        if (versionPropVal == null) {
+        String saVersion = saProps.getProperty(versionProp);
+        if (saVersion == null)
            throw new RuntimeException("Missing property " + versionProp);
-        }
 
-        var saVersion = Runtime.Version.parse(versionPropVal);
-        var vmVersion = Runtime.Version.parse(vmRelease);
+        // Strip nonproduct VM version substring (note: saVersion doesn't have it).
+        String vmVersion = vmRelease.replaceAll("(-fastdebug)|(-debug)|(-jvmg)|(-optimized)|(-profiled)","");
 
         if (saVersion.equals(vmVersion)) {
            // Exact match
            return;
         }
-        if (!saVersion.equalsIgnoreOptional(vmVersion)) {
+        if (saVersion.indexOf('-') == saVersion.lastIndexOf('-') &&
+            vmVersion.indexOf('-') == vmVersion.lastIndexOf('-')) {
            // Throw exception if different release versions:
-           // <version>+<build>
-           throw new VMVersionMismatchException(saVersion, vmVersion);
+           // <major>.<minor>-b<n>
+           throw new VMVersionMismatchException(saVersion, vmRelease);
         } else {
            // Otherwise print warning to allow mismatch not release versions
            // during development.
-           System.err.println("WARNING: Hotspot VM version " + vmVersion +
+           System.err.println("WARNING: Hotspot VM version " + vmRelease +
                               " does not match with SA version " + saVersion +
                               "." + " You may see unexpected results. ");
         }
@@ -478,7 +477,6 @@ public class VM {
     }
     bytesPerLong = db.lookupIntConstant("BytesPerLong").intValue();
     bytesPerWord = db.lookupIntConstant("BytesPerWord").intValue();
-    logBytesPerWord = db.lookupIntConstant("LogBytesPerWord").intValue();
     heapWordSize = db.lookupIntConstant("HeapWordSize").intValue();
     Flags_DEFAULT = db.lookupIntConstant("JVMFlagOrigin::DEFAULT").intValue();
     Flags_COMMAND_LINE = db.lookupIntConstant("JVMFlagOrigin::COMMAND_LINE").intValue();
@@ -652,7 +650,7 @@ public class VM {
   }
 
   // Convenience function for conversions
-  public static long getAddressValue(Address addr) {
+  static public long getAddressValue(Address addr) {
     return VM.getVM().getDebugger().getAddressValue(addr);
   }
 
@@ -688,10 +686,6 @@ public class VM {
 
   public int getBytesPerWord() {
     return bytesPerWord;
-  }
-
-  public int getLogBytesPerWord() {
-    return logBytesPerWord;
   }
 
   /** Get minimum object alignment in bytes. */

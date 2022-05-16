@@ -133,7 +133,7 @@ final class WInputMethod extends InputMethodAdapter
     }
 
     @Override
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable
     {
         // Release the resources used by the native input context.

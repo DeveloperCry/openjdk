@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -314,7 +314,9 @@ public class X509CRLSelector implements CRLSelector {
         throws IOException
     {
         HashSet<Object> namesCopy = new HashSet<>();
-        for (Object nameObject : names) {
+        Iterator<?> i = names.iterator();
+        while (i.hasNext()) {
+            Object nameObject = i.next();
             if (!(nameObject instanceof byte []) &&
                 !(nameObject instanceof String))
                 throw new IOException("name not byte array or String");
@@ -364,14 +366,15 @@ public class X509CRLSelector implements CRLSelector {
     private static HashSet<X500Principal> parseIssuerNames(Collection<Object> names)
     throws IOException {
         HashSet<X500Principal> x500Principals = new HashSet<>();
-        for (Object nameObject : names) {
+        for (Iterator<Object> t = names.iterator(); t.hasNext(); ) {
+            Object nameObject = t.next();
             if (nameObject instanceof String) {
                 x500Principals.add(new X500Name((String)nameObject).asX500Principal());
             } else {
                 try {
                     x500Principals.add(new X500Principal((byte[])nameObject));
                 } catch (IllegalArgumentException e) {
-                    throw new IOException("Invalid name", e);
+                    throw (IOException)new IOException("Invalid name").initCause(e);
                 }
             }
         }
@@ -570,8 +573,9 @@ public class X509CRLSelector implements CRLSelector {
         sb.append("X509CRLSelector: [\n");
         if (issuerNames != null) {
             sb.append("  IssuerNames:\n");
-            for (Object issuerName : issuerNames)
-                sb.append("    " + issuerName + "\n");
+            Iterator<Object> i = issuerNames.iterator();
+            while (i.hasNext())
+                sb.append("    " + i.next() + "\n");
         }
         if (minCRL != null)
             sb.append("  minCRLNumber: " + minCRL + "\n");

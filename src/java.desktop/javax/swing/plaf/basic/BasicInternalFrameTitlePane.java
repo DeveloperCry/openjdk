@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -968,7 +968,7 @@ public class BasicInternalFrameTitlePane extends JComponent
     } // end SystemMenuBar
 
 
-    private static class NoFocusButton extends JButton {
+    private class NoFocusButton extends JButton {
         private String uiKey;
         public NoFocusButton(String uiKey, String opacityKey) {
             setFocusPainted(false);

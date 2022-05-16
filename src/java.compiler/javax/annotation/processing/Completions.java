@@ -52,6 +52,7 @@ public class Completions {
             return value;
         }
 
+
         public String getMessage() {
             return message;
         }

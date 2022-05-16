@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -503,7 +503,8 @@ public class PropertyDescriptor extends FeatureDescriptor {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof PropertyDescriptor other) {
+        if (obj != null && obj instanceof PropertyDescriptor) {
+            PropertyDescriptor other = (PropertyDescriptor)obj;
             Method otherReadMethod = other.getReadMethod();
             Method otherWriteMethod = other.getWriteMethod();
 

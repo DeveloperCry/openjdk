@@ -36,6 +36,7 @@ import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
 import com.sun.org.apache.xml.internal.security.c14n.implementations.Canonicalizer11_OmitComments;
 import com.sun.org.apache.xml.internal.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import com.sun.org.apache.xml.internal.security.c14n.implementations.CanonicalizerBase;
+import com.sun.org.apache.xml.internal.security.exceptions.XMLSecurityRuntimeException;
 import com.sun.org.apache.xml.internal.security.parser.XMLParserException;
 import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
 import com.sun.org.apache.xml.internal.security.utils.XMLUtils;
@@ -140,7 +141,7 @@ public class XMLSignatureInput {
 
     /**
      * Construct a XMLSignatureInput from a subtree rooted by rootNode. This
-     * method included the node and <I>all</I> its descendants in the output.
+     * method included the node and <I>all</I> his descendants in the output.
      *
      * @param rootNode
      */
@@ -527,7 +528,7 @@ public class XMLSignatureInput {
         if (inputOctetStreamProxy == null) {
             return null;
         }
-        try {   //NOPMD
+        try {
             bytes = JavaUtils.getBytesFromStream(inputOctetStreamProxy);
         } finally {
             inputOctetStreamProxy.close();
@@ -538,9 +539,15 @@ public class XMLSignatureInput {
     /**
      * @param filter
      */
-    public void addNodeFilter(NodeFilter filter)  throws XMLParserException, IOException {
+    public void addNodeFilter(NodeFilter filter) {
         if (isOctetStream()) {
-            convertToNodes();
+            try {
+                convertToNodes();
+            } catch (Exception e) {
+                throw new XMLSecurityRuntimeException(
+                    "signature.XMLSignatureInput.nodesetReference", e
+                );
+            }
         }
         nodeFilters.add(filter);
     }

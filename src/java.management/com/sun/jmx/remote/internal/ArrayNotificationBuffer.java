@@ -610,9 +610,11 @@ public class ArrayNotificationBuffer implements NotificationBuffer {
             logger.debug("createListeners", "added creationListener");
         } catch (Exception e) {
             final String msg = "Can't add listener to MBean server delegate: ";
+            RuntimeException re = new IllegalArgumentException(msg + e);
+            EnvHelp.initCause(re, e);
             logger.fine("createListeners", msg + e);
             logger.debug("createListeners", e);
-            throw new IllegalArgumentException(msg + e, e);
+            throw re;
         }
 
         /* Spec doesn't say whether Set returned by QueryNames can be modified

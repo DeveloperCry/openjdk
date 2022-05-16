@@ -740,7 +740,8 @@ public class ScrollPane extends Container implements Accessible {
     /**
      * Invoked when the value of the adjustable has changed.
      */
-    static class PeerFixer implements AdjustmentListener, java.io.Serializable {
+    class PeerFixer implements AdjustmentListener, java.io.Serializable
+    {
         /**
          * Use serialVersionUID from JDK 1.1.1 for interoperability.
          */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,8 +24,6 @@
  */
 
 package java.io;
-
-import java.util.Objects;
 
 /**
  * A {@code PushbackInputStream} adds
@@ -164,9 +162,9 @@ public class PushbackInputStream extends FilterInputStream {
         ensureOpen();
         if (b == null) {
             throw new NullPointerException();
-        }
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) {
+        } else if (off < 0 || len < 0 || len > b.length - off) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
             return 0;
         }
 

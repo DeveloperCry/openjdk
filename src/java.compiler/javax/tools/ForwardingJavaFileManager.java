@@ -26,7 +26,6 @@
 package javax.tools;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -38,9 +37,6 @@ import javax.tools.JavaFileObject.Kind;
  * might override some of these methods and might also provide
  * additional fields and methods.
  *
- * <p>Unless stated otherwise, references in this class to "<em>this file manager</em>"
- * should be interpreted as referring indirectly to the {@link #fileManager delegate file manager}.
- *
  * @param <M> the kind of file manager forwarded to by this object
  * @author Peter von der Ah&eacute;
  * @since 1.6
@@ -48,7 +44,7 @@ import javax.tools.JavaFileObject.Kind;
 public class ForwardingJavaFileManager<M extends JavaFileManager> implements JavaFileManager {
 
     /**
-     * The file manager to which all methods are delegated.
+     * The file manager which all methods are delegated to.
      */
     protected final M fileManager;
 
@@ -145,39 +141,6 @@ public class ForwardingJavaFileManager<M extends JavaFileManager> implements Jav
         return fileManager.getJavaFileForOutput(location, className, kind, sibling);
     }
 
-    /**{@inheritDoc}
-     *
-     * @implSpec If the subclass of the {@code ForwardingJavaFileManager} overrides the
-     * {@link #getJavaFileForOutput} method, this method will delegate to it as per the
-     * general contract of {@link JavaFileManager#getJavaFileForOutputForOriginatingFiles}.
-     * If the subclass does not override the method, the call will be delegated to the
-     * {@code fileManager}.
-     *
-     * @throws IllegalArgumentException {@inheritDoc}
-     * @throws IllegalStateException {@inheritDoc}
-     */
-    @Override
-    public JavaFileObject getJavaFileForOutputForOriginatingFiles(Location location,
-                                               String className,
-                                               Kind kind,
-                                               FileObject... originatingFiles) throws IOException {
-        try {
-            Method delegate = getClass().getMethod("getJavaFileForOutput",
-                                                   Location.class, String.class,
-                                                   Kind.class, FileObject.class);
-            if (delegate.getDeclaringClass() == ForwardingJavaFileManager.class) {
-                return fileManager.getJavaFileForOutputForOriginatingFiles(location, className,
-                                                                           kind, originatingFiles);
-            } else {
-                return JavaFileManager.super
-                                      .getJavaFileForOutputForOriginatingFiles(location, className,
-                                                                               kind, originatingFiles);
-            }
-        } catch (NoSuchMethodException ex) {
-            throw new InternalError("This should never happen.", ex);
-        }
-    }
-
     /**
      * @throws IllegalArgumentException {@inheritDoc}
      * @throws IllegalStateException {@inheritDoc}
@@ -203,39 +166,6 @@ public class ForwardingJavaFileManager<M extends JavaFileManager> implements Jav
         throws IOException
     {
         return fileManager.getFileForOutput(location, packageName, relativeName, sibling);
-    }
-
-    /**{@inheritDoc}
-     *
-     * @implSpec If the subclass of the {@code ForwardingJavaFileManager} overrides the
-     * {@link #getFileForOutput} method, this method will delegate to it as per the
-     * general contract of {@link JavaFileManager#getFileForOutputForOriginatingFiles}.
-     * If the subclass does not override the method, the call will be delegated to the
-     * {@code fileManager}.
-     *
-     * @throws IllegalArgumentException {@inheritDoc}
-     * @throws IllegalStateException {@inheritDoc}
-     */
-    @Override
-    public FileObject getFileForOutputForOriginatingFiles(Location location,
-                                       String packageName,
-                                       String relativeName,
-                                       FileObject... originatingFiles) throws IOException {
-        try {
-            Method delegate = getClass().getMethod("getFileForOutput",
-                                                   Location.class, String.class,
-                                                   String.class, FileObject.class);
-            if (delegate.getDeclaringClass() == ForwardingJavaFileManager.class) {
-                return fileManager.getFileForOutputForOriginatingFiles(location, packageName,
-                                                                       relativeName, originatingFiles);
-            } else {
-                return JavaFileManager.super
-                                      .getFileForOutputForOriginatingFiles(location, packageName,
-                                                                           relativeName, originatingFiles);
-            }
-        } catch (NoSuchMethodException ex) {
-            throw new InternalError("This should never happen.", ex);
-        }
     }
 
     @Override

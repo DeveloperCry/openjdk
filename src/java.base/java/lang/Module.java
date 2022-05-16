@@ -68,7 +68,6 @@ import jdk.internal.org.objectweb.asm.ModuleVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 import jdk.internal.reflect.CallerSensitive;
 import jdk.internal.reflect.Reflection;
-import jdk.internal.vm.annotation.Stable;
 import sun.security.util.SecurityConstants;
 
 /**
@@ -111,8 +110,7 @@ public final class Module implements AnnotatedElement {
     private final ModuleDescriptor descriptor;
 
     // true, if this module allows restricted native access
-    @Stable
-    private boolean enableNativeAccess;
+    private volatile boolean enableNativeAccess;
 
     /**
      * Creates a new named Module. The resulting Module will be defined to the

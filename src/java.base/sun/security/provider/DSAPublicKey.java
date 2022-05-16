@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -122,7 +122,7 @@ implements java.security.interfaces.DSAPublicKey, Serializable {
                     return null;
                 }
                 paramSpec = algParams.getParameterSpec(DSAParameterSpec.class);
-                return paramSpec;
+                return (DSAParams)paramSpec;
             }
         } catch (InvalidParameterSpecException e) {
             return null;

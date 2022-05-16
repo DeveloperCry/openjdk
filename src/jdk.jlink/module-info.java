@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -76,7 +76,6 @@ module jdk.jlink {
         jdk.tools.jlink.internal.plugins.AddOptionsPlugin,
         jdk.tools.jlink.internal.plugins.VendorBugURLPlugin,
         jdk.tools.jlink.internal.plugins.VendorVMBugURLPlugin,
-        jdk.tools.jlink.internal.plugins.VendorVersionPlugin,
-        jdk.tools.jlink.internal.plugins.CDSPlugin;
+        jdk.tools.jlink.internal.plugins.VendorVersionPlugin;
 
 }

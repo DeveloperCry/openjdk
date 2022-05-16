@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -87,7 +87,7 @@ public final class ImagePluginStack {
         }
     }
 
-    private static final class CheckOrderResourcePoolManager extends ResourcePoolManager {
+    private final static class CheckOrderResourcePoolManager extends ResourcePoolManager {
 
         private final List<ResourcePoolEntry> orderedList;
         private int currentIndex;
@@ -181,7 +181,7 @@ public final class ImagePluginStack {
         this.imageBuilder = Objects.requireNonNull(imageBuilder);
         this.lastSorter = lastSorter;
         this.plugins.addAll(Objects.requireNonNull(plugins));
-        plugins.forEach((p) -> {
+        plugins.stream().forEach((p) -> {
             Objects.requireNonNull(p);
             if (p instanceof ResourcePrevisitor) {
                 resourcePrevisitors.add((ResourcePrevisitor) p);
@@ -227,13 +227,13 @@ public final class ImagePluginStack {
                     resources.getStringTable()).resourcePool();
         }
         PreVisitStrings previsit = new PreVisitStrings();
-        resourcePrevisitors.forEach((p) -> {
+        resourcePrevisitors.stream().forEach((p) -> {
             p.previsit(resources.resourcePool(), previsit);
         });
 
         // Store the strings resulting from the previsit.
         List<String> sorted = previsit.getSortedStrings();
-        sorted.forEach((s) -> {
+        sorted.stream().forEach((s) -> {
             resources.getStringTable().addString(s);
         });
 
@@ -282,7 +282,7 @@ public final class ImagePluginStack {
      * This pool wrap the original pool and automatically uncompress ResourcePoolEntry
      * if needed.
      */
-    private static class LastPoolManager extends ResourcePoolManager {
+    private class LastPoolManager extends ResourcePoolManager {
         private class LastModule implements ResourcePoolModule {
 
             final ResourcePoolModule module;

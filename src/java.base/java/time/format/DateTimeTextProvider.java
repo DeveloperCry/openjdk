@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -75,6 +75,7 @@ import java.time.temporal.TemporalField;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -552,12 +553,12 @@ class DateTimeTextProvider {
                     }
                 }
                 List<Entry<String, Long>> list = new ArrayList<>(reverse.values());
-                list.sort(COMPARATOR);
+                Collections.sort(list, COMPARATOR);
                 map.put(vtmEntry.getKey(), list);
                 allList.addAll(list);
                 map.put(null, allList);
             }
-            allList.sort(COMPARATOR);
+            Collections.sort(allList, COMPARATOR);
             this.parsable = map;
         }
 

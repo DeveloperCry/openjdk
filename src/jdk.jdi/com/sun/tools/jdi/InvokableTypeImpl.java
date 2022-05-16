@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,6 +26,7 @@
 package com.sun.tools.jdi;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,7 +93,7 @@ abstract class InvokableTypeImpl extends ReferenceTypeImpl {
      *         compatibility.
      * @throws VMCannotBeModifiedException if the VirtualMachine is read-only - see {@link VirtualMachine#canBeModified()}.
      */
-    public final Value invokeMethod(ThreadReference threadIntf, Method methodIntf,
+    final public Value invokeMethod(ThreadReference threadIntf, Method methodIntf,
                                     List<? extends Value> origArguments, int options)
                                         throws InvalidTypeException,
                                                ClassNotLoadedException,
@@ -140,8 +141,9 @@ abstract class InvokableTypeImpl extends ReferenceTypeImpl {
             return true;
         } else {
             List<InterfaceType> interfaces = interfaces();
-            for (InterfaceType interfaceType : interfaces) {
-                InterfaceTypeImpl interfaze = (InterfaceTypeImpl)interfaceType;
+            Iterator<InterfaceType> iter = interfaces.iterator();
+            while (iter.hasNext()) {
+                InterfaceTypeImpl interfaze = (InterfaceTypeImpl) iter.next();
                 if (interfaze.isAssignableTo(type)) {
                     return true;
                 }
@@ -157,8 +159,9 @@ abstract class InvokableTypeImpl extends ReferenceTypeImpl {
          * parent types first, so that the methods in this class will
          * overwrite them in the hash table
          */
-        for (InterfaceType interfaceType : interfaces()) {
-            InterfaceTypeImpl interfaze = (InterfaceTypeImpl)interfaceType;
+        Iterator<InterfaceType> iter = interfaces().iterator();
+        while (iter.hasNext()) {
+            InterfaceTypeImpl interfaze = (InterfaceTypeImpl) iter.next();
             if (!seenInterfaces.contains(interfaze)) {
                 interfaze.addVisibleMethods(methodMap, seenInterfaces);
                 seenInterfaces.add(interfaze);
@@ -174,8 +177,9 @@ abstract class InvokableTypeImpl extends ReferenceTypeImpl {
     final void addInterfaces(List<InterfaceType> list) {
         List<InterfaceType> immediate = interfaces();
         list.addAll(interfaces());
-        for (InterfaceType interfaceType : immediate) {
-            InterfaceTypeImpl interfaze = (InterfaceTypeImpl)interfaceType;
+        Iterator<InterfaceType> iter = immediate.iterator();
+        while (iter.hasNext()) {
+            InterfaceTypeImpl interfaze = (InterfaceTypeImpl) iter.next();
             interfaze.addInterfaces(list);
         }
         ClassTypeImpl superclass = (ClassTypeImpl) superclass();

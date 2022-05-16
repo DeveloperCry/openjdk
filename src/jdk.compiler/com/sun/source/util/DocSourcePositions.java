@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,9 +49,9 @@ public interface DocSourcePositions extends SourcePositions {
      * is for any sub-tree of this tree, the following must hold:
      *
      * <p>
-     * {@code getStartPosition(file, comment, tree) <= getStartPosition(file, comment, subtree)} or <br>
-     * {@code getStartPosition(file, comment, tree) == NOPOS} or <br>
-     * {@code getStartPosition(file, comment, subtree) == NOPOS}
+     * {@code tree.getStartPosition() <= subtree.getStartPosition()} or <br>
+     * {@code tree.getStartPosition() == NOPOS} or <br>
+     * {@code subtree.getStartPosition() == NOPOS}
      * </p>
      *
      * @param file compilation unit in which to find tree
@@ -73,17 +73,17 @@ public interface DocSourcePositions extends SourcePositions {
      * that is for any sub-tree of this tree, the following must hold:
      *
      * <p>
-     * {@code getEndPosition(file, comment, tree) >= getEndPosition(file, comment, subtree)} or <br>
-     * {@code getEndPosition(file, comment, tree) == NOPOS} or <br>
-     * {@code getEndPosition(file, comment, subtree) == NOPOS}
+     * {@code tree.getEndPosition() >= subtree.getEndPosition()} or <br>
+     * {@code tree.getEndPosition() == NOPOS} or <br>
+     * {@code subtree.getEndPosition() == NOPOS}
      * </p>
      *
      * In addition, the following must hold:
      *
      * <p>
-     * {@code getStartPosition(file, comment, tree) <= getEndPosition(file, comment, tree)} or <br>
-     * {@code getStartPosition(file, comment, tree) == NOPOS} or <br>
-     * {@code getEndPosition(file, comment, tree) == NOPOS}
+     * {@code tree.getStartPosition() <= tree.getEndPosition()} or <br>
+     * {@code tree.getStartPosition() == NOPOS} or <br>
+     * {@code tree.getEndPosition() == NOPOS}
      * </p>
      *
      * @param file compilation unit in which to find tree

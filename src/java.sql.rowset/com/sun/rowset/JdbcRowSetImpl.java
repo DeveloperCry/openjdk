@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,6 @@ public class JdbcRowSetImpl extends BaseRowSet implements JdbcRowSet, Joinable {
      * current connection to the database.  This field is set
      * internally when the connection is established.
      */
-    @SuppressWarnings("serial")
     private Connection conn;
 
     /**
@@ -57,7 +56,6 @@ public class JdbcRowSetImpl extends BaseRowSet implements JdbcRowSet, Joinable {
      * {@code execute} creates the {@code PreparedStatement}
      * object.
      */
-    @SuppressWarnings("serial")
     private PreparedStatement ps;
 
     /**
@@ -66,7 +64,6 @@ public class JdbcRowSetImpl extends BaseRowSet implements JdbcRowSet, Joinable {
      * {@code execute} executes the rowset's command and thereby
      * creates the rowset's {@code ResultSet} object.
      */
-    @SuppressWarnings("serial")
     private ResultSet rs;
 
     /**
@@ -83,7 +80,6 @@ public class JdbcRowSetImpl extends BaseRowSet implements JdbcRowSet, Joinable {
      * {@code RowSetMetaDataImpl} is formed and which  helps in getting
      * the metadata information.
      */
-    @SuppressWarnings("serial")
     private ResultSetMetaData resMD;
 
 

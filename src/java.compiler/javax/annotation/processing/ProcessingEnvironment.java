@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -112,7 +112,7 @@ public interface ProcessingEnvironment {
 
     /**
      * {@return the current locale or {@code null} if no locale is in
-     * effect}  The locale can be used to provide localized
+     * effect}  The locale can be be used to provide localized
      * {@linkplain Messager messages}.
      */
     Locale getLocale();

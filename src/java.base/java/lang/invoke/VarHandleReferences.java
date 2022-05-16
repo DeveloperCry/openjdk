@@ -599,7 +599,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getReferenceVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -607,7 +607,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             UNSAFE.putReferenceVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 
@@ -616,7 +616,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getReferenceOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -624,7 +624,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             UNSAFE.putReferenceOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 
@@ -633,7 +633,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getReferenceAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -641,7 +641,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             UNSAFE.putReferenceRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 
@@ -650,7 +650,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.compareAndSetReference(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -660,7 +660,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.compareAndExchangeReference(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -670,7 +670,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.compareAndExchangeReferenceAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -680,7 +680,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.compareAndExchangeReferenceRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -690,7 +690,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.weakCompareAndSetReferencePlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -700,7 +700,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.weakCompareAndSetReference(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -710,7 +710,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.weakCompareAndSetReferenceAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -720,7 +720,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.weakCompareAndSetReferenceRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     handle.componentType.cast(expected),
                     runtimeTypeCheck(handle, array, value));
         }
@@ -730,7 +730,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getAndSetReference(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 
@@ -739,7 +739,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getAndSetReferenceAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 
@@ -748,7 +748,7 @@ final class VarHandleReferences {
             Array handle = (Array)ob;
             Object[] array = (Object[]) handle.arrayType.cast(oarray);
             return UNSAFE.getAndSetReferenceRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     runtimeTypeCheck(handle, array, value));
         }
 

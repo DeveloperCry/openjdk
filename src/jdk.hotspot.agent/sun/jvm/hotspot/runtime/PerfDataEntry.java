@@ -25,6 +25,7 @@
 package sun.jvm.hotspot.runtime;
 
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import sun.jvm.hotspot.debugger.*;
 import sun.jvm.hotspot.oops.*;
 import sun.jvm.hotspot.types.*;
@@ -332,7 +333,7 @@ public class PerfDataEntry extends VMObject {
             if (dataType == BasicType.getTBoolean()) {
                 str = Boolean.toString(booleanValue());
             } else if (dataType == BasicType.getTChar()) {
-                str = "'" + charValue() + "'";
+                str = "'" + Character.toString(charValue()) + "'";
             } else if (dataType == BasicType.getTByte()) {
                 str = Byte.toString(byteValue());
             } else if (dataType == BasicType.getTShort()) {

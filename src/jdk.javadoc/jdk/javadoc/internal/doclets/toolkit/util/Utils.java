@@ -107,6 +107,7 @@ import com.sun.source.doctree.SerialTree;
 import com.sun.source.doctree.StartElementTree;
 import com.sun.source.doctree.TextTree;
 import com.sun.source.doctree.ThrowsTree;
+import com.sun.source.doctree.UnknownBlockTagTree;
 import com.sun.source.doctree.UsesTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.LineMap;
@@ -179,7 +180,13 @@ public class Utils {
         return getSymbol("java.lang.Object");
     }
 
-    public TypeMirror getThrowableType() { return getSymbol("java.lang.Throwable"); }
+    public TypeMirror getExceptionType() {
+        return getSymbol("java.lang.Exception");
+    }
+
+    public TypeMirror getErrorType() {
+        return getSymbol("java.lang.Error");
+    }
 
     public TypeMirror getSerializableType() {
         return getSymbol("java.io.Serializable");
@@ -495,7 +502,10 @@ public class Utils {
         if (isEnum(te) || isInterface(te) || isAnnotationType(te) || isRecord(te)) {
             return false;
         }
-        return !isThrowable(te);
+        if (isError(te) || isException(te)) {
+            return false;
+        }
+        return true;
     }
 
     public boolean isUndocumentedEnclosure(TypeElement enclosingTypeElement) {
@@ -504,11 +514,18 @@ public class Utils {
                 && !isLinkable(enclosingTypeElement);
     }
 
-    public boolean isThrowable(TypeElement te) {
+    public boolean isError(TypeElement te) {
         if (isEnum(te) || isInterface(te) || isAnnotationType(te)) {
             return false;
         }
-        return typeUtils.isSubtype(te.asType(), getThrowableType());
+        return typeUtils.isSubtype(te.asType(), getErrorType());
+    }
+
+    public boolean isException(TypeElement te) {
+        if (isEnum(te) || isInterface(te) || isAnnotationType(te)) {
+            return false;
+        }
+        return typeUtils.isSubtype(te.asType(), getExceptionType());
     }
 
     public boolean isPrimitive(TypeMirror t) {
@@ -1258,7 +1275,8 @@ public class Utils {
             case RECORD ->
                     "doclet.RecordClass";
             case CLASS ->
-                    isThrowable(te) ? "doclet.ExceptionClass"
+                    isException(te) ? "doclet.Exception"
+                    : isError(te) ? "doclet.Error"
                     : "doclet.Class";
             default ->
                     throw new IllegalArgumentException(te.getKind().toString());
@@ -1973,6 +1991,31 @@ public class Utils {
             oset.addAll(clist);
             return oset;
         });
+    }
+
+    /**
+     * Returns a list of classes that are not errors or exceptions
+     * @param e Element
+     * @return List
+     */
+    public List<TypeElement> getOrdinaryClasses(Element e) {
+        return getClasses(e).stream()
+                .filter(te -> (!isException(te) && !isError(te)))
+                .toList();
+    }
+
+    public List<TypeElement> getErrors(Element e) {
+        return getClasses(e)
+                .stream()
+                .filter(this::isError)
+                .toList();
+    }
+
+    public List<TypeElement> getExceptions(Element e) {
+        return getClasses(e)
+                .stream()
+                .filter(this::isException)
+                .toList();
     }
 
     /**
@@ -2893,11 +2936,8 @@ public class Utils {
     }
 
     public PreviewSummary declaredUsingPreviewAPIs(Element el) {
-        if (el.asType().getKind() == ERROR) {
-            // Can happen with undocumented --ignore-source-errors option
-            return new PreviewSummary(Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
-        }
-        List<TypeElement> usedInDeclaration = new ArrayList<>(annotations2Classes(el));
+        List<TypeElement> usedInDeclaration = new ArrayList<>();
+        usedInDeclaration.addAll(annotations2Classes(el));
         switch (el.getKind()) {
             case ANNOTATION_TYPE, CLASS, ENUM, INTERFACE, RECORD -> {
                 TypeElement te = (TypeElement) el;

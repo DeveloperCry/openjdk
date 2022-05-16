@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,7 +27,9 @@ package javax.swing.plaf.metal;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.Serializable;
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
@@ -87,7 +89,7 @@ public class MetalComboBoxEditor extends BasicComboBoxEditor {
     */
     protected static Insets editorBorderInsets = new Insets( 2, 2, 2, 0 );
 
-    static class EditorBorder extends AbstractBorder {
+    class EditorBorder extends AbstractBorder {
         public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
             g.translate( x, y );
 

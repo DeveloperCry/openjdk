@@ -29,7 +29,6 @@ import sun.security.ec.point.AffinePoint;
 import sun.security.ec.point.Point;
 import sun.security.util.ArrayUtil;
 import sun.security.util.CurveDB;
-import sun.security.util.ECUtil;
 import sun.security.util.NamedCurve;
 import sun.security.util.math.ImmutableIntegerModuloP;
 import sun.security.util.math.IntegerFieldModuloP;
@@ -93,7 +92,6 @@ public final class ECDHKeyAgreement extends KeyAgreementSpi {
                 "Curve not supported: " + (nc != null ? nc.toString() :
                     "unknown"));
         }
-        ECUtil.checkPrivateKey(privateKey);
         privateKeyOps = opsOpt.get();
     }
 

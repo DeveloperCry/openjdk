@@ -60,12 +60,12 @@ public final class RSAPrivateKeyImpl extends PKCS8Key implements RSAPrivateKey {
     private final BigInteger n;         // modulus
     private final BigInteger d;         // private exponent
 
-    private final transient KeyType type;
+    private transient final KeyType type;
 
     // optional parameters associated with this RSA key
     // specified in the encoding of its AlgorithmId.
     // must be null for "RSA" keys.
-    private final transient AlgorithmParameterSpec keyParams;
+    private transient final AlgorithmParameterSpec keyParams;
 
     /**
      * Construct a key from its components. Used by the

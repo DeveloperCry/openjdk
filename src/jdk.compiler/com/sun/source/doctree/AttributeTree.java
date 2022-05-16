@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,7 @@ import java.util.List;
 import javax.lang.model.element.Name;
 
 /**
- * A tree node for an attribute in an HTML element or tag.
+ * A tree node for an attribute in an HTML element.
  *
  * @since 1.8
  */

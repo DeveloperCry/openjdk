@@ -621,7 +621,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getFloatVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -629,7 +629,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             UNSAFE.putFloatVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -638,7 +638,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getFloatOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -646,7 +646,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             UNSAFE.putFloatOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -655,7 +655,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getFloatAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -663,7 +663,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             UNSAFE.putFloatRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -672,7 +672,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.compareAndSetFloat(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -682,7 +682,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.compareAndExchangeFloat(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -692,7 +692,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.compareAndExchangeFloatAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -702,7 +702,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.compareAndExchangeFloatRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -712,7 +712,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.weakCompareAndSetFloatPlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -722,7 +722,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.weakCompareAndSetFloat(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -732,7 +732,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.weakCompareAndSetFloatAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -742,7 +742,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.weakCompareAndSetFloatRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -752,7 +752,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndSetFloat(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -761,7 +761,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndSetFloatAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -770,7 +770,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndSetFloatRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -779,7 +779,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndAddFloat(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -788,7 +788,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndAddFloatAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -797,7 +797,7 @@ final class VarHandleFloats {
             Array handle = (Array)ob;
             float[] array = (float[]) oarray;
             return UNSAFE.getAndAddFloatRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 

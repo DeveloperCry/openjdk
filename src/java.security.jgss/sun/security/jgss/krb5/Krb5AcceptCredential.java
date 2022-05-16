@@ -25,6 +25,7 @@
 
 package sun.security.jgss.krb5;
 
+import java.io.IOException;
 import org.ietf.jgss.*;
 import sun.security.jgss.GSSCaller;
 import sun.security.jgss.spi.*;
@@ -32,6 +33,7 @@ import sun.security.krb5.*;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.security.AccessController;
+import java.security.AccessControlContext;
 import javax.security.auth.DestroyFailedException;
 
 /**
@@ -63,15 +65,16 @@ public class Krb5AcceptCredential
 
         final String serverPrinc = (name == null? null:
             name.getKrb5PrincipalName().getName());
+        final AccessControlContext acc = AccessController.getContext();
 
         ServiceCreds creds = null;
         try {
-            creds = AccessController.doPrivilegedWithCombiner(
+            creds = AccessController.doPrivileged(
                         new PrivilegedExceptionAction<ServiceCreds>() {
                 public ServiceCreds run() throws Exception {
                     return Krb5Util.getServiceCreds(
                         caller == GSSCaller.CALLER_UNKNOWN ? GSSCaller.CALLER_ACCEPT: caller,
-                        serverPrinc);
+                        serverPrinc, acc);
                 }});
         } catch (PrivilegedActionException e) {
             GSSException ge =

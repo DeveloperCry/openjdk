@@ -267,9 +267,13 @@ public abstract class ResolutionSyntax implements Serializable, Cloneable {
      *         attribute, {@code false} otherwise
      */
     public boolean equals(Object object) {
-        return object instanceof ResolutionSyntax other &&
-                this.crossFeedResolution == other.crossFeedResolution &&
-                this.feedResolution == other.feedResolution;
+
+        return(object != null &&
+               object instanceof ResolutionSyntax &&
+               this.crossFeedResolution ==
+               ((ResolutionSyntax) object).crossFeedResolution &&
+               this.feedResolution ==
+               ((ResolutionSyntax) object).feedResolution);
     }
 
     /**

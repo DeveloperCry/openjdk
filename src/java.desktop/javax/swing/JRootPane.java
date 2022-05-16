@@ -24,13 +24,18 @@
  */
 package javax.swing;
 
+import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.*;
 import java.beans.*;
 import java.security.AccessController;
 import javax.accessibility.*;
 import javax.swing.plaf.RootPaneUI;
+import java.util.Vector;
 import java.io.Serializable;
+import javax.swing.border.*;
 
+import sun.awt.AWTAccessor;
 import sun.security.action.GetBooleanAction;
 
 
@@ -194,7 +199,7 @@ import sun.security.action.GetBooleanAction;
  * @since 1.2
  */
 /// PENDING(klobad) Who should be opaque in this component?
-@SuppressWarnings("serial")
+@SuppressWarnings({"removal","serial"})
 public class JRootPane extends JComponent implements Accessible {
 
     private static final String uiClassID = "RootPaneUI";
@@ -203,19 +208,13 @@ public class JRootPane extends JComponent implements Accessible {
      * Whether or not we should dump the stack when true double buffering
      * is disabled. Default is false.
      */
-    @SuppressWarnings("removal")
-    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING
-            = AccessController.doPrivileged(new GetBooleanAction(
-                                   "swing.logDoubleBufferingDisable"));
+    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
 
     /**
      * Whether or not we should ignore requests to disable true double
      * buffering. Default is false.
      */
-    @SuppressWarnings("removal")
-    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING
-            = AccessController.doPrivileged(new GetBooleanAction(
-                                   "swing.ignoreDoubleBufferingDisable"));
+    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
 
     /**
      * Constant used for the windowDecorationStyle property. Indicates that
@@ -326,6 +325,15 @@ public class JRootPane extends JComponent implements Accessible {
      * heavy weight popups (backed by a window) set this to false.
      */
     boolean useTrueDoubleBuffering = true;
+
+    static {
+        LOG_DISABLE_TRUE_DOUBLE_BUFFERING =
+            AccessController.doPrivileged(new GetBooleanAction(
+                                   "swing.logDoubleBufferingDisable"));
+        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING =
+            AccessController.doPrivileged(new GetBooleanAction(
+                                   "swing.ignoreDoubleBufferingDisable"));
+    }
 
     /**
      * Creates a <code>JRootPane</code>, setting up its
@@ -506,10 +514,10 @@ public class JRootPane extends JComponent implements Accessible {
       * @return the default <code>glassPane</code>
       */
     protected Component createGlassPane() {
-        JPanel c = new JPanel();
+        JComponent c = new JPanel();
         c.setName(this.getName()+".glassPane");
         c.setVisible(false);
-        c.setOpaque(false);
+        ((JPanel)c).setOpaque(false);
         return c;
     }
 

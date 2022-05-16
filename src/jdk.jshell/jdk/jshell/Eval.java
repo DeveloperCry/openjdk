@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,17 +34,14 @@ import javax.lang.model.element.Name;
 import com.sun.source.tree.ArrayTypeTree;
 import com.sun.source.tree.AssignmentTree;
 import com.sun.source.tree.ClassTree;
-import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ExpressionStatementTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
-import com.sun.source.tree.MethodInvocationTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.ModifiersTree;
 import com.sun.source.tree.NewClassTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
-import com.sun.source.util.TreePathScanner;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.Pretty;
 import java.io.IOException;
@@ -832,7 +829,7 @@ class Eval {
      * @param userSource the incoming bad user source
      * @return a rejected snippet
      */
-    private List<Snippet> compileFailResult(BaseTask<?> xt, String userSource, Kind probableKind) {
+    private List<Snippet> compileFailResult(BaseTask xt, String userSource, Kind probableKind) {
         return compileFailResult(xt.getDiagnostics(), userSource, probableKind);
     }
 
@@ -1010,53 +1007,6 @@ class Eval {
 
             ins.stream().forEach(Unit::initialize);
             ins.stream().forEach(u -> u.setWrap(ins, ins));
-
-            if (ins.stream().anyMatch(u -> u.snippet().kind() == Kind.METHOD)) {
-                //if there is any method declaration, check the body of the method for
-                //invocations of a method of the same name. It may be an invocation of
-                //an overloaded method, in which case we need to add all the overloads to
-                //ins, so that they are processed together and can refer to each other:
-                Set<Unit> overloads = new LinkedHashSet<>();
-                Map<OuterWrap, Unit> outter2Unit = new LinkedHashMap<>();
-                ins.forEach(u -> outter2Unit.put(u.snippet().outerWrap(), u));
-
-                state.taskFactory.analyze(outter2Unit.keySet(), at -> {
-                    Set<Unit> suspiciousMethodInvocation = new LinkedHashSet<>();
-                    for (CompilationUnitTree cut : at.cuTrees()) {
-                        Unit unit = outter2Unit.get(at.sourceForFile(cut.getSourceFile()));
-                        String name = unit.snippet().name();
-
-                        new TreePathScanner<Void, Void>() {
-                            @Override
-                            public Void visitMethodInvocation(MethodInvocationTree node, Void p) {
-                                if (node.getMethodSelect().getKind() == Tree.Kind.IDENTIFIER &&
-                                    ((IdentifierTree) node.getMethodSelect()).getName().contentEquals(name)) {
-                                    suspiciousMethodInvocation.add(unit);
-                                }
-                                return super.visitMethodInvocation(node, p);
-                            }
-
-                        }.scan(cut, null);
-                    }
-                    for (Unit source : suspiciousMethodInvocation) {
-                        for (Snippet dep : state.maps.snippetList()) {
-                            if (dep != source.snippet() && dep.status().isActive() &&
-                                dep.kind() == Kind.METHOD &&
-                                source.snippet().kind() == Kind.METHOD &&
-                                dep.name().equals(source.snippet().name())) {
-                                overloads.add(new Unit(state, dep, source.snippet(), new DiagList()));
-                            }
-                        }
-                    }
-                    return null;
-                });
-
-                if (ins.addAll(overloads)) {
-                    ins.stream().forEach(Unit::initialize);
-                    ins.stream().forEach(u -> u.setWrap(ins, ins));
-                }
-            }
-
             state.taskFactory.analyze(outerWrapSet(ins), at -> {
                 ins.stream().forEach(u -> u.setDiagnostics(at));
 

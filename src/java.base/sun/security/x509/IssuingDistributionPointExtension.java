@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -393,8 +393,7 @@ public class IssuingDistributionPointExtension extends Extension
         if (distributionPoint != null) {
             DerOutputStream tmp = new DerOutputStream();
             distributionPoint.encode(tmp);
-            // DistributionPointName is CHOICE. Do not writeImplicit.
-            tagged.write(DerValue.createTag(DerValue.TAG_CONTEXT, true,
+            tagged.writeImplicit(DerValue.createTag(DerValue.TAG_CONTEXT, true,
                 TAG_DISTRIBUTION_POINT), tmp);
         }
 

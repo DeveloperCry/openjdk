@@ -33,6 +33,7 @@ import java.security.Principal;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -313,7 +314,8 @@ public class MBeanServerFileAccessController
         if (s == null) return; /* security has not been enabled */
         final Set<Principal> principals = s.getPrincipals();
         String newPropertyValue = null;
-        for (Principal p : principals) {
+        for (Iterator<Principal> i = principals.iterator(); i.hasNext(); ) {
+            final Principal p = i.next();
             Access access = accessMap.get(p.getName());
             if (access != null) {
                 boolean ok;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -849,7 +849,7 @@ final class CompilerToVM {
     /**
      * @see HotSpotJVMCIRuntime#translate(Object)
      */
-    native long translate(Object obj, boolean callPostTranslation);
+    native long translate(Object obj);
 
     /**
      * @see HotSpotJVMCIRuntime#unhand(Class, long)
@@ -951,26 +951,6 @@ final class CompilerToVM {
      * @see JFR.Ticks#now
      */
     native long ticksNow();
-
-    /**
-     * @see HotSpotJVMCIRuntime#setThreadLocalObject(int, Object)
-     */
-    native void setThreadLocalObject(int id, Object value);
-
-    /**
-     * @see HotSpotJVMCIRuntime#getThreadLocalObject(int)
-     */
-    native Object getThreadLocalObject(int id);
-
-    /**
-     * @see HotSpotJVMCIRuntime#setThreadLocalLong(int, long)
-     */
-    native void setThreadLocalLong(int id, long value);
-
-    /**
-     * @see HotSpotJVMCIRuntime#getThreadLocalLong(int)
-     */
-    native long getThreadLocalLong(int id);
 
     /**
      * Adds phases in HotSpot JFR.

@@ -765,7 +765,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getIntVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -773,7 +773,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             UNSAFE.putIntVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -782,7 +782,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getIntOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -790,7 +790,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             UNSAFE.putIntOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -799,7 +799,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getIntAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -807,7 +807,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             UNSAFE.putIntRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -816,7 +816,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.compareAndSetInt(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -826,7 +826,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.compareAndExchangeInt(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -836,7 +836,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.compareAndExchangeIntAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -846,7 +846,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.compareAndExchangeIntRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -856,7 +856,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.weakCompareAndSetIntPlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -866,7 +866,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.weakCompareAndSetInt(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -876,7 +876,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.weakCompareAndSetIntAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -886,7 +886,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.weakCompareAndSetIntRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -896,7 +896,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndSetInt(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -905,7 +905,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndSetIntAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -914,7 +914,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndSetIntRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -923,7 +923,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndAddInt(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -932,7 +932,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndAddIntAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -941,7 +941,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndAddIntRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -950,7 +950,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseOrInt(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -959,7 +959,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseOrIntRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -968,7 +968,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseOrIntAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -977,7 +977,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseAndInt(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -986,7 +986,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseAndIntRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -995,7 +995,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseAndIntAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1004,7 +1004,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseXorInt(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1013,7 +1013,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseXorIntRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1022,7 +1022,7 @@ final class VarHandleInts {
             Array handle = (Array)ob;
             int[] array = (int[]) oarray;
             return UNSAFE.getAndBitwiseXorIntAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 

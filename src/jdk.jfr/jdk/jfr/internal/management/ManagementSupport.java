@@ -136,6 +136,12 @@ public final class ManagementSupport {
         return PrivateAccess.getInstance().newEventSettings(esm);
     }
 
+    // When streaming an ongoing recording, consumed chunks should be removed
+    public static void removeBefore(Recording recording, Instant timestamp) {
+        PlatformRecording pr = PrivateAccess.getInstance().getPlatformRecording(recording);
+        pr.removeBefore(timestamp);
+    }
+
     // Needed callback to detect when a chunk has been parsed.
     public static void removePath(Recording recording, Path path) {
         PlatformRecording pr = PrivateAccess.getInstance().getPlatformRecording(recording);

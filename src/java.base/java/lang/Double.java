@@ -877,7 +877,8 @@ public final class Double extends Number
      * @since 1.8
      */
     public static int hashCode(double value) {
-        return Long.hashCode(doubleToLongBits(value));
+        long bits = doubleToLongBits(value);
+        return (int)(bits ^ (bits >>> 32));
     }
 
     /**

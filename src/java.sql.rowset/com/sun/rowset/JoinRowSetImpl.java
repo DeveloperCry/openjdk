@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2012, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -108,7 +108,6 @@ public class JoinRowSetImpl extends WebRowSetImpl implements JoinRowSet {
      * object to leverage the properties and methods of a <code>WebRowSet</code>
      * object.
      */
-    @SuppressWarnings("serial")
     private WebRowSet wrs;
 
 
@@ -428,7 +427,13 @@ public class JoinRowSetImpl extends WebRowSetImpl implements JoinRowSet {
      * @see CachedRowSet#setTableName
      */
     public String[] getRowSetNames() throws SQLException {
-        String[] strArr = vecTableNames.toArray(new String[0]);
+        Object [] arr = vecTableNames.toArray();
+        String []strArr = new String[arr.length];
+
+        for( int i = 0;i < arr.length; i++) {
+           strArr[i] = arr[i].toString();
+        }
+
         return strArr;
     }
 

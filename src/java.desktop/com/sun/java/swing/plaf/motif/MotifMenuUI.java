@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -110,10 +110,10 @@ public class MotifMenuUI extends BasicMenuUI
                         manager.clearSelectedPath();
                     } else {
                         Container cnt = menu.getParent();
-                        if (cnt instanceof JMenuBar menuBar) {
+                        if(cnt != null && cnt instanceof JMenuBar) {
                             MenuElement[] me = new MenuElement[2];
-                            me[0] = menuBar;
-                            me[1] = menu;
+                            me[0]=(MenuElement)cnt;
+                            me[1]=menu;
                             manager.setSelectedPath(me);
                         }
                     }

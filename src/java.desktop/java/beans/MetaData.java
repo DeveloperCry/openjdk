@@ -28,9 +28,13 @@ import com.sun.beans.finder.PrimitiveWrapperMap;
 
 import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 
@@ -517,8 +521,8 @@ static class java_util_Collection_PersistenceDelegate extends DefaultPersistence
         if (newO.size() != 0) {
             invokeStatement(oldInstance, "clear", new Object[]{}, out);
         }
-        for (Object o : oldO) {
-            invokeStatement(oldInstance, "add", new Object[]{o}, out);
+        for (Iterator<?> i = oldO.iterator(); i.hasNext();) {
+            invokeStatement(oldInstance, "add", new Object[]{i.next()}, out);
         }
     }
 }

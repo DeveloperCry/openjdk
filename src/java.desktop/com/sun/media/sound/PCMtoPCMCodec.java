@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,8 +26,8 @@
 package com.sun.media.sound;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
@@ -87,17 +87,17 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
         // filter out targetEncoding from the old getOutputFormats( sourceFormat ) method
 
         AudioFormat[] formats = getOutputFormats( sourceFormat );
-        ArrayList<AudioFormat> newFormats = new ArrayList<>();
+        Vector<AudioFormat> newFormats = new Vector<>();
         for(int i=0; i<formats.length; i++ ) {
             if( formats[i].getEncoding().equals( targetEncoding ) ) {
-                newFormats.add( formats[i] );
+                newFormats.addElement( formats[i] );
             }
         }
 
         AudioFormat[] formatArray = new AudioFormat[newFormats.size()];
 
         for (int i = 0; i < formatArray.length; i++) {
-            formatArray[i] = newFormats.get(i);
+            formatArray[i] = newFormats.elementAt(i);
         }
 
         return formatArray;
@@ -167,7 +167,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
      */
     private AudioFormat[] getOutputFormats(AudioFormat inputFormat) {
 
-        ArrayList<AudioFormat> formats = new ArrayList<>();
+        Vector<AudioFormat> formats = new Vector<>();
         AudioFormat format;
 
         int sampleSize = inputFormat.getSampleSizeInBits();
@@ -184,7 +184,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
             }
 
             if ( AudioFormat.Encoding.PCM_UNSIGNED.equals(inputFormat.getEncoding()) ) {
@@ -196,7 +196,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
             }
 
         } else if ( sampleSize==16 ) {
@@ -210,7 +210,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -218,7 +218,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -226,7 +226,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
             }
 
             if ( AudioFormat.Encoding.PCM_UNSIGNED.equals(inputFormat.getEncoding()) && isBigEndian ) {
@@ -238,7 +238,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -246,7 +246,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -254,7 +254,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
             }
 
             if ( AudioFormat.Encoding.PCM_SIGNED.equals(inputFormat.getEncoding()) && !isBigEndian ) {
@@ -266,7 +266,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -274,7 +274,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -282,7 +282,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
             }
 
             if ( AudioFormat.Encoding.PCM_UNSIGNED.equals(inputFormat.getEncoding()) && !isBigEndian ) {
@@ -294,7 +294,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          false );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -302,7 +302,7 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
                 format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                          inputFormat.getSampleRate(),
                                          inputFormat.getSampleSizeInBits(),
@@ -310,14 +310,19 @@ public final class PCMtoPCMCodec extends FormatConversionProvider {
                                          inputFormat.getFrameSize(),
                                          inputFormat.getFrameRate(),
                                          true );
-                formats.add(format);
+                formats.addElement(format);
             }
         }
-        AudioFormat[] formatArray = new AudioFormat[formats.size()];
+        AudioFormat[] formatArray;
 
-        for (int i = 0; i < formatArray.length; i++) {
+        synchronized(formats) {
 
-            formatArray[i] = formats.get(i);
+            formatArray = new AudioFormat[formats.size()];
+
+            for (int i = 0; i < formatArray.length; i++) {
+
+                formatArray[i] = formats.elementAt(i);
+            }
         }
 
         return formatArray;

@@ -723,7 +723,7 @@ public class PolicyFile extends java.security.Policy {
                                 + SELF;
                     }
                     // check for self
-                    if (pe.name != null && pe.name.contains(SELF)) {
+                    if (pe.name != null && pe.name.indexOf(SELF) != -1) {
                         // Create a "SelfPermission" , it could be an
                         // an unresolved permission which will be resolved
                         // when implies is called

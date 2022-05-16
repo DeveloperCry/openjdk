@@ -136,7 +136,7 @@ abstract class CramMD5Base {
         }
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() {
         clearPassword();
     }

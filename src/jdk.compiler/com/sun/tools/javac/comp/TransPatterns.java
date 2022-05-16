@@ -341,15 +341,15 @@ public class TransPatterns extends TreeTranslator {
             JCCase lastCase = cases.last();
 
             if (hasTotalPattern && !hasNullCase) {
-                if (cases.stream().flatMap(c -> c.labels.stream()).noneMatch(l -> l.hasTag(Tag.DEFAULTCASELABEL))) {
-                    lastCase.labels = lastCase.labels.prepend(makeLit(syms.botType, null));
+                JCCase last = lastCase;
+                if (last.labels.stream().noneMatch(l -> l.hasTag(Tag.DEFAULTCASELABEL))) {
+                    last.labels = last.labels.prepend(makeLit(syms.botType, null));
                     hasNullCase = true;
                 }
             }
             selector = translate(selector);
-            boolean needsNullCheck = !hasNullCase && !seltype.isPrimitive();
-            statements.append(make.at(tree.pos).VarDef(temp, needsNullCheck ? attr.makeNullCheck(selector)
-                                                                            : selector));
+            statements.append(make.at(tree.pos).VarDef(temp, !hasNullCase ? attr.makeNullCheck(selector)
+                                                                          : selector));
             VarSymbol index = new VarSymbol(Flags.SYNTHETIC,
                     names.fromString(tree.pos + target.syntheticNameChar() + "index"),
                     syms.intType,
@@ -372,7 +372,7 @@ public class TransPatterns extends TreeTranslator {
 
             boolean enumSelector = seltype.tsym.isEnum();
             Name bootstrapName = enumSelector ? names.enumSwitch : names.typeSwitch;
-            MethodSymbol bsm = rs.resolveInternalMethod(tree.pos(), env, syms.switchBootstrapsType,
+            Symbol bsm = rs.resolveInternalMethod(tree.pos(), env, syms.switchBootstrapsType,
                     bootstrapName, staticArgTypes, List.nil());
 
             MethodType indyType = new MethodType(
@@ -383,7 +383,7 @@ public class TransPatterns extends TreeTranslator {
             );
             DynamicMethodSymbol dynSym = new DynamicMethodSymbol(bootstrapName,
                     syms.noSymbol,
-                    bsm.asHandle(),
+                    ((MethodSymbol)bsm).asHandle(),
                     indyType,
                     staticArgValues);
 
@@ -665,14 +665,11 @@ public class TransPatterns extends TreeTranslator {
     @Override
     public void visitClassDef(JCClassDecl tree) {
         ClassSymbol prevCurrentClass = currentClass;
-        MethodSymbol prevMethodSym = currentMethodSym;
         try {
             currentClass = tree.sym;
-            currentMethodSym = null;
             super.visitClassDef(tree);
         } finally {
             currentClass = prevCurrentClass;
-            currentMethodSym = prevMethodSym;
         }
     }
 

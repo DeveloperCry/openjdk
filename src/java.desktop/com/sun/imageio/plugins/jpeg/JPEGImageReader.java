@@ -1282,8 +1282,9 @@ public class JPEGImageReader extends ImageReader {
         // and set knownPassCount
         if (imageIndex == imageMetadataIndex) { // We have metadata
             knownPassCount = 0;
-            for (MarkerSegment markerSegment : imageMetadata.markerSequence) {
-                if (markerSegment instanceof SOSMarkerSegment) {
+            for (Iterator<MarkerSegment> iter =
+                    imageMetadata.markerSequence.iterator(); iter.hasNext();) {
+                if (iter.next() instanceof SOSMarkerSegment) {
                     knownPassCount++;
                 }
             }

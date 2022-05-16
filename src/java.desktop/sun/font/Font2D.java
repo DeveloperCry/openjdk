@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -153,21 +153,21 @@ public abstract class Font2D {
         String fName = fullName.toLowerCase();
 
         for (int i=0; i < boldItalicNames.length; i++) {
-            if (fName.contains(boldItalicNames[i])) {
+            if (fName.indexOf(boldItalicNames[i]) != -1) {
                 style = Font.BOLD|Font.ITALIC;
                 return;
             }
         }
 
         for (int i=0; i < italicNames.length; i++) {
-            if (fName.contains(italicNames[i])) {
+            if (fName.indexOf(italicNames[i]) != -1) {
                 style = Font.ITALIC;
                 return;
             }
         }
 
         for (int i=0; i < boldNames.length; i++) {
-            if (fName.contains(boldNames[i])) {
+            if (fName.indexOf(boldNames[i]) != -1 ) {
                 style = Font.BOLD;
                 return;
             }

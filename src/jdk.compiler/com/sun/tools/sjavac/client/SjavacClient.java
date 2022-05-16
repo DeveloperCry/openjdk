@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,6 +34,7 @@ import java.io.Reader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class SjavacClient implements Sjavac {
         String configFile = Util.extractStringOption("conf", serverConf, "");
 
         try {
-            List<String> configFileLines = Files.readAllLines(Path.of(configFile));
+            List<String> configFileLines = Files.readAllLines(Path.of(configFile), StandardCharsets.UTF_8);
             String configFileContent = String.join("\n", configFileLines);
 
             String portfileName = Util.extractStringOptionLine("portfile", configFileContent, "");

@@ -794,7 +794,7 @@ public abstract class Symbol extends AnnoConstruct implements PoolConstant, Elem
 
     /** A base class for Symbols representing types.
      */
-    public abstract static class TypeSymbol extends Symbol {
+    public static abstract class TypeSymbol extends Symbol {
         public TypeSymbol(Kind kind, long flags, Name name, Type type, Symbol owner) {
             super(kind, flags, name, type, owner);
         }
@@ -2251,7 +2251,8 @@ public abstract class Symbol extends AnnoConstruct implements PoolConstant, Elem
 
         @DefinedBy(Api.LANGUAGE_MODEL)
         public Type getReceiverType() {
-            return asType().getReceiverType();
+            Type result = asType().getReceiverType();
+            return (result == null) ? Type.noType : result;
         }
 
         @DefinedBy(Api.LANGUAGE_MODEL)

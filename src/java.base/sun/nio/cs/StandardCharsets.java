@@ -48,6 +48,7 @@ public class StandardCharsets extends CharsetProvider {
             "IBM367",
             "cp367",
             "csASCII",
+            "default",
             "646",
             "iso_646.irv:1983",
             "ANSI_X3.4-1968",
@@ -577,7 +578,7 @@ public class StandardCharsets extends CharsetProvider {
     {
 
         private static final int ROWS = 1024;
-        private static final int SIZE = 259;
+        private static final int SIZE = 260;
         private static final int SHIFT = 0;
         private static final int MASK = 0x3ff;
 
@@ -753,6 +754,7 @@ public class StandardCharsets extends CharsetProvider {
             ht[572] = new Object[] { "ibm-874", "x-ibm874" };
             ht[573] = new Object[] { "iso_8859-4:1988", "iso-8859-4" };
             ht[576] = new Object[] { "gb18030-2000", "gb18030" };
+            ht[577] = new Object[] { "default", "us-ascii" };
             ht[579] = new Object[] { "ms_936", "x-mswin-936" };
             ht[582] = new Object[] { "utf32", "utf-32" };
             ht[583] = new Object[] { "pc-multilingual-850+euro", "ibm00858" };

@@ -468,7 +468,8 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
      */
     @Override
     public int hashCode() {
-        return Long.hashCode(mostSigBits ^ leastSigBits);
+        long hilo = mostSigBits ^ leastSigBits;
+        return ((int)(hilo >> 32)) ^ (int) hilo;
     }
 
     /**

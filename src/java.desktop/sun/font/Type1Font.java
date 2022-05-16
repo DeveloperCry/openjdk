@@ -25,23 +25,23 @@
 
 package sun.font;
 
+import java.lang.ref.WeakReference;
 import java.awt.FontFormatException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.BufferUnderflowException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import sun.java2d.Disposer;
 import sun.java2d.DisposerRecord;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.awt.Font;
 
 /*
  * Adobe Technical Note 5040 details the format of PFB files.
@@ -609,7 +609,11 @@ public class Type1Font extends FileFont {
         byte[] nameBytes = new byte[pos2-pos1-1];
         bb.position(pos1);
         bb.get(nameBytes);
-        return new String(nameBytes, US_ASCII);
+        try {
+            return new String(nameBytes, "US-ASCII");
+        } catch (UnsupportedEncodingException e) {
+            return new String(nameBytes);
+        }
     }
 
     private String getString(ByteBuffer bb) {
@@ -619,7 +623,11 @@ public class Type1Font extends FileFont {
         byte[] nameBytes = new byte[pos2-pos1-1];
         bb.position(pos1);
         bb.get(nameBytes);
-        return new String(nameBytes, US_ASCII);
+        try {
+            return new String(nameBytes, "US-ASCII");
+        } catch (UnsupportedEncodingException e) {
+            return new String(nameBytes);
+        }
     }
 
 

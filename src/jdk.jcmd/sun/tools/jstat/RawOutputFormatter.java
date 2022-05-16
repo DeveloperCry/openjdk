@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,8 @@ public class RawOutputFormatter implements OutputFormatter {
         if (header == null) {
             // build the header string and prune out any unwanted monitors
             StringBuilder headerBuilder = new StringBuilder();
-            for (Monitor m : logged) {
+            for (Iterator<Monitor> i = logged.iterator(); i.hasNext(); /* empty */ ) {
+                Monitor m = i.next();
                 headerBuilder.append(m.getName()).append(' ');
             }
             header = headerBuilder.toString();
@@ -59,7 +60,8 @@ public class RawOutputFormatter implements OutputFormatter {
     public String getRow() throws MonitorException {
         StringBuilder row = new StringBuilder();
         int count = 0;
-        for (Monitor m : logged) {
+        for (Iterator<Monitor> i = logged.iterator(); i.hasNext(); /* empty */ ) {
+            Monitor m = i.next();
             if (count++ > 0) {
                 row.append(" ");
             }

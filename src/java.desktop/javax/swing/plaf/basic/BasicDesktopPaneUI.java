@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -31,14 +31,11 @@ import javax.swing.plaf.*;
 import java.beans.*;
 
 import java.awt.event.*;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.FocusTraversalPolicy;
 import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
+import java.awt.*;
 
 import sun.swing.DefaultLookup;
 import sun.swing.UIAction;
@@ -350,7 +347,7 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
      * The default DesktopManager installed by the UI.
      */
     @SuppressWarnings("serial") // JDK-implementation class
-    private static class BasicDesktopManager extends DefaultDesktopManager
+    private class BasicDesktopManager extends DefaultDesktopManager
             implements UIResource {
     }
 
@@ -569,7 +566,10 @@ public class BasicDesktopPaneUI extends DesktopPaneUI {
                 if (cycleRoot != null) {
                     FocusTraversalPolicy policy =
                         cycleRoot.getFocusTraversalPolicy();
-                    if (policy instanceof SortingFocusTraversalPolicy sPolicy) {
+                    if (policy != null && policy instanceof
+                            SortingFocusTraversalPolicy) {
+                        SortingFocusTraversalPolicy sPolicy =
+                            (SortingFocusTraversalPolicy)policy;
                         boolean idc = sPolicy.getImplicitDownCycleTraversal();
                         try {
                             sPolicy.setImplicitDownCycleTraversal(false);

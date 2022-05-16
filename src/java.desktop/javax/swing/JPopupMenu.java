@@ -49,7 +49,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
@@ -102,7 +101,7 @@ import sun.awt.SunToolkit;
  */
 @JavaBean(defaultProperty = "UI", description = "A small window that pops up and displays a series of choices.")
 @SwingContainer(false)
-@SuppressWarnings("serial")
+@SuppressWarnings({"removal","serial"})
 public class JPopupMenu extends JComponent implements Accessible,MenuElement {
 
     /**
@@ -118,11 +117,14 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
         new StringBuffer("JPopupMenu.defaultLWPopupEnabledKey");
 
     /** Bug#4425878-Property javax.swing.adjustPopupLocationToFit introduced */
-    @SuppressWarnings("removal")
-    static boolean popupPostionFixDisabled =
-            java.security.AccessController.doPrivileged(
+    static boolean popupPostionFixDisabled = false;
+
+    static {
+        popupPostionFixDisabled = java.security.AccessController.doPrivileged(
                 new sun.security.action.GetPropertyAction(
-                    "javax.swing.adjustPopupLocationToFit","")).equals("false");
+                "javax.swing.adjustPopupLocationToFit","")).equals("false");
+
+    }
 
     transient  Component invoker;
     transient  Popup popup;
@@ -598,14 +600,14 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
 
         int nitems = getComponentCount();
         // PENDING(ges): Why not use an array?
-        ArrayList<Component> tempItems = new ArrayList<Component>();
+        Vector<Component> tempItems = new Vector<Component>();
 
         /* Remove the item at index, nitems-index times
            storing them in a temporary vector in the
            order they appear on the menu.
            */
         for (int i = index ; i < nitems; i++) {
-            tempItems.add(getComponent(index));
+            tempItems.addElement(getComponent(index));
             remove(index);
         }
 
@@ -988,9 +990,10 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
         JPopupMenu mp = this;
         while((mp!=null) && (mp.isPopupMenu()!=true) &&
               (mp.getInvoker() != null) &&
-              (mp.getInvoker().getParent() instanceof JPopupMenu popupMenu)
+              (mp.getInvoker().getParent() != null) &&
+              (mp.getInvoker().getParent() instanceof JPopupMenu)
               ) {
-            mp = popupMenu;
+            mp = (JPopupMenu) mp.getInvoker().getParent();
         }
         return mp;
     }
@@ -1329,13 +1332,13 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
         Vector<Object> values = new Vector<Object>();
 
         s.defaultWriteObject();
-        // Save the invoker if != null, (Component implements Serializable)
-        if (invoker != null) {
+        // Save the invoker, if its Serializable.
+        if(invoker != null && invoker instanceof Serializable) {
             values.addElement("invoker");
             values.addElement(invoker);
         }
-        // Save the popup, if it's Serializable.
-        if (popup instanceof Serializable) {
+        // Save the popup, if its Serializable.
+        if(popup != null && popup instanceof Serializable) {
             values.addElement("popup");
             values.addElement(popup);
         }
@@ -1525,7 +1528,7 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
     @BeanProperty(bound = false)
     public MenuElement[] getSubElements() {
         MenuElement[] result;
-        ArrayList<MenuElement> tmp = new ArrayList<MenuElement>();
+        Vector<MenuElement> tmp = new Vector<MenuElement>();
         int c = getComponentCount();
         int i;
         Component m;
@@ -1533,12 +1536,12 @@ public class JPopupMenu extends JComponent implements Accessible,MenuElement {
         for(i=0 ; i < c ; i++) {
             m = getComponent(i);
             if(m instanceof MenuElement)
-                tmp.add((MenuElement) m);
+                tmp.addElement((MenuElement) m);
         }
 
         result = new MenuElement[tmp.size()];
         for(i=0,c=tmp.size() ; i < c ; i++)
-            result[i] = tmp.get(i);
+            result[i] = tmp.elementAt(i);
         return result;
     }
 

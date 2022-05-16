@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2002, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,7 @@ import sun.java2d.loops.MaskBlit;
 import sun.java2d.loops.CompositeType;
 
 public class GeneralCompositePipe implements CompositePipe {
-    static class TileContext {
+    class TileContext {
         SunGraphics2D sunG2D;
         PaintContext paintCtxt;
         CompositeContext compCtxt;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,6 +37,9 @@ import jdk.javadoc.internal.doclets.toolkit.ClassWriter;
 import jdk.javadoc.internal.doclets.toolkit.PropertyWriter;
 import jdk.javadoc.internal.doclets.toolkit.WriterFactory;
 import jdk.javadoc.internal.doclets.toolkit.util.ClassTree;
+
+
+
 
 /**
  * The factory for constructing builders.
@@ -130,11 +133,26 @@ public class BuilderFactory {
      * @return an instance of the annotation type member builder for the given
      *         annotation type.
      */
-    public AbstractMemberBuilder getAnnotationTypeMemberBuilder(
+    public AbstractMemberBuilder getAnnotationTypeOptionalMemberBuilder(
             ClassWriter classWriter) {
-        return AnnotationTypeMemberBuilder.getInstance(context,
+        return AnnotationTypeOptionalMemberBuilder.getInstance(context,
             classWriter.getTypeElement(),
-            writerFactory.getAnnotationTypeMemberWriter(classWriter));
+            writerFactory.getAnnotationTypeOptionalMemberWriter(classWriter));
+    }
+
+    /**
+     * Return an instance of the annotation type member builder for the given
+     * class.
+     *
+     * @param classWriter the writer for the enclosing annotation type
+     * @return an instance of the annotation type member builder for the given
+     *         annotation type.
+     */
+    public AbstractMemberBuilder getAnnotationTypeRequiredMemberBuilder(
+            ClassWriter classWriter) {
+        return AnnotationTypeRequiredMemberBuilder.getInstance(context,
+            classWriter.getTypeElement(),
+            writerFactory.getAnnotationTypeRequiredMemberWriter(classWriter));
     }
 
     /**

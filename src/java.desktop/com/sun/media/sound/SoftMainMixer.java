@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -48,7 +48,8 @@ public final class SoftMainMixer {
 
     // A private class thats contains a ModelChannelMixer and it's private buffers.
     // This becomes necessary when we want to have separate delay buffers for each channel mixer.
-    private static class SoftChannelMixerContainer {
+    private class SoftChannelMixerContainer
+    {
         ModelChannelMixer mixer;
         SoftAudioBuffer[] buffers;
     }

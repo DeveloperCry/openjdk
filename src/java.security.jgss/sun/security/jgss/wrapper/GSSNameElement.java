@@ -290,7 +290,7 @@ public class GSSNameElement implements GSSNameSpi {
         }
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         dispose();
     }

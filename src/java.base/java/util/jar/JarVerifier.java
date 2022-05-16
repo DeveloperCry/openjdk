@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -96,11 +96,7 @@ class JarVerifier {
     /** collect -DIGEST-MANIFEST values for deny list */
     private List<Object> manifestDigests;
 
-    /* A cache mapping code signers to the algorithms used to digest jar
-       entries, and whether or not the algorithms are permitted. */
-    private Map<CodeSigner[], Map<String, Boolean>> signersToAlgs;
-
-    public JarVerifier(String name, byte[] rawBytes) {
+    public JarVerifier(String name, byte rawBytes[]) {
         manifestName = name;
         manifestRawBytes = rawBytes;
         sigFileSigners = new Hashtable<>();
@@ -109,7 +105,6 @@ class JarVerifier {
         pendingBlocks = new ArrayList<>();
         baos = new ByteArrayOutputStream();
         manifestDigests = new ArrayList<>();
-        signersToAlgs = new HashMap<>();
     }
 
     /**
@@ -249,8 +244,7 @@ class JarVerifier {
         if (!parsingBlockOrSF) {
             JarEntry je = mev.getEntry();
             if ((je != null) && (je.signers == null)) {
-                je.signers = mev.verify(verifiedSigners, sigFileSigners,
-                                        signersToAlgs);
+                je.signers = mev.verify(verifiedSigners, sigFileSigners);
                 je.certs = mapSignersToCertArray(je.signers);
             }
         } else {
@@ -472,7 +466,7 @@ class JarVerifier {
             }
         }
 
-        public int read(byte[] b, int off, int len) throws IOException {
+        public int read(byte b[], int off, int len) throws IOException {
             ensureOpen();
             if ((numLeft > 0) && (numLeft < len)) {
                 len = (int)numLeft;

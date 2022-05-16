@@ -40,7 +40,7 @@ public class ZForwardingTable extends VMObject {
         VM.registerVMInitializedObserver((o, d) -> initialize(VM.getVM().getTypeDataBase()));
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("ZForwardingTable");
 
         mapFieldOffset = type.getAddressField("_map").getOffset();

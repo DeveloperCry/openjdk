@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -82,6 +82,14 @@ public class ClassLoaderDataGraph {
   public void classesDo(ClassVisitor v) {
     for (ClassLoaderData cld = getClassLoaderGraphHead(); cld != null; cld = cld.next()) {
         cld.classesDo(v);
+    }
+  }
+
+  /** Iterate over all klasses - including object, primitive
+      array klasses, pass initiating loader. */
+  public void allEntriesDo(ClassAndLoaderVisitor v) {
+    for (ClassLoaderData cld = getClassLoaderGraphHead(); cld != null; cld = cld.next()) {
+        cld.allEntriesDo(v);
     }
   }
 }

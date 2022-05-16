@@ -97,7 +97,6 @@ public class Resources extends java.util.ListResourceBundle {
         {"Changes.the.store.password.of.a.keystore",
                 "Changes the store password of a keystore"}, //-storepasswd
         {"showinfo.command.help", "Displays security-related information"},
-        {"Prints.the.program.version", "Prints the program version"},
 
         // keytool: help: options
         {"alias.name.of.the.entry.to.process",
@@ -397,8 +396,8 @@ public class Resources extends java.util.ListResourceBundle {
         {".WARNING.WARNING.WARNING.",
             "*****************  WARNING WARNING WARNING  *****************"},
         {"Signer.d.", "Signer #%d:"},
-        {"Certificate.d.", "Certificate #%d:"},
         {"Timestamp.", "Timestamp:"},
+        {"Signature.", "Signature:"},
         {"Certificate.owner.", "Certificate owner: "},
         {"Not.a.signed.jar.file", "Not a signed jar file"},
         {"No.certificate.from.the.SSL.server",
@@ -465,9 +464,6 @@ public class Resources extends java.util.ListResourceBundle {
         {"the.input", "The input"},
         {"reply", "Reply"},
         {"one.in.many", "%1$s #%2$d of %3$d"},
-        {"one.in.many1", "%1$s #%2$d"},
-        {"one.in.many2", "%1$s of signer #%2$d"},
-        {"one.in.many3", "%1$s #%2$d of signer #%3$d"},
         {"alias.in.cacerts", "Issuer <%s> in cacerts"},
         {"alias.in.keystore", "Issuer <%s>"},
         {"with.weak", "%s (weak)"},

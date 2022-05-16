@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -61,7 +61,6 @@ private static final long serialVersionUID = 4152013523511412238L;
  * object.
  * @serial
  */
-    @SuppressWarnings("serial") // Array component type is not Serializable
     protected Object[] origVals;
 
 /**

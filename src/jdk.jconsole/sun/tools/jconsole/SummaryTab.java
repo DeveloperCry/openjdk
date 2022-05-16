@@ -113,7 +113,6 @@ class SummaryTab extends Tab {
 
     StringBuilder buf;
 
-    @SuppressWarnings("deprecation")
     synchronized Result formatSummary() {
         Result result = new Result();
         ProxyClient proxyClient = vmPanel.getProxyClient();

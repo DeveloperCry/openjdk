@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -473,7 +473,8 @@ class NameImpl {
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof NameImpl target) {
+        if ((obj != null) && (obj instanceof NameImpl)) {
+            NameImpl target = (NameImpl)obj;
             if (target.size() ==  this.size()) {
                 Enumeration<String> mycomps = getAll();
                 Enumeration<String> comps = target.getAll();

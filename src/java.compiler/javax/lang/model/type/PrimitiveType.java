@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -35,7 +35,6 @@ package javax.lang.model.type;
  * @author Scott Seligman
  * @author Peter von der Ah&eacute;
  * @jls 4.2 Primitive Types and Values
- * @see javax.lang.model.util.Types#getPrimitiveType(TypeKind)
  * @since 1.6
  */
 public interface PrimitiveType extends TypeMirror {

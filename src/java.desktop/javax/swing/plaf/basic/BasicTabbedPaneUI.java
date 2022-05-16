@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -3945,8 +3945,8 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants {
     }
 
     @SuppressWarnings("serial") // Superclass is not serializable across versions
-    private static class ScrollableTabButton extends BasicArrowButton
-            implements UIResource, SwingConstants {
+    private class ScrollableTabButton extends BasicArrowButton implements UIResource,
+                                                                            SwingConstants {
         public ScrollableTabButton(int direction) {
             super(direction,
                   UIManager.getColor("TabbedPane.selected"),

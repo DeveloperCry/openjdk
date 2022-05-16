@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -326,7 +326,8 @@ public class Reference implements Cloneable, java.io.Serializable {
       * @return true if obj is equal to this reference; false otherwise.
       */
     public boolean equals(Object obj) {
-        if (obj instanceof Reference target) {
+        if ((obj != null) && (obj instanceof Reference)) {
+            Reference target = (Reference)obj;
             // ignore factory information
             if (target.className.equals(this.className) &&
                 target.size() ==  this.size()) {

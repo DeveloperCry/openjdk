@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -54,7 +54,7 @@ public class SignatureUtil {
      *      form of an OID, or the OID value if no match is found.
      */
     private static String checkName(String algName) {
-        if (!algName.contains(".")) {
+        if (algName.indexOf(".") == -1) {
             return algName;
         } else {
             // convert oid to String
@@ -100,7 +100,7 @@ public class SignatureUtil {
             // AlgorithmParameters.getAlgorithm() may returns oid if it's
             // created during DER decoding. Convert to use the standard name
             // before passing it to RSAUtil
-            if (params.getAlgorithm().contains(".")) {
+            if (params.getAlgorithm().indexOf(".") != -1) {
                 try {
                     params = createAlgorithmParameters(sigName,
                         params.getEncoded());
@@ -109,9 +109,9 @@ public class SignatureUtil {
                 }
             }
 
-            if (sigName.contains("RSA")) {
+            if (sigName.indexOf("RSA") != -1) {
                 paramSpec = RSAUtil.getParamSpec(params);
-            } else if (sigName.contains("ECDSA")) {
+            } else if (sigName.indexOf("ECDSA") != -1) {
                 try {
                     paramSpec = params.getParameterSpec(ECParameterSpec.class);
                 } catch (Exception e) {
@@ -141,11 +141,11 @@ public class SignatureUtil {
 
         if (paramBytes != null) {
             sigName = checkName(sigName).toUpperCase(Locale.ENGLISH);
-            if (sigName.contains("RSA")) {
+            if (sigName.indexOf("RSA") != -1) {
                 AlgorithmParameters params =
                     createAlgorithmParameters(sigName, paramBytes);
                 paramSpec = RSAUtil.getParamSpec(params);
-            } else if (sigName.contains("ECDSA")) {
+            } else if (sigName.indexOf("ECDSA") != -1) {
                 try {
                     Provider p = Signature.getInstance(sigName).getProvider();
                     paramSpec = ECUtil.getECParameterSpec(p, paramBytes);
@@ -170,7 +170,8 @@ public class SignatureUtil {
     // for verification with the specified key and params (may be null)
     public static void initVerifyWithParam(Signature s, PublicKey key,
             AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException, InvalidKeyException {
+            throws ProviderException, InvalidAlgorithmParameterException,
+            InvalidKeyException {
         SharedSecrets.getJavaSecuritySignatureAccess().initVerify(s, key, params);
     }
 
@@ -179,7 +180,8 @@ public class SignatureUtil {
     public static void initVerifyWithParam(Signature s,
             java.security.cert.Certificate cert,
             AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException, InvalidKeyException {
+            throws ProviderException, InvalidAlgorithmParameterException,
+            InvalidKeyException {
         SharedSecrets.getJavaSecuritySignatureAccess().initVerify(s, cert, params);
     }
 
@@ -187,7 +189,8 @@ public class SignatureUtil {
     // for signing with the specified key and params (may be null)
     public static void initSignWithParam(Signature s, PrivateKey key,
             AlgorithmParameterSpec params, SecureRandom sr)
-            throws InvalidAlgorithmParameterException, InvalidKeyException {
+            throws ProviderException, InvalidAlgorithmParameterException,
+            InvalidKeyException {
         SharedSecrets.getJavaSecuritySignatureAccess().initSign(s, key, params, sr);
     }
 
@@ -339,10 +342,10 @@ public class SignatureUtil {
      * Create a Signature that has been initialized with proper key and params.
      *
      * @param sigAlg signature algorithms
-     * @param key private key
+     * @param key public or private key
      * @param provider (optional) provider
      */
-    public static Signature fromKey(String sigAlg, PrivateKey key, String provider)
+    public static Signature fromKey(String sigAlg, Key key, String provider)
             throws NoSuchAlgorithmException, NoSuchProviderException,
                    InvalidKeyException{
         Signature sigEngine = (provider == null || provider.isEmpty())
@@ -355,10 +358,10 @@ public class SignatureUtil {
      * Create a Signature that has been initialized with proper key and params.
      *
      * @param sigAlg signature algorithms
-     * @param key private key
+     * @param key public or private key
      * @param provider (optional) provider
      */
-    public static Signature fromKey(String sigAlg, PrivateKey key, Provider provider)
+    public static Signature fromKey(String sigAlg, Key key, Provider provider)
             throws NoSuchAlgorithmException, InvalidKeyException{
         Signature sigEngine = (provider == null)
                 ? Signature.getInstance(sigAlg)
@@ -366,12 +369,17 @@ public class SignatureUtil {
         return autoInitInternal(sigAlg, key, sigEngine);
     }
 
-    private static Signature autoInitInternal(String alg, PrivateKey key, Signature s)
+    private static Signature autoInitInternal(String alg, Key key, Signature s)
             throws InvalidKeyException {
         AlgorithmParameterSpec params = SignatureUtil
                 .getDefaultParamSpec(alg, key);
         try {
-            SignatureUtil.initSignWithParam(s, key, params, null);
+            if (key instanceof PrivateKey) {
+                SignatureUtil.initSignWithParam(s, (PrivateKey) key, params,
+                        null);
+            } else {
+                SignatureUtil.initVerifyWithParam(s, (PublicKey) key, params);
+            }
         } catch (InvalidAlgorithmParameterException e) {
             throw new AssertionError("Should not happen", e);
         }

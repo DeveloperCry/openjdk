@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -205,7 +205,7 @@ public final class Boolean implements java.io.Serializable,
      * @since 1.4
      */
     public static String toString(boolean b) {
-        return String.valueOf(b);
+        return b ? "true" : "false";
     }
 
     /**
@@ -216,9 +216,8 @@ public final class Boolean implements java.io.Serializable,
      *
      * @return  a string representation of this object.
      */
-    @Override
     public String toString() {
-        return String.valueOf(value);
+        return value ? "true" : "false";
     }
 
     /**

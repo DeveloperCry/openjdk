@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -494,7 +494,8 @@ public abstract class RMIServerImpl implements Closeable, RMIServer {
         if (subject != null) {
             Set<Principal> principals = subject.getPrincipals();
             String sep = "";
-            for (Principal p : principals) {
+            for (Iterator<Principal> it = principals.iterator(); it.hasNext(); ) {
+                Principal p = it.next();
                 String name = p.getName().replace(' ', '_').replace(';', ':');
                 buf.append(sep).append(name);
                 sep = ";";

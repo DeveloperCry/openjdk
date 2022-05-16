@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1691,7 +1691,7 @@ import javax.swing.text.*;
      * Default view of an html table cell.  This needs to be moved
      * somewhere else.
      */
-    static class CellView extends BlockView {
+    class CellView extends BlockView {
 
         /**
          * Constructs a TableCell for the given element.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -328,9 +328,13 @@ public class ImageTypeSpecifier {
         }
 
         public boolean equals(Object o) {
-            if (!(o instanceof Interleaved that)) {
+            if ((o == null) ||
+                !(o instanceof ImageTypeSpecifier.Interleaved)) {
                 return false;
             }
+
+            ImageTypeSpecifier.Interleaved that =
+                (ImageTypeSpecifier.Interleaved)o;
 
             if ((!(this.colorSpace.equals(that.colorSpace))) ||
                 (this.dataType != that.dataType) ||
@@ -468,9 +472,13 @@ public class ImageTypeSpecifier {
         }
 
         public boolean equals(Object o) {
-            if (!(o instanceof Banded that)) {
+            if ((o == null) ||
+                !(o instanceof ImageTypeSpecifier.Banded)) {
                 return false;
             }
+
+            ImageTypeSpecifier.Banded that =
+                (ImageTypeSpecifier.Banded)o;
 
             if ((!(this.colorSpace.equals(that.colorSpace))) ||
                 (this.dataType != that.dataType) ||
@@ -1087,10 +1095,11 @@ public class ImageTypeSpecifier {
      * {@code ImageTypeSpecifier}.
      */
     public boolean equals(Object o) {
-        if (!(o instanceof ImageTypeSpecifier that)) {
+        if ((o == null) || !(o instanceof ImageTypeSpecifier)) {
             return false;
         }
 
+        ImageTypeSpecifier that = (ImageTypeSpecifier)o;
         return (colorModel.equals(that.colorModel)) &&
             (sampleModel.equals(that.sampleModel));
     }

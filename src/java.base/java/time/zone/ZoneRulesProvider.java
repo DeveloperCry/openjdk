@@ -127,6 +127,7 @@ import java.util.Collections;
  *
  * @since 1.8
  */
+@SuppressWarnings("removal")
 public abstract class ZoneRulesProvider {
 
     /**
@@ -146,28 +147,26 @@ public abstract class ZoneRulesProvider {
     static {
         // if the property java.time.zone.DefaultZoneRulesProvider is
         // set then its value is the class name of the default provider
-        @SuppressWarnings("removal")
-        final List<ZoneRulesProvider> loaded =
-                AccessController.doPrivileged(new PrivilegedAction<List<ZoneRulesProvider>>() {
-                    public List<ZoneRulesProvider> run() {
-                        List<ZoneRulesProvider> result = new ArrayList<>();
-                        String prop = System.getProperty("java.time.zone.DefaultZoneRulesProvider");
-                        if (prop != null) {
-                            try {
-                                Class<?> c = Class.forName(prop, true, ClassLoader.getSystemClassLoader());
-                                @SuppressWarnings("deprecation")
-                                ZoneRulesProvider provider = ZoneRulesProvider.class.cast(c.newInstance());
-                                registerProvider(provider);
-                                result.add(provider);
-                            } catch (Exception x) {
-                                throw new Error(x);
-                            }
-                        } else {
-                            registerProvider(new TzdbZoneRulesProvider());
-                        }
-                        return result;
+        final List<ZoneRulesProvider> loaded = new ArrayList<>();
+        AccessController.doPrivileged(new PrivilegedAction<>() {
+            public Object run() {
+                String prop = System.getProperty("java.time.zone.DefaultZoneRulesProvider");
+                if (prop != null) {
+                    try {
+                        Class<?> c = Class.forName(prop, true, ClassLoader.getSystemClassLoader());
+                        @SuppressWarnings("deprecation")
+                        ZoneRulesProvider provider = ZoneRulesProvider.class.cast(c.newInstance());
+                        registerProvider(provider);
+                        loaded.add(provider);
+                    } catch (Exception x) {
+                        throw new Error(x);
                     }
-                });
+                } else {
+                    registerProvider(new TzdbZoneRulesProvider());
+                }
+                return null;
+            }
+        });
 
         ServiceLoader<ZoneRulesProvider> sl = ServiceLoader.load(ZoneRulesProvider.class, ClassLoader.getSystemClassLoader());
         Iterator<ZoneRulesProvider> it = sl.iterator();

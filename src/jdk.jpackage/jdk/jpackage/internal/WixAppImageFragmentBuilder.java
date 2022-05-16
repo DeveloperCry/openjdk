@@ -107,9 +107,12 @@ class WixAppImageFragmentBuilder extends WixFragmentBuilder {
                         Collectors.toSet());
 
         if (StandardBundlerParam.isRuntimeInstaller(params)) {
-            launchers = Collections.emptyList();
+            launcherPaths = Collections.emptyList();
         } else {
-            launchers = AppImageFile.getLaunchers(appImageRoot, params);
+            launcherPaths = AppImageFile.getLauncherNames(appImageRoot, params).stream()
+                    .map(name -> installedAppImage.launchersDirectory().resolve(name))
+                    .map(WixAppImageFragmentBuilder::addExeSuffixToPath)
+                    .toList();
         }
 
         programMenuFolderName = MENU_GROUP.fetchFrom(params);
@@ -408,23 +411,13 @@ class WixAppImageFragmentBuilder extends WixFragmentBuilder {
             XMLStreamException, IOException {
         List<String> componentIds = new ArrayList<>();
         Set<ShortcutsFolder> defineShortcutFolders = new HashSet<>();
-        for (var launcher : launchers) {
+        for (var launcherPath : launcherPaths) {
             for (var folder : shortcutFolders) {
-                Path launcherPath = addExeSuffixToPath(installedAppImage
-                        .launchersDirectory().resolve(launcher.getName()));
-
-                if ((launcher.isMenu() &&
-                        (folder.equals(ShortcutsFolder.ProgramMenu))) ||
-                    (launcher.isShortcut() &&
-                        (folder.equals(ShortcutsFolder.Desktop)))) {
-
-                    String componentId = addShortcutComponent(xml, launcherPath,
-                            folder);
-
-                    if (componentId != null) {
-                        defineShortcutFolders.add(folder);
-                        componentIds.add(componentId);
-                    }
+                String componentId = addShortcutComponent(xml, launcherPath,
+                        folder);
+                if (componentId != null) {
+                    defineShortcutFolders.add(folder);
+                    componentIds.add(componentId);
                 }
             }
         }
@@ -831,7 +824,7 @@ class WixAppImageFragmentBuilder extends WixFragmentBuilder {
 
     private Set<ShortcutsFolder> shortcutFolders;
 
-    private List<AppImageFile.LauncherInfo> launchers;
+    private List<Path> launcherPaths;
 
     private ApplicationLayout appImage;
     private ApplicationLayout installedAppImage;

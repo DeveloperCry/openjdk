@@ -356,8 +356,7 @@ public class ClassFileReader implements Closeable {
         protected ClassFile readClassFile(JarFile jarfile, JarEntry e) throws IOException {
             try (InputStream is = jarfile.getInputStream(e)) {
                 ClassFile cf = ClassFile.read(is);
-                // exclude module-info.class since this jarFile is on classpath
-                if (jarfile.isMultiRelease() && !cf.getName().equals("module-info")) {
+                if (jarfile.isMultiRelease()) {
                     VersionHelper.add(jarfile, e, cf);
                 }
                 return cf;
@@ -438,4 +437,5 @@ public class ClassFileReader implements Closeable {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+    private static final String MODULE_INFO = "module-info.class";
 }

@@ -2106,7 +2106,6 @@ class MutableBigInteger {
 
         oddPart.leftShift(powersOf2);
         oddPart.multiply(y1, result);
-        oddPart.clear();
 
         evenPart.multiply(oddMod, temp1);
         temp1.multiply(y2, temp2);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,13 +66,11 @@ class HttpConnection {
     volatile State state;
 
     public String toString() {
-        final var sb = new StringBuilder(HttpConnection.class.getSimpleName());
+        String s = null;
         if (chan != null) {
-            sb.append(" (");
-            sb.append(chan);
-            sb.append(")");
+            s = chan.toString();
         }
-        return sb.toString();
+        return s;
     }
 
     HttpConnection () {

@@ -713,7 +713,7 @@ public final class ExifGPSTagSet extends TIFFTagSet {
      *
      * @return an {@code ExifGPSTagSet} instance.
      */
-    public static synchronized ExifGPSTagSet getInstance() {
+    public synchronized static ExifGPSTagSet getInstance() {
         if (theInstance == null) {
             theInstance = new ExifGPSTagSet();
         }

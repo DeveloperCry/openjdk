@@ -30,8 +30,8 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -74,6 +74,7 @@ abstract class AbstractDCmd {
         try {
             boolean log = Logger.shouldLog(LogTag.JFR_DCMD, LogLevel.DEBUG);
             if (log) {
+                System.out.println(arg);
                 Logger.log(LogTag.JFR_DCMD, LogLevel.DEBUG, "Executing " + this.getClass().getSimpleName() + ": " + arg);
             }
             ArgumentParser parser = new ArgumentParser(getArgumentInfos(), arg, delimiter);
@@ -168,7 +169,7 @@ abstract class AbstractDCmd {
 
     protected final List<Recording> getRecordings() {
         List<Recording> list = new ArrayList<>(getFlightRecorder().getRecordings());
-        list.sort(Comparator.comparingLong(Recording::getId));
+        Collections.sort(list, Comparator.comparing(Recording::getId));
         return list;
     }
 
@@ -190,7 +191,7 @@ abstract class AbstractDCmd {
     }
 
     protected final void print(String s, Object... args) {
-        currentLine.append(args.length > 0 ? String.format(s, args) : s);
+        currentLine.append(String.format(s, args));
     }
 
     protected final void println(String s, Object... args) {
@@ -267,42 +268,5 @@ abstract class AbstractDCmd {
         } else {
             return "/directory/recordings";
         }
-    }
-
-    static String expandFilename(String filename) {
-        if (filename == null || filename.indexOf('%') == -1) {
-            return filename;
-        }
-
-        String pid = null;
-        String time = null;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < filename.length(); i++) {
-            char c = filename.charAt(i);
-            if (c == '%' && i < filename.length() - 1) {
-                char nc = filename.charAt(i + 1);
-                if (nc == '%') { // %% ==> %
-                    sb.append('%');
-                    i++;
-                } else if (nc == 'p') {
-                    if (pid == null) {
-                        pid = JVM.getJVM().getPid();
-                    }
-                    sb.append(pid);
-                    i++;
-                } else if (nc == 't') {
-                    if (time == null) {
-                        time = Utils.formatDateTime(LocalDateTime.now());
-                    }
-                    sb.append(time);
-                    i++;
-                } else {
-                    sb.append('%');
-                }
-            } else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
     }
 }

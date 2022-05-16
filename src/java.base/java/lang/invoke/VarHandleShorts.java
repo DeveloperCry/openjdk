@@ -765,7 +765,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -773,7 +773,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -782,7 +782,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -790,7 +790,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -799,7 +799,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -807,7 +807,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             UNSAFE.putShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -816,7 +816,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -826,7 +826,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -836,7 +836,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -846,7 +846,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.compareAndExchangeShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -856,7 +856,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortPlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -866,7 +866,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -876,7 +876,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -886,7 +886,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.weakCompareAndSetShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -896,7 +896,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -905,7 +905,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -914,7 +914,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndSetShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -923,7 +923,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShort(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -932,7 +932,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShortAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -941,7 +941,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndAddShortRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -950,7 +950,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -959,7 +959,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -968,7 +968,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseOrShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -977,7 +977,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -986,7 +986,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -995,7 +995,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseAndShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1004,7 +1004,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShort(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1013,7 +1013,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShortRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1022,7 +1022,7 @@ final class VarHandleShorts {
             Array handle = (Array)ob;
             short[] array = (short[]) oarray;
             return UNSAFE.getAndBitwiseXorShortAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 

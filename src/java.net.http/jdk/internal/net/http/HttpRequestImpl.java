@@ -44,6 +44,7 @@ import java.net.http.HttpRequest;
 
 import jdk.internal.net.http.common.HttpHeadersBuilder;
 import jdk.internal.net.http.common.Utils;
+import jdk.internal.net.http.websocket.OpeningHandshake;
 import jdk.internal.net.http.websocket.WebSocketRequest;
 
 import static jdk.internal.net.http.common.Utils.ALLOWED_HEADERS;
@@ -215,7 +216,7 @@ public class HttpRequestImpl extends HttpRequest implements WebSocketRequest {
         this.systemHeadersBuilder.map().putAll(headers.systemHeaders().map());
         this.userHeaders = headers.userHeaders();
         this.uri = URI.create("socket://" + authority.getHostString() + ":"
-                              + authority.getPort() + "/");
+                              + Integer.toString(authority.getPort()) + "/");
         this.proxy = null;
         this.requestPublisher = null;
         this.authority = authority;

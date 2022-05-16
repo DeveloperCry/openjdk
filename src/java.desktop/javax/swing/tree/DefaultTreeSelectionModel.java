@@ -1174,9 +1174,10 @@ public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeS
         sb.append(getClass().getName() + " " + hashCode() + " [ ");
         for(int counter = 0; counter < selCount; counter++) {
             if(rows != null)
-                sb.append(selection[counter] + "@" + rows[counter] + " ");
+                sb.append(selection[counter].toString() + "@" +
+                          Integer.toString(rows[counter])+ " ");
             else
-                sb.append(selection[counter] + " ");
+                sb.append(selection[counter].toString() + " ");
         }
         sb.append("]");
         return sb.toString();
@@ -1217,7 +1218,7 @@ public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeS
 
         s.defaultWriteObject();
         // Save the rowMapper, if it implements Serializable
-        if (rowMapper instanceof Serializable) {
+        if(rowMapper != null && rowMapper instanceof Serializable) {
             tValues = new Object[2];
             tValues[0] = "rowMapper";
             tValues[1] = rowMapper;

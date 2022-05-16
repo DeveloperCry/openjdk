@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,6 +32,7 @@ import sun.jvm.hotspot.debugger.RandomAccessFileDataSource;
 
 public class ELFFileParser {
     private static ELFFileParser elfParser;
+    private static final String US_ASCII = "US-ASCII";
 
     public static ELFFileParser getParser() {
         if (elfParser == null) {

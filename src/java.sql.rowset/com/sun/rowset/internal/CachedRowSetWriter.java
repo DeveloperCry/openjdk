@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -147,7 +147,6 @@ public class CachedRowSetWriter implements TransactionalWriter, Serializable {
  *
  * @serial
  */
-    @SuppressWarnings("serial") // Array component type is not Serializable
     private Object[] params;
 
 /**
@@ -166,7 +165,6 @@ public class CachedRowSetWriter implements TransactionalWriter, Serializable {
  *
  * @serial
  */
-    @SuppressWarnings("serial")
     private ResultSetMetaData callerMd;
 
 /**

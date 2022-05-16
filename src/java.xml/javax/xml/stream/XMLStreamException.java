@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -45,7 +45,6 @@ public class XMLStreamException extends Exception {
   /**
    * The location of the error.
    */
-  @SuppressWarnings("serial") // Type of field is not Serializable
   protected Location location;
 
   /**

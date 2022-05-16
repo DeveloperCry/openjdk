@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,12 +66,7 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
         /**
          * Linux app launcher shared library.
          */
-        LINUX_APPLAUNCHER_LIB,
-
-        /**
-         * Location of additional application content
-         */
-        CONTENT
+        LINUX_APPLAUNCHER_LIB
     }
 
     ApplicationLayout(Map<Object, Path> paths) {
@@ -134,13 +129,6 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
         return pathGroup().getPath(PathRole.DESKTOP);
     }
 
-    /**
-     * Path to directory with additional application content.
-     */
-    public Path contentDirectory() {
-        return pathGroup().getPath(PathRole.CONTENT);
-    }
-
     static ApplicationLayout linuxAppImage() {
         return new ApplicationLayout(Map.of(
                 PathRole.LAUNCHERS, Path.of("bin"),
@@ -149,8 +137,7 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
                 PathRole.RUNTIME_HOME, Path.of("lib/runtime"),
                 PathRole.DESKTOP, Path.of("lib"),
                 PathRole.MODULES, Path.of("lib/app/mods"),
-                PathRole.LINUX_APPLAUNCHER_LIB, Path.of("lib/libapplauncher.so"),
-                PathRole.CONTENT, Path.of("lib")
+                PathRole.LINUX_APPLAUNCHER_LIB, Path.of("lib/libapplauncher.so")
         ));
     }
 
@@ -161,8 +148,7 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
                 PathRole.RUNTIME, Path.of("runtime"),
                 PathRole.RUNTIME_HOME, Path.of("runtime"),
                 PathRole.DESKTOP, Path.of(""),
-                PathRole.MODULES, Path.of("app/mods"),
-                PathRole.CONTENT, Path.of("")
+                PathRole.MODULES, Path.of("app/mods")
         ));
     }
 
@@ -173,8 +159,7 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
                 PathRole.RUNTIME, Path.of("Contents/runtime"),
                 PathRole.RUNTIME_HOME, Path.of("Contents/runtime/Contents/Home"),
                 PathRole.DESKTOP, Path.of("Contents/Resources"),
-                PathRole.MODULES, Path.of("Contents/app/mods"),
-                PathRole.CONTENT, Path.of("Contents")
+                PathRole.MODULES, Path.of("Contents/app/mods")
         ));
     }
 
@@ -209,8 +194,7 @@ public final class ApplicationLayout implements PathGroup.Facade<ApplicationLayo
                 PathRole.DESKTOP, lib,
                 PathRole.MODULES, lib.resolve("app/mods"),
                 PathRole.LINUX_APPLAUNCHER_LIB, lib.resolve(
-                        "lib/libapplauncher.so"),
-                PathRole.CONTENT, lib
+                        "lib/libapplauncher.so")
         ));
     }
 

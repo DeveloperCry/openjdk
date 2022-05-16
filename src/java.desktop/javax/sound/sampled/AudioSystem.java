@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -225,10 +225,11 @@ public class AudioSystem {
      */
     public static Line.Info[] getSourceLineInfo(Line.Info info) {
 
-        ArrayList<Line.Info> list = new ArrayList<>();
+        Vector<Line.Info> vector = new Vector<>();
         Line.Info[] currentInfoArray;
 
         Mixer mixer;
+        Line.Info fullInfo = null;
         Mixer.Info[] infoArray = getMixerInfo();
 
         for (int i = 0; i < infoArray.length; i++) {
@@ -237,14 +238,14 @@ public class AudioSystem {
 
             currentInfoArray = mixer.getSourceLineInfo(info);
             for (int j = 0; j < currentInfoArray.length; j++) {
-                list.add(currentInfoArray[j]);
+                vector.addElement(currentInfoArray[j]);
             }
         }
 
-        Line.Info[] returnedArray = new Line.Info[list.size()];
+        Line.Info[] returnedArray = new Line.Info[vector.size()];
 
         for (int i = 0; i < returnedArray.length; i++) {
-            returnedArray[i] = list.get(i);
+            returnedArray[i] = vector.get(i);
         }
 
         return returnedArray;
@@ -263,10 +264,11 @@ public class AudioSystem {
      */
     public static Line.Info[] getTargetLineInfo(Line.Info info) {
 
-        ArrayList<Line.Info> list = new ArrayList<>();
+        Vector<Line.Info> vector = new Vector<>();
         Line.Info[] currentInfoArray;
 
         Mixer mixer;
+        Line.Info fullInfo = null;
         Mixer.Info[] infoArray = getMixerInfo();
 
         for (int i = 0; i < infoArray.length; i++) {
@@ -275,14 +277,14 @@ public class AudioSystem {
 
             currentInfoArray = mixer.getTargetLineInfo(info);
             for (int j = 0; j < currentInfoArray.length; j++) {
-                list.add(currentInfoArray[j]);
+                vector.addElement(currentInfoArray[j]);
             }
         }
 
-        Line.Info[] returnedArray = new Line.Info[list.size()];
+        Line.Info[] returnedArray = new Line.Info[vector.size()];
 
         for (int i = 0; i < returnedArray.length; i++) {
-            returnedArray[i] = list.get(i);
+            returnedArray[i] = vector.get(i);
         }
 
         return returnedArray;
@@ -672,7 +674,7 @@ public class AudioSystem {
         Objects.requireNonNull(sourceEncoding);
 
         List<FormatConversionProvider> codecs = getFormatConversionProviders();
-        ArrayList<AudioFormat.Encoding> encodings = new ArrayList<>();
+        Vector<AudioFormat.Encoding> encodings = new Vector<>();
 
         AudioFormat.Encoding[] encs = null;
 
@@ -682,12 +684,12 @@ public class AudioSystem {
             if( codec.isSourceEncodingSupported( sourceEncoding ) ) {
                 encs = codec.getTargetEncodings();
                 for (int j = 0; j < encs.length; j++) {
-                    encodings.add( encs[j] );
+                    encodings.addElement( encs[j] );
                 }
             }
         }
         if (!encodings.contains(sourceEncoding)) {
-            encodings.add(sourceEncoding);
+            encodings.addElement(sourceEncoding);
         }
 
         return encodings.toArray(new AudioFormat.Encoding[encodings.size()]);

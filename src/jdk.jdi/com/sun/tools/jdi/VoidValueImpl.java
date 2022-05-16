@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -37,7 +37,7 @@ public class VoidValueImpl extends ValueImpl implements VoidValue {
     }
 
     public boolean equals(Object obj) {
-        return (obj instanceof VoidValue) && super.equals(obj);
+        return (obj != null) && (obj instanceof VoidValue) && super.equals(obj);
     }
 
     public int hashCode() {

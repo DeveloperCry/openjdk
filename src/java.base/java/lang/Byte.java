@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -90,7 +90,7 @@ public final class Byte extends Number implements Comparable<Byte>, Constable {
      * @see java.lang.Integer#toString(int)
      */
     public static String toString(byte b) {
-        return Integer.toString(b);
+        return Integer.toString((int)b, 10);
     }
 
     /**
@@ -436,9 +436,8 @@ public final class Byte extends Number implements Comparable<Byte>, Constable {
      * @return  a string representation of the value of this object in
      *          base&nbsp;10.
      */
-    @Override
     public String toString() {
-        return Integer.toString(value);
+        return Integer.toString((int)value);
     }
 
     /**

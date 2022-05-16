@@ -401,7 +401,7 @@ class WinNTFileSystem extends FileSystem {
         if (sm != null) {
             sm.checkPropertyAccess("user.dir");
         }
-        return userDir;
+        return normalize(userDir);
     }
 
     private String getDrive(String path) {

@@ -54,7 +54,7 @@ import static jdk.internal.net.http.frame.SettingsFrame.MAX_FRAME_SIZE;
  */
 class Http2ClientImpl {
 
-    static final Logger debug =
+    final static Logger debug =
             Utils.getDebugLogger("Http2ClientImpl"::toString, Utils.DEBUG);
 
     private final HttpClientImpl client;
@@ -237,7 +237,8 @@ class Http2ClientImpl {
 
         // The default is the max between the stream window size
         // and the connection window size.
-        int defaultValue = Math.max(streamWindow, K*K*32);
+        int defaultValue = Math.min(Integer.MAX_VALUE,
+                Math.max(streamWindow, K*K*32));
 
         return getParameter(
                 "jdk.httpclient.connectionWindowSize",

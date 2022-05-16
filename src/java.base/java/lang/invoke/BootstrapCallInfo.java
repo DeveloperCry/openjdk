@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,7 @@ import java.lang.invoke.MethodHandles.Lookup;
 /**
  * An interface providing full static information about a particular
  * call to a
- * <a href="package-summary.html#bsm">bootstrap method</a> of a
+ * <a href="package-summary.html#bsm">bootstrap method</a> of an
  * dynamic call site or dynamic constant.
  * This information includes the method itself, the associated
  * name and type, and any associated static arguments.

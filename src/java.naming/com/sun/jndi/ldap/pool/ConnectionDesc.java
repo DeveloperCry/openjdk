@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -65,8 +65,9 @@ final class ConnectionDesc {
      * PooledConnection.
      */
     public boolean equals(Object obj) {
-        return (obj instanceof ConnectionDesc other)
-            && other.conn == conn;
+        return obj != null
+            && obj instanceof ConnectionDesc
+            && ((ConnectionDesc)obj).conn == conn;
     }
 
     /**

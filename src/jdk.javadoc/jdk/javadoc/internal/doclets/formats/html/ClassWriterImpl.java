@@ -381,7 +381,10 @@ public class ClassWriterImpl extends SubWriterHolderWriter implements ClassWrite
                 dl.add(HtmlTree.DT(utils.isInterface(e)
                         ? contents.enclosingInterfaceLabel
                         : contents.enclosingClassLabel));
-                dl.add(HtmlTree.DD(getClassLinks(HtmlLinkInfo.Kind.CLASS, List.of(e))));
+                Content dd = new HtmlTree(TagName.DD);
+                dd.add(getLink(new HtmlLinkInfo(configuration,
+                        HtmlLinkInfo.Kind.CLASS, e)));
+                dl.add(dd);
                 classInfoTree.add(dl);
                 return null;
             }
@@ -401,7 +404,7 @@ public class ClassWriterImpl extends SubWriterHolderWriter implements ClassWrite
     }
 
     public boolean isFunctionalInterface() {
-        List<? extends AnnotationMirror> annotationMirrors = typeElement.getAnnotationMirrors();
+        List<? extends AnnotationMirror> annotationMirrors = ((Element) typeElement).getAnnotationMirrors();
         for (AnnotationMirror anno : annotationMirrors) {
             if (utils.isFunctionalInterface(anno)) {
                 return true;

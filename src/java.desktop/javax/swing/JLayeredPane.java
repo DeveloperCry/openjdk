@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -205,7 +205,7 @@ public class JLayeredPane extends JComponent implements Accessible {
                         (layer = (Integer)((JComponent)c).
                                      getClientProperty(LAYER_PROPERTY)) != null))
                 {
-                    if (FRAME_CONTENT_LAYER.equals(layer))
+                    if(layer != null && layer.equals(FRAME_CONTENT_LAYER))
                         continue;
                     layeredComponentFound = true;
                     break;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -302,7 +303,12 @@ public final class PropertyInfo {
                 }
             }
         }
-        map.values().removeIf(propertyInfo -> !propertyInfo.initialize());
+        Iterator<PropertyInfo> iterator = map.values().iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().initialize()) {
+                iterator.remove();
+            }
+        }
         return !map.isEmpty()
                 ? Collections.unmodifiableMap(map)
                 : Collections.emptyMap();

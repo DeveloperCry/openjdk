@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -66,7 +66,8 @@ public class LocalVariableImpl extends MirrorImpl
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof LocalVariableImpl other) {
+        if ((obj != null) && (obj instanceof LocalVariableImpl)) {
+            LocalVariableImpl other = (LocalVariableImpl)obj;
             return ((slot() == other.slot()) &&
                     (scopeStart != null) &&
                     (scopeStart.equals(other.scopeStart)) &&

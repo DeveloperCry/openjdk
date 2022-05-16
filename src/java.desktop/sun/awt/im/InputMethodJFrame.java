@@ -40,7 +40,6 @@ public class InputMethodJFrame
         extends JFrame
         implements InputMethodWindow {
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     InputContext inputContext = null;
 
     /**

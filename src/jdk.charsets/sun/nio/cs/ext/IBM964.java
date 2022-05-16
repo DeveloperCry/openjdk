@@ -203,7 +203,7 @@ public class IBM964
         }
 
         protected CoderResult decodeLoop(ByteBuffer src, CharBuffer dst) {
-            if (src.hasArray() && dst.hasArray())
+            if (true && src.hasArray() && dst.hasArray())
                 return decodeArrayLoop(src, dst);
             else
                 return decodeBufferLoop(src, dst);

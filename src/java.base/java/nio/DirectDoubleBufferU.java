@@ -48,6 +48,9 @@ class DirectDoubleBufferU
 
 
 
+    // Cached array base offset
+    private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(double[].class);
+
     // Cached unaligned-access capability
     protected static final boolean UNALIGNED = Bits.unaligned();
 

@@ -38,6 +38,7 @@ import com.sun.jmx.mbeanserver.Repository.RegistrationContext;
 import com.sun.jmx.mbeanserver.Util;
 import com.sun.jmx.remote.util.EnvHelp;
 
+import java.io.ObjectInputStream;
 import java.lang.ref.WeakReference;
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -79,6 +80,7 @@ import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
+import javax.management.OperationsException;
 import javax.management.QueryEval;
 import javax.management.QueryExp;
 import javax.management.ReflectionException;
@@ -206,7 +208,8 @@ public class DefaultMBeanServerInterceptor implements MBeanServerInterceptor {
         } catch (InstanceNotFoundException e) {
             /* Can only happen if loaderName doesn't exist, but we just
                passed null, so we shouldn't get this exception.  */
-            throw new IllegalArgumentException("Unexpected exception: " + e, e);
+            throw EnvHelp.initCause(
+                new IllegalArgumentException("Unexpected exception: " + e), e);
         }
     }
 

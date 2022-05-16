@@ -39,8 +39,7 @@ import java.util.logging.Level;
 import javax.security.sasl.*;
 import javax.security.auth.callback.*;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * An implementation of the DIGEST-MD5 server SASL mechanism.

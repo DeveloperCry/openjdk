@@ -575,7 +575,7 @@ public class Polygon implements Shape, java.io.Serializable {
         return getPathIterator(at);
     }
 
-    static class PolygonPathIterator implements PathIterator {
+    class PolygonPathIterator implements PathIterator {
         Polygon poly;
         AffineTransform transform;
         int index;

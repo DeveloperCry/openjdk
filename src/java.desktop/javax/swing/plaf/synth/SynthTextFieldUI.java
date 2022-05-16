@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -147,7 +147,8 @@ public class SynthTextFieldUI extends BasicTextFieldUI implements SynthUI {
         Caret caret = comp.getCaret();
         if (caret instanceof UIResource) {
             Object o = style.get(context, prefix + ".caretBlinkRate");
-            if (o instanceof Integer rate) {
+            if (o != null && o instanceof Integer) {
+                Integer rate = (Integer)o;
                 caret.setBlinkRate(rate.intValue());
             }
         }

@@ -66,10 +66,10 @@ public abstract class Certificate implements java.io.Serializable {
     private static final long serialVersionUID = -3585440601605666277L;
 
     /** The certificate type. */
-    private final transient String type;
+    private final String type;
 
     /** The hash code for the certificate. */
-    private transient int hash = -1; // Default to -1
+    private int hash = -1; // Default to -1
 
     /**
      * Creates a certificate of the specified type.
@@ -236,7 +236,7 @@ public abstract class Certificate implements java.io.Serializable {
     public abstract PublicKey getPublicKey();
 
     /**
-     * Alternate {@code Certificate} class for serialization.
+     * Alternate Certificate class for serialization.
      * @since 1.3
      */
     protected static class CertificateRep implements java.io.Serializable {
@@ -251,12 +251,12 @@ public abstract class Certificate implements java.io.Serializable {
         private byte[] data;
 
         /**
-         * Construct the alternate {@code Certificate} class with the
-         * {@code Certificate} type and {@code Certificate} encoding bytes.
+         * Construct the alternate Certificate class with the Certificate
+         * type and Certificate encoding bytes.
          *
-         * @param type the standard name of the {@code Certificate} type.
+         * @param type the standard name of the Certificate type.
          *
-         * @param data the {@code Certificate} data.
+         * @param data the Certificate data.
          */
         protected CertificateRep(String type, byte[] data) {
             this.type = type;
@@ -264,12 +264,11 @@ public abstract class Certificate implements java.io.Serializable {
         }
 
         /**
-         * Returns a {@code Certificate} with the type and data of this
-         * {@code CertificateRep}.
+         * Resolve the Certificate Object.
          *
-         * @return the resolved {@code Certificate} object
+         * @return the resolved Certificate Object
          *
-         * @throws java.io.ObjectStreamException if the {@code Certificate}
+         * @throws java.io.ObjectStreamException if the Certificate
          *      could not be resolved
          */
         @java.io.Serial
@@ -289,15 +288,12 @@ public abstract class Certificate implements java.io.Serializable {
     }
 
     /**
-     * Replace the {@code Certificate} to be serialized with a
-     * {@link CertificateRep CertificateRep} object containing the type and
-     * encoded bytes of the {@code Certificate}.
+     * Replace the Certificate to be serialized.
      *
-     * @return a {@code CertificateRep} object containing the type and encoded
-     *         bytes of the {@code Certificate}
+     * @return the alternate Certificate object to be serialized
      *
-     * @throws java.io.ObjectStreamException if a {@code CertificateRep} object
-     *         representing this {@code Certificate} could not be created
+     * @throws java.io.ObjectStreamException if a new object representing
+     * this Certificate could not be created
      * @since 1.3
      */
     @java.io.Serial

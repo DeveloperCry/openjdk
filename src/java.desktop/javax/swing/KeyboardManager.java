@@ -29,6 +29,8 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.applet.*;
+import java.beans.*;
+import javax.swing.event.*;
 import sun.awt.EmbeddedFrame;
 
 /**
@@ -369,7 +371,7 @@ class KeyboardManager {
       * which looks up topContainers based on component, keystroke pairs
       * This is used to make unregistering KeyStrokes fast
       */
-    static class ComponentKeyStrokePair {
+    class ComponentKeyStrokePair {
         Object component;
         Object keyStroke;
 

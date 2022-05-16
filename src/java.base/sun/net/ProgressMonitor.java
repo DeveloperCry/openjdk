@@ -68,7 +68,9 @@ public class ProgressMonitor
 
         try {
             synchronized(progressSourceList)    {
-                for (ProgressSource pi : progressSourceList) {
+                for (Iterator<ProgressSource> iter = progressSourceList.iterator(); iter.hasNext();)    {
+                    ProgressSource pi = iter.next();
+
                     // Clone ProgressSource and add to snapshot
                     snapshot.add((ProgressSource)pi.clone());
                 }
@@ -112,15 +114,18 @@ public class ProgressMonitor
         if (progressListenerList.size() > 0)
         {
             // Notify progress listener if there is progress change
-            ArrayList<ProgressListener> listeners;
+            ArrayList<ProgressListener> listeners = new ArrayList<>();
 
             // Copy progress listeners to another list to avoid holding locks
             synchronized(progressListenerList) {
-                listeners = new ArrayList<>(progressListenerList);
+                for (Iterator<ProgressListener> iter = progressListenerList.iterator(); iter.hasNext();) {
+                    listeners.add(iter.next());
+                }
             }
 
             // Fire event on each progress listener
-            for (ProgressListener pl : listeners) {
+            for (Iterator<ProgressListener> iter = listeners.iterator(); iter.hasNext();) {
+                ProgressListener pl = iter.next();
                 ProgressEvent pe = new ProgressEvent(pi, pi.getURL(), pi.getMethod(), pi.getContentType(), pi.getState(), pi.getProgress(), pi.getExpected());
                 pl.progressStart(pe);
             }
@@ -146,15 +151,18 @@ public class ProgressMonitor
         if (progressListenerList.size() > 0)
         {
             // Notify progress listener if there is progress change
-            ArrayList<ProgressListener> listeners;
+            ArrayList<ProgressListener> listeners = new ArrayList<>();
 
             // Copy progress listeners to another list to avoid holding locks
             synchronized(progressListenerList) {
-                listeners = new ArrayList<>(progressListenerList);
+                for (Iterator<ProgressListener> iter = progressListenerList.iterator(); iter.hasNext();) {
+                    listeners.add(iter.next());
+                }
             }
 
             // Fire event on each progress listener
-            for (ProgressListener pl : listeners) {
+            for (Iterator<ProgressListener> iter = listeners.iterator(); iter.hasNext();) {
+                ProgressListener pl = iter.next();
                 ProgressEvent pe = new ProgressEvent(pi, pi.getURL(), pi.getMethod(), pi.getContentType(), pi.getState(), pi.getProgress(), pi.getExpected());
                 pl.progressFinish(pe);
             }
@@ -175,15 +183,18 @@ public class ProgressMonitor
         if (progressListenerList.size() > 0)
         {
             // Notify progress listener if there is progress change
-            ArrayList<ProgressListener> listeners;
+            ArrayList<ProgressListener> listeners = new ArrayList<>();
 
             // Copy progress listeners to another list to avoid holding locks
             synchronized(progressListenerList)  {
-                listeners = new ArrayList<>(progressListenerList);
+                for (Iterator<ProgressListener> iter = progressListenerList.iterator(); iter.hasNext();) {
+                    listeners.add(iter.next());
+                }
             }
 
             // Fire event on each progress listener
-            for (ProgressListener pl : listeners) {
+            for (Iterator<ProgressListener> iter = listeners.iterator(); iter.hasNext();) {
+                ProgressListener pl = iter.next();
                 ProgressEvent pe = new ProgressEvent(pi, pi.getURL(), pi.getMethod(), pi.getContentType(), pi.getState(), pi.getProgress(), pi.getExpected());
                 pl.progressUpdate(pe);
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,7 +51,7 @@ public class SpanClipRenderer implements CompositePipe
         outpipe = pipe;
     }
 
-    static class SCRcontext {
+    class SCRcontext {
         RegionIterator iterator;
         Object outcontext;
         int[] band;

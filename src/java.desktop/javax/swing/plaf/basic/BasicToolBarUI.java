@@ -654,8 +654,8 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
             Container p;
             for(p = toolBar.getParent() ; p != null && !(p instanceof Window) ;
                 p = p.getParent());
-            if (p instanceof Window window)
-                frame = window;
+            if(p != null && p instanceof Window)
+                frame = (Window) p;
         }
         if(floatingToolBar == null) {
             floatingToolBar = createFloatingWindow(toolBar);

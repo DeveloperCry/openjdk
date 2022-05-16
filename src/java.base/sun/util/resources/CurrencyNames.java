@@ -196,7 +196,6 @@ public final class CurrencyNames extends sun.util.resources.LocaleNamesBundle {
             { "UYU", "UYU" },
             { "UZS", "UZS" },
             { "VEB", "VEB" },
-            { "VED", "VED" },
             { "VEF", "VEF" },
             { "VES", "VES" },
             { "VND", "VND" },

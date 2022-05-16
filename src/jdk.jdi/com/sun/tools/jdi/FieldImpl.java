@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -41,7 +41,8 @@ public class FieldImpl extends TypeComponentImpl
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof FieldImpl other) {
+        if ((obj != null) && (obj instanceof FieldImpl)) {
+            FieldImpl other = (FieldImpl)obj;
             return (declaringType().equals(other.declaringType())) &&
                    (ref() == other.ref()) &&
                    super.equals(obj);
@@ -50,9 +51,8 @@ public class FieldImpl extends TypeComponentImpl
         }
     }
 
-    @Override
     public int hashCode() {
-        return Long.hashCode(ref());
+        return (int)ref();
     }
 
     public int compareTo(Field field) {

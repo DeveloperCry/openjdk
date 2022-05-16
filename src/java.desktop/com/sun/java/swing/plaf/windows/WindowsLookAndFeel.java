@@ -186,7 +186,8 @@ public class WindowsLookAndFeel extends BasicLookAndFeel
         @SuppressWarnings("removal")
         String systemFonts = java.security.AccessController.doPrivileged(
                new GetPropertyAction("swing.useSystemFontSettings"));
-        useSystemFontSettings = systemFonts == null || Boolean.parseBoolean(systemFonts);
+        useSystemFontSettings = (systemFonts == null ||
+                                 Boolean.valueOf(systemFonts).booleanValue());
 
         if (useSystemFontSettings) {
             Object value = UIManager.get("Application.useSystemFontSettings");
@@ -2113,7 +2114,7 @@ public class WindowsLookAndFeel extends BasicLookAndFeel
      * Gets an <code>Icon</code> from the native libraries if available.
      * A desktop property is used to trigger reloading the icon when needed.
      */
-    private static class ActiveWindowsIcon implements UIDefaults.ActiveValue {
+    private class ActiveWindowsIcon implements UIDefaults.ActiveValue {
         private Icon icon;
         private String nativeImageName;
         private String fallbackName;
@@ -2419,7 +2420,7 @@ public class WindowsLookAndFeel extends BasicLookAndFeel
         }
     }
 
-    private static class TriggerDesktopProperty extends WindowsDesktopProperty {
+    private class TriggerDesktopProperty extends WindowsDesktopProperty {
         TriggerDesktopProperty(String key) {
             super(key, null);
             // This call adds a property change listener for the property,
@@ -2436,7 +2437,7 @@ public class WindowsLookAndFeel extends BasicLookAndFeel
         }
     }
 
-    private static class FontDesktopProperty extends TriggerDesktopProperty {
+    private class FontDesktopProperty extends TriggerDesktopProperty {
         FontDesktopProperty(String key) {
             super(key);
         }

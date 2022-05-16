@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -767,10 +767,6 @@ public class JmodTask {
         void processSection(JmodOutputStream out, Section section, Path path)
             throws IOException
         {
-            // Keep a sorted set of files to be processed, so that the jmod
-            // content is reproducible as Files.walkFileTree order is not defined
-            SortedMap<String, Path> filesToProcess = new TreeMap<String, Path>();
-
             Files.walkFileTree(path, Set.of(FileVisitOption.FOLLOW_LINKS),
                 Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
                     @Override
@@ -786,21 +782,14 @@ public class JmodTask {
                             if (out.contains(section, name)) {
                                 warning("warn.ignore.duplicate.entry", name, section);
                             } else {
-                                filesToProcess.put(name, file);
+                                try (InputStream in = Files.newInputStream(file)) {
+                                    out.writeEntry(in, section, name);
+                                }
                             }
                         }
                         return FileVisitResult.CONTINUE;
                     }
                 });
-
-            // Process files in sorted order for deterministic jmod content
-            for (Map.Entry<String, Path> entry : filesToProcess.entrySet()) {
-                String name = entry.getKey();
-                Path   file = entry.getValue();
-                try (InputStream in = Files.newInputStream(file)) {
-                    out.writeEntry(in, section, name);
-                }
-            }
         }
 
         boolean matches(Path path, List<PathMatcher> matchers) {
@@ -901,7 +890,7 @@ public class JmodTask {
             // filter modules resolved from the system module finder
             this.modules = config.modules().stream()
                 .map(ResolvedModule::name)
-                .filter(mn -> roots.contains(mn) && system.find(mn).isEmpty())
+                .filter(mn -> roots.contains(mn) && !system.find(mn).isPresent())
                 .collect(Collectors.toSet());
 
             this.hashesBuilder = new ModuleHashesBuilder(config, modules);
@@ -1052,7 +1041,7 @@ public class JmodTask {
      * Specific subclasses should do whatever validation is required on the
      * individual path elements, if any.
      */
-    abstract static class AbstractPathConverter implements ValueConverter<List<Path>> {
+    static abstract class AbstractPathConverter implements ValueConverter<List<Path>> {
         @Override
         public List<Path> convert(String value) {
             List<Path> paths = new ArrayList<>();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,7 +46,6 @@ public class ResourceIOException extends DocletException {
     /**
      * The resource that was in use when the exception occurred.
      */
-    @SuppressWarnings("serial") // Type of field is not Serializable
     public final DocPath resource;
 
     private static final long serialVersionUID = 1L;

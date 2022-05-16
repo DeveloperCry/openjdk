@@ -2977,9 +2977,13 @@ public abstract class KeyboardFocusManager
             if (hwFocusRequest != null) {
                 heavyweightRequests.removeFirst();
                 if (hwFocusRequest.lightweightRequests != null) {
-                    for (LightweightFocusRequest lwFocusRequest : hwFocusRequest.lightweightRequests) {
+                    for (Iterator<KeyboardFocusManager.LightweightFocusRequest> lwIter = hwFocusRequest.lightweightRequests.
+                             iterator();
+                         lwIter.hasNext(); )
+                    {
                         manager.dequeueKeyEvents
-                            (-1, lwFocusRequest.component);
+                            (-1, lwIter.next().
+                             component);
                     }
                 }
             }

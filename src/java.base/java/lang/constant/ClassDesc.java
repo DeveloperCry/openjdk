@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -99,7 +99,7 @@ public sealed interface ClassDesc
         }
         validateMemberName(requireNonNull(className), false);
         return ofDescriptor("L" + binaryToInternal(packageName) +
-                "/" + className + ";");
+                (packageName.length() > 0 ? "/" : "") + className + ";");
     }
 
     /**

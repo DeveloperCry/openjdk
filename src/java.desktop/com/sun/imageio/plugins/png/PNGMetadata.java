@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -979,14 +979,14 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                 sbits = Integer.toString(sBIT_grayBits);
             } else { // sBIT_colorType == PNGImageReader.PNG_COLOR_RGB ||
                      // sBIT_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA
-                sbits = sBIT_redBits + " " +
-                        sBIT_greenBits + " " +
-                        sBIT_blueBits;
+                sbits = Integer.toString(sBIT_redBits) + " " +
+                    Integer.toString(sBIT_greenBits) + " " +
+                    Integer.toString(sBIT_blueBits);
             }
 
             if (sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA ||
                 sBIT_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
-                sbits += " " + sBIT_alphaBits;
+                sbits += " " + Integer.toString(sBIT_alphaBits);
             }
 
             node.setAttribute("value", sbits);
@@ -1134,9 +1134,9 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
             node = new IIOMetadataNode("TransparentColor");
             if (tRNS_colorType == PNGImageReader.PNG_COLOR_RGB) {
                 node.setAttribute("value",
-                                  tRNS_red + " " +
-                                  tRNS_green + " " +
-                                  tRNS_blue);
+                                  Integer.toString(tRNS_red) + " " +
+                                  Integer.toString(tRNS_green) + " " +
+                                  Integer.toString(tRNS_blue));
             } else if (tRNS_colorType == PNGImageReader.PNG_COLOR_GRAY) {
                 node.setAttribute("value", Integer.toString(tRNS_gray));
             }
@@ -1318,7 +1318,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                 IHDR_width = getIntAttribute(node, "width");
                 IHDR_height = getIntAttribute(node, "height");
                 IHDR_bitDepth =
-                        Integer.parseInt(IHDR_bitDepths[
+                        Integer.valueOf(IHDR_bitDepths[
                                 getEnumeratedAttribute(node,
                                                     "bitDepth",
                                                     IHDR_bitDepths)]);

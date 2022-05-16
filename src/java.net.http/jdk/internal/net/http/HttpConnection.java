@@ -67,7 +67,7 @@ import static jdk.internal.net.http.common.Utils.ProxyHeaders;
 abstract class HttpConnection implements Closeable {
 
     final Logger debug = Utils.getDebugLogger(this::dbgString, Utils.DEBUG);
-    static final Logger DEBUG_LOGGER = Utils.getDebugLogger(
+    final static Logger DEBUG_LOGGER = Utils.getDebugLogger(
             () -> "HttpConnection(SocketTube(?))", Utils.DEBUG);
 
     /** The address this connection is connected to. Could be a server or a proxy. */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,6 +29,7 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -75,7 +76,6 @@ import com.sun.tools.javac.tree.DCTree.DCSerial;
 import com.sun.tools.javac.tree.DCTree.DCSerialData;
 import com.sun.tools.javac.tree.DCTree.DCSerialField;
 import com.sun.tools.javac.tree.DCTree.DCSince;
-import com.sun.tools.javac.tree.DCTree.DCSnippet;
 import com.sun.tools.javac.tree.DCTree.DCStartElement;
 import com.sun.tools.javac.tree.DCTree.DCSummary;
 import com.sun.tools.javac.tree.DCTree.DCSystemProperty;
@@ -126,6 +126,9 @@ public class DocTreeMaker implements DocTreeFactory {
      */
     public int pos = Position.NOPOS;
 
+    /** Access to diag factory for ErroneousTrees. */
+    private final JCDiagnostic.Factory diags;
+
     private final JavacTrees trees;
 
     /** Utility class to parse reference signatures. */
@@ -135,6 +138,7 @@ public class DocTreeMaker implements DocTreeFactory {
      */
     protected DocTreeMaker(Context context) {
         context.put(treeMakerKey, this);
+        diags = JCDiagnostic.Factory.instance(context);
         this.pos = Position.NOPOS;
         trees = JavacTrees.instance(context);
         referenceParser = new ReferenceParser(ParserFactory.instance(context));
@@ -146,6 +150,13 @@ public class DocTreeMaker implements DocTreeFactory {
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DocTreeMaker at(int pos) {
         this.pos = pos;
+        return this;
+    }
+
+    /** Reassign current position.
+     */
+    public DocTreeMaker at(DiagnosticPosition pos) {
+        this.pos = (pos == null ? Position.NOPOS : pos.getStartPosition());
         return this;
     }
 
@@ -274,6 +285,12 @@ public class DocTreeMaker implements DocTreeFactory {
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCErroneous newErroneousTree(String text, Diagnostic<JavaFileObject> diag) {
         DCErroneous tree = new DCErroneous(text, (JCDiagnostic) diag);
+        tree.pos = pos;
+        return tree;
+    }
+
+    public DCErroneous newErroneousTree(String text, DiagnosticSource diagSource, String code, Object... args) {
+        DCErroneous tree = new DCErroneous(text, diags, diagSource, code, args);
         tree.pos = pos;
         return tree;
     }
@@ -410,13 +427,6 @@ public class DocTreeMaker implements DocTreeFactory {
     @Override @DefinedBy(Api.COMPILER_TREE)
     public DCSince newSinceTree(List<? extends DocTree> text) {
         DCSince tree = new DCSince(cast(text));
-        tree.pos = pos;
-        return tree;
-    }
-
-    @Override @DefinedBy(Api.COMPILER_TREE)
-    public DCSnippet newSnippetTree(List<? extends DocTree> attributes, TextTree text) {
-        DCSnippet tree = new DCSnippet(cast(attributes), (DCText) text);
         tree.pos = pos;
         return tree;
     }
@@ -703,7 +713,7 @@ public class DocTreeMaker implements DocTreeFactory {
     }
 
     /*
-     * Returns the position of the first non-whitespace character.
+     * Returns the position of the the first non-white space
      */
     private int skipWhiteSpace(String s, int start) {
         for (int i = start; i < s.length(); i++) {

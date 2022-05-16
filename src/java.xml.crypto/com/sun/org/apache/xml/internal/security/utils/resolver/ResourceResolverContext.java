@@ -54,4 +54,5 @@ public class ResourceResolverContext {
     public Map<String, String> getProperties() {
         return properties;
     }
+
 }

@@ -25,23 +25,26 @@
  */
 package jdk.incubator.foreign;
 
-import jdk.internal.foreign.Utils;
-import jdk.internal.vm.annotation.Stable;
-
 import java.lang.constant.ClassDesc;
+import java.lang.constant.Constable;
 import java.lang.constant.ConstantDesc;
+import java.lang.constant.ConstantDescs;
 import java.lang.constant.DirectMethodHandleDesc;
 import java.lang.constant.DynamicConstantDesc;
 import java.lang.constant.MethodHandleDesc;
 import java.lang.constant.MethodTypeDesc;
 import java.nio.ByteOrder;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.constant.ConstantDescs.BSM_GET_STATIC_FINAL;
 import static java.lang.constant.ConstantDescs.BSM_INVOKE;
-import static java.lang.constant.ConstantDescs.CD_Class;
 import static java.lang.constant.ConstantDescs.CD_String;
 import static java.lang.constant.ConstantDescs.CD_long;
 
@@ -49,33 +52,50 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
 
     private final OptionalLong size;
     final long alignment;
-    private final Optional<String> name;
-    @Stable
-    long cachedSize;
+    final Map<String, Constable> attributes;
 
-    public AbstractLayout(OptionalLong size, long alignment, Optional<String> name) {
+    public AbstractLayout(OptionalLong size, long alignment, Map<String, Constable> attributes) {
         this.size = size;
         this.alignment = alignment;
-        this.name = name;
+        this.attributes = Collections.unmodifiableMap(attributes);
     }
 
     @Override
     public AbstractLayout withName(String name) {
         Objects.requireNonNull(name);
-        return dup(alignment, Optional.of(name));
+        return withAttribute(LAYOUT_NAME, name);
     }
 
     @Override
     public final Optional<String> name() {
-        return name;
+        return attribute(LAYOUT_NAME).map(String.class::cast);
     }
 
-    abstract AbstractLayout dup(long alignment, Optional<String> name);
+    @Override
+    public Optional<Constable> attribute(String name) {
+        Objects.requireNonNull(name);
+        return Optional.ofNullable(attributes.get(name));
+    }
+
+    @Override
+    public Stream<String> attributes() {
+        return attributes.keySet().stream();
+    }
+
+    @Override
+    public AbstractLayout withAttribute(String name, Constable value) {
+        Objects.requireNonNull(name);
+        Map<String, Constable> newAttributes = new HashMap<>(attributes);
+        newAttributes.put(name, value);
+        return dup(alignment, newAttributes);
+    }
+
+    abstract AbstractLayout dup(long alignment, Map<String, Constable> annos);
 
     @Override
     public AbstractLayout withBitAlignment(long alignmentBits) {
         checkAlignment(alignmentBits);
-        return dup(alignmentBits, name);
+        return dup(alignmentBits, attributes);
     }
 
     void checkAlignment(long alignmentBitCount) {
@@ -98,15 +118,6 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
     @Override
     public final long bitAlignment() {
         return alignment;
-    }
-
-    @Override
-    public long byteSize() {
-        if (cachedSize == 0) {
-            cachedSize = Utils.bitsToBytesOrThrow(bitSize(),
-                    () -> new UnsupportedOperationException("Cannot compute byte size; bit size is not a multiple of 8"));
-        }
-        return cachedSize;
     }
 
     @Override
@@ -134,6 +145,11 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
         if (!hasNaturalAlignment()) {
             s = alignment + "%" + s;
         }
+        if (!attributes.isEmpty()) {
+            s += attributes.entrySet().stream()
+                                      .map(e -> e.getKey() + "=" + e.getValue())
+                                      .collect(Collectors.joining(",", "[", "]"));
+        }
         return s;
     }
 
@@ -142,9 +158,9 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
             desc = DynamicConstantDesc.ofNamed(BSM_INVOKE, "withBitAlignment", desc.constantType(), MH_WITH_BIT_ALIGNMENT,
                     desc, bitAlignment());
         }
-        if (name().isPresent()) {
-            desc = DynamicConstantDesc.ofNamed(BSM_INVOKE, "withName", desc.constantType(), MH_WITH_NAME,
-                    desc, name().get().describeConstable().orElseThrow());
+        for (var e : attributes.entrySet()) {
+            desc = DynamicConstantDesc.ofNamed(BSM_INVOKE, "withAttribute", desc.constantType(), MH_WITH_ATTRIBUTE,
+                    desc, e.getKey(), e.getValue().describeConstable().orElseThrow());
         }
 
         return desc;
@@ -161,7 +177,7 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
 
     @Override
     public int hashCode() {
-        return name.hashCode() << Long.hashCode(alignment);
+        return attributes.hashCode() << Long.hashCode(alignment);
     }
 
     @Override
@@ -174,7 +190,7 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
             return false;
         }
 
-        return Objects.equals(name, ((AbstractLayout) other).name) &&
+        return Objects.equals(attributes, ((AbstractLayout) other).attributes) &&
                 Objects.equals(alignment, ((AbstractLayout) other).alignment);
     }
 
@@ -192,12 +208,17 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
 
     static final ClassDesc CD_FUNCTION_DESC = FunctionDescriptor.class.describeConstable().get();
 
+    static final ClassDesc CD_Constable = Constable.class.describeConstable().get();
+
     static final ConstantDesc BIG_ENDIAN = DynamicConstantDesc.ofNamed(BSM_GET_STATIC_FINAL, "BIG_ENDIAN", CD_BYTEORDER, CD_BYTEORDER);
 
     static final ConstantDesc LITTLE_ENDIAN = DynamicConstantDesc.ofNamed(BSM_GET_STATIC_FINAL, "LITTLE_ENDIAN", CD_BYTEORDER, CD_BYTEORDER);
 
     static final MethodHandleDesc MH_PADDING = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_STATIC, CD_MEMORY_LAYOUT, "paddingLayout",
                 MethodTypeDesc.of(CD_MEMORY_LAYOUT, CD_long));
+
+    static final MethodHandleDesc MH_VALUE = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_STATIC, CD_MEMORY_LAYOUT, "valueLayout",
+                MethodTypeDesc.of(CD_VALUE_LAYOUT, CD_long, CD_BYTEORDER));
 
     static final MethodHandleDesc MH_SIZED_SEQUENCE = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_STATIC, CD_MEMORY_LAYOUT, "sequenceLayout",
                 MethodTypeDesc.of(CD_SEQUENCE_LAYOUT, CD_long, CD_MEMORY_LAYOUT));
@@ -211,9 +232,6 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
     static final MethodHandleDesc MH_UNION = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_STATIC, CD_MEMORY_LAYOUT, "unionLayout",
                 MethodTypeDesc.of(CD_GROUP_LAYOUT, CD_MEMORY_LAYOUT.arrayType()));
 
-    static final MethodHandleDesc MH_VALUE = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_STATIC, CD_MEMORY_LAYOUT, "valueLayout",
-            MethodTypeDesc.of(CD_VALUE_LAYOUT, CD_Class, CD_BYTEORDER));
-
     static final MethodHandleDesc MH_VOID_FUNCTION = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.STATIC, CD_FUNCTION_DESC, "ofVoid",
                 MethodTypeDesc.of(CD_FUNCTION_DESC, CD_MEMORY_LAYOUT.arrayType()));
 
@@ -223,6 +241,6 @@ abstract non-sealed class AbstractLayout implements MemoryLayout {
     static final MethodHandleDesc MH_WITH_BIT_ALIGNMENT = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_VIRTUAL, CD_MEMORY_LAYOUT, "withBitAlignment",
                 MethodTypeDesc.of(CD_MEMORY_LAYOUT, CD_long));
 
-    static final MethodHandleDesc MH_WITH_NAME = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_VIRTUAL, CD_MEMORY_LAYOUT, "withName",
-                MethodTypeDesc.of(CD_MEMORY_LAYOUT, CD_String));
+    static final MethodHandleDesc MH_WITH_ATTRIBUTE = MethodHandleDesc.ofMethod(DirectMethodHandleDesc.Kind.INTERFACE_VIRTUAL, CD_MEMORY_LAYOUT, "withAttribute",
+                MethodTypeDesc.of(CD_MEMORY_LAYOUT, CD_String, CD_Constable));
 }

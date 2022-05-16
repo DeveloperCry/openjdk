@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -323,7 +323,7 @@ class AuthenticationFilter implements HeaderFilter {
             return req;
         } else if (au.retries > retry_limit) {
             throw new IOException("too many authentication attempts. Limit: " +
-                    retry_limit);
+                    Integer.toString(retry_limit));
         } else {
             // we sent credentials, but they were rejected
             if (au.fromcache) {

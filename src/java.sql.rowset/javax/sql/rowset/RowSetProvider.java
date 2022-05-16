@@ -226,7 +226,7 @@ public class RowSetProvider {
      *
      */
     @SuppressWarnings("removal")
-    private static ClassLoader getContextClassLoader() throws SecurityException {
+    static private ClassLoader getContextClassLoader() throws SecurityException {
         return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
 
             public ClassLoader run() {
@@ -252,7 +252,7 @@ public class RowSetProvider {
      * context class loader followed by the current class loader.
      *  @return The class which was loaded
      */
-    private static Class<?> getFactoryClass(String factoryClassName, ClassLoader cl,
+    static private Class<?> getFactoryClass(String factoryClassName, ClassLoader cl,
             boolean doFallback) throws ClassNotFoundException {
         Class<?> factoryClass = null;
 
@@ -284,7 +284,7 @@ public class RowSetProvider {
      * Use the ServiceLoader mechanism to load  the default RowSetFactory
      * @return default RowSetFactory Implementation
      */
-    private static RowSetFactory loadViaServiceLoader() throws SQLException {
+    static private RowSetFactory loadViaServiceLoader() throws SQLException {
         RowSetFactory theFactory = null;
         try {
             trace("***in loadViaServiceLoader():");
@@ -310,7 +310,7 @@ public class RowSetProvider {
      * or a {@code SecurityException} occurs.
      */
     @SuppressWarnings("removal")
-    private static String getSystemProperty(final String propName) {
+    static private String getSystemProperty(final String propName) {
         String property = null;
         try {
             property = AccessController.doPrivileged(new PrivilegedAction<String>() {

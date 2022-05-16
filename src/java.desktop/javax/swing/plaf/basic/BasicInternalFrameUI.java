@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -578,8 +578,9 @@ public class BasicInternalFrameUI extends InternalFrameUI
      * @param c the new north pane
      */
     public void setNorthPane(JComponent c) {
-        if (northPane instanceof BasicInternalFrameTitlePane tp) {
-            tp.uninstallListeners();
+        if (northPane != null &&
+                northPane instanceof BasicInternalFrameTitlePane) {
+            ((BasicInternalFrameTitlePane)northPane).uninstallListeners();
         }
         replacePane(northPane, c);
         northPane = c;
@@ -1613,8 +1614,9 @@ public class BasicInternalFrameUI extends InternalFrameUI
             // account the title pane since you are allowed to resize
             // the frames to the point where just the title pane is visible.
             Dimension result = new Dimension();
-            if (getNorthPane() instanceof BasicInternalFrameTitlePane tp) {
-                  result = new Dimension(tp.getMinimumSize());
+            if (getNorthPane() != null &&
+                getNorthPane() instanceof BasicInternalFrameTitlePane) {
+                  result = new Dimension(getNorthPane().getMinimumSize());
             }
             Insets i = frame.getInsets();
             result.width += i.left + i.right;

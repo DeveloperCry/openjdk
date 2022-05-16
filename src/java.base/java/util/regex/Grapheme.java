@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -151,10 +151,10 @@ final class Grapheme {
     // #tr29: SpacingMark exceptions: The following (which have
     // General_Category = Spacing_Mark and would otherwise be included)
     // are specifically excluded
-    static boolean isExcludedSpacingMark(int cp) {
+    private static boolean isExcludedSpacingMark(int cp) {
        return  cp == 0x102B || cp == 0x102C || cp == 0x1038 ||
                cp >= 0x1062 && cp <= 0x1064 ||
-               cp >= 0x1067 && cp <= 0x106D ||
+               cp >= 0x1062 && cp <= 0x106D ||
                cp == 0x1083 ||
                cp >= 0x1087 && cp <= 0x108C ||
                cp == 0x108F ||
@@ -164,7 +164,7 @@ final class Grapheme {
     }
 
     @SuppressWarnings("fallthrough")
-    static int getType(int cp) {
+    private static int getType(int cp) {
         if (cp < 0x007F) { // ASCII
             if (cp < 32) { // Control characters
                 if (cp == 0x000D)

@@ -78,7 +78,7 @@ public class AttributedString {
         }
         else {
             // Build the String contents
-            StringBuilder buffer = new StringBuilder();
+            StringBuffer buffer = new StringBuffer();
             for (int counter = 0; counter < iterators.length; counter++) {
                 appendContents(buffer, iterators[counter]);
             }
@@ -158,7 +158,9 @@ public class AttributedString {
             runAttributes[0] = newRunAttributes;
             runAttributeValues[0] = newRunAttributeValues;
 
-            for (Map.Entry<? extends Attribute, ?> entry : attributes.entrySet()) {
+            Iterator<? extends Map.Entry<? extends Attribute, ?>> iterator = attributes.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<? extends Attribute, ?> entry = iterator.next();
                 newRunAttributes.addElement(entry.getKey());
                 newRunAttributeValues.addElement(entry.getValue());
             }
@@ -262,7 +264,9 @@ public class AttributedString {
         // Get and set attribute runs for each attribute name. Need to
         // scan from the top of the text so that we can discard any
         // Annotation that is no longer applied to a subset text segment.
-        for (Attribute attributeKey : keys) {
+        Iterator<Attribute> itr = keys.iterator();
+        while (itr.hasNext()) {
+            Attribute attributeKey = itr.next();
             text.setIndex(textBeginIndex);
             while (text.getIndex() < endIndex) {
                 int start = text.getRunStart(attributeKey);
@@ -384,7 +388,10 @@ public class AttributedString {
         int beginRunIndex = ensureRunBreak(beginIndex);
         int endRunIndex = ensureRunBreak(endIndex);
 
-        for (Map.Entry<? extends Attribute, ?> entry : attributes.entrySet()) {
+        Iterator<? extends Map.Entry<? extends Attribute, ?>> iterator =
+            attributes.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<? extends Attribute, ?> entry = iterator.next();
             addAttributeRunData(entry.getKey(), entry.getValue(), beginRunIndex, endRunIndex);
         }
     }
@@ -649,8 +656,10 @@ public class AttributedString {
 
     // returns whether all specified attributes have equal values in the runs with the given indices
     private boolean attributeValuesMatch(Set<? extends Attribute> attributes, int runIndex1, int runIndex2) {
-        for (Attribute key : attributes) {
-            if (!valuesMatch(getAttribute(key, runIndex1), getAttribute(key, runIndex2))) {
+        Iterator<? extends Attribute> iterator = attributes.iterator();
+        while (iterator.hasNext()) {
+            Attribute key = iterator.next();
+           if (!valuesMatch(getAttribute(key, runIndex1), getAttribute(key, runIndex2))) {
                 return false;
             }
         }
@@ -668,9 +677,9 @@ public class AttributedString {
 
     /**
      * Appends the contents of the CharacterIterator iterator into the
-     * StringBuilder buf.
+     * StringBuffer buf.
      */
-    private final void appendContents(StringBuilder buf,
+    private final void appendContents(StringBuffer buf,
                                       CharacterIterator iterator) {
         int index = iterator.getBeginIndex();
         int end = iterator.getEndIndex();
@@ -697,8 +706,11 @@ public class AttributedString {
         if (attrs != null && (size = attrs.size()) > 0) {
             Vector<Attribute> runAttrs = new Vector<>(size);
             Vector<Object> runValues = new Vector<>(size);
+            Iterator<Map.Entry<Attribute, Object>> iterator = attrs.entrySet().iterator();
 
-            for (Map.Entry<Attribute, Object> entry : attrs.entrySet()) {
+            while (iterator.hasNext()) {
+                Map.Entry<Attribute, Object> entry = iterator.next();
+
                 runAttrs.add(entry.getKey());
                 runValues.add(entry.getValue());
             }

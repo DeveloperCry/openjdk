@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -40,8 +40,8 @@ public class IntegerValueImpl extends PrimitiveValueImpl
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof IntegerValue other) {
-            return (value == other.value()) &&
+        if ((obj != null) && (obj instanceof IntegerValue)) {
+            return (value == ((IntegerValue)obj).value()) &&
                    super.equals(obj);
         } else {
             return false;

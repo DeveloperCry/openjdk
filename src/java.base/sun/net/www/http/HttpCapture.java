@@ -157,7 +157,7 @@ public class HttpCapture {
             if (p.matcher(s).find()) {
                 String f = capFiles.get(i);
                 File fi;
-                if (f.contains("%d")) {
+                if (f.indexOf("%d") >= 0) {
                     java.util.Random rand = new java.util.Random();
                     do {
                         String f2 = f.replace("%d", Integer.toString(rand.nextInt()));

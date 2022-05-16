@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -1417,8 +1417,8 @@ public class DebugGraphics extends Graphics {
             Container container = (Container)component;
             int debugOptions = 0;
 
-            while (container instanceof JComponent jc) {
-                debugOptions |= info.getDebugOptions(jc);
+            while (container != null && (container instanceof JComponent)) {
+                debugOptions |= info.getDebugOptions((JComponent)container);
                 container = container.getParent();
             }
 

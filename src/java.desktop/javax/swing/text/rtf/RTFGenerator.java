@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,7 @@ package javax.swing.text.rtf;
 import java.lang.*;
 import java.util.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.io.OutputStream;
 import java.io.IOException;
 
@@ -93,14 +94,15 @@ class RTFGenerator extends Object
 
         Dictionary<String, String> textKeywordDictionary = RTFReader.textKeywords;
         Enumeration<String> keys = textKeywordDictionary.keys();
-        ArrayList<CharacterKeywordPair> tempPairs = new ArrayList<CharacterKeywordPair>();
+        Vector<CharacterKeywordPair> tempPairs = new Vector<CharacterKeywordPair>();
         while(keys.hasMoreElements()) {
             CharacterKeywordPair pair = new CharacterKeywordPair();
             pair.keyword = keys.nextElement();
             pair.character = textKeywordDictionary.get(pair.keyword).charAt(0);
-            tempPairs.add(pair);
+            tempPairs.addElement(pair);
         }
-        textKeywords = tempPairs.toArray(new CharacterKeywordPair[0]);
+        textKeywords = new CharacterKeywordPair[tempPairs.size()];
+        tempPairs.copyInto(textKeywords);
     }
 
     static final char[] hexdigits = { '0', '1', '2', '3', '4', '5', '6', '7',
@@ -391,7 +393,7 @@ public void writeRTFHeader()
             updateCharacterAttributes(goat, style, false);
 
             basis = style.getResolveParent();
-            if (basis instanceof Style) {
+            if (basis != null && basis instanceof Style) {
                 Integer basedOn = styleTable.get(basis);
                 if (basedOn != null) {
                     writeControlWord("sbasedon", basedOn.intValue());
@@ -514,13 +516,13 @@ void updateSectionAttributes(MutableAttributeSet current,
 {
     if (emitStyleChanges) {
         Object oldStyle = current.getAttribute("sectionStyle");
-        Integer newStyle = findStyleNumber(newAttributes, Constants.STSection);
+        Object newStyle = findStyleNumber(newAttributes, Constants.STSection);
         if (oldStyle != newStyle) {
             if (oldStyle != null) {
                 resetSectionAttributes(current);
             }
             if (newStyle != null) {
-                writeControlWord("ds", newStyle);
+                writeControlWord("ds", ((Integer)newStyle).intValue());
                 current.addAttribute("sectionStyle", newStyle);
             } else {
                 current.removeAttribute("sectionStyle");
@@ -553,8 +555,8 @@ void updateParagraphAttributes(MutableAttributeSet current,
                                boolean emitStyleChanges)
     throws IOException
 {
-    Object oldStyle;
-    Integer newStyle;
+    Object parm;
+    Object oldStyle, newStyle;
 
     /* The only way to get rid of tabs or styles is with the \pard keyword,
        emitted by resetParagraphAttributes(). Ideally we should avoid
@@ -586,7 +588,7 @@ void updateParagraphAttributes(MutableAttributeSet current,
     }
 
     if (oldStyle != newStyle && newStyle != null) {
-        writeControlWord("s", newStyle);
+        writeControlWord("s", ((Integer)newStyle).intValue());
         current.addAttribute("paragraphStyle", newStyle);
     }
 
@@ -705,14 +707,14 @@ void updateCharacterAttributes(MutableAttributeSet current,
 
     if (updateStyleChanges) {
         Object oldStyle = current.getAttribute("characterStyle");
-        Integer newStyle = findStyleNumber(newAttributes,
+        Object newStyle = findStyleNumber(newAttributes,
                                           Constants.STCharacter);
         if (oldStyle != newStyle) {
             if (oldStyle != null) {
                 resetCharacterAttributes(current);
             }
             if (newStyle != null) {
-                writeControlWord("cs", newStyle.intValue());
+                writeControlWord("cs", ((Integer)newStyle).intValue());
                 current.addAttribute("characterStyle", newStyle);
             } else {
                 current.removeAttribute("characterStyle");

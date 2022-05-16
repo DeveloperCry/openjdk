@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -96,7 +96,6 @@ public class SyncResolverImpl extends CachedRowSetImpl implements SyncResolver {
      * SyncResolver values. Synchronization takes place on a row by
      * row basis encapsulated as a CahedRowSet.
      */
-    @SuppressWarnings("serial")
     private CachedRowSet row;
 
     private JdbcRowSetResourceBundle resBundle;

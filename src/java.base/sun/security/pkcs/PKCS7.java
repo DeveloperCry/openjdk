@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -255,16 +255,6 @@ public class PKCS7 {
         }
     }
 
-    //    SignedData ::= SEQUENCE {
-    //     version Version,
-    //     digestAlgorithms DigestAlgorithmIdentifiers,
-    //     contentInfo ContentInfo,
-    //     certificates
-    //        [0] IMPLICIT ExtendedCertificatesAndCertificates
-    //          OPTIONAL,
-    //     crls
-    //       [1] IMPLICIT CertificateRevocationLists OPTIONAL,
-    //     signerInfos SignerInfos }
     private void parseSignedData(DerValue val)
         throws ParsingException, IOException {
 
@@ -304,9 +294,9 @@ public class PKCS7 {
          * check if certificates (implicit tag) are provided
          * (certificates are OPTIONAL)
          */
-        var certDer = dis.getOptionalImplicitContextSpecific(0, DerValue.tag_SetOf);
-        if (certDer.isPresent()) {
-            DerValue[] certVals = certDer.get().subs(DerValue.tag_SetOf, 2);
+        if ((byte)(dis.peekByte()) == (byte)0xA0) {
+            DerValue[] certVals = dis.getSet(2, true);
+
             len = certVals.length;
             certificates = new X509Certificate[len];
             int count = 0;
@@ -349,9 +339,9 @@ public class PKCS7 {
         }
 
         // check if crls (implicit tag) are provided (crls are OPTIONAL)
-        var crlsDer = dis.getOptionalImplicitContextSpecific(1, DerValue.tag_SetOf);
-        if (crlsDer.isPresent()) {
-            DerValue[] crlVals = crlsDer.get().subs(DerValue.tag_SetOf, 1);
+        if ((byte)(dis.peekByte()) == (byte)0xA1) {
+            DerValue[] crlVals = dis.getSet(1, true);
+
             len = crlVals.length;
             crls = new X509CRL[len];
 
@@ -588,18 +578,19 @@ public class PKCS7 {
     public SignerInfo[] verify(byte[] bytes)
     throws NoSuchAlgorithmException, SignatureException {
 
-        ArrayList<SignerInfo> intResult = new ArrayList<>();
+        Vector<SignerInfo> intResult = new Vector<>();
         for (int i = 0; i < signerInfos.length; i++) {
 
             SignerInfo signerInfo = verify(signerInfos[i], bytes);
             if (signerInfo != null) {
-                intResult.add(signerInfo);
+                intResult.addElement(signerInfo);
             }
         }
         if (!intResult.isEmpty()) {
 
             SignerInfo[] result = new SignerInfo[intResult.size()];
-            return intResult.toArray(result);
+            intResult.copyInto(result);
+            return result;
         }
         return null;
     }

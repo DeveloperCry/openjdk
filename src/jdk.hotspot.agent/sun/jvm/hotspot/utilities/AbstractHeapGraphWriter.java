@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -59,7 +59,7 @@ public abstract class AbstractHeapGraphWriter implements HeapGraphWriter {
 
                     public boolean doObj(Oop oop) {
                         try {
-                            writeHeapRecordPrologue(calculateOopDumpRecordSize(oop));
+                            writeHeapRecordPrologue();
                             if (oop instanceof TypeArray) {
                                 writePrimitiveArray((TypeArray)oop);
                             } else if (oop instanceof ObjArray) {
@@ -126,8 +126,6 @@ public abstract class AbstractHeapGraphWriter implements HeapGraphWriter {
             handleRuntimeException(re);
         }
     }
-
-    protected abstract int calculateOopDumpRecordSize(Oop oop) throws IOException;
 
     protected void writeJavaThreads() throws IOException {
         Threads threads = VM.getVM().getThreads();
@@ -420,9 +418,6 @@ public abstract class AbstractHeapGraphWriter implements HeapGraphWriter {
     }
 
     protected void writeHeapRecordPrologue() throws IOException {
-    }
-
-    protected void writeHeapRecordPrologue(int size) throws IOException {
     }
 
     protected void writeHeapRecordEpilogue() throws IOException {

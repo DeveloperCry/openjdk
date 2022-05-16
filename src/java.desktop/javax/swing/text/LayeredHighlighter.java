@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,7 +33,6 @@ import java.awt.Shape;
  * @author  Timothy Prinzing
  * @see     Highlighter
  */
-@SuppressWarnings("doclint:missing")
 public abstract class LayeredHighlighter implements Highlighter {
     /**
      * Constructor for subclasses to call.

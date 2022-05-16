@@ -62,7 +62,8 @@ public class SummaryListWriter<L extends SummaryAPIListBuilder> extends SubWrite
             case INTERFACE -> "doclet.Interfaces";
             case CLASS -> "doclet.Classes";
             case ENUM -> "doclet.Enums";
-            case EXCEPTION_CLASS -> "doclet.ExceptionClasses";
+            case EXCEPTION -> "doclet.Exceptions";
+            case ERROR -> "doclet.Errors";
             case ANNOTATION_TYPE -> "doclet.Annotation_Types";
             case FIELD -> "doclet.Fields";
             case METHOD -> "doclet.Methods";
@@ -80,7 +81,8 @@ public class SummaryListWriter<L extends SummaryAPIListBuilder> extends SubWrite
             case INTERFACE -> "doclet.Interface";
             case CLASS -> "doclet.Class";
             case ENUM -> "doclet.Enum";
-            case EXCEPTION_CLASS -> "doclet.ExceptionClass";
+            case EXCEPTION -> "doclet.Exceptions";
+            case ERROR -> "doclet.Errors";
             case ANNOTATION_TYPE -> "doclet.AnnotationType";
             case FIELD -> "doclet.Field";
             case METHOD -> "doclet.Method";
@@ -254,8 +256,7 @@ public class SummaryListWriter<L extends SummaryAPIListBuilder> extends SubWrite
             case ENUM_CONSTANT -> new EnumConstantWriterImpl(this);
             case RECORD_COMPONENT ->
                 throw new AssertionError("Record components are not supported by SummaryListWriter!");
-            default ->
-                throw new UnsupportedOperationException("Unsupported element kind: " + e.getKind());
+            default -> new AnnotationTypeOptionalMemberWriterImpl(this, null);
         };
         return writer.getSummaryLink(e);
     }

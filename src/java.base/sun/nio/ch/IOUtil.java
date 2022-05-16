@@ -44,11 +44,6 @@ public class IOUtil {
      */
     static final int IOV_MAX;
 
-    /**
-     * Max total number of bytes that writev supports
-     */
-    static final long WRITEV_MAX;
-
     private IOUtil() { }                // No instantiation
 
     static int write(FileDescriptor fd, ByteBuffer src, long position,
@@ -177,10 +172,9 @@ public class IOUtil {
         Runnable handleReleasers = null;
         try {
             // Iterate over buffers to populate native iovec array.
-            long writevLen = 0L;
             int count = offset + length;
             int i = offset;
-            while (i < count && iov_len < IOV_MAX && writevLen < WRITEV_MAX) {
+            while (i < count && iov_len < IOV_MAX) {
                 ByteBuffer buf = bufs[i];
                 var h = acquireScope(buf, async);
                 if (h != null) {
@@ -194,10 +188,6 @@ public class IOUtil {
                     Util.checkRemainingBufferSizeAligned(rem, alignment);
 
                 if (rem > 0) {
-                    long headroom = WRITEV_MAX - writevLen;
-                    if (headroom < rem)
-                        rem = (int)headroom;
-
                     vec.setBuffer(iov_len, buf, pos, rem);
 
                     // allocate shadow buffer to ensure I/O is done with direct buffer
@@ -207,9 +197,10 @@ public class IOUtil {
                             shadow = Util.getTemporaryAlignedDirectBuffer(rem, alignment);
                         else
                             shadow = Util.getTemporaryDirectBuffer(rem);
-                        shadow.put(shadow.position(), buf, pos, rem);
+                        shadow.put(buf);
                         shadow.flip();
                         vec.setShadow(iov_len, shadow);
+                        buf.position(pos);  // temporarily restore position in user buffer
                         buf = shadow;
                         pos = shadow.position();
                     }
@@ -217,7 +208,6 @@ public class IOUtil {
                     vec.putBase(iov_len, bufferAddress(buf) + pos);
                     vec.putLen(iov_len, rem);
                     iov_len++;
-                    writevLen += rem;
                 }
                 i++;
             }
@@ -475,15 +465,15 @@ public class IOUtil {
 
     private static final JavaNioAccess NIO_ACCESS = SharedSecrets.getJavaNioAccess();
 
-    static Runnable acquireScope(ByteBuffer bb, boolean async) {
+    static Scope.Handle acquireScope(ByteBuffer bb, boolean async) {
         return NIO_ACCESS.acquireScope(bb, async);
     }
 
-    private static void releaseScope(Runnable handle) {
+    private static void releaseScope(Scope.Handle handle) {
         if (handle == null)
             return;
         try {
-            handle.run();
+            handle.scope().release(handle);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -535,11 +525,11 @@ public class IOUtil {
         }
     }
 
-    static record Releaser(Runnable handle) implements Runnable {
+    static record Releaser(Scope.Handle handle) implements Runnable {
         Releaser { Objects.requireNonNull(handle) ; }
         @Override public void run() { releaseScope(handle); }
-        static Runnable of(Runnable handle) { return new Releaser(handle); }
-        static Runnable ofNullable(Runnable handle) {
+        static Runnable of(Scope.Handle handle) { return new Releaser(handle); }
+        static Runnable ofNullable(Scope.Handle handle) {
             if (handle == null)
                 return () -> { };
             return new Releaser(handle);
@@ -590,8 +580,6 @@ public class IOUtil {
 
     static native int iovMax();
 
-    static native long writevMax();
-
     static native void initIDs();
 
     /**
@@ -605,7 +593,6 @@ public class IOUtil {
         initIDs();
 
         IOV_MAX = iovMax();
-        WRITEV_MAX = writevMax();
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -46,11 +46,11 @@ import sun.jvm.hotspot.types.TypeDataBase;
 
 public class HeapRegion extends CompactibleSpace implements LiveRegionsProvider {
     private static AddressField bottomField;
-    private static AddressField topField;
+    static private AddressField topField;
     private static AddressField endField;
     private static AddressField compactionTopField;
 
-    private static CIntegerField grainBytesField;
+    static private CIntegerField grainBytesField;
     private static long typeFieldOffset;
     private static long pointerSize;
 
@@ -64,7 +64,7 @@ public class HeapRegion extends CompactibleSpace implements LiveRegionsProvider 
             });
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("HeapRegion");
 
         bottomField = type.getAddressField("_bottom");
@@ -78,7 +78,7 @@ public class HeapRegion extends CompactibleSpace implements LiveRegionsProvider 
         pointerSize = db.lookupType("HeapRegion*").getSize();
     }
 
-    public static long grainBytes() {
+    static public long grainBytes() {
         return grainBytesField.getValue();
     }
 

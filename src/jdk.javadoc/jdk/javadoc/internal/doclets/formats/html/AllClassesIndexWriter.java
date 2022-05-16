@@ -120,7 +120,8 @@ public class AllClassesIndexWriter extends HtmlDocletWriter {
                 .addTab(contents.classes, e -> utils.isOrdinaryClass((TypeElement)e))
                 .addTab(contents.enums, utils::isEnum)
                 .addTab(contents.records, e -> utils.isRecord((TypeElement)e))
-                .addTab(contents.exceptionClasses, e -> utils.isThrowable((TypeElement)e))
+                .addTab(contents.exceptions, e -> utils.isException((TypeElement)e))
+                .addTab(contents.errors, e -> utils.isError((TypeElement)e))
                 .addTab(contents.annotationTypes, utils::isAnnotationType);
         for (Character unicode : indexBuilder.getFirstCharacters()) {
             for (IndexItem indexItem : indexBuilder.getItems(unicode)) {

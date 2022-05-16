@@ -413,14 +413,14 @@ class CatalogImpl extends GroupEntry implements Catalog {
     void loadNextCatalogs() {
         //loads catalogs specified in nextCatalogs
         if (nextCatalogs != null) {
-            nextCatalogs.forEach((next) -> {
+            nextCatalogs.stream().forEach((next) -> {
                 getCatalog(this, next.getCatalogURI());
             });
         }
 
         //loads catalogs from the input list
         if (inputFiles != null) {
-            inputFiles.forEach((uri) -> {
+            inputFiles.stream().forEach((uri) -> {
                 getCatalog(null, URI.create(uri));
             });
         }

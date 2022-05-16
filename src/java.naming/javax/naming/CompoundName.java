@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -244,8 +244,9 @@ public class CompoundName implements Name {
       */
     public boolean equals(Object obj) {
         // %%% check syntax too?
-        return (obj instanceof CompoundName other) &&
-                impl.equals(other.impl);
+        return (obj != null &&
+                obj instanceof CompoundName &&
+                impl.equals(((CompoundName)obj).impl));
     }
 
     /**

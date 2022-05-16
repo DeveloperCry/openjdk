@@ -76,12 +76,10 @@ public class SignerInfo implements DerEncoder {
     /**
      * A map containing the algorithms in this SignerInfo. This is used to
      * avoid checking algorithms to see if they are disabled more than once.
-     * The key is the AlgorithmId of the algorithm, and the value is a record
-     * containing the name of the field or attribute and whether the key
-     * should also be checked (ex: if it is a signature algorithm).
+     * The key is the AlgorithmId of the algorithm, and the value is the name of
+     * the field or attribute.
      */
-    private record AlgorithmInfo(String field, boolean checkKey) {}
-    private Map<AlgorithmId, AlgorithmInfo> algorithms = new HashMap<>();
+    private Map<AlgorithmId, String> algorithms = new HashMap<>();
 
     public SignerInfo(X500Name  issuerName,
                       BigInteger serial,
@@ -352,8 +350,7 @@ public class SignerInfo implements DerEncoder {
             }
 
             String digestAlgName = digestAlgorithmId.getName();
-            algorithms.put(digestAlgorithmId,
-                new AlgorithmInfo("SignerInfo digestAlgorithm field", false));
+            algorithms.put(digestAlgorithmId, "SignerInfo digestAlgorithm field");
 
             byte[] dataSigned;
 
@@ -431,8 +428,7 @@ public class SignerInfo implements DerEncoder {
                     new AlgorithmId(ObjectIdentifier.of(oid),
                             digestEncryptionAlgorithmId.getParameters());
                 algorithms.put(sigAlgId,
-                    new AlgorithmInfo(
-                        "SignerInfo digestEncryptionAlgorithm field", true));
+                    "SignerInfo digestEncryptionAlgorithm field");
             }
 
             X509Certificate cert = getCertificate(block);
@@ -689,8 +685,7 @@ public class SignerInfo implements DerEncoder {
         throws NoSuchAlgorithmException, SignatureException {
 
         AlgorithmId digestAlgId = token.getHashAlgorithm();
-        algorithms.put(digestAlgId,
-            new AlgorithmInfo("TimestampToken digestAlgorithm field", false));
+        algorithms.put(digestAlgId, "TimestampToken digestAlgorithm field");
 
         MessageDigest md = MessageDigest.getInstance(digestAlgId.getName());
 
@@ -747,19 +742,18 @@ public class SignerInfo implements DerEncoder {
      */
     public static Set<String> verifyAlgorithms(SignerInfo[] infos,
         JarConstraintsParameters params, String name) throws SignatureException {
-        Map<AlgorithmId, AlgorithmInfo> algorithms = new HashMap<>();
+        Map<AlgorithmId, String> algorithms = new HashMap<>();
         for (SignerInfo info : infos) {
             algorithms.putAll(info.algorithms);
         }
 
         Set<String> enabledAlgorithms = new HashSet<>();
         try {
-            for (var algEntry : algorithms.entrySet()) {
-                AlgorithmInfo info = algEntry.getValue();
-                params.setExtendedExceptionMsg(name, info.field());
-                AlgorithmId algId = algEntry.getKey();
+            for (Map.Entry<AlgorithmId, String> algorithm : algorithms.entrySet()) {
+                params.setExtendedExceptionMsg(name, algorithm.getValue());
+                AlgorithmId algId = algorithm.getKey();
                 JAR_DISABLED_CHECK.permits(algId.getName(),
-                    algId.getParameters(), params, info.checkKey());
+                    algId.getParameters(), params);
                 enabledAlgorithms.add(algId.getName());
             }
         } catch (CertPathValidatorException e) {

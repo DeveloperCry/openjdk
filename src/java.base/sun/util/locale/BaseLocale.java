@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -139,7 +139,7 @@ public final class BaseLocale {
             region = "";
         }
         if (language == null) {
-            language = "";
+            language = null;
         }
         if (variant == null) {
             variant = "";

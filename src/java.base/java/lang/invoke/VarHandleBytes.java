@@ -765,7 +765,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getByteVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -773,7 +773,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             UNSAFE.putByteVolatile(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -782,7 +782,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getByteOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -790,7 +790,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             UNSAFE.putByteOpaque(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -799,7 +799,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getByteAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase);
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase);
         }
 
         @ForceInline
@@ -807,7 +807,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             UNSAFE.putByteRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -816,7 +816,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.compareAndSetByte(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -826,7 +826,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.compareAndExchangeByte(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -836,7 +836,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.compareAndExchangeByteAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -846,7 +846,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.compareAndExchangeByteRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -856,7 +856,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.weakCompareAndSetBytePlain(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -866,7 +866,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.weakCompareAndSetByte(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -876,7 +876,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.weakCompareAndSetByteAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -886,7 +886,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.weakCompareAndSetByteRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     expected,
                     value);
         }
@@ -896,7 +896,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndSetByte(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -905,7 +905,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndSetByteAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -914,7 +914,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndSetByteRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -923,7 +923,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndAddByte(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -932,7 +932,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndAddByteAcquire(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -941,7 +941,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndAddByteRelease(array,
-                    (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                    (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                     value);
         }
 
@@ -950,7 +950,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseOrByte(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -959,7 +959,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseOrByteRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -968,7 +968,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseOrByteAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -977,7 +977,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseAndByte(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -986,7 +986,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseAndByteRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -995,7 +995,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseAndByteAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1004,7 +1004,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseXorByte(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1013,7 +1013,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseXorByteRelease(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 
@@ -1022,7 +1022,7 @@ final class VarHandleBytes {
             Array handle = (Array)ob;
             byte[] array = (byte[]) oarray;
             return UNSAFE.getAndBitwiseXorByteAcquire(array,
-                                       (((long) Preconditions.checkIndex(index, array.length, Preconditions.AIOOBE_FORMATTER)) << handle.ashift) + handle.abase,
+                                       (((long) Preconditions.checkIndex(index, array.length, AIOOBE_SUPPLIER)) << handle.ashift) + handle.abase,
                                        value);
         }
 

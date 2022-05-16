@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,8 +26,8 @@
 package com.sun.media.sound;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
@@ -193,7 +193,7 @@ public final class UlawCodec extends FormatConversionProvider {
      */
     private AudioFormat[] getOutputFormats(AudioFormat inputFormat) {
 
-        ArrayList<AudioFormat> formats = new ArrayList<>();
+        Vector<AudioFormat> formats = new Vector<>();
         AudioFormat format;
 
         if ((inputFormat.getSampleSizeInBits() == 16)
@@ -205,7 +205,7 @@ public final class UlawCodec extends FormatConversionProvider {
                                      inputFormat.getChannels(),
                                      inputFormat.getSampleRate(),
                                      false );
-            formats.add(format);
+            formats.addElement(format);
         }
         if (inputFormat.getSampleSizeInBits() == 8
                 && AudioFormat.Encoding.ULAW.equals(inputFormat.getEncoding())) {
@@ -214,19 +214,19 @@ public final class UlawCodec extends FormatConversionProvider {
                                      inputFormat.getChannels(),
                                      inputFormat.getChannels() * 2,
                                      inputFormat.getSampleRate(), false);
-            formats.add(format);
+            formats.addElement(format);
 
             format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                      inputFormat.getSampleRate(), 16,
                                      inputFormat.getChannels(),
                                      inputFormat.getChannels() * 2,
                                      inputFormat.getSampleRate(), true);
-            formats.add(format);
+            formats.addElement(format);
         }
 
         AudioFormat[] formatArray = new AudioFormat[formats.size()];
         for (int i = 0; i < formatArray.length; i++) {
-            formatArray[i] = formats.get(i);
+            formatArray[i] = formats.elementAt(i);
         }
         return formatArray;
     }

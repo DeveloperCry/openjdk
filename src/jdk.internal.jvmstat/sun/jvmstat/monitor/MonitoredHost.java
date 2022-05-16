@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -203,7 +203,7 @@ public abstract class MonitoredHost {
         assert hostname != null;
 
         if (scheme == null) {
-            if (hostname.equals("localhost")) {
+            if (hostname.compareTo("localhost") == 0) {
                 scheme = LOCAL_PROTOCOL;
             } else {
                 scheme = REMOTE_PROTOCOL;

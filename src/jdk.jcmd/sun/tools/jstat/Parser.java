@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -80,7 +80,7 @@ public class Parser {
     };
 
 
-    private static final Set<String> reservedWords = Set.of(otherKeyWords);
+    private static Set<String> reservedWords;
 
     private StreamTokenizer st;
     private String filename;
@@ -103,12 +103,17 @@ public class Parser {
         st.slashSlashComments(true);
         st.slashStarComments(true);
 
-        for (char delimiter : delimiters) {
-            st.ordinaryChar(delimiter);
+        reservedWords = new HashSet<String>();
+        for (int i = 0; i < otherKeyWords.length; i++) {
+            reservedWords.add(otherKeyWords[i]);
         }
 
-        for (char infixOp : infixOps) {
-            st.ordinaryChar(infixOp);
+        for (int i = 0; i < delimiters.length; i++ ) {
+            st.ordinaryChar(delimiters[i]);
+        }
+
+        for (int i = 0; i < infixOps.length; i++ ) {
+            st.ordinaryChar(infixOps[i]);
         }
     }
 
@@ -226,8 +231,8 @@ public class Parser {
      * determine if the give work is a reserved key word
      */
     private boolean isInfixOperator(char op) {
-        for (char infixOp : infixOps) {
-            if (op == infixOp) {
+        for (int i = 0; i < infixOps.length; i++) {
+            if (op == infixOps[i]) {
                 return true;
             }
         }
@@ -468,19 +473,19 @@ public class Parser {
                 return;
             }
 
-            if (lookahead.sval.equals(DATA)) {
+            if (lookahead.sval.compareTo(DATA) == 0) {
                 dataStmt(cf);
-            } else if (lookahead.sval.equals(HEADER)) {
+            } else if (lookahead.sval.compareTo(HEADER) == 0) {
                 headerStmt(cf);
-            } else if (lookahead.sval.equals(WIDTH)) {
+            } else if (lookahead.sval.compareTo(WIDTH) == 0) {
                 widthStmt(cf);
-            } else if (lookahead.sval.equals(FORMAT)) {
+            } else if (lookahead.sval.compareTo(FORMAT) == 0) {
                 formatStmt(cf);
-            } else if (lookahead.sval.equals(ALIGN)) {
+            } else if (lookahead.sval.compareTo(ALIGN) == 0) {
                 alignStmt(cf);
-            } else if (lookahead.sval.equals(SCALE)) {
+            } else if (lookahead.sval.compareTo(SCALE) == 0) {
                 scaleStmt(cf);
-            } else if (lookahead.sval.equals(REQUIRED)) {
+            } else if (lookahead.sval.compareTo(REQUIRED) == 0) {
                 requiredStmt(cf);
             } else {
                 return;
@@ -539,7 +544,7 @@ public class Parser {
         while (lookahead.ttype != StreamTokenizer.TT_EOF) {
             // look for the start symbol
             if ((lookahead.ttype != StreamTokenizer.TT_WORD)
-                    || (!lookahead.sval.equals(START))) {
+                    || (lookahead.sval.compareTo(START) != 0)) {
                 // skip tokens until a start symbol is found
                 nextToken();
                 continue;
@@ -569,7 +574,7 @@ public class Parser {
         while (lookahead.ttype != StreamTokenizer.TT_EOF) {
             // look for the start symbol
             if ((lookahead.ttype != StreamTokenizer.TT_WORD)
-                    || (!lookahead.sval.equals(START))) {
+                    || (lookahead.sval.compareTo(START) != 0)) {
                 // skip tokens until a start symbol is found
                 nextToken();
                 continue;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -82,7 +82,7 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
         }
 
         if (namesSuper != null) {
-            // CLDR's resource bundle has a translated entry for this id.
+            // CLDR's resource bundle has an translated entry for this id.
             // Fix up names if needed, either missing or no-inheritance
             namesSuper[INDEX_TZID] = id;
 
@@ -91,7 +91,7 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
                 case "":
                     // Fill in empty elements
                     deriveFallbackName(namesSuper, i, locale,
-                                       TimeZone.getTimeZone(id).toZoneId().getRules().isFixedOffset());
+                                       !TimeZone.getTimeZone(id).useDaylightTime());
                     break;
                 case NO_INHERITANCE_MARKER:
                     // CLDR's "no inheritance marker"
@@ -129,7 +129,7 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
 
     // Derive fallback time zone name according to LDML's logic
     private void deriveFallbackNames(String[] names, Locale locale) {
-        boolean noDST = TimeZone.getTimeZone(names[0]).toZoneId().getRules().isFixedOffset();
+        boolean noDST = !TimeZone.getTimeZone(names[0]).useDaylightTime();
 
         for (int i = INDEX_STD_LONG; i <= INDEX_GEN_SHORT; i++) {
             deriveFallbackName(names, i, locale, noDST);
@@ -149,12 +149,13 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
             return;
         }
 
-        // Check parent locales first
+        // Check parent locale first
         if (!exists(names, index)) {
-            var cands = ((CLDRLocaleProviderAdapter)LocaleProviderAdapter.forType(Type.CLDR))
-                    .getCandidateLocales("", locale);
-            for (int i = 1; i < cands.size() ; i++) {
-                String[] parentNames = super.getDisplayNameArray(id, cands.get(i));
+            CLDRLocaleProviderAdapter clpa = (CLDRLocaleProviderAdapter)LocaleProviderAdapter.forType(Type.CLDR);
+            var cands = clpa.getCandidateLocales("", locale);
+            if (cands.size() > 1) {
+                var parentLoc = cands.get(1); // immediate parent locale
+                String[] parentNames = super.getDisplayNameArray(id, parentLoc);
                 if (parentNames != null && !parentNames[index].isEmpty()) {
                     names[index] = parentNames[index];
                     return;
@@ -162,26 +163,29 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
             }
         }
 
-        // Type Fallback
-        if (noDST && typeFallback(names, index)) {
-            return;
-        }
-
         // Check if COMPAT can substitute the name
-        if (!exists(names, index) &&
-                LocaleProviderAdapter.getAdapterPreference().contains(Type.JRE)) {
+        if (LocaleProviderAdapter.getAdapterPreference().contains(Type.JRE)) {
             String[] compatNames = (String[])LocaleProviderAdapter.forJRE()
-                    .getLocaleResources(mapChineseLocale(locale))
-                    .getTimeZoneNames(id);
+                .getLocaleResources(mapChineseLocale(locale))
+                .getTimeZoneNames(id);
             if (compatNames != null) {
-                // Assumes COMPAT has no empty slots
-                names[index] = compatNames[index];
+                for (int i = INDEX_STD_LONG; i <= INDEX_GEN_SHORT; i++) {
+                    // Assumes COMPAT has no empty slots
+                    if (i == index || !exists(names, i)) {
+                        names[i] = compatNames[i];
+                    }
+                }
                 return;
             }
         }
 
         // Region Fallback
         if (regionFormatFallback(names, index, locale)) {
+            return;
+        }
+
+        // Type Fallback
+        if (noDST && typeFallback(names, index)) {
             return;
         }
 
@@ -230,11 +234,6 @@ public class CLDRTimeZoneNameProviderImpl extends TimeZoneNameProviderImpl {
     }
 
     private boolean regionFormatFallback(String[] names, int index, Locale l) {
-        if (index % 2 == 0) {
-            // ignore short names
-            return false;
-        }
-
         String id = names[INDEX_TZID];
         LocaleResources lr = LocaleProviderAdapter.forType(Type.CLDR).getLocaleResources(l);
         ResourceBundle fd = lr.getJavaTimeFormatData();

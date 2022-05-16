@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -33,6 +33,7 @@ import java.io.IOException;
 
 import sun.security.krb5.Credentials;
 import sun.security.krb5.KrbException;
+import sun.security.krb5.internal.Ticket;
 
 import javax.security.auth.kerberos.KerberosTicket;
 
@@ -49,23 +50,23 @@ public class Krb5ProxyCredential
     implements Krb5CredElement {
 
     public final Krb5InitCredential self;   // the middle server
-    private final Krb5NameElement user;     // the user
+    private final Krb5NameElement client;     // the client
 
-    // The creds with cname=user and sname=self. The ticket inside can
-    // be either a normal service ticket or an S4U2self ticket.
-    public final Credentials userCreds;
+    // The ticket with cname=client and sname=self. This can be a normal
+    // service ticket or an S4U2self ticket.
+    public final Ticket tkt;
 
-    Krb5ProxyCredential(Krb5InitCredential self, Krb5NameElement user,
-            Credentials userCreds) {
+    Krb5ProxyCredential(Krb5InitCredential self, Krb5NameElement client,
+            Ticket tkt) {
         this.self = self;
-        this.userCreds = userCreds;
-        this.user = user;
+        this.tkt = tkt;
+        this.client = client;
     }
 
-    // The user name behind the proxy
+    // The client name behind the proxy
     @Override
     public final Krb5NameElement getName() throws GSSException {
-        return user;
+        return client;
     }
 
     @Override
@@ -129,7 +130,7 @@ public class Krb5ProxyCredential
                 Credentials proxyCreds = Krb5Util.ticketToCreds(proxy);
                 return new Krb5ProxyCredential(initiator,
                         Krb5NameElement.getInstance(proxyCreds.getClient()),
-                        proxyCreds);
+                        proxyCreds.getTicket());
             } else {
                 return initiator;
             }

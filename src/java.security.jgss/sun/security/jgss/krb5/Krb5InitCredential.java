@@ -35,6 +35,7 @@ import java.net.InetAddress;
 import java.io.IOException;
 import java.util.Date;
 import java.security.AccessController;
+import java.security.AccessControlContext;
 import java.security.PrivilegedExceptionAction;
 import java.security.PrivilegedActionException;
 
@@ -364,17 +365,20 @@ public class Krb5InitCredential
             clientPrincipal = null;
         }
 
+        final AccessControlContext acc = AccessController.getContext();
+
         try {
             final GSSCaller realCaller = (caller == GSSCaller.CALLER_UNKNOWN)
                                    ? GSSCaller.CALLER_INITIATE
                                    : caller;
-            return AccessController.doPrivilegedWithCombiner(
+            return AccessController.doPrivileged(
                 new PrivilegedExceptionAction<KerberosTicket>() {
                 public KerberosTicket run() throws Exception {
                     // It's OK to use null as serverPrincipal. TGT is almost
                     // the first ticket for a principal and we use list.
                     return Krb5Util.getInitialTicket(
-                        realCaller, clientPrincipal);
+                        realCaller,
+                        clientPrincipal, acc);
                         }});
         } catch (PrivilegedActionException e) {
             GSSException ge =
@@ -392,7 +396,7 @@ public class Krb5InitCredential
             Krb5NameElement kname = (Krb5NameElement)name;
             Credentials newCred = Credentials.acquireS4U2selfCreds(
                     kname.getKrb5PrincipalName(), krb5Credentials);
-            return new Krb5ProxyCredential(this, kname, newCred);
+            return new Krb5ProxyCredential(this, kname, newCred.getTicket());
         } catch (IOException | KrbException ke) {
             GSSException ge =
                 new GSSException(GSSException.FAILURE, -1,

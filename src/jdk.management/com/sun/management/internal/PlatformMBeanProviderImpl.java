@@ -46,7 +46,7 @@ import sun.management.spi.PlatformMBeanProvider;
 
 @SuppressWarnings("removal")
 public final class PlatformMBeanProviderImpl extends PlatformMBeanProvider {
-    static final String DIAGNOSTIC_COMMAND_MBEAN_NAME =
+    final static String DIAGNOSTIC_COMMAND_MBEAN_NAME =
         "com.sun.management:type=DiagnosticCommand";
 
     private final List<PlatformComponent<?>> mxbeanList;

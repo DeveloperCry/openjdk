@@ -367,7 +367,7 @@ public class RMIConnector implements JMXConnector, Serializable, JMXAddressable 
         } catch (NamingException e) {
             final String msg = "Failed to retrieve RMIServer stub: " + e;
             if (tracing) logger.trace("connect",idstr + " " + msg);
-            throw new IOException(msg, e);
+            throw EnvHelp.initCause(new IOException(msg),e);
         }
     }
 
@@ -543,7 +543,9 @@ public class RMIConnector implements JMXConnector, Serializable, JMXAddressable 
                 throw (IOException) closeException;
             if (closeException instanceof RuntimeException)
                 throw (RuntimeException) closeException;
-            throw new IOException("Failed to close: " + closeException, closeException);
+            final IOException x =
+                    new IOException("Failed to close: " + closeException);
+            throw EnvHelp.initCause(x,closeException);
         }
     }
 

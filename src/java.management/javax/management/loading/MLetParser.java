@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,7 +26,6 @@
 package javax.management.loading;
 
 import static com.sun.jmx.defaults.JmxProperties.MLET_LOGGER;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -165,7 +164,7 @@ class MLetParser {
 
         conn = url.openConnection();
         Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),
-                                                             UTF_8));
+                                                             "UTF-8"));
 
         // The original URL may have been redirected - this
         // sets it to whatever URL/codebase we ended up getting

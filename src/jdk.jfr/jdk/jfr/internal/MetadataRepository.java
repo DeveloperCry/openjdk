@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +71,7 @@ public final class MetadataRepository {
 
     private void initializeJVMEventTypes() {
         List<RequestHook> requestHooks = new ArrayList<>();
-        for (Type type : new ArrayList<>(typeLibrary.getTypes())) {
+        for (Type type : typeLibrary.getTypes()) {
             if (type instanceof PlatformEventType pEventType) {
                 EventType eventType = PrivateAccess.getInstance().newEventType(pEventType);
                 pEventType.setHasDuration(eventType.getAnnotation(Threshold.class) != null);
@@ -107,11 +106,7 @@ public final class MetadataRepository {
                 eventTypes.add(h.getEventType());
             }
         }
-        for (EventType t : nativeEventTypes) {
-            if (PrivateAccess.getInstance().isVisible(t)) {
-                eventTypes.add(t);
-            }
-        }
+        eventTypes.addAll(nativeEventTypes);
         return eventTypes;
     }
 
@@ -248,13 +243,7 @@ public final class MetadataRepository {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(40000);
         DataOutputStream daos = new DataOutputStream(baos);
         try {
-            List<Type> types = typeLibrary.getVisibleTypes();
-            if (Logger.shouldLog(LogTag.JFR_METADATA, LogLevel.DEBUG)) {
-                Collections.sort(types,Comparator.comparing(Type::getName));
-                for (Type t: types) {
-                    Logger.log(LogTag.JFR_METADATA, LogLevel.INFO, "Serialized type: " + t.getName() + " id=" + t.getId());
-                }
-            }
+            List<Type> types = typeLibrary.getTypes();
             Collections.sort(types);
             MetadataDescriptor.write(types, daos);
             daos.flush();
@@ -280,12 +269,9 @@ public final class MetadataRepository {
         if (staleMetadata) {
             storeDescriptorInJVM();
         }
+        awaitUniqueTimestamp();
         jvm.setOutput(filename);
-        // Each chunk needs a unique start timestamp and
-        // if the clock resolution is low, two chunks may
-        // get the same timestamp. Utils.getChunkStartNanos()
-        // ensures the timestamp is unique for the next chunk
-        long chunkStart = Utils.getChunkStartNanos();
+        long nanos = jvm.getChunkStartNanos();
         if (filename != null) {
             RepositoryFiles.notifyNewFile();
         }
@@ -296,7 +282,29 @@ public final class MetadataRepository {
             }
             unregistered = false;
         }
-        return Utils.epochNanosToInstant(chunkStart);
+        return Utils.epochNanosToInstant(nanos);
+    }
+
+    // Each chunk needs a unique start timestamp and
+    // if the clock resolution is low, two chunks may
+    // get the same timestamp.
+    private void awaitUniqueTimestamp() {
+        if (outputChange == null) {
+            outputChange = Instant.now();
+            return;
+        }
+        while (true) {
+            Instant time = Instant.now();
+            if (!time.equals(outputChange)) {
+                outputChange = time;
+                return;
+            }
+            try {
+                Thread.sleep(0, 100);
+            } catch (InterruptedException iex) {
+                // ignore
+            }
+        }
     }
 
     private void unregisterUnloaded() {
@@ -341,20 +349,4 @@ public final class MetadataRepository {
         jvm.flush();
     }
 
-    static void unhideInternalTypes() {
-        for (Type t : TypeLibrary.getInstance().getTypes()) {
-            if (t.isInternal()) {
-                t.setVisible(true);
-                Logger.log(LogTag.JFR_METADATA, LogLevel.DEBUG, "Unhiding internal type " + t.getName());
-            }
-        }
-        // Singleton should have been initialized here.
-        // It's not possible to call MetadataRepository().getInstance(),
-        // because it will deadlock with Java thread calling flush() or setOutput();
-        instance.storeDescriptorInJVM();
-    }
-
-    public synchronized List<Type> getVisibleTypes() {
-        return typeLibrary.getVisibleTypes();
-    }
 }

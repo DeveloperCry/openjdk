@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import com.sun.imageio.plugins.tiff.TIFFFieldNode;
+import com.sun.imageio.plugins.tiff.TIFFIFD;
 
 /**
  * A class representing a field in a TIFF 6.0 Image File Directory.
@@ -1303,10 +1304,14 @@ public final class TIFFField implements Cloneable {
                 // If the denominator is a non-zero integral divisor
                 // of the numerator then convert the fraction to be
                 // with respect to a unity denominator.
-                srationalString = (ivalue[0] / ivalue[1]) + "/1";
+                srationalString =
+                    Integer.toString(ivalue[0] / ivalue[1]) + "/1";
             } else {
                 // Use the values directly.
-                srationalString = ivalue[0] + "/" + ivalue[1];
+                srationalString =
+                    Integer.toString(ivalue[0]) +
+                    "/" +
+                    Integer.toString(ivalue[1]);
             }
             return srationalString;
         case TIFFTag.TIFF_RATIONAL:
@@ -1316,10 +1321,14 @@ public final class TIFFField implements Cloneable {
                 // If the denominator is a non-zero integral divisor
                 // of the numerator then convert the fraction to be
                 // with respect to a unity denominator.
-                rationalString = (lvalue[0] / lvalue[1]) + "/1";
+                rationalString =
+                    Long.toString(lvalue[0] / lvalue[1]) + "/1";
             } else {
                 // Use the values directly.
-                rationalString = lvalue[0] + "/" + lvalue[1];
+                rationalString =
+                    Long.toString(lvalue[0]) +
+                    "/" +
+                    Long.toString(lvalue[1]);
             }
             return rationalString;
         default:

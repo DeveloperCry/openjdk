@@ -79,7 +79,6 @@ public abstract class AbstractProcessor implements Processor {
      * @return the options recognized by this processor, or an empty
      * set if none
      */
-    @Override
     public Set<String> getSupportedOptions() {
         SupportedOptions so = this.getClass().getAnnotation(SupportedOptions.class);
         return (so == null) ?
@@ -102,7 +101,6 @@ public abstract class AbstractProcessor implements Processor {
      * @return the names of the annotation interfaces supported by
      * this processor, or an empty set if none
      */
-    @Override
     public Set<String> getSupportedAnnotationTypes() {
             SupportedAnnotationTypes sat = this.getClass().getAnnotation(SupportedAnnotationTypes.class);
             boolean initialized = isInitialized();
@@ -130,7 +128,6 @@ public abstract class AbstractProcessor implements Processor {
      *
      * @return the latest source version supported by this processor
      */
-    @Override
     public SourceVersion getSupportedSourceVersion() {
         SupportedSourceVersion ssv = this.getClass().getAnnotation(SupportedSourceVersion.class);
         SourceVersion sv = null;
@@ -170,7 +167,6 @@ public abstract class AbstractProcessor implements Processor {
     /**
      * {@inheritDoc}
      */
-    @Override
     public abstract boolean process(Set<? extends TypeElement> annotations,
                                     RoundEnvironment roundEnv);
 
@@ -182,7 +178,6 @@ public abstract class AbstractProcessor implements Processor {
      * @param member {@inheritDoc}
      * @param userText {@inheritDoc}
      */
-    @Override
     public Iterable<? extends Completion> getCompletions(Element element,
                                                          AnnotationMirror annotation,
                                                          ExecutableElement member,

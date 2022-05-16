@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,6 +27,7 @@ package java.net;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Collections;
 import java.util.Comparator;
 import java.io.IOException;
 import sun.util.logging.PlatformLogger;
@@ -169,7 +170,7 @@ public class CookieManager extends CookieHandler
     /**
      * To set the cookie policy of this cookie manager.
      *
-     * <p> An instance of {@code CookieManager} will have
+     * <p> A instance of {@code CookieManager} will have
      * cookie policy ACCEPT_ORIGINAL_SERVER by default. Users always
      * can call this method to set another cookie policy.
      *
@@ -406,7 +407,7 @@ public class CookieManager extends CookieHandler
      * path are distinguished by creation time (older first). Method made PP to enable testing.
      */
     static List<String> sortByPathAndAge(List<HttpCookie> cookies) {
-        cookies.sort(new CookieComparator());
+        Collections.sort(cookies, new CookieComparator());
 
         List<String> cookieHeader = new java.util.ArrayList<>();
         for (HttpCookie cookie : cookies) {

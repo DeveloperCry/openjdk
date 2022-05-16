@@ -688,6 +688,7 @@ public final class ObjectIdentifier implements Serializable {
             throw new IOException("ObjectIdentifier encoded length was " +
                     "negative: " + oidLength);
         }
+
         if (oidLength > MAXIMUM_OID_SIZE) {
             throw new IOException(
                     "ObjectIdentifier encoded length exceeds " +

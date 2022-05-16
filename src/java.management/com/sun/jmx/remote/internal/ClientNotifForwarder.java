@@ -51,6 +51,7 @@ import javax.management.remote.TargetedNotification;
 
 import com.sun.jmx.remote.util.ClassLogger;
 import com.sun.jmx.remote.util.EnvHelp;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.RejectedExecutionException;
 
 
@@ -145,22 +146,22 @@ public abstract class ClientNotifForwarder {
     /**
      * Called to fetch notifications from a server.
      */
-    protected abstract NotificationResult fetchNotifs(long clientSequenceNumber,
+    abstract protected NotificationResult fetchNotifs(long clientSequenceNumber,
                                                       int maxNotifications,
                                                       long timeout)
             throws IOException, ClassNotFoundException;
 
-    protected abstract Integer addListenerForMBeanRemovedNotif()
+    abstract protected Integer addListenerForMBeanRemovedNotif()
         throws IOException, InstanceNotFoundException;
 
-    protected abstract void removeListenerForMBeanRemovedNotif(Integer id)
+    abstract protected void removeListenerForMBeanRemovedNotif(Integer id)
         throws IOException, InstanceNotFoundException,
                ListenerNotFoundException;
 
     /**
      * Used to send out a notification about lost notifs
      */
-    protected abstract void lostNotifs(String message, long number);
+    abstract protected void lostNotifs(String message, long number);
 
 
     public synchronized void addNotificationListener(Integer listenerID,
@@ -339,7 +340,9 @@ public abstract class ClientNotifForwarder {
             try {
                 wait();
             } catch (InterruptedException ire) {
-                throw new IOException(ire.toString(), ire);
+                IOException ioe = new IOException(ire.toString());
+                EnvHelp.initCause(ioe, ire);
+                throw ioe;
             }
         }
 
@@ -378,7 +381,9 @@ public abstract class ClientNotifForwarder {
                   try {
                       wait();
                   } catch (InterruptedException ire) {
-                      throw new IOException(ire.toString(), ire);
+                      IOException ioe = new IOException(ire.toString());
+                      EnvHelp.initCause(ioe, ire);
+                      throw ioe;
                   }
               }
 
@@ -816,7 +821,10 @@ public abstract class ClientNotifForwarder {
                 try {
                     wait();
                 } catch (InterruptedException ire) {
-                    throw new IOException(ire.toString(), ire);
+                    IOException ioe = new IOException(ire.toString());
+                    EnvHelp.initCause(ioe, ire);
+
+                    throw ioe;
                 }
             }
 
@@ -893,7 +901,10 @@ public abstract class ClientNotifForwarder {
             try {
                 wait();
             } catch (InterruptedException ire) {
-                throw new IOException(ire.toString(), ire);
+                IOException ioe = new IOException(ire.toString());
+                EnvHelp.initCause(ioe, ire);
+
+                throw ioe;
             }
         }
 

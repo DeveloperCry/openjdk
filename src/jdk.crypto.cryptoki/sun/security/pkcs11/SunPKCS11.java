@@ -52,7 +52,7 @@ import sun.security.pkcs11.Secmod.*;
 
 import sun.security.pkcs11.wrapper.*;
 import static sun.security.pkcs11.wrapper.PKCS11Constants.*;
-import static sun.security.pkcs11.wrapper.PKCS11Exception.RV.*;
+import static sun.security.pkcs11.wrapper.PKCS11Exception.*;
 
 /**
  * PKCS#11 provider main class.
@@ -66,32 +66,25 @@ public final class SunPKCS11 extends AuthProvider {
 
     static final Debug debug = Debug.getInstance("sunpkcs11");
     // the PKCS11 object through which we make the native calls
-    @SuppressWarnings("serial") // Type of field is not Serializable;
-                                // see writeReplace
     final PKCS11 p11;
 
     // configuration information
-    @SuppressWarnings("serial") // Type of field is not Serializable
     final Config config;
 
     // id of the PKCS#11 slot we are using
     final long slotID;
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private CallbackHandler pHandler;
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private final Object LOCK_HANDLER = new Object();
 
     final boolean removable;
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     final Secmod.Module nssModule;
 
     final boolean nssUseSecmodTrust;
 
     private volatile Token token;
 
-    @SuppressWarnings("serial") // Type of field is not Serializable
     private TokenPoller poller;
 
     static NativeResourceCleaner cleaner;
@@ -150,7 +143,7 @@ public final class SunPKCS11 extends AuthProvider {
         this.config = c;
 
         if (debug != null) {
-            debug.println("SunPKCS11 loading " + config.getFileName());
+            System.out.println("SunPKCS11 loading " + config.getFileName());
         }
 
         String library = config.getLibrary();
@@ -176,6 +169,7 @@ public final class SunPKCS11 extends AuthProvider {
         // switch to using the NSS trust attributes for trusted certs
         // (KeyStore).
         //
+
         if (useSecmod) {
             // note: Config ensures library/slot/slotListIndex not specified
             // in secmod mode.
@@ -327,7 +321,8 @@ public final class SunPKCS11 extends AuthProvider {
             initArgs.flags = CKF_OS_LOCKING_OK;
             PKCS11 tmpPKCS11;
             try {
-                tmpPKCS11 = PKCS11.getInstance(library, functionList, initArgs,
+                tmpPKCS11 = PKCS11.getInstance(
+                    library, functionList, initArgs,
                     config.getOmitInitialize());
             } catch (PKCS11Exception e) {
                 if (debug != null) {
@@ -343,18 +338,18 @@ public final class SunPKCS11 extends AuthProvider {
                 } else {
                     initArgs.flags = 0;
                 }
-                tmpPKCS11 = PKCS11.getInstance(library, functionList, initArgs,
-                    config.getOmitInitialize());
+                tmpPKCS11 = PKCS11.getInstance(library,
+                    functionList, initArgs, config.getOmitInitialize());
             }
             p11 = tmpPKCS11;
 
-            if (p11.getVersion().major < 2) {
+            CK_INFO p11Info = p11.C_GetInfo();
+            if (p11Info.cryptokiVersion.major < 2) {
                 throw new ProviderException("Only PKCS#11 v2.0 and later "
-                + "supported, library version is v" + p11.getVersion());
+                + "supported, library version is v" + p11Info.cryptokiVersion);
             }
             boolean showInfo = config.getShowInfo();
             if (showInfo) {
-                CK_INFO p11Info = p11.C_GetInfo();
                 System.out.println("Information for provider " + getName());
                 System.out.println("Library info:");
                 System.out.println(p11Info);
@@ -528,7 +523,6 @@ public final class SunPKCS11 extends AuthProvider {
         String P11KeyAgreement     = "sun.security.pkcs11.P11KeyAgreement";
         String P11SecretKeyFactory = "sun.security.pkcs11.P11SecretKeyFactory";
         String P11Cipher           = "sun.security.pkcs11.P11Cipher";
-        String P11KeyWrapCipher    = "sun.security.pkcs11.P11KeyWrapCipher";
         String P11RSACipher        = "sun.security.pkcs11.P11RSACipher";
         String P11AEADCipher       = "sun.security.pkcs11.P11AEADCipher";
         String P11Signature        = "sun.security.pkcs11.P11Signature";
@@ -715,59 +709,35 @@ public final class SunPKCS11 extends AuthProvider {
                 m(CKM_DES3_ECB));
         d(CIP, "AES/CBC/NoPadding",             P11Cipher,
                 m(CKM_AES_CBC));
-        dA(CIP, "AES_128/CBC/NoPadding",        P11Cipher,
+        dA(CIP, "AES_128/CBC/NoPadding",          P11Cipher,
                 m(CKM_AES_CBC));
-        dA(CIP, "AES_192/CBC/NoPadding",        P11Cipher,
+        dA(CIP, "AES_192/CBC/NoPadding",          P11Cipher,
                 m(CKM_AES_CBC));
-        dA(CIP, "AES_256/CBC/NoPadding",        P11Cipher,
+        dA(CIP, "AES_256/CBC/NoPadding",          P11Cipher,
                 m(CKM_AES_CBC));
         d(CIP, "AES/CBC/PKCS5Padding",          P11Cipher,
                 m(CKM_AES_CBC_PAD, CKM_AES_CBC));
         d(CIP, "AES/ECB/NoPadding",             P11Cipher,
                 m(CKM_AES_ECB));
-        dA(CIP, "AES_128/ECB/NoPadding",        P11Cipher,
+        dA(CIP, "AES_128/ECB/NoPadding",          P11Cipher,
                 m(CKM_AES_ECB));
-        dA(CIP, "AES_192/ECB/NoPadding",        P11Cipher,
+        dA(CIP, "AES_192/ECB/NoPadding",          P11Cipher,
                 m(CKM_AES_ECB));
-        dA(CIP, "AES_256/ECB/NoPadding",        P11Cipher,
+        dA(CIP, "AES_256/ECB/NoPadding",          P11Cipher,
                 m(CKM_AES_ECB));
         d(CIP, "AES/ECB/PKCS5Padding",          P11Cipher,
                 List.of("AES"),
                 m(CKM_AES_ECB));
         d(CIP, "AES/CTR/NoPadding",             P11Cipher,
                 m(CKM_AES_CTR));
-        dA(CIP, "AES/KW/NoPadding",             P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP));
-        dA(CIP, "AES_128/KW/NoPadding",         P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP));
-        dA(CIP, "AES_192/KW/NoPadding",         P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP));
-        dA(CIP, "AES_256/KW/NoPadding",         P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP));
-        d(CIP, "AES/KW/PKCS5Padding",           P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_PAD));
-        d(CIP, "AES_128/KW/PKCS5Padding",       P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_PAD));
-        d(CIP, "AES_192/KW/PKCS5Padding",       P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_PAD));
-        d(CIP, "AES_256/KW/PKCS5Padding",       P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_PAD));
-        dA(CIP, "AES/KWP/NoPadding",            P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_KWP));
-        dA(CIP, "AES_128/KWP/NoPadding",        P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_KWP));
-        dA(CIP, "AES_192/KWP/NoPadding",        P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_KWP));
-        dA(CIP, "AES_256/KWP/NoPadding",        P11KeyWrapCipher,
-                m(CKM_AES_KEY_WRAP_KWP));
 
         d(CIP, "AES/GCM/NoPadding",             P11AEADCipher,
                 m(CKM_AES_GCM));
-        dA(CIP, "AES_128/GCM/NoPadding",        P11AEADCipher,
+        dA(CIP, "AES_128/GCM/NoPadding",          P11AEADCipher,
                 m(CKM_AES_GCM));
-        dA(CIP, "AES_192/GCM/NoPadding",        P11AEADCipher,
+        dA(CIP, "AES_192/GCM/NoPadding",          P11AEADCipher,
                 m(CKM_AES_GCM));
-        dA(CIP, "AES_256/GCM/NoPadding",        P11AEADCipher,
+        dA(CIP, "AES_256/GCM/NoPadding",          P11AEADCipher,
                 m(CKM_AES_GCM));
 
         d(CIP, "Blowfish/CBC/NoPadding",        P11Cipher,
@@ -1274,9 +1244,6 @@ public final class SunPKCS11 extends AuthProvider {
                 } else if (algorithm.endsWith("GCM/NoPadding") ||
                            algorithm.startsWith("ChaCha20-Poly1305")) {
                     return new P11AEADCipher(token, algorithm, mechanism);
-                } else if (algorithm.indexOf("/KW/") != -1 ||
-                        algorithm.indexOf("/KWP/") != -1) {
-                    return new P11KeyWrapCipher(token, algorithm, mechanism);
                 } else {
                     return new P11Cipher(token, algorithm, mechanism);
                 }
@@ -1480,10 +1447,12 @@ public final class SunPKCS11 extends AuthProvider {
         }
 
         // get the pin if necessary
+
         char[] pin = null;
         if ((token.tokenInfo.flags & CKF_PROTECTED_AUTHENTICATION_PATH) == 0) {
 
             // get password
+
             CallbackHandler myHandler = getCallbackHandler(handler);
             if (myHandler == null) {
                 throw new LoginException
@@ -1499,7 +1468,6 @@ public final class SunPKCS11 extends AuthProvider {
             PasswordCallback pcall = new PasswordCallback(form.format(source),
                                                         false);
             Callback[] callbacks = { pcall };
-
             try {
                 myHandler.handle(callbacks);
             } catch (Exception e) {
@@ -1519,23 +1487,24 @@ public final class SunPKCS11 extends AuthProvider {
         }
 
         // perform token login
+
         Session session = null;
         try {
             session = token.getOpSession();
+
             // pin is NULL if using CKF_PROTECTED_AUTHENTICATION_PATH
             p11.C_Login(session.id(), CKU_USER, pin);
-
             if (debug != null) {
                 debug.println("login succeeded");
             }
         } catch (PKCS11Exception pe) {
-            if (pe.match(CKR_USER_ALREADY_LOGGED_IN)) {
+            if (pe.getErrorCode() == CKR_USER_ALREADY_LOGGED_IN) {
                 // let this one go
                 if (debug != null) {
                     debug.println("user already logged in");
                 }
                 return;
-            } else if (pe.match(CKR_PIN_INCORRECT)) {
+            } else if (pe.getErrorCode() == CKR_PIN_INCORRECT) {
                 FailedLoginException fle = new FailedLoginException();
                 fle.initCause(pe);
                 throw fle;
@@ -1614,7 +1583,7 @@ public final class SunPKCS11 extends AuthProvider {
                 debug.println("logout succeeded");
             }
         } catch (PKCS11Exception pe) {
-            if (pe.match(CKR_USER_NOT_LOGGED_IN)) {
+            if (pe.getErrorCode() == CKR_USER_NOT_LOGGED_IN) {
                 // let this one go
                 if (debug != null) {
                     debug.println("user not logged in");

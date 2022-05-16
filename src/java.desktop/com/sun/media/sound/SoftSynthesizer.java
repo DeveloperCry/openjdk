@@ -76,7 +76,7 @@ public final class SoftSynthesizer implements AudioSynthesizer,
         public SoftAudioPusher pusher = null;
         public AudioInputStream jitter_stream = null;
         public SourceDataLine sourceDataLine = null;
-        public volatile long silent_samples;
+        public volatile long silent_samples = 0;
         private int framesize = 0;
         private final WeakReference<AudioInputStream> weak_stream_link;
         private final AudioFloatConverter converter;
@@ -289,11 +289,12 @@ public final class SoftSynthesizer implements AudioSynthesizer,
                     c.current_instrument = null;
                     c.current_director = null;
                 }
-            for (ModelInstrument instrument : instruments) {
+            for (Instrument instrument : instruments) {
                 String pat = patchToString(instrument.getPatch());
-                SoftInstrument softins = new SoftInstrument(instrument);
+                SoftInstrument softins
+                        = new SoftInstrument((ModelInstrument) instrument);
                 inslist.put(pat, softins);
-                loadedlist.put(pat, instrument);
+                loadedlist.put(pat, (ModelInstrument) instrument);
             }
         }
 
@@ -574,25 +575,25 @@ public final class SoftSynthesizer implements AudioSynthesizer,
 
     @Override
     public boolean loadInstrument(Instrument instrument) {
-        if (!(instrument instanceof ModelInstrument modelInstrument)) {
+        if (instrument == null || (!(instrument instanceof ModelInstrument))) {
             throw new IllegalArgumentException("Unsupported instrument: " +
                     instrument);
         }
         List<ModelInstrument> instruments = new ArrayList<>();
-        instruments.add(modelInstrument);
+        instruments.add((ModelInstrument)instrument);
         return loadInstruments(instruments);
     }
 
     @Override
     public void unloadInstrument(Instrument instrument) {
-        if (!(instrument instanceof ModelInstrument modelInstrument)) {
+        if (instrument == null || (!(instrument instanceof ModelInstrument))) {
             throw new IllegalArgumentException("Unsupported instrument: " +
                     instrument);
         }
         if (!isOpen())
             return;
 
-        String pat = patchToString(modelInstrument.getPatch());
+        String pat = patchToString(instrument.getPatch());
         synchronized (control_mutex) {
             for (SoftChannel c: channels)
                 c.current_instrument = null;
@@ -841,11 +842,11 @@ public final class SoftSynthesizer implements AudioSynthesizer,
     public boolean loadAllInstruments(Soundbank soundbank) {
         List<ModelInstrument> instruments = new ArrayList<>();
         for (Instrument ins: soundbank.getInstruments()) {
-            if (!(ins instanceof ModelInstrument modelInstrument)) {
+            if (ins == null || !(ins instanceof ModelInstrument)) {
                 throw new IllegalArgumentException(
                         "Unsupported instrument: " + ins);
             }
-            instruments.add(modelInstrument);
+            instruments.add((ModelInstrument)ins);
         }
         return loadInstruments(instruments);
     }
@@ -870,11 +871,11 @@ public final class SoftSynthesizer implements AudioSynthesizer,
         List<ModelInstrument> instruments = new ArrayList<>();
         for (Patch patch: patchList) {
             Instrument ins = soundbank.getInstrument(patch);
-            if (!(ins instanceof ModelInstrument modelInstrument)) {
+            if (ins == null || !(ins instanceof ModelInstrument)) {
                 throw new IllegalArgumentException(
                         "Unsupported instrument: " + ins);
             }
-            instruments.add(modelInstrument);
+            instruments.add((ModelInstrument)ins);
         }
         return loadInstruments(instruments);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -181,11 +181,12 @@ class Map implements Serializable {
      * from trying to parse one of the numbers null is returned.
      */
     protected static int[] extractCoords(Object stringCoords) {
-        if (!(stringCoords instanceof String s)) {
+        if (stringCoords == null || !(stringCoords instanceof String)) {
             return null;
         }
 
-        StringTokenizer    st = new StringTokenizer(s, ", \t\n\r");
+        StringTokenizer    st = new StringTokenizer((String)stringCoords,
+                                                    ", \t\n\r");
         int[]              retValue = null;
         int                numCoords = 0;
 

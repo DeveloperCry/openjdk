@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -274,8 +274,8 @@ public abstract class TIFFBaseJPEGCompressor extends TIFFCompressor {
 
         // Initialize the ImageWriteParam.
         if(this.JPEGParam == null) {
-            if (param instanceof JPEGImageWriteParam p) {
-                JPEGParam = p;
+            if(param != null && param instanceof JPEGImageWriteParam) {
+                JPEGParam = (JPEGImageWriteParam)param;
             } else {
                 JPEGParam =
                     new JPEGImageWriteParam(writer != null ?
@@ -435,7 +435,7 @@ public abstract class TIFFBaseJPEGCompressor extends TIFFCompressor {
         return compDataLength;
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         super.finalize();
         if(JPEGWriter != null) {

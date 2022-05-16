@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -151,7 +151,7 @@ abstract class SunFileWriter extends AudioFileWriter {
      * The class is usefull for use with SequenceInputStream to prevent
      * closing of the source input streams.
      */
-    static final class NoCloseInputStream extends InputStream {
+    final class NoCloseInputStream extends InputStream {
         private final InputStream in;
 
         NoCloseInputStream(InputStream in) {

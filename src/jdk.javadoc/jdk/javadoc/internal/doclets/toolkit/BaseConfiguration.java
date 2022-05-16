@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,13 +26,9 @@
 package jdk.javadoc.internal.doclets.toolkit;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,10 +50,8 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor14;
-import javax.tools.DocumentationTool;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
 
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.util.DocTreePath;
@@ -380,28 +374,6 @@ public abstract class BaseConfiguration {
             extern.checkPlatformLinks(options.linkPlatformProperties(), reporter);
         }
         typeElementCatalog = new TypeElementCatalog(includedTypeElements, this);
-
-        String snippetPath = options.snippetPath();
-        if (snippetPath != null) {
-            Messages messages = getMessages();
-            JavaFileManager fm = getFileManager();
-            if (fm instanceof StandardJavaFileManager) {
-                try {
-                    List<Path> sp = Arrays.stream(snippetPath.split(File.pathSeparator))
-                            .map(Path::of)
-                            .toList();
-                    StandardJavaFileManager sfm = (StandardJavaFileManager) fm;
-                    sfm.setLocationFromPaths(DocumentationTool.Location.SNIPPET_PATH, sp);
-                } catch (IOException | InvalidPathException e) {
-                    throw new SimpleDocletException(messages.getResources().getText(
-                            "doclet.error_setting_snippet_path", snippetPath, e), e);
-                }
-            } else {
-                throw new SimpleDocletException(messages.getResources().getText(
-                        "doclet.cannot_use_snippet_path", snippetPath));
-            }
-        }
-
         initTagletManager(options.customTagStrs());
         options.groupPairs().forEach(grp -> {
             if (showModules) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -361,19 +361,22 @@ public class SerialClob implements Clob, Serializable, Cloneable {
     }
 
     /**
-     * Writes the given Java {@code String} to the {@code CLOB}
-     * value that this {@code SerialClob} object represents, at the position
-     * {@code pos}.
+     * Writes the given Java <code>String</code> to the <code>CLOB</code>
+     * value that this <code>SerialClob</code> object represents, at the position
+     * <code>pos</code>.
      *
-     * @param pos the position at which to start writing to the {@code CLOB}
-     *         value that this {@code SerialClob} object represents; the first
-     *         position is {@code 1}; must not be less than {@code 1} nor
-     *         greater than the length+1 of this {@code SerialClob} object
-     * @param str the string to be written to the {@code CLOB}
-     *        value that this {@code SerialClob} object represents
+     * @param pos the position at which to start writing to the <code>CLOB</code>
+     *         value that this <code>SerialClob</code> object represents; the first
+     *         position is <code>1</code>; must not be less than <code>1</code> nor
+     *         greater than the length of this <code>SerialClob</code> object
+     * @param str the string to be written to the <code>CLOB</code>
+     *        value that this <code>SerialClob</code> object represents
      * @return the number of characters written
      * @throws SerialException if there is an error accessing the
-     *     {@code CLOB} value; if an invalid position is set;
+     *     <code>CLOB</code> value; if an invalid position is set; if an
+     *     invalid offset value is set; if number of bytes to be written
+     *     is greater than the <code>SerialClob</code> length; or the combined
+     *     values of the length and offset is greater than the Clob buffer;
      * if the {@code free} method had been previously called on this object
      */
     public int setString(long pos, String str) throws SerialException {
@@ -381,66 +384,58 @@ public class SerialClob implements Clob, Serializable, Cloneable {
     }
 
     /**
-     * Writes {@code len} characters of {@code str}, starting
-     * at character {@code offset}, to the {@code CLOB} value
-     * that this {@code Clob} represents.
+     * Writes <code>len</code> characters of <code>str</code>, starting
+     * at character <code>offset</code>, to the <code>CLOB</code> value
+     * that this <code>Clob</code> represents.
      *
-     * @param pos the position at which to start writing to the {@code CLOB}
-     *         value that this {@code SerialClob} object represents; the first
-     *         position is {@code 1}; must not be less than {@code 1} nor
-     *         greater than the length+1 of this {@code SerialClob} object
-     * @param str the string to be written to the {@code CLOB}
-     *        value that this {@code Clob} object represents
-     * @param offset the offset into {@code str} to start reading
+     * @param pos the position at which to start writing to the <code>CLOB</code>
+     *         value that this <code>SerialClob</code> object represents; the first
+     *         position is <code>1</code>; must not be less than <code>1</code> nor
+     *         greater than the length of this <code>SerialClob</code> object
+     * @param str the string to be written to the <code>CLOB</code>
+     *        value that this <code>Clob</code> object represents
+     * @param offset the offset into <code>str</code> to start reading
      *        the characters to be written
      * @param length the number of characters to be written
      * @return the number of characters written
      * @throws SerialException if there is an error accessing the
-     *     {@code CLOB} value; if an invalid position is set; if an
-     *     invalid offset value is set; or the combined values of the
-     *     {@code length} and {@code offset} is greater than the length of
-     *     {@code str};
+     *     <code>CLOB</code> value; if an invalid position is set; if an
+     *     invalid offset value is set; if number of bytes to be written
+     *     is greater than the <code>SerialClob</code> length; or the combined
+     *     values of the length and offset is greater than the Clob buffer;
      * if the {@code free} method had been previously called on this object
      */
     public int setString(long pos, String str, int offset, int length)
         throws SerialException {
         isValid();
+        String temp = str.substring(offset);
+        char cPattern[] = temp.toCharArray();
+
         if (offset < 0 || offset > str.length()) {
-            throw new SerialException("Invalid offset in String object set");
+            throw new SerialException("Invalid offset in byte array set");
         }
 
-        if (length < 0) {
-            throw new SerialException("Invalid arguments: length cannot be "
-                    + "negative");
-        }
-
-        if (pos < 1 || pos > len + 1) {
+        if (pos < 1 || pos > this.length()) {
             throw new SerialException("Invalid position in Clob object set");
         }
 
-        if (length > str.length() - offset) {
-            // need check to ensure length + offset !> str.length
+        if ((long)(length) > origLen) {
+            throw new SerialException("Buffer is not sufficient to hold the value");
+        }
+
+        if ((length + offset) > str.length()) {
+            // need check to ensure length + offset !> bytes.length
             throw new SerialException("Invalid OffSet. Cannot have combined offset " +
-                " and length that is greater than the length of str");
+                " and length that is greater that the Blob buffer");
         }
 
-        if (pos - 1 + length > Integer.MAX_VALUE) {
-            throw new SerialException("Invalid length. Cannot have combined pos " +
-                    "and length that is greater than Integer.MAX_VALUE");
-        }
-
+        int i = 0;
         pos--;  //values in the array are at position one less
-        if (pos + length > len) {
-            len = pos + length;
-            char[] newbuf = new char[(int)len];
-            System.arraycopy(buf, 0, newbuf, 0, (int)pos);
-            buf = newbuf;
+        while ( i < length || (offset + i +1) < (str.length() - offset ) ) {
+            this.buf[(int)pos + i ] = cPattern[offset + i ];
+            i++;
         }
-
-        String temp = str.substring(offset, offset + length);
-        char cPattern[] = temp.toCharArray();
-        System.arraycopy(cPattern, 0, buf, (int)pos, length);
-        return length;
+        return i;
     }
 
     /**

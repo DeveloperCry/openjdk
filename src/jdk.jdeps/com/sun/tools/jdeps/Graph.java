@@ -72,7 +72,8 @@ public final class Graph<T> {
      */
     public Graph<T> reduce() {
         Builder<T> builder = new Builder<>();
-        nodes.forEach(u -> {
+        nodes.stream()
+                .forEach(u -> {
                     builder.addNode(u);
                     edges.get(u).stream()
                          .filter(v -> !pathExists(u, v, false))
@@ -96,7 +97,8 @@ public final class Graph<T> {
         }
 
         Builder<T> builder = new Builder<>();
-        nodes.forEach(u -> {
+        nodes.stream()
+                .forEach(u -> {
                     builder.addNode(u);
                     // filter the edge if there exists a path from u to v in the given g
                     // or there exists another path from u to v in this graph
@@ -106,7 +108,7 @@ public final class Graph<T> {
                 });
 
         // add the overlapped edges from this graph and the given g
-        g.edges().keySet()
+        g.edges().keySet().stream()
                 .forEach(u -> g.adjacentNodes(u).stream()
                                 .filter(v -> isAdjacent(u, v))
                                 .forEach(v -> builder.addEdge(u, v)));
@@ -145,7 +147,7 @@ public final class Graph<T> {
         builder.addNodes(nodes);
         // reverse edges
         edges.keySet().forEach(u -> {
-            edges.get(u)
+            edges.get(u).stream()
                 .forEach(v -> builder.addEdge(v, u));
         });
         return builder.build();
@@ -212,7 +214,8 @@ public final class Graph<T> {
 
     public void printGraph(PrintWriter out) {
         out.println("graph for " + nodes);
-        nodes.forEach(u -> adjacentNodes(u)
+        nodes.stream()
+             .forEach(u -> adjacentNodes(u).stream()
                                .forEach(v -> out.format("  %s -> %s%n", u, v)));
     }
 
@@ -319,7 +322,7 @@ public final class Graph<T> {
                 return;
             }
             visited.add(node);
-            graph.edges().get(node)
+            graph.edges().get(node).stream()
                  .forEach(x -> visit(x, visited, done));
             done.add(node);
             result.addLast(node);

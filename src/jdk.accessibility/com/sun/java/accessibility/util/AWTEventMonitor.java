@@ -50,22 +50,165 @@ public class AWTEventMonitor {
      */
     public AWTEventMonitor() {}
 
-    private static Component componentWithFocus = null;
+    /**
+     * The current component with keyboard focus.
+     *
+     * @see #getComponentWithFocus
+     *
+     * @deprecated This field is unused; to get the component with focus use the
+     * getComponentWithFocus method.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected Component componentWithFocus = null;
+
+    static private Component componentWithFocus_private = null;
 
     // Low-level listeners
-    private static ComponentListener componentListener = null;
-    private static ContainerListener containerListener = null;
-    private static FocusListener focusListener = null;
-    private static KeyListener keyListener = null;
-    private static MouseListener mouseListener = null;
-    private static MouseMotionListener mouseMotionListener = null;
-    private static WindowListener windowListener = null;
+    /**
+     * The current list of registered ComponentListener classes.
+     *
+     * @see #addComponentListener
+     * @see #removeComponentListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected ComponentListener     componentListener     = null;
+
+    static private ComponentListener componentListener_private = null;
+
+    /**
+     * The current list of registered ContainerListener classes.
+     *
+     * @see #addContainerListener
+     * @see #removeContainerListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected ContainerListener     containerListener     = null;
+
+    static private ContainerListener containerListener_private = null;
+
+    /**
+     * The current list of registered FocusListener classes.
+     *
+     * @see #addFocusListener
+     * @see #removeFocusListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected FocusListener         focusListener         = null;
+
+    static private FocusListener focusListener_private = null;
+
+    /**
+     * The current list of registered KeyListener classes.
+     *
+     * @see #addKeyListener
+     * @see #removeKeyListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected KeyListener           keyListener           = null;
+
+    static private KeyListener keyListener_private = null;
+
+    /**
+     * The current list of registered MouseListener classes.
+     *
+     * @see #addMouseListener
+     * @see #removeMouseListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected MouseListener         mouseListener         = null;
+
+    static private MouseListener mouseListener_private = null;
+
+    /**
+     * The current list of registered MouseMotionListener classes.
+     *
+     * @see #addMouseMotionListener
+     * @see #removeMouseMotionListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected MouseMotionListener   mouseMotionListener   = null;
+
+    static private MouseMotionListener mouseMotionListener_private = null;
+
+    /**
+     * The current list of registered WindowListener classes.
+     *
+     * @see #addWindowListener
+     * @see #removeWindowListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected WindowListener        windowListener        = null;
+
+    static private WindowListener windowListener_private = null;
+
 
     // Semantic listeners
-    private static ActionListener actionListener = null;
-    private static AdjustmentListener adjustmentListener = null;
-    private static ItemListener itemListener = null;
-    private static TextListener textListener = null;
+    /**
+     * The current list of registered ActionListener classes.
+     *
+     * @see #addActionListener
+     * @see #removeActionListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected ActionListener        actionListener        = null;
+
+    static private ActionListener actionListener_private = null;
+
+    /**
+     * The current list of registered AdjustmentListener classes.
+     *
+     * @see #addAdjustmentListener
+     * @see #removeAdjustmentListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected AdjustmentListener    adjustmentListener    = null;
+
+    static private AdjustmentListener adjustmentListener_private = null;
+
+    /**
+     * The current list of registered ItemListener classes.
+     *
+     * @see #addItemListener
+     * @see #removeItemListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected ItemListener          itemListener          = null;
+
+    static private ItemListener itemListener_private = null;
+
+    /**
+     * The current list of registered TextListener classes.
+     *
+     * @see #addTextListener
+     * @see #removeTextListener
+     *
+     * @deprecated This field is unused.
+     */
+    @Deprecated(since="8", forRemoval=true)
+    static protected TextListener          textListener          = null;
+
+    static private TextListener textListener_private = null;
+
 
     /**
      * The actual listener that is installed on the component instances.
@@ -73,7 +216,7 @@ public class AWTEventMonitor {
      * occurs.  By doing things this way, the actual number of listeners
      * installed on a component instance is drastically reduced.
      */
-    private static final AWTEventsListener awtListener = new AWTEventsListener();
+    static private final AWTEventsListener awtListener = new AWTEventsListener();
 
     /**
      * Returns the component that currently has keyboard focus.  The return
@@ -81,14 +224,14 @@ public class AWTEventMonitor {
      *
      * @return the component that has keyboard focus
      */
-    public static Component getComponentWithFocus() {
-        return componentWithFocus;
+    static public Component getComponentWithFocus() {
+        return componentWithFocus_private;
     }
 
     /*
      * Check permissions
      */
-    private static void checkInstallPermission() {
+    static private void checkInstallPermission() {
         @SuppressWarnings("removal")
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
@@ -106,12 +249,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeComponentListener
      */
-    public static void addComponentListener(ComponentListener l) {
-        if (componentListener == null) {
+    static public void addComponentListener(ComponentListener l) {
+        if (componentListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.COMPONENT);
         }
-        componentListener = AWTEventMulticaster.add(componentListener, l);
+        componentListener_private = AWTEventMulticaster.add(componentListener_private, l);
     }
 
     /**
@@ -121,9 +264,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addComponentListener
      */
-    public static void removeComponentListener(ComponentListener l) {
-        componentListener = AWTEventMulticaster.remove(componentListener, l);
-        if (componentListener == null) {
+    static public void removeComponentListener(ComponentListener l) {
+        componentListener_private = AWTEventMulticaster.remove(componentListener_private, l);
+        if (componentListener_private == null) {
             awtListener.removeListeners(EventID.COMPONENT);
         }
     }
@@ -138,8 +281,8 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeContainerListener
      */
-    public static void addContainerListener(ContainerListener l) {
-        containerListener = AWTEventMulticaster.add(containerListener, l);
+    static public void addContainerListener(ContainerListener l) {
+        containerListener_private = AWTEventMulticaster.add(containerListener_private, l);
     }
 
     /**
@@ -149,8 +292,8 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addContainerListener
      */
-    public static void removeContainerListener(ContainerListener l) {
-        containerListener = AWTEventMulticaster.remove(containerListener, l);
+    static public void removeContainerListener(ContainerListener l) {
+        containerListener_private = AWTEventMulticaster.remove(containerListener_private, l);
     }
 
     /**
@@ -163,8 +306,8 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeFocusListener
      */
-    public static void addFocusListener(FocusListener l) {
-        focusListener = AWTEventMulticaster.add(focusListener, l);
+    static public void addFocusListener(FocusListener l) {
+        focusListener_private = AWTEventMulticaster.add(focusListener_private, l);
     }
 
     /**
@@ -174,8 +317,8 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addFocusListener
      */
-    public static void removeFocusListener(FocusListener l) {
-        focusListener = AWTEventMulticaster.remove(focusListener, l);
+    static public void removeFocusListener(FocusListener l) {
+        focusListener_private = AWTEventMulticaster.remove(focusListener_private, l);
     }
 
     /**
@@ -188,12 +331,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeKeyListener
      */
-    public static void addKeyListener(KeyListener l) {
-        if (keyListener == null) {
+    static public void addKeyListener(KeyListener l) {
+        if (keyListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.KEY);
         }
-        keyListener = AWTEventMulticaster.add(keyListener, l);
+        keyListener_private = AWTEventMulticaster.add(keyListener_private, l);
     }
 
     /**
@@ -203,9 +346,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addKeyListener
      */
-    public static void removeKeyListener(KeyListener l) {
-        keyListener = AWTEventMulticaster.remove(keyListener, l);
-        if (keyListener == null)  {
+    static public void removeKeyListener(KeyListener l) {
+        keyListener_private = AWTEventMulticaster.remove(keyListener_private, l);
+        if (keyListener_private == null)  {
             awtListener.removeListeners(EventID.KEY);
         }
     }
@@ -220,12 +363,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeMouseListener
      */
-    public static void addMouseListener(MouseListener l) {
-        if (mouseListener == null) {
+    static public void addMouseListener(MouseListener l) {
+        if (mouseListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.MOUSE);
         }
-        mouseListener = AWTEventMulticaster.add(mouseListener, l);
+        mouseListener_private = AWTEventMulticaster.add(mouseListener_private, l);
     }
 
     /**
@@ -235,9 +378,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addMouseListener
      */
-    public static void removeMouseListener(MouseListener l) {
-        mouseListener = AWTEventMulticaster.remove(mouseListener, l);
-        if (mouseListener == null) {
+    static public void removeMouseListener(MouseListener l) {
+        mouseListener_private = AWTEventMulticaster.remove(mouseListener_private, l);
+        if (mouseListener_private == null) {
             awtListener.removeListeners(EventID.MOUSE);
         }
     }
@@ -252,12 +395,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeMouseMotionListener
      */
-    public static void addMouseMotionListener(MouseMotionListener l) {
-        if (mouseMotionListener == null) {
+    static public void addMouseMotionListener(MouseMotionListener l) {
+        if (mouseMotionListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.MOTION);
         }
-        mouseMotionListener = AWTEventMulticaster.add(mouseMotionListener, l);
+        mouseMotionListener_private = AWTEventMulticaster.add(mouseMotionListener_private, l);
     }
 
     /**
@@ -267,9 +410,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addMouseMotionListener
      */
-    public static void removeMouseMotionListener(MouseMotionListener l) {
-        mouseMotionListener = AWTEventMulticaster.remove(mouseMotionListener, l);
-        if (mouseMotionListener == null) {
+    static public void removeMouseMotionListener(MouseMotionListener l) {
+        mouseMotionListener_private = AWTEventMulticaster.remove(mouseMotionListener_private, l);
+        if (mouseMotionListener_private == null) {
             awtListener.removeListeners(EventID.MOTION);
         }
     }
@@ -284,12 +427,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeWindowListener
      */
-    public static void addWindowListener(WindowListener l) {
-        if (windowListener == null) {
+    static public void addWindowListener(WindowListener l) {
+        if (windowListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.WINDOW);
         }
-        windowListener = AWTEventMulticaster.add(windowListener, l);
+        windowListener_private = AWTEventMulticaster.add(windowListener_private, l);
     }
 
     /**
@@ -299,9 +442,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addWindowListener
      */
-    public static void removeWindowListener(WindowListener l) {
-        windowListener = AWTEventMulticaster.remove(windowListener, l);
-        if (windowListener == null) {
+    static public void removeWindowListener(WindowListener l) {
+        windowListener_private = AWTEventMulticaster.remove(windowListener_private, l);
+        if (windowListener_private == null) {
             awtListener.removeListeners(EventID.WINDOW);
         }
     }
@@ -316,12 +459,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeActionListener
      */
-    public static void addActionListener(ActionListener l) {
-        if (actionListener == null) {
+    static public void addActionListener(ActionListener l) {
+        if (actionListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.ACTION);
         }
-        actionListener = AWTEventMulticaster.add(actionListener, l);
+        actionListener_private = AWTEventMulticaster.add(actionListener_private, l);
     }
 
     /**
@@ -331,9 +474,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addActionListener
      */
-    public static void removeActionListener(ActionListener l) {
-        actionListener = AWTEventMulticaster.remove(actionListener, l);
-        if (actionListener == null) {
+    static public void removeActionListener(ActionListener l) {
+        actionListener_private = AWTEventMulticaster.remove(actionListener_private, l);
+        if (actionListener_private == null) {
             awtListener.removeListeners(EventID.ACTION);
         }
     }
@@ -349,12 +492,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeAdjustmentListener
      */
-    public static void addAdjustmentListener(AdjustmentListener l) {
-        if (adjustmentListener == null) {
+    static public void addAdjustmentListener(AdjustmentListener l) {
+        if (adjustmentListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.ADJUSTMENT);
         }
-        adjustmentListener = AWTEventMulticaster.add(adjustmentListener, l);
+        adjustmentListener_private = AWTEventMulticaster.add(adjustmentListener_private, l);
     }
 
     /**
@@ -364,9 +507,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addAdjustmentListener
      */
-    public static void removeAdjustmentListener(AdjustmentListener l) {
-        adjustmentListener = AWTEventMulticaster.remove(adjustmentListener, l);
-        if (adjustmentListener == null) {
+    static public void removeAdjustmentListener(AdjustmentListener l) {
+        adjustmentListener_private = AWTEventMulticaster.remove(adjustmentListener_private, l);
+        if (adjustmentListener_private == null) {
             awtListener.removeListeners(EventID.ADJUSTMENT);
         }
     }
@@ -381,12 +524,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeItemListener
      */
-    public static void addItemListener(ItemListener l) {
-        if (itemListener == null) {
+    static public void addItemListener(ItemListener l) {
+        if (itemListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.ITEM);
         }
-        itemListener = AWTEventMulticaster.add(itemListener, l);
+        itemListener_private = AWTEventMulticaster.add(itemListener_private, l);
     }
 
     /**
@@ -396,9 +539,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addItemListener
      */
-    public static void removeItemListener(ItemListener l) {
-        itemListener = AWTEventMulticaster.remove(itemListener, l);
-        if (itemListener == null) {
+    static public void removeItemListener(ItemListener l) {
+        itemListener_private = AWTEventMulticaster.remove(itemListener_private, l);
+        if (itemListener_private == null) {
             awtListener.removeListeners(EventID.ITEM);
         }
     }
@@ -413,12 +556,12 @@ public class AWTEventMonitor {
      * @param l the listener to add
      * @see #removeTextListener
      */
-    public static void addTextListener(TextListener l) {
-        if (textListener == null) {
+    static public void addTextListener(TextListener l) {
+        if (textListener_private == null) {
             checkInstallPermission();
             awtListener.installListeners(EventID.TEXT);
         }
-        textListener = AWTEventMulticaster.add(textListener, l);
+        textListener_private = AWTEventMulticaster.add(textListener_private, l);
     }
 
     /**
@@ -428,9 +571,9 @@ public class AWTEventMonitor {
      * @param l the listener to remove
      * @see #addTextListener
      */
-    public static void removeTextListener(TextListener l) {
-        textListener = AWTEventMulticaster.remove(textListener, l);
-        if (textListener == null) {
+    static public void removeTextListener(TextListener l) {
+        textListener_private = AWTEventMulticaster.remove(textListener_private, l);
+        if (textListener_private == null) {
             awtListener.removeListeners(EventID.TEXT);
         }
     }
@@ -569,34 +712,34 @@ public class AWTEventMonitor {
 
             // conditionally install low-level listeners
             //
-            if (AWTEventMonitor.componentListener != null) {
+            if (AWTEventMonitor.componentListener_private != null) {
                 installListeners(c,EventID.COMPONENT);
             }
-            if (AWTEventMonitor.keyListener != null) {
+            if (AWTEventMonitor.keyListener_private != null) {
                 installListeners(c,EventID.KEY);
             }
-            if (AWTEventMonitor.mouseListener != null) {
+            if (AWTEventMonitor.mouseListener_private != null) {
                 installListeners(c,EventID.MOUSE);
             }
-            if (AWTEventMonitor.mouseMotionListener != null) {
+            if (AWTEventMonitor.mouseMotionListener_private != null) {
                 installListeners(c,EventID.MOTION);
             }
-            if (AWTEventMonitor.windowListener != null) {
+            if (AWTEventMonitor.windowListener_private != null) {
                 installListeners(c,EventID.WINDOW);
             }
 
             // conditionally install Semantic listeners
             //
-            if (AWTEventMonitor.actionListener != null) {
+            if (AWTEventMonitor.actionListener_private != null) {
                 installListeners(c,EventID.ACTION);
             }
-            if (AWTEventMonitor.adjustmentListener != null) {
+            if (AWTEventMonitor.adjustmentListener_private != null) {
                 installListeners(c,EventID.ADJUSTMENT);
             }
-            if (AWTEventMonitor.itemListener != null) {
+            if (AWTEventMonitor.itemListener_private != null) {
                 installListeners(c,EventID.ITEM);
             }
-            if (AWTEventMonitor.textListener != null) {
+            if (AWTEventMonitor.textListener_private != null) {
                 installListeners(c,EventID.TEXT);
             }
         }
@@ -625,15 +768,15 @@ public class AWTEventMonitor {
                         last instanceof JMenu) {
                         // This is a popup with nothing in the popup
                         // selected. The menu itself is selected.
-                        componentWithFocus = last;
+                        componentWithFocus_private = last;
                     } else if (penult instanceof JPopupMenu) {
                         // This is a popup with an item selected
-                        componentWithFocus = penult;
+                        componentWithFocus_private = penult;
                     }
                 }
             } else {
                 // The focus owner has the selection.
-                componentWithFocus = focusOwner;
+                componentWithFocus_private = focusOwner;
             }
         }
 
@@ -822,34 +965,34 @@ public class AWTEventMonitor {
 
             // conditionally remove low-level listeners
             //
-            if (AWTEventMonitor.componentListener != null) {
+            if (AWTEventMonitor.componentListener_private != null) {
                 removeListeners(c,EventID.COMPONENT);
             }
-            if (AWTEventMonitor.keyListener != null) {
+            if (AWTEventMonitor.keyListener_private != null) {
                 removeListeners(c,EventID.KEY);
             }
-            if (AWTEventMonitor.mouseListener != null) {
+            if (AWTEventMonitor.mouseListener_private != null) {
                 removeListeners(c,EventID.MOUSE);
             }
-            if (AWTEventMonitor.mouseMotionListener != null) {
+            if (AWTEventMonitor.mouseMotionListener_private != null) {
                 removeListeners(c,EventID.MOTION);
             }
-            if (AWTEventMonitor.windowListener != null) {
+            if (AWTEventMonitor.windowListener_private != null) {
                 removeListeners(c,EventID.WINDOW);
             }
 
             // Remove semantic listeners
             //
-            if (AWTEventMonitor.actionListener != null) {
+            if (AWTEventMonitor.actionListener_private != null) {
                 removeListeners(c,EventID.ACTION);
             }
-            if (AWTEventMonitor.adjustmentListener != null) {
+            if (AWTEventMonitor.adjustmentListener_private != null) {
                 removeListeners(c,EventID.ADJUSTMENT);
             }
-            if (AWTEventMonitor.itemListener != null) {
+            if (AWTEventMonitor.itemListener_private != null) {
                 removeListeners(c,EventID.ITEM);
             }
-            if (AWTEventMonitor.textListener != null) {
+            if (AWTEventMonitor.textListener_private != null) {
                 removeListeners(c,EventID.TEXT);
             }
         }
@@ -1025,8 +1168,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addActionListener
          */
         public void actionPerformed(ActionEvent e) {
-            if (AWTEventMonitor.actionListener != null) {
-                AWTEventMonitor.actionListener.actionPerformed(e);
+            if (AWTEventMonitor.actionListener_private != null) {
+                AWTEventMonitor.actionListener_private.actionPerformed(e);
             }
         }
 
@@ -1038,8 +1181,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addAdjustmentListener
          */
         public void adjustmentValueChanged(AdjustmentEvent e) {
-            if (AWTEventMonitor.adjustmentListener != null) {
-                AWTEventMonitor.adjustmentListener.adjustmentValueChanged(e);
+            if (AWTEventMonitor.adjustmentListener_private != null) {
+                AWTEventMonitor.adjustmentListener_private.adjustmentValueChanged(e);
             }
         }
 
@@ -1051,8 +1194,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addComponentListener
          */
         public void componentHidden(ComponentEvent e) {
-            if (AWTEventMonitor.componentListener != null) {
-                AWTEventMonitor.componentListener.componentHidden(e);
+            if (AWTEventMonitor.componentListener_private != null) {
+                AWTEventMonitor.componentListener_private.componentHidden(e);
             }
         }
 
@@ -1062,8 +1205,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addComponentListener
          */
         public void componentMoved(ComponentEvent e) {
-            if (AWTEventMonitor.componentListener != null) {
-                AWTEventMonitor.componentListener.componentMoved(e);
+            if (AWTEventMonitor.componentListener_private != null) {
+                AWTEventMonitor.componentListener_private.componentMoved(e);
             }
         }
 
@@ -1073,8 +1216,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addComponentListener
          */
         public void componentResized(ComponentEvent e) {
-            if (AWTEventMonitor.componentListener != null) {
-                AWTEventMonitor.componentListener.componentResized(e);
+            if (AWTEventMonitor.componentListener_private != null) {
+                AWTEventMonitor.componentListener_private.componentResized(e);
             }
         }
 
@@ -1084,8 +1227,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addComponentListener
          */
         public void componentShown(ComponentEvent e) {
-            if (AWTEventMonitor.componentListener != null) {
-                AWTEventMonitor.componentListener.componentShown(e);
+            if (AWTEventMonitor.componentListener_private != null) {
+                AWTEventMonitor.componentListener_private.componentShown(e);
             }
         }
 
@@ -1098,8 +1241,8 @@ public class AWTEventMonitor {
          */
         public void componentAdded(ContainerEvent e) {
             installListeners(e.getChild());
-            if (AWTEventMonitor.containerListener != null) {
-                AWTEventMonitor.containerListener.componentAdded(e);
+            if (AWTEventMonitor.containerListener_private != null) {
+                AWTEventMonitor.containerListener_private.componentAdded(e);
             }
         }
 
@@ -1110,8 +1253,8 @@ public class AWTEventMonitor {
          */
         public void componentRemoved(ContainerEvent e) {
             removeListeners(e.getChild());
-            if (AWTEventMonitor.containerListener != null) {
-                AWTEventMonitor.containerListener.componentRemoved(e);
+            if (AWTEventMonitor.containerListener_private != null) {
+                AWTEventMonitor.containerListener_private.componentRemoved(e);
             }
         }
 
@@ -1123,9 +1266,9 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addFocusListener
          */
         public void focusGained(FocusEvent e) {
-            AWTEventMonitor.componentWithFocus = (Component) e.getSource();
-            if (AWTEventMonitor.focusListener != null) {
-                AWTEventMonitor.focusListener.focusGained(e);
+            AWTEventMonitor.componentWithFocus_private = (Component) e.getSource();
+            if (AWTEventMonitor.focusListener_private != null) {
+                AWTEventMonitor.focusListener_private.focusGained(e);
             }
         }
 
@@ -1135,9 +1278,9 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addFocusListener
          */
         public void focusLost(FocusEvent e) {
-            AWTEventMonitor.componentWithFocus = null;
-            if (AWTEventMonitor.focusListener != null) {
-                AWTEventMonitor.focusListener.focusLost(e);
+            AWTEventMonitor.componentWithFocus_private = null;
+            if (AWTEventMonitor.focusListener_private != null) {
+                AWTEventMonitor.focusListener_private.focusLost(e);
             }
         }
 
@@ -1149,8 +1292,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addItemListener
          */
         public void itemStateChanged(ItemEvent e) {
-            if (AWTEventMonitor.itemListener != null) {
-                AWTEventMonitor.itemListener.itemStateChanged(e);
+            if (AWTEventMonitor.itemListener_private != null) {
+                AWTEventMonitor.itemListener_private.itemStateChanged(e);
             }
         }
 
@@ -1162,8 +1305,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addKeyListener
          */
         public void keyPressed(KeyEvent e) {
-            if (AWTEventMonitor.keyListener != null) {
-                AWTEventMonitor.keyListener.keyPressed(e);
+            if (AWTEventMonitor.keyListener_private != null) {
+                AWTEventMonitor.keyListener_private.keyPressed(e);
             }
         }
 
@@ -1173,8 +1316,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addKeyListener
          */
         public void keyReleased(KeyEvent e) {
-            if (AWTEventMonitor.keyListener != null) {
-                AWTEventMonitor.keyListener.keyReleased(e);
+            if (AWTEventMonitor.keyListener_private != null) {
+                AWTEventMonitor.keyListener_private.keyReleased(e);
             }
         }
 
@@ -1184,8 +1327,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addKeyListener
          */
         public void keyTyped(KeyEvent e) {
-            if (AWTEventMonitor.keyListener != null) {
-                AWTEventMonitor.keyListener.keyTyped(e);
+            if (AWTEventMonitor.keyListener_private != null) {
+                AWTEventMonitor.keyListener_private.keyTyped(e);
             }
         }
 
@@ -1197,8 +1340,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseListener
          */
         public void mouseClicked(MouseEvent e) {
-            if (AWTEventMonitor.mouseListener != null) {
-                AWTEventMonitor.mouseListener.mouseClicked(e);
+            if (AWTEventMonitor.mouseListener_private != null) {
+                AWTEventMonitor.mouseListener_private.mouseClicked(e);
             }
         }
 
@@ -1208,8 +1351,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseListener
          */
         public void mouseEntered(MouseEvent e) {
-            if (AWTEventMonitor.mouseListener != null) {
-                AWTEventMonitor.mouseListener.mouseEntered(e);
+            if (AWTEventMonitor.mouseListener_private != null) {
+                AWTEventMonitor.mouseListener_private.mouseEntered(e);
             }
         }
 
@@ -1219,8 +1362,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseListener
          */
         public void mouseExited(MouseEvent e) {
-            if (AWTEventMonitor.mouseListener != null) {
-                AWTEventMonitor.mouseListener.mouseExited(e);
+            if (AWTEventMonitor.mouseListener_private != null) {
+                AWTEventMonitor.mouseListener_private.mouseExited(e);
             }
         }
 
@@ -1230,8 +1373,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseListener
          */
         public void mousePressed(MouseEvent e) {
-            if (AWTEventMonitor.mouseListener != null) {
-                AWTEventMonitor.mouseListener.mousePressed(e);
+            if (AWTEventMonitor.mouseListener_private != null) {
+                AWTEventMonitor.mouseListener_private.mousePressed(e);
             }
         }
 
@@ -1241,8 +1384,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseListener
          */
         public void mouseReleased(MouseEvent e) {
-            if (AWTEventMonitor.mouseListener != null) {
-                AWTEventMonitor.mouseListener.mouseReleased(e);
+            if (AWTEventMonitor.mouseListener_private != null) {
+                AWTEventMonitor.mouseListener_private.mouseReleased(e);
             }
         }
 
@@ -1254,8 +1397,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseMotionListener
          */
         public void mouseDragged(MouseEvent e) {
-            if (AWTEventMonitor.mouseMotionListener != null) {
-                AWTEventMonitor.mouseMotionListener.mouseDragged(e);
+            if (AWTEventMonitor.mouseMotionListener_private != null) {
+                AWTEventMonitor.mouseMotionListener_private.mouseDragged(e);
             }
         }
 
@@ -1265,8 +1408,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addMouseMotionListener
          */
         public void mouseMoved(MouseEvent e) {
-            if (AWTEventMonitor.mouseMotionListener != null) {
-                AWTEventMonitor.mouseMotionListener.mouseMoved(e);
+            if (AWTEventMonitor.mouseMotionListener_private != null) {
+                AWTEventMonitor.mouseMotionListener_private.mouseMoved(e);
             }
         }
 
@@ -1278,8 +1421,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addTextListener
          */
         public void textValueChanged(TextEvent e) {
-            if (AWTEventMonitor.textListener != null) {
-                AWTEventMonitor.textListener.textValueChanged(e);
+            if (AWTEventMonitor.textListener_private != null) {
+                AWTEventMonitor.textListener_private.textValueChanged(e);
             }
         }
 
@@ -1291,8 +1434,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowOpened(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowOpened(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowOpened(e);
             }
         }
 
@@ -1302,8 +1445,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowClosing(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowClosing(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowClosing(e);
             }
         }
 
@@ -1313,8 +1456,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowClosed(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowClosed(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowClosed(e);
             }
         }
 
@@ -1324,8 +1467,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowIconified(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowIconified(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowIconified(e);
             }
         }
 
@@ -1335,8 +1478,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowDeiconified(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowDeiconified(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowDeiconified(e);
             }
         }
 
@@ -1346,8 +1489,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowActivated(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowActivated(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowActivated(e);
             }
         }
 
@@ -1357,8 +1500,8 @@ public class AWTEventMonitor {
          * @see AWTEventMonitor#addWindowListener
          */
         public void windowDeactivated(WindowEvent e) {
-            if (AWTEventMonitor.windowListener != null) {
-                AWTEventMonitor.windowListener.windowDeactivated(e);
+            if (AWTEventMonitor.windowListener_private != null) {
+                AWTEventMonitor.windowListener_private.windowDeactivated(e);
             }
         }
     }

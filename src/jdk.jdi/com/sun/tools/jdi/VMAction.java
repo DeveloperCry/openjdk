@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -43,7 +43,6 @@ class VMAction extends EventObject {
     static final int VM_NOT_SUSPENDED = 2;
 
     int id;
-    @SuppressWarnings("serial") // Type of field is not Serializable
     ThreadReference resumingThread;
 
     VMAction(VirtualMachine vm, int id) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,7 @@ import sun.jvm.hotspot.debugger.linux.*;
 import sun.jvm.hotspot.debugger.cdbg.*;
 import sun.jvm.hotspot.debugger.cdbg.basic.*;
 
-public final class LinuxPPC64CFrame extends BasicCFrame {
+final public class LinuxPPC64CFrame extends BasicCFrame {
   // package/class internals only
 
   public LinuxPPC64CFrame(LinuxDebugger dbg, Address sp, Address pc, int address_size) {

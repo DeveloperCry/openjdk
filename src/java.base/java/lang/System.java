@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
@@ -44,9 +45,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.CharacterCodingException;
 import java.nio.channels.Channel;
 import java.nio.channels.spi.SelectorProvider;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -83,7 +84,6 @@ import jdk.internal.vm.annotation.Stable;
 import sun.nio.fs.DefaultFileSystemProvider;
 import sun.reflect.annotation.AnnotationType;
 import sun.nio.ch.Interruptible;
-import sun.nio.cs.UTF_8;
 import sun.security.util.SecurityConstants;
 
 /**
@@ -187,11 +187,6 @@ public final class System {
     // current security manager
     @SuppressWarnings("removal")
     private static volatile SecurityManager security;   // read by VM
-
-    // `sun.jnu.encoding` if it is not supported. Otherwise null.
-    // It is initialized in `initPhase1()` before any charset providers
-    // are initialized.
-    private static String notSupportedJnuEncoding;
 
     // return true if a security manager is allowed
     private static boolean allowSecurityManager() {
@@ -336,7 +331,7 @@ public final class System {
     private static class CallersHolder {
         // Remember callers of setSecurityManager() here so that warning
         // is only printed once for each different caller
-        static final Map<Class<?>, Boolean> callers
+        final static Map<Class<?>, Boolean> callers
             = Collections.synchronizedMap(new WeakHashMap<>());
     }
 
@@ -366,11 +361,9 @@ public final class System {
      * the method simply returns.
      *
      * @implNote In the JDK implementation, if the Java virtual machine is
-     * started with the system property {@code java.security.manager} not set or set to
+     * started with the system property {@code java.security.manager} set to
      * the special token "{@code disallow}" then the {@code setSecurityManager}
-     * method cannot be used to set a security manager. See the following
-     * <a href="SecurityManager.html#set-security-manager">section of the
-     * {@code SecurityManager} class specification</a> for more details.
+     * method cannot be used to set a security manager.
      *
      * @param  sm the security manager or {@code null}
      * @throws SecurityException
@@ -804,15 +797,6 @@ public final class System {
      *     <td>The module name of the initial/main module</td></tr>
      * <tr><th scope="row">{@systemProperty jdk.module.main.class}</th>
      *     <td>The main class name of the initial module</td></tr>
-     * <tr><th scope="row">{@systemProperty file.encoding}</th>
-     *     <td>The name of the default charset, defaults to {@code UTF-8}.
-     *     The property may be set on the command line to the value
-     *     {@code UTF-8} or {@code COMPAT}. If set on the command line to
-     *     the value {@code COMPAT} then the value is replaced with the
-     *     value of the {@code native.encoding} property during startup.
-     *     Setting the property to a value other than {@code UTF-8} or
-     *     {@code COMPAT} leads to unspecified behavior.
-     *     </td></tr>
      * </tbody>
      * </table>
      *
@@ -1600,7 +1584,7 @@ public final class System {
      *
      * @since 9
      */
-    public abstract static class LoggerFinder {
+    public static abstract class LoggerFinder {
         /**
          * The {@code RuntimePermission("loggerFinder")} is
          * necessary to subclass and instantiate the {@code LoggerFinder} class,
@@ -1922,18 +1906,8 @@ public final class System {
      * Runtime.getRuntime().runFinalization()
      * </pre></blockquote>
      *
-     * @deprecated Finalization has been deprecated for removal.  See
-     * {@link java.lang.Object#finalize} for background information and details
-     * about migration options.
-     * <p>
-     * When running in a JVM in which finalization has been disabled or removed,
-     * no objects will be pending finalization, so this method does nothing.
-     *
      * @see     java.lang.Runtime#runFinalization()
-     * @jls 12.6 Finalization of Class Instances
      */
-    @Deprecated(since="18", forRemoval=true)
-    @SuppressWarnings("removal")
     public static void runFinalization() {
         Runtime.getRuntime().runFinalization();
     }
@@ -2032,9 +2006,10 @@ public final class System {
      * Create PrintStream for stdout/err based on encoding.
      */
     private static PrintStream newPrintStream(FileOutputStream fos, String enc) {
-        if (enc != null) {
-            return new PrintStream(new BufferedOutputStream(fos, 128), true,
-                                   Charset.forName(enc, UTF_8.INSTANCE));
+       if (enc != null) {
+            try {
+                return new PrintStream(new BufferedOutputStream(fos, 128), true, enc);
+            } catch (UnsupportedEncodingException uee) {}
         }
         return new PrintStream(new BufferedOutputStream(fos, 128), true);
     }
@@ -2127,13 +2102,6 @@ public final class System {
         VM.saveProperties(tempProps);
         props = createProperties(tempProps);
 
-        // Check if sun.jnu.encoding is supported. If not, replace it with UTF-8.
-        var jnuEncoding = props.getProperty("sun.jnu.encoding");
-        if (jnuEncoding == null || !Charset.isSupported(jnuEncoding)) {
-            notSupportedJnuEncoding = jnuEncoding == null ? "null" : jnuEncoding;
-            props.setProperty("sun.jnu.encoding", "UTF-8");
-        }
-
         StaticProperty.javaHome();          // Load StaticProperty to cache the property values
 
         lineSeparator = props.getProperty("line.separator");
@@ -2144,9 +2112,9 @@ public final class System {
         setIn0(new BufferedInputStream(fdIn));
         // sun.stdout/err.encoding are set when the VM is associated with the terminal,
         // thus they are equivalent to Console.charset(), otherwise the encoding
-        // defaults to native.encoding
-        setOut0(newPrintStream(fdOut, props.getProperty("sun.stdout.encoding", StaticProperty.nativeEncoding())));
-        setErr0(newPrintStream(fdErr, props.getProperty("sun.stderr.encoding", StaticProperty.nativeEncoding())));
+        // defaults to Charset.defaultCharset()
+        setOut0(newPrintStream(fdOut, props.getProperty("sun.stdout.encoding")));
+        setErr0(newPrintStream(fdErr, props.getProperty("sun.stderr.encoding")));
 
         // Setup Java signal handlers for HUP, TERM, and INT (where available).
         Terminator.setup();
@@ -2161,6 +2129,7 @@ public final class System {
         // way as other threads; we must do it ourselves here.
         Thread current = Thread.currentThread();
         current.getThreadGroup().add(current);
+
 
         // Subsystems that are invoked during initialization can invoke
         // VM.isBooted() in order to avoid doing things that should
@@ -2259,21 +2228,13 @@ public final class System {
                     allowSecurityManager = MAYBE;
             }
         } else {
-            allowSecurityManager = NEVER;
+            allowSecurityManager = MAYBE;
         }
 
         if (needWarning) {
             System.err.println("""
                     WARNING: A command line option has enabled the Security Manager
                     WARNING: The Security Manager is deprecated and will be removed in a future release""");
-        }
-
-        // Emit a warning if `sun.jnu.encoding` is not supported.
-        if (notSupportedJnuEncoding != null) {
-            System.err.println(
-                    "WARNING: The encoding of the underlying platform's" +
-                    " file system is not supported: " +
-                    notSupportedJnuEncoding);
         }
 
         initialErrStream = System.err;
@@ -2331,7 +2292,7 @@ public final class System {
             public Thread newThreadWithAcc(Runnable target, @SuppressWarnings("removal") AccessControlContext acc) {
                 return new Thread(target, acc);
             }
-            @SuppressWarnings("removal")
+            @SuppressWarnings("deprecation")
             public void invokeFinalize(Object o) throws Throwable {
                 o.finalize();
             }

@@ -40,6 +40,7 @@ import sun.jvm.hotspot.gc.shenandoah.*;
 import sun.jvm.hotspot.gc.g1.*;
 import sun.jvm.hotspot.gc.z.*;
 import sun.jvm.hotspot.interpreter.*;
+import sun.jvm.hotspot.memory.*;
 import sun.jvm.hotspot.oops.*;
 import sun.jvm.hotspot.runtime.*;
 import sun.jvm.hotspot.ui.*;
@@ -950,8 +951,8 @@ public class HSDB implements ObjectHistogramPanel.Listener, SAListener {
             SignalInfo sigInfo = (SignalInfo) interruptedFrameMap.get(curFrame);
             if (sigInfo != null) {
               // This frame took a signal and we need to report it.
-              anno = anno + "\n*** INTERRUPTED BY SIGNAL " + sigInfo.sigNum +
-                      " (" + sigInfo.sigName + ")";
+              anno = (anno + "\n*** INTERRUPTED BY SIGNAL " + Integer.toString(sigInfo.sigNum) +
+                      " (" + sigInfo.sigName + ")");
             }
 
             JavaVFrame nextVFrame = curVFrame;
@@ -1736,6 +1737,7 @@ public class HSDB implements ObjectHistogramPanel.Listener, SAListener {
                                String progressBarText,
                                HeapVisitor visitor,
                                CleanupThunk cleanup) {
+    sun.jvm.hotspot.oops.ObjectHistogram histo = new sun.jvm.hotspot.oops.ObjectHistogram();
     HeapProgress progress = new HeapProgress(frameTitle,
                                              progressBarText,
                                              cleanup);

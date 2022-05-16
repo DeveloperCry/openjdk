@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,7 @@
 
 package com.sun.jndi.ldap;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.io.UnsupportedEncodingException;
 
 /**
   * A BER encoder.
@@ -317,11 +316,19 @@ public final class BerEncoder extends Ber {
         if (str == null) {
             count = 0;
         } else if (encodeUTF8) {
-            bytes = str.getBytes(UTF_8);
-            count = bytes.length;
+            try {
+                bytes = str.getBytes("UTF8");
+                count = bytes.length;
+            } catch (UnsupportedEncodingException e) {
+                throw new EncodeException("UTF8 not available on platform");
+            }
         } else {
-            bytes = str.getBytes(ISO_8859_1);
-            count = bytes.length;
+            try {
+                bytes = str.getBytes("8859_1");
+                count = bytes.length;
+            } catch (UnsupportedEncodingException e) {
+                throw new EncodeException("8859_1 not available on platform");
+            }
         }
 
         encodeLength(count);

@@ -108,8 +108,9 @@ public abstract class IntegerSyntax implements Serializable, Cloneable {
      *         attribute, {@code false} otherwise
      */
     public boolean equals(Object object) {
-        return object instanceof IntegerSyntax other &&
-                value == other.value;
+
+        return (object != null && object instanceof IntegerSyntax &&
+                value == ((IntegerSyntax) object).value);
     }
 
     /**

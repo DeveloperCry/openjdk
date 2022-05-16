@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -39,7 +39,7 @@ import java.io.IOException;
  * The application's content handler factory (an instance of a class that
  * implements the interface {@code ContentHandlerFactory} set up by a call to
  * {@link URLConnection#setContentHandlerFactory(ContentHandlerFactory)
- * setContentHandlerFactory}) is called with a {@code String} giving the
+ * setContentHandlerFactory} is called with a {@code String} giving the
  * MIME type of the object being received on the socket. The factory returns an
  * instance of a subclass of {@code ContentHandler}, and its
  * {@code getContent} method is called to create the object.

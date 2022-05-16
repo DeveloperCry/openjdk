@@ -520,18 +520,20 @@ public class HtmlTree extends Content {
     }
 
     /**
-     * Creates an HTML {@code INPUT} element with the given id.
+     * Creates an HTML {@code INPUT} element with the given id and initial value.
      * The element as marked as initially disabled.
      *
      * @param type  the type of input
      * @param id    the id
+     * @param value the initial value
      * @return the element
      */
-    public static HtmlTree INPUT(String type, HtmlId id) {
+    public static HtmlTree INPUT(String type, HtmlId id, String value) {
         return new HtmlTree(TagName.INPUT)
                 .put(HtmlAttr.TYPE, type)
                 .setId(id)
-                .put(HtmlAttr.DISABLED, "");
+                .put(HtmlAttr.VALUE, value)
+                .put(HtmlAttr.DISABLED, "disabled");
     }
 
     /**

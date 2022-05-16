@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1994, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,8 +25,8 @@
 
 package java.io;
 
+import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.Objects;
 import java.util.Vector;
 
 /**
@@ -98,7 +98,7 @@ public class SequenceInputStream extends InputStream {
 
     private void peekNextStream() {
         if (e.hasMoreElements()) {
-            in = e.nextElement();
+            in = (InputStream) e.nextElement();
             if (in == null)
                 throw new NullPointerException();
         } else {
@@ -184,14 +184,14 @@ public class SequenceInputStream extends InputStream {
      *             greater than {@code b.length - off}
      * @throws     IOException  if an I/O error occurs.
      */
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(byte b[], int off, int len) throws IOException {
         if (in == null) {
             return -1;
         } else if (b == null) {
             throw new NullPointerException();
-        }
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) {
+        } else if (off < 0 || len < 0 || len > b.length - off) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
             return 0;
         }
         do {

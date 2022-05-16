@@ -39,7 +39,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
@@ -427,7 +427,7 @@ public class JMenuBar extends JComponent implements Accessible,MenuElement
     @BeanProperty(bound = false)
     public MenuElement[] getSubElements() {
         MenuElement[] result;
-        ArrayList<MenuElement> tmp = new ArrayList<MenuElement>();
+        Vector<MenuElement> tmp = new Vector<MenuElement>();
         int c = getComponentCount();
         int i;
         Component m;
@@ -435,12 +435,12 @@ public class JMenuBar extends JComponent implements Accessible,MenuElement
         for(i=0 ; i < c ; i++) {
             m = getComponent(i);
             if(m instanceof MenuElement)
-                tmp.add((MenuElement) m);
+                tmp.addElement((MenuElement) m);
         }
 
         result = new MenuElement[tmp.size()];
         for(i=0,c=tmp.size() ; i < c ; i++)
-            result[i] = tmp.get(i);
+            result[i] = tmp.elementAt(i);
         return result;
     }
 
@@ -706,7 +706,9 @@ public class JMenuBar extends JComponent implements Accessible,MenuElement
             return false;
         }
 
-        if (c instanceof JComponent jc && jc.processKeyBinding(ks, e, condition, pressed)) {
+        if (c != null && c instanceof JComponent &&
+            ((JComponent)c).processKeyBinding(ks, e, condition, pressed)) {
+
             return true;
         }
 

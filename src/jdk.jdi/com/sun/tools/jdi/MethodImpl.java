@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -85,7 +85,8 @@ public abstract class MethodImpl extends TypeComponentImpl
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof MethodImpl other) {
+        if ((obj != null) && (obj instanceof MethodImpl)) {
+            MethodImpl other = (MethodImpl)obj;
             return (declaringType().equals(other.declaringType())) &&
                    (ref() == other.ref()) &&
                    super.equals(obj);
@@ -94,9 +95,8 @@ public abstract class MethodImpl extends TypeComponentImpl
         }
     }
 
-    @Override
     public int hashCode() {
-        return Long.hashCode(ref());
+        return (int)ref();
     }
 
     public final List<Location> allLineLocations()

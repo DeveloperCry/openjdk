@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2016, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -100,7 +100,6 @@ public class ConstantPool {
             return "value not found: " + value;
         }
 
-        @SuppressWarnings("serial") // Type of field is not Serializable
         public final Object value;
     }
 
@@ -370,7 +369,7 @@ public class ConstantPool {
         R visitUtf8(CONSTANT_Utf8_info info, P p);
     }
 
-    public abstract static class CPInfo {
+    public static abstract class CPInfo {
         CPInfo() {
             this.cp = null;
         }
@@ -394,7 +393,7 @@ public class ConstantPool {
         protected final ConstantPool cp;
     }
 
-    public abstract static class CPRefInfo extends CPInfo {
+    public static abstract class CPRefInfo extends CPInfo {
         protected CPRefInfo(ConstantPool cp, ClassReader cr, int tag) throws IOException {
             super(cp);
             this.tag = tag;

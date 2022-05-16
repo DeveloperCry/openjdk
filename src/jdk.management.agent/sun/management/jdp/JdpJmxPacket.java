@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -51,32 +51,32 @@ public final class JdpJmxPacket
     /**
      * Session ID
      */
-    public static final String UUID_KEY = "DISCOVERABLE_SESSION_UUID";
+    public final static String UUID_KEY = "DISCOVERABLE_SESSION_UUID";
     /**
      * Name of main class
      */
-    public static final String MAIN_CLASS_KEY = "MAIN_CLASS";
+    public final static String MAIN_CLASS_KEY = "MAIN_CLASS";
     /**
      * JMX service URL
      */
-    public static final String JMX_SERVICE_URL_KEY = "JMX_SERVICE_URL";
+    public final static String JMX_SERVICE_URL_KEY = "JMX_SERVICE_URL";
     /**
      * Name of Java instance
      */
-    public static final String INSTANCE_NAME_KEY = "INSTANCE_NAME";
+    public final static String INSTANCE_NAME_KEY = "INSTANCE_NAME";
     /**
      * PID of java process, optional presented if it could be obtained
      */
-    public static final String PROCESS_ID_KEY = "PROCESS_ID";
+    public final static String PROCESS_ID_KEY = "PROCESS_ID";
     /**
      * Hostname of rmi server, optional presented if user overrides rmi server
      * hostname by java.rmi.server.hostname property
      */
-    public static final String RMI_HOSTNAME_KEY = "RMI_HOSTNAME";
+    public final static String RMI_HOSTNAME_KEY = "RMI_HOSTNAME";
     /**
      * Configured broadcast interval, optional
      */
-    public static final String BROADCAST_INTERVAL_KEY = "BROADCAST_INTERVAL";
+    public final static String BROADCAST_INTERVAL_KEY = "BROADCAST_INTERVAL";
 
     private UUID id;
     private String mainClass;

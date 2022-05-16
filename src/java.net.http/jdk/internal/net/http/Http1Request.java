@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -237,7 +237,7 @@ class Http1Request {
         if (defaultPort) {
             return host;
         } else {
-            return host + ":" + port;
+            return host + ":" + Integer.toString(port);
         }
     }
 

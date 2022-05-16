@@ -311,7 +311,9 @@ public class StringSharingPlugin extends AbstractPlugin implements ResourcePrevi
                 buffers.add(buffer);
             }
             ByteBuffer bb = ByteBuffer.allocate(l);
-            buffers.forEach(bb::put);
+            buffers.stream().forEach((buf) -> {
+                bb.put(buf);
+            });
             byte[] compressed_indices = bb.array();
             byte[] compressed_size = CompressIndexes.
                     compress(compressed_indices.length);

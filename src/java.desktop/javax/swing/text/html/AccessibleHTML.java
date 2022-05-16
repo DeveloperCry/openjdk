@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -317,12 +317,14 @@ class AccessibleHTML implements Accessible {
          */
         public AccessibleStateSet getAccessibleStateSet() {
             AccessibleStateSet states = new AccessibleStateSet();
-            JTextComponent comp = getTextComponent();
+            Component comp = getTextComponent();
 
             if (comp.isEnabled()) {
                 states.add(AccessibleState.ENABLED);
             }
-            if (comp.isEditable()) {
+            if (comp instanceof JTextComponent &&
+                ((JTextComponent)comp).isEditable()) {
+
                 states.add(AccessibleState.EDITABLE);
                 states.add(AccessibleState.FOCUSABLE);
             }
@@ -370,8 +372,8 @@ class AccessibleHTML implements Accessible {
          */
         public Accessible getAccessibleChild(int i) {
             ElementInfo childInfo = elementInfo.getChild(i);
-            if (childInfo instanceof Accessible accessibleChild) {
-                return accessibleChild;
+            if (childInfo != null && childInfo instanceof Accessible) {
+                return (Accessible)childInfo;
             } else {
                 return null;
             }
@@ -740,9 +742,11 @@ class AccessibleHTML implements Accessible {
          * @see AccessibleStateSet
          */
         public boolean isFocusTraversable() {
-            JTextComponent comp = getTextComponent();
-            if (comp != null && comp.isEditable()) {
-                return true;
+            Component comp = getTextComponent();
+            if (comp instanceof JTextComponent) {
+                if (((JTextComponent)comp).isEditable()) {
+                    return true;
+                }
             }
             return false;
         }
@@ -759,8 +763,8 @@ class AccessibleHTML implements Accessible {
                 return;
             }
 
-            JTextComponent comp = getTextComponent();
-            if (comp != null) {
+            Component comp = getTextComponent();
+            if (comp instanceof JTextComponent) {
 
                 comp.requestFocusInWindow();
 
@@ -768,7 +772,7 @@ class AccessibleHTML implements Accessible {
                     if (elementInfo.validateIfNecessary()) {
                         // set the caret position to the start of this component
                         Element elem = elementInfo.getElement();
-                        comp.setCaretPosition(elem.getStartOffset());
+                        ((JTextComponent)comp).setCaretPosition(elem.getStartOffset());
 
                         // fire a AccessibleState.FOCUSED property change event
                         AccessibleContext ac = editor.getAccessibleContext();
@@ -1212,8 +1216,9 @@ class AccessibleHTML implements Accessible {
             private String getText(int offset, int length)
                 throws BadLocationException {
 
-                if (model instanceof StyledDocument doc) {
-                    return doc.getText(offset, length);
+                if (model != null && model instanceof StyledDocument) {
+                    StyledDocument doc = (StyledDocument)model;
+                    return model.getText(offset, length);
                 } else {
                     return null;
                 }
@@ -1963,16 +1968,16 @@ class AccessibleHTML implements Accessible {
             public int [] getSelectedAccessibleRows() {
                 if (validateIfNecessary()) {
                     int nRows = getAccessibleRowCount();
-                    ArrayList<Integer> vec = new ArrayList<Integer>();
+                    Vector<Integer> vec = new Vector<Integer>();
 
                     for (int i = 0; i < nRows; i++) {
                         if (isAccessibleRowSelected(i)) {
-                            vec.add(Integer.valueOf(i));
+                            vec.addElement(Integer.valueOf(i));
                         }
                     }
                     int[] retval = new int[vec.size()];
                     for (int i = 0; i < retval.length; i++) {
-                        retval[i] = vec.get(i).intValue();
+                        retval[i] = vec.elementAt(i).intValue();
                     }
                     return retval;
                 }
@@ -1988,16 +1993,16 @@ class AccessibleHTML implements Accessible {
             public int [] getSelectedAccessibleColumns() {
                 if (validateIfNecessary()) {
                     int nColumns = getAccessibleRowCount();
-                    ArrayList<Integer> vec = new ArrayList<Integer>();
+                    Vector<Integer> vec = new Vector<Integer>();
 
                     for (int i = 0; i < nColumns; i++) {
                         if (isAccessibleColumnSelected(i)) {
-                            vec.add(Integer.valueOf(i));
+                            vec.addElement(Integer.valueOf(i));
                         }
                     }
                     int[] retval = new int[vec.size()];
                     for (int i = 0; i < retval.length; i++) {
-                        retval[i] = vec.get(i).intValue();
+                        retval[i] = vec.elementAt(i).intValue();
                     }
                     return retval;
                 }

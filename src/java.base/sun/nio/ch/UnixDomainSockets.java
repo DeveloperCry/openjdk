@@ -44,9 +44,7 @@ import sun.nio.fs.AbstractFileSystemProvider;
 class UnixDomainSockets {
     private UnixDomainSockets() { }
 
-    private static class UnnamedHolder {
-        static final UnixDomainSocketAddress UNNAMED = UnixDomainSocketAddress.of("");
-    }
+    static final UnixDomainSocketAddress UNNAMED = UnixDomainSocketAddress.of("");
 
     private static final boolean supported;
 
@@ -73,7 +71,7 @@ class UnixDomainSockets {
             // Security check passed
         } catch (SecurityException e) {
             // Return unnamed address only if security check fails
-            addr = unnamed();
+            addr = UNNAMED;
         }
         return addr;
     }
@@ -135,11 +133,7 @@ class UnixDomainSockets {
             throw new BindException("Could not locate temporary directory for sockets");
         int rnd = random.nextInt(Integer.MAX_VALUE);
         try {
-            final Path path = Path.of(dir, "socket_" + rnd);
-            if (path.getFileSystem().provider() != sun.nio.fs.DefaultFileSystemProvider.instance()) {
-                throw new UnsupportedOperationException(
-                        "Unix Domain Sockets not supported on non-default file system");
-            }
+            Path path = Path.of(dir, "socket_" + rnd);
             return UnixDomainSocketAddress.of(path);
         } catch (InvalidPathException e) {
             throw new BindException("Invalid temporary directory");
@@ -164,10 +158,6 @@ class UnixDomainSockets {
             paths[0] = new String(bytes, UnixDomainSocketsUtil.getCharset());
         }
         return n;
-    }
-
-    static UnixDomainSocketAddress unnamed() {
-        return UnnamedHolder.UNNAMED;
     }
 
     private static native boolean init();

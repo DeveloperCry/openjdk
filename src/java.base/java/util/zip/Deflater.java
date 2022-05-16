@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -32,7 +32,6 @@ import java.nio.ReadOnlyBufferException;
 import java.util.Objects;
 
 import jdk.internal.ref.CleanerFactory;
-import jdk.internal.util.Preconditions;
 import sun.nio.ch.DirectBuffer;
 
 /**
@@ -231,7 +230,9 @@ public class Deflater {
      * @see Deflater#needsInput
      */
     public void setInput(byte[] input, int off, int len) {
-        Preconditions.checkFromIndexSize(len, off, input.length, Preconditions.AIOOBE_FORMATTER);
+        if (off < 0 || len < 0 || off > input.length - len) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
         synchronized (zsRef) {
             this.input = null;
             this.inputArray = input;
@@ -293,10 +294,12 @@ public class Deflater {
      * @param off the start offset of the data
      * @param len the length of the data
      * @see Inflater#inflate
-     * @see Inflater#getAdler()
+     * @see Inflater#getAdler
      */
     public void setDictionary(byte[] dictionary, int off, int len) {
-        Preconditions.checkFromIndexSize(len, off, dictionary.length, Preconditions.AIOOBE_FORMATTER);
+        if (off < 0 || len < 0 || off > dictionary.length - len) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
         synchronized (zsRef) {
             ensureOpen();
             setDictionary(zsRef.address(), dictionary, off, len);
@@ -311,7 +314,7 @@ public class Deflater {
      * decompression.
      * @param dictionary the dictionary data bytes
      * @see Inflater#inflate
-     * @see Inflater#getAdler()
+     * @see Inflater#getAdler
      */
     public void setDictionary(byte[] dictionary) {
         setDictionary(dictionary, 0, dictionary.length);
@@ -329,7 +332,7 @@ public class Deflater {
      *
      * @param dictionary the dictionary data bytes
      * @see Inflater#inflate
-     * @see Inflater#getAdler()
+     * @see Inflater#getAdler
      */
     public void setDictionary(ByteBuffer dictionary) {
         synchronized (zsRef) {
@@ -495,7 +498,6 @@ public class Deflater {
      * @param output the buffer for the compressed data
      * @return the actual number of bytes of compressed data written to the
      *         output buffer
-     * @throws ReadOnlyBufferException if the given output buffer is read-only
      * @since 11
      */
     public int deflate(ByteBuffer output) {
@@ -554,7 +556,9 @@ public class Deflater {
      * @since 1.7
      */
     public int deflate(byte[] output, int off, int len, int flush) {
-        Preconditions.checkFromIndexSize(len, off, output.length, Preconditions.AIOOBE_FORMATTER);
+        if (off < 0 || len < 0 || off > output.length - len) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
         if (flush != NO_FLUSH && flush != SYNC_FLUSH && flush != FULL_FLUSH) {
             throw new IllegalArgumentException();
         }
@@ -675,7 +679,6 @@ public class Deflater {
      *         the output buffer
      *
      * @throws IllegalArgumentException if the flush mode is invalid
-     * @throws ReadOnlyBufferException if the given output buffer is read-only
      * @since 11
      */
     public int deflate(ByteBuffer output, int flush) {

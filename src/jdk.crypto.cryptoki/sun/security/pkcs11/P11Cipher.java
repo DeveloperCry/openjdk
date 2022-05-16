@@ -38,7 +38,7 @@ import sun.nio.ch.DirectBuffer;
 import sun.security.jca.JCAUtil;
 import sun.security.pkcs11.wrapper.*;
 import static sun.security.pkcs11.wrapper.PKCS11Constants.*;
-import static sun.security.pkcs11.wrapper.PKCS11Exception.RV.*;
+import static sun.security.pkcs11.wrapper.PKCS11Exception.*;
 
 /**
  * Cipher implementation class. This class currently supports
@@ -445,14 +445,8 @@ final class P11Cipher extends CipherSpi {
 
     private void cancelOperation() {
         token.ensureValid();
-
-        if (P11Util.trySessionCancel(token, session,
-                (encrypt ? CKF_ENCRYPT : CKF_DECRYPT))) {
-            return;
-        }
-
-        // cancel by finishing operations; avoid killSession as
-        // some hardware vendors may require re-login
+        // cancel operation by finishing it; avoid killSession as some
+        // hardware vendors may require re-login
         try {
             int bufLen = doFinalLength(0);
             byte[] buffer = new byte[bufLen];
@@ -462,9 +456,9 @@ final class P11Cipher extends CipherSpi {
                 token.p11.C_DecryptFinal(session.id(), 0, buffer, 0, bufLen);
             }
         } catch (PKCS11Exception e) {
-            if (e.match(CKR_OPERATION_NOT_INITIALIZED)) {
+            if (e.getErrorCode() == CKR_OPERATION_NOT_INITIALIZED) {
                 // Cancel Operation may be invoked after an error on a PKCS#11
-                // call. If the operation inside the token is already cancelled,
+                // call. If the operation inside the token was already cancelled,
                 // do not fail here. This is part of a defensive mechanism for
                 // PKCS#11 libraries that do not strictly follow the standard.
                 return;
@@ -494,7 +488,7 @@ final class P11Cipher extends CipherSpi {
             if (session == null) {
                 session = token.getOpSession();
             }
-            CK_MECHANISM mechParams = (blockMode == MODE_CTR ?
+            CK_MECHANISM mechParams = (blockMode == MODE_CTR?
                     new CK_MECHANISM(mechanism, new CK_AES_CTR_PARAMS(iv)) :
                     new CK_MECHANISM(mechanism, iv));
             if (encrypt) {
@@ -662,7 +656,7 @@ final class P11Cipher extends CipherSpi {
             bytesBuffered += (inLen - k);
             return k;
         } catch (PKCS11Exception e) {
-            if (e.match(CKR_BUFFER_TOO_SMALL)) {
+            if (e.getErrorCode() == CKR_BUFFER_TOO_SMALL) {
                 throw (ShortBufferException)
                         (new ShortBufferException().initCause(e));
             }
@@ -786,7 +780,7 @@ final class P11Cipher extends CipherSpi {
         } catch (PKCS11Exception e) {
             // Reset input buffer to its original position for
             inBuffer.position(origPos);
-            if (e.match(CKR_BUFFER_TOO_SMALL)) {
+            if (e.getErrorCode() == CKR_BUFFER_TOO_SMALL) {
                 throw (ShortBufferException)
                         (new ShortBufferException().initCause(e));
             }
@@ -968,11 +962,12 @@ final class P11Cipher extends CipherSpi {
 
     private void handleException(PKCS11Exception e)
             throws ShortBufferException, IllegalBlockSizeException {
-        if (e.match(CKR_BUFFER_TOO_SMALL)) {
+        long errorCode = e.getErrorCode();
+        if (errorCode == CKR_BUFFER_TOO_SMALL) {
             throw (ShortBufferException)
                     (new ShortBufferException().initCause(e));
-        } else if (e.match(CKR_DATA_LEN_RANGE) ||
-                e.match(CKR_ENCRYPTED_DATA_LEN_RANGE)) {
+        } else if (errorCode == CKR_DATA_LEN_RANGE ||
+                   errorCode == CKR_ENCRYPTED_DATA_LEN_RANGE) {
             throw (IllegalBlockSizeException)
                     (new IllegalBlockSizeException(e.toString()).initCause(e));
         }

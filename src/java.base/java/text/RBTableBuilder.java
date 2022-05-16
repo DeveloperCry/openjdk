@@ -401,7 +401,7 @@ final class RBTableBuilder {
         // can work right
         if (fwd && groupChars.length() > 1) {
             addContractFlags(groupChars);
-            addContractOrder(new StringBuilder(groupChars).reverse().toString(),
+            addContractOrder(new StringBuffer(groupChars).reverse().toString(),
                              anOrder, false);
         }
     }

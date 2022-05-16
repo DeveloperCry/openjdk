@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -29,7 +29,6 @@ import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Objects;
 
-import static sun.net.httpserver.Utils.isQuotedStringContent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -50,18 +49,11 @@ public abstract class BasicAuthenticator extends Authenticator {
      * The Basic authentication credentials (username and password) are decoded
      * using the platform's {@link Charset#defaultCharset() default character set}.
      *
-     * @apiNote The value of the {@code realm} parameter will be embedded in a
-     * quoted string.
-     *
      * @param realm the HTTP Basic authentication realm
      * @throws NullPointerException if realm is {@code null}
-     * @throws IllegalArgumentException if realm is an empty string or is not
-     *         correctly quoted, as specified in <a href="https://tools.ietf.org/html/rfc7230#section-3.2">
-     *         RFC 7230 section-3.2</a>. Note, any {@code \} character used for
-     *         quoting must itself be quoted in source code.
-
+     * @throws IllegalArgumentException if realm is an empty string
      */
-    public BasicAuthenticator(String realm) {
+    public BasicAuthenticator (String realm) {
         this(realm, Charset.defaultCharset());
     }
 
@@ -73,23 +65,16 @@ public abstract class BasicAuthenticator extends Authenticator {
      * @apiNote {@code UTF-8} is the recommended charset because its usage is
      * communicated to the client, and therefore more likely to be used also
      * by the client.
-     * <p>The value of the {@code realm} parameter will be embedded in a quoted
-     * string.
      *
      * @param realm the HTTP Basic authentication realm
      * @param charset the {@code Charset} to decode incoming credentials from the client
      * @throws NullPointerException if realm or charset are {@code null}
-     * @throws IllegalArgumentException if realm is an empty string or is not
-     *         correctly quoted, as specified in <a href="https://tools.ietf.org/html/rfc7230#section-3.2">
-     *         RFC 7230 section-3.2</a>. Note, any {@code \} character used for
-     *         quoting must itself be quoted in source code.
+     * @throws IllegalArgumentException if realm is an empty string
      */
-    public BasicAuthenticator(String realm, Charset charset) {
+    public BasicAuthenticator (String realm, Charset charset) {
         Objects.requireNonNull(charset);
         if (realm.isEmpty()) // implicit NPE check
             throw new IllegalArgumentException("realm must not be empty");
-        if (!isQuotedStringContent(realm))
-            throw new IllegalArgumentException("realm invalid: " + realm);
         this.realm = realm;
         this.charset = charset;
         this.isUTF8 = charset.equals(UTF_8);

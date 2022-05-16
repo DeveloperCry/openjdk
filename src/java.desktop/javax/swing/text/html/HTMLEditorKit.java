@@ -22,80 +22,25 @@
  *
  *
  */
-
 package javax.swing.text.html;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.Writer;
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Enumeration;
-
-import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleAction;
-import javax.accessibility.AccessibleContext;
-import javax.swing.Action;
-import javax.swing.JEditorPane;
-import javax.swing.JViewport;
-import javax.swing.SizeRequirements;
-import javax.swing.SwingUtilities;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.plaf.TextUI;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
-import javax.swing.text.Element;
-import javax.swing.text.ElementIterator;
-import javax.swing.text.Highlighter;
-import javax.swing.text.IconView;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.LabelView;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.Position;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import javax.swing.text.StyledEditorKit;
-import javax.swing.text.TextAction;
-import javax.swing.text.View;
-import javax.swing.text.ViewFactory;
-import javax.swing.text.html.parser.ParserDelegator;
 
 import sun.awt.AppContext;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.swing.text.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.plaf.TextUI;
+import java.util.*;
+import javax.accessibility.*;
+import java.lang.ref.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import javax.swing.text.html.parser.ParserDelegator;
 
 /**
  * The Swing JEditorPane text component supports different kinds
@@ -216,8 +161,7 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
  *
  * @author  Timothy Prinzing
  */
-@SuppressWarnings({"serial", // Same-version serialization only
-                   "doclint:missing"})
+@SuppressWarnings("serial") // Same-version serialization only
 public class HTMLEditorKit extends StyledEditorKit implements Accessible {
 
     private JEditorPane theEditor;
@@ -459,7 +403,7 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
             try {
                 InputStream is = HTMLEditorKit.getResourceAsStream(DEFAULT_CSS);
                 Reader r = new BufferedReader(
-                        new InputStreamReader(is, ISO_8859_1));
+                        new InputStreamReader(is, "ISO-8859-1"));
                 defaultStyles.loadRules(r, null);
                 r.close();
             } catch (Throwable e) {
@@ -842,18 +786,19 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
                                   Element elem, AttributeSet attr, int offset,
                                   int x, int y) {
             Object useMap = attr.getAttribute(HTML.Attribute.USEMAP);
-            if (useMap instanceof String s) {
-                Map m = hdoc.getMap(s);
+            if (useMap != null && (useMap instanceof String)) {
+                Map m = hdoc.getMap((String)useMap);
                 if (m != null && offset < hdoc.getLength()) {
                     Rectangle bounds;
                     TextUI ui = html.getUI();
                     try {
-                        Rectangle lBounds = ui.modelToView(html, offset,
+                        Shape lBounds = ui.modelToView(html, offset,
                                                    Position.Bias.Forward);
-                        Rectangle rBounds = ui.modelToView(html, offset + 1,
+                        Shape rBounds = ui.modelToView(html, offset + 1,
                                                    Position.Bias.Backward);
-                        bounds = lBounds;
-                        bounds.add(rBounds);
+                        bounds = lBounds.getBounds();
+                        bounds.add((rBounds instanceof Rectangle) ?
+                                    (Rectangle)rBounds : rBounds.getBounds());
                     } catch (BadLocationException ble) {
                         bounds = null;
                     }
@@ -884,14 +829,18 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
             if (e != null && offset > 0 && e.getStartOffset() == offset) {
                 try {
                     TextUI ui = editor.getUI();
-                    Rectangle r1 = ui.modelToView(editor, offset,
-                                                  Position.Bias.Forward);
-                    if (r1 == null) {
+                    Shape s1 = ui.modelToView(editor, offset,
+                                              Position.Bias.Forward);
+                    if (s1 == null) {
                         return false;
                     }
-                    Rectangle r2 = ui.modelToView(editor, e.getEndOffset(),
-                                                  Position.Bias.Backward);
-                    if (r2 != null) {
+                    Rectangle r1 = (s1 instanceof Rectangle) ? (Rectangle)s1 :
+                                    s1.getBounds();
+                    Shape s2 = ui.modelToView(editor, e.getEndOffset(),
+                                              Position.Bias.Backward);
+                    if (s2 != null) {
+                        Rectangle r2 = (s2 instanceof Rectangle) ? (Rectangle)s2 :
+                                    s2.getBounds();
                         r1.add(r2);
                     }
                     return r1.contains(x, y);
@@ -1327,7 +1276,7 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
                 } else if (kind == HTML.Tag.IMPLIED) {
                     String ws = (String) elem.getAttributes().getAttribute(
                         CSS.Attribute.WHITE_SPACE);
-                    if ("pre".equals(ws)) {
+                    if ((ws != null) && ws.equals("pre")) {
                         return new LineView(elem);
                     }
                     return new javax.swing.text.html.ParagraphView(elem);
@@ -1468,8 +1417,12 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
 
             protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
                 Container container = getContainer();
-                if ((container instanceof JEditorPane)
-                        && (container.getParent() instanceof JViewport viewPort)) {
+                Container parentContainer;
+                if (container != null
+                    && (container instanceof javax.swing.JEditorPane)
+                    && (parentContainer = container.getParent()) != null
+                    && (parentContainer instanceof javax.swing.JViewport)) {
+                    JViewport viewPort = (JViewport)parentContainer;
                     if (cachedViewPort != null) {
                         JViewport cachedObject = cachedViewPort.get();
                         if (cachedObject != null) {
@@ -1508,9 +1461,9 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
                 //if parent == null unregister component listener
                 if (parent == null) {
                     if (cachedViewPort != null) {
-                        JViewport cachedObject;
+                        Object cachedObject;
                         if ((cachedObject = cachedViewPort.get()) != null) {
-                            cachedObject.removeComponentListener(this);
+                            ((JComponent)cachedObject).removeComponentListener(this);
                         }
                         cachedViewPort = null;
                     }
@@ -2384,9 +2337,9 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
          */
         private void doObjectAction(JEditorPane editor, Element elem) {
             View view = getView(editor, elem);
-            if (view instanceof ObjectView objectView) {
-                Component comp = objectView.getComponent();
-                if (comp instanceof Accessible) {
+            if (view != null && view instanceof ObjectView) {
+                Component comp = ((ObjectView)view).getComponent();
+                if (comp != null && comp instanceof Accessible) {
                     AccessibleContext ac = comp.getAccessibleContext();
                     if (ac != null) {
                         AccessibleAction aa = ac.getAccessibleAction();
@@ -2470,9 +2423,10 @@ public class HTMLEditorKit extends StyledEditorKit implements Accessible {
             JEditorPane editor = (JEditorPane)c;
 
             Document d = editor.getDocument();
-            if (!(d instanceof HTMLDocument doc)) {
+            if (d == null || !(d instanceof HTMLDocument)) {
                 return;
             }
+            HTMLDocument doc = (HTMLDocument)d;
 
             ElementIterator ei = new ElementIterator(doc);
             int currentOffset = editor.getCaretPosition();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -443,7 +443,7 @@ public final class StackTraceElement implements java.io.Serializable {
      */
     private synchronized void computeFormat() {
         try {
-            Class<?> cls = declaringClassObject;
+            Class<?> cls = (Class<?>) declaringClassObject;
             ClassLoader loader = cls.getClassLoader0();
             Module m = cls.getModule();
             byte bits = 0;

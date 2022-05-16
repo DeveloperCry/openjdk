@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2003, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -73,7 +73,7 @@ class SaslOutputStream extends FilterOutputStream {
      */
     public void write(byte[] buffer, int offset, int total) throws IOException {
         int count;
-        byte[] wrappedToken;
+        byte[] wrappedToken, saslBuffer;
 
         // "Packetize" buffer to be within rawSendSize
         if (debug) {

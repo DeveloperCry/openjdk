@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -417,6 +417,7 @@ class WindbgCDebugInfoBuilder
     // and UDT references to understand how to build the global
     // database vs. the module-by-module one)
     DebugVC50SubsectionDirectory dir = vc50.getSubsectionDirectory();
+    int moduleNumber = 0; // Debugging
     for (int i = 0; i < dir.getNumEntries(); i++) {
       DebugVC50Subsection ss = dir.getSubsection(i);
       int ssType = ss.getSubsectionType();

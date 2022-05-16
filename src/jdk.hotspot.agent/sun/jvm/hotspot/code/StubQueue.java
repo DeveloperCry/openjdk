@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -24,6 +24,7 @@
 
 package sun.jvm.hotspot.code;
 
+import java.util.*;
 import sun.jvm.hotspot.debugger.*;
 import sun.jvm.hotspot.runtime.*;
 import sun.jvm.hotspot.types.*;
@@ -87,6 +88,7 @@ public class StubQueue extends VMObject {
 
   public Stub getStubContaining(Address pc) {
     if (contains(pc)) {
+      int i = 0;
       for (Stub s = getFirst(); s != null; s = getNext(s)) {
         if (stubContains(s, pc)) {
           return s;

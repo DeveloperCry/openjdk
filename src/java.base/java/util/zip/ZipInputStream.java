@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.io.PushbackInputStream;
 import java.nio.charset.Charset;
-import java.util.Objects;
 
 import sun.nio.cs.UTF_8;
 
@@ -183,8 +182,9 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
      */
     public int read(byte[] b, int off, int len) throws IOException {
         ensureOpen();
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) {
+        if (off < 0 || len < 0 || off > b.length - len) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
             return 0;
         }
 

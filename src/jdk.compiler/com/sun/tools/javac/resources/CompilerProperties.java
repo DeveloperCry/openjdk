@@ -124,7 +124,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.annotation.decl.not.allowed.here=\
-         *    annotation interface declaration not allowed here
+         *    annotation type declaration not allowed here
          */
         public static final Error AnnotationDeclNotAllowedHere = new Error("compiler", "annotation.decl.not.allowed.here");
         
@@ -154,7 +154,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.annotation.type.not.applicable=\
-         *    annotation interface not applicable to this kind of declaration
+         *    annotation type not applicable to this kind of declaration
          */
         public static final Error AnnotationTypeNotApplicable = new Error("compiler", "annotation.type.not.applicable");
         
@@ -1082,12 +1082,6 @@ public class CompilerProperties {
         public static final Error DcNoTagName = new Error("compiler", "dc.no.tag.name");
         
         /**
-         * compiler.err.dc.ref.annotations.not.allowed=\
-         *    annotations not allowed
-         */
-        public static final Error DcRefAnnotationsNotAllowed = new Error("compiler", "dc.ref.annotations.not.allowed");
-        
-        /**
          * compiler.err.dc.ref.bad.parens=\
          *    unexpected text after parenthesis
          */
@@ -1131,7 +1125,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.default.allowed.in.intf.annotation.member=\
-         *    default value only allowed in an annotation interface declaration
+         *    default value only allowed in an annotation type declaration
          */
         public static final Error DefaultAllowedInIntfAnnotationMember = new Error("compiler", "default.allowed.in.intf.annotation.member");
         
@@ -1183,7 +1177,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.duplicate.annotation.missing.container=\
-         *    {0} is not a repeatable annotation interface
+         *    {0} is not a repeatable annotation type
          */
         public static Error DuplicateAnnotationMissingContainer(Type arg0) {
             return new Error("compiler", "duplicate.annotation.missing.container", arg0);
@@ -1295,7 +1289,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.enum.cant.be.instantiated=\
-         *    enum classes may not be instantiated
+         *    enum types may not be instantiated
          */
         public static final Error EnumCantBeInstantiated = new Error("compiler", "enum.cant.be.instantiated");
         
@@ -1331,7 +1325,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.enum.types.not.extensible=\
-         *    enum classes are not extensible
+         *    enum types are not extensible
          */
         public static final Error EnumTypesNotExtensible = new Error("compiler", "enum.types.not.extensible");
         
@@ -1928,7 +1922,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.intf.annotation.cant.have.type.params=\
-         *    annotation interface {0} cannot be generic
+         *    annotation type {0} cannot be generic
          */
         public static Error IntfAnnotationCantHaveTypeParams(Symbol arg0) {
             return new Error("compiler", "intf.annotation.cant.have.type.params", arg0);
@@ -1936,7 +1930,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.intf.annotation.member.clash=\
-         *    annotation interface {1} declares an element with the same name as method {0}
+         *    annotation type {1} declares an element with the same name as method {0}
          */
         public static Error IntfAnnotationMemberClash(Symbol arg0, Type arg1) {
             return new Error("compiler", "intf.annotation.member.clash", arg0, arg1);
@@ -1944,13 +1938,13 @@ public class CompilerProperties {
         
         /**
          * compiler.err.intf.annotation.members.cant.have.params=\
-         *    elements in annotation interface declarations cannot declare formal parameters
+         *    elements in annotation type declarations cannot declare formal parameters
          */
         public static final Error IntfAnnotationMembersCantHaveParams = new Error("compiler", "intf.annotation.members.cant.have.params");
         
         /**
          * compiler.err.intf.annotation.members.cant.have.type.params=\
-         *    elements in annotation interface declarations cannot be generic methods
+         *    elements in annotation type declarations cannot be generic methods
          */
         public static final Error IntfAnnotationMembersCantHaveTypeParams = new Error("compiler", "intf.annotation.members.cant.have.type.params");
         
@@ -1991,7 +1985,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.annotation.member.type=\
-         *    invalid type for annotation interface element
+         *    invalid type for annotation type element
          */
         public static final Error InvalidAnnotationMemberType = new Error("compiler", "invalid.annotation.member.type");
         
@@ -2106,7 +2100,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.elem.nondefault=\
-         *    containing annotation interface ({0}) does not have a default value for element {1}
+         *    containing annotation type ({0}) does not have a default value for element {1}
          */
         public static Error InvalidRepeatableAnnotationElemNondefault(Symbol arg0, Symbol arg1) {
             return new Error("compiler", "invalid.repeatable.annotation.elem.nondefault", arg0, arg1);
@@ -2114,7 +2108,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.elem.nondefault=\
-         *    containing annotation interface ({0}) does not have a default value for element {1}
+         *    containing annotation type ({0}) does not have a default value for element {1}
          */
         public static Error InvalidRepeatableAnnotationElemNondefault(Type arg0, Symbol arg1) {
             return new Error("compiler", "invalid.repeatable.annotation.elem.nondefault", arg0, arg1);
@@ -2122,7 +2116,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.incompatible.target=\
-         *    containing annotation interface ({0}) is applicable to more targets than repeatable annotation interface ({1})
+         *    containing annotation type ({0}) is applicable to more targets than repeatable annotation type ({1})
          */
         public static Error InvalidRepeatableAnnotationIncompatibleTarget(Symbol arg0, Symbol arg1) {
             return new Error("compiler", "invalid.repeatable.annotation.incompatible.target", arg0, arg1);
@@ -2178,7 +2172,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.not.documented=\
-         *    repeatable annotation interface ({1}) is @Documented while containing annotation interface ({0}) is not
+         *    repeatable annotation type ({1}) is @Documented while containing annotation type ({0}) is not
          */
         public static Error InvalidRepeatableAnnotationNotDocumented(Symbol arg0, Symbol arg1) {
             return new Error("compiler", "invalid.repeatable.annotation.not.documented", arg0, arg1);
@@ -2186,7 +2180,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.not.inherited=\
-         *    repeatable annotation interface ({1}) is @Inherited while containing annotation interface ({0}) is not
+         *    repeatable annotation type ({1}) is @Inherited while containing annotation type ({0}) is not
          */
         public static Error InvalidRepeatableAnnotationNotInherited(Symbol arg0, Symbol arg1) {
             return new Error("compiler", "invalid.repeatable.annotation.not.inherited", arg0, arg1);
@@ -2202,7 +2196,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.retention=\
-         *    retention of containing annotation interface ({0}) is shorter than the retention of repeatable annotation interface ({2})
+         *    retention of containing annotation type ({0}) is shorter than the retention of repeatable annotation type ({2})
          */
         public static Error InvalidRepeatableAnnotationRetention(Symbol arg0, String arg1, Symbol arg2, String arg3) {
             return new Error("compiler", "invalid.repeatable.annotation.retention", arg0, arg1, arg2, arg3);
@@ -2210,7 +2204,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.value.return=\
-         *    containing annotation interface ({0}) must declare an element named ''value'' of type {2}
+         *    containing annotation type ({0}) must declare an element named ''value'' of type {2}
          */
         public static Error InvalidRepeatableAnnotationValueReturn(Symbol arg0, Type arg1, Type arg2) {
             return new Error("compiler", "invalid.repeatable.annotation.value.return", arg0, arg1, arg2);
@@ -2218,7 +2212,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.invalid.repeatable.annotation.value.return=\
-         *    containing annotation interface ({0}) must declare an element named ''value'' of type {2}
+         *    containing annotation type ({0}) must declare an element named ''value'' of type {2}
          */
         public static Error InvalidRepeatableAnnotationValueReturn(Type arg0, Type arg1, Type arg2) {
             return new Error("compiler", "invalid.repeatable.annotation.value.return", arg0, arg1, arg2);
@@ -2356,7 +2350,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.local.enum=\
-         *    enum classes must not be local
+         *    enum types must not be local
          */
         public static final Error LocalEnum = new Error("compiler", "local.enum");
         
@@ -2727,7 +2721,7 @@ public class CompilerProperties {
         
         /**
          * compiler.err.not.annotation.type=\
-         *    {0} is not an annotation interface
+         *    {0} is not an annotation type
          */
         public static Error NotAnnotationType(Type arg0) {
             return new Error("compiler", "not.annotation.type", arg0);
@@ -4046,19 +4040,6 @@ public class CompilerProperties {
     }
     public static class Warnings {
         /**
-         * compiler.warn.OSF.array.SPF=\
-         *    serialPersistentFields must be of type java.io.ObjectStreamField[] to be effective
-         */
-        public static final Warning OSFArraySPF = new Warning("compiler", "OSF.array.SPF");
-        
-        /**
-         * compiler.warn.SPF.null.init=\
-         *    serialPersistentFields ineffective if initialized to null.\n\
-         *    Initialize to an empty array to indicate no fields
-         */
-        public static final Warning SPFNullInit = new Warning("compiler", "SPF.null.init");
-        
-        /**
          * compiler.warn.access.to.member.from.serializable.element=\
          *    access to member {0} from serializable element can be publicly accessible to untrusted code
          */
@@ -4210,12 +4191,6 @@ public class CompilerProperties {
         }
         
         /**
-         * compiler.warn.default.ineffective=\
-         *    serialization-related default method from an interface will not be run by serialization for an implementing class
-         */
-        public static final Warning DefaultIneffective = new Warning("compiler", "default.ineffective");
-        
-        /**
          * compiler.warn.deprecated.annotation.has.no.effect=\
          *    @Deprecated annotation has no effect on this {0} declaration
          */
@@ -4278,12 +4253,6 @@ public class CompilerProperties {
          *    empty statement after if
          */
         public static final Warning EmptyIf = new Warning("compiler", "empty.if");
-        
-        /**
-         * compiler.warn.externalizable.missing.public.no.arg.ctor=\
-         *    an Externalizable class needs a public no-arg constructor
-         */
-        public static final Warning ExternalizableMissingPublicNoArgCtor = new Warning("compiler", "externalizable.missing.public.no.arg.ctor");
         
         /**
          * compiler.warn.file.from.future=\
@@ -4378,12 +4347,6 @@ public class CompilerProperties {
         }
         
         /**
-         * compiler.warn.improper.SPF=\
-         *    serialPersistentFields must be declared private static final to be effective
-         */
-        public static final Warning ImproperSPF = new Warning("compiler", "improper.SPF");
-        
-        /**
          * compiler.warn.improper.SVUID=\
          *    serialVersionUID must be declared static final in class {0}
          */
@@ -4403,56 +4366,6 @@ public class CompilerProperties {
          */
         public static Warning IncubatingModules(String arg0) {
             return new Warning("compiler", "incubating.modules", arg0);
-        }
-        
-        /**
-         * compiler.warn.ineffectual.serial.field.enum=\
-         *     serialization-related field {0} is not effective in an enum class
-         */
-        public static Warning IneffectualSerialFieldEnum(String arg0) {
-            return new Warning("compiler", "ineffectual.serial.field.enum", arg0);
-        }
-        
-        /**
-         * compiler.warn.ineffectual.serial.field.externalizable=\
-         *    serialPersistentFields is not effective in an Externalizable class
-         */
-        public static final Warning IneffectualSerialFieldExternalizable = new Warning("compiler", "ineffectual.serial.field.externalizable");
-        
-        /**
-         * compiler.warn.ineffectual.serial.field.interface=\
-         *    serialPersistentFields is not effective in an interface
-         */
-        public static final Warning IneffectualSerialFieldInterface = new Warning("compiler", "ineffectual.serial.field.interface");
-        
-        /**
-         * compiler.warn.ineffectual.serial.field.record=\
-         *    serialPersistentFields is not effective in a record class
-         */
-        public static final Warning IneffectualSerialFieldRecord = new Warning("compiler", "ineffectual.serial.field.record");
-        
-        /**
-         * compiler.warn.ineffectual.serial.method.enum=\
-         *    serialization-related method {0} is not effective in an enum class
-         */
-        public static Warning IneffectualSerialMethodEnum(String arg0) {
-            return new Warning("compiler", "ineffectual.serial.method.enum", arg0);
-        }
-        
-        /**
-         * compiler.warn.ineffectual.serial.method.externalizable=\
-         *    serialization-related method {0} is not effective in an Externalizable class
-         */
-        public static Warning IneffectualSerialMethodExternalizable(Name arg0) {
-            return new Warning("compiler", "ineffectual.serial.method.externalizable", arg0);
-        }
-        
-        /**
-         * compiler.warn.ineffectual.serial.method.record=\
-         *    serialization-related method {0} is not effective in a record class
-         */
-        public static Warning IneffectualSerialMethodRecord(String arg0) {
-            return new Warning("compiler", "ineffectual.serial.method.record", arg0);
         }
         
         /**
@@ -4608,27 +4521,6 @@ public class CompilerProperties {
          */
         public static Warning ModuleNotFound(Symbol arg0) {
             return new Warning("compiler", "module.not.found", arg0);
-        }
-        
-        /**
-         * compiler.warn.non.private.method.weaker.access=\
-         *    serialization-related method declared non-private in an interface will prevent\n\
-         *    classes implementing the interface from declaring the method as private
-         */
-        public static final Warning NonPrivateMethodWeakerAccess = new Warning("compiler", "non.private.method.weaker.access");
-        
-        /**
-         * compiler.warn.non.serializable.instance.field=\
-         *    non-transient instance field of a serializable class declared with a non-serializable type
-         */
-        public static final Warning NonSerializableInstanceField = new Warning("compiler", "non.serializable.instance.field");
-        
-        /**
-         * compiler.warn.non.serializable.instance.field.array=\
-         *    non-transient instance field of a serializable class declared with an array having a non-serializable base component type {0}
-         */
-        public static Warning NonSerializableInstanceFieldArray(Type arg0) {
-            return new Warning("compiler", "non.serializable.instance.field.array", arg0);
         }
         
         /**
@@ -4899,7 +4791,7 @@ public class CompilerProperties {
         
         /**
          * compiler.warn.proc.duplicate.supported.annotation=\
-         *    Duplicate supported annotation interface ''{0}'' returned by annotation processor ''{1}''
+         *    Duplicate supported annotation type ''{0}'' returned by annotation processor ''{1}''
          */
         public static Warning ProcDuplicateSupportedAnnotation(String arg0, String arg1) {
             return new Warning("compiler", "proc.duplicate.supported.annotation", arg0, arg1);
@@ -4931,7 +4823,7 @@ public class CompilerProperties {
         
         /**
          * compiler.warn.proc.malformed.supported.string=\
-         *    Malformed string ''{0}'' for a supported annotation interface returned by processor ''{1}''
+         *    Malformed string ''{0}'' for a supported annotation type returned by processor ''{1}''
          */
         public static Warning ProcMalformedSupportedString(String arg0, String arg1) {
             return new Warning("compiler", "proc.malformed.supported.string", arg0, arg1);
@@ -4969,7 +4861,7 @@ public class CompilerProperties {
         
         /**
          * compiler.warn.proc.redundant.types.with.wildcard=\
-         *    Annotation processor ''{0}'' redundantly supports both ''*'' and other annotation interfaces
+         *    Annotation processor ''{0}'' redundantly supports both ''*'' and other annotation types
          */
         public static Warning ProcRedundantTypesWithWildcard(String arg0) {
             return new Warning("compiler", "proc.redundant.types.with.wildcard", arg0);
@@ -5088,79 +4980,6 @@ public class CompilerProperties {
          */
         public static Warning SelfRef(Symbol arg0) {
             return new Warning("compiler", "self.ref", arg0);
-        }
-        
-        /**
-         * compiler.warn.serial.concrete.instance.method=\
-         *    serialization-related method {0} must be a concrete instance method to be effective, neither abstract nor static
-         */
-        public static Warning SerialConcreteInstanceMethod(Name arg0) {
-            return new Warning("compiler", "serial.concrete.instance.method", arg0);
-        }
-        
-        /**
-         * compiler.warn.serial.method.no.args=\
-         *    to be effective serialization-related method {0} must have no parameters
-         */
-        public static Warning SerialMethodNoArgs(Name arg0) {
-            return new Warning("compiler", "serial.method.no.args", arg0);
-        }
-        
-        /**
-         * compiler.warn.serial.method.not.private=\
-         *    serialization-related method {0} not declared private
-         */
-        public static Warning SerialMethodNotPrivate(Name arg0) {
-            return new Warning("compiler", "serial.method.not.private", arg0);
-        }
-        
-        /**
-         * compiler.warn.serial.method.one.arg=\
-         *    to be effective serialization-related method {0} must have exactly one parameter rather than {1} parameters
-         */
-        public static Warning SerialMethodOneArg(Name arg0, int arg1) {
-            return new Warning("compiler", "serial.method.one.arg", arg0, arg1);
-        }
-        
-        /**
-         * compiler.warn.serial.method.parameter.type=\
-         *    sole parameter of serialization-related method {0} must have type {1} to be effective rather than type {2}
-         */
-        public static Warning SerialMethodParameterType(Name arg0, Type arg1, Type arg2) {
-            return new Warning("compiler", "serial.method.parameter.type", arg0, arg1, arg2);
-        }
-        
-        /**
-         * compiler.warn.serial.method.static=\
-         *    serialization-related method {0} declared static; must instead be an instance method to be effective
-         */
-        public static Warning SerialMethodStatic(Name arg0) {
-            return new Warning("compiler", "serial.method.static", arg0);
-        }
-        
-        /**
-         * compiler.warn.serial.method.unexpected.exception=\
-         *    serialization-related method {0} declared to throw an unexpected type {1}
-         */
-        public static Warning SerialMethodUnexpectedException(Name arg0, Type arg1) {
-            return new Warning("compiler", "serial.method.unexpected.exception", arg0, arg1);
-        }
-        
-        /**
-         * compiler.warn.serial.method.unexpected.return.type=\
-         *    serialization-related method {0} declared with a return type of {1} rather than expected type {2}.\n\
-         *    As declared, the method will be ineffective for serialization
-         */
-        public static Warning SerialMethodUnexpectedReturnType(Name arg0, Type arg1, Type arg2) {
-            return new Warning("compiler", "serial.method.unexpected.return.type", arg0, arg1, arg2);
-        }
-        
-        /**
-         * compiler.warn.serializable.missing.access.no.arg.ctor=\
-         *    cannot access a no-arg constructor in first non-serializable superclass {0}
-         */
-        public static Warning SerializableMissingAccessNoArgCtor(Name arg0) {
-            return new Warning("compiler", "serializable.missing.access.no.arg.ctor", arg0);
         }
         
         /**

@@ -122,7 +122,6 @@ public class Names {
 
     // module names
     public final Name java_base;
-    public final Name jdk_unsupported;
 
     // attribute names
     public final Name Annotation;
@@ -302,7 +301,6 @@ public class Names {
 
         // module names
         java_base = fromString("java.base");
-        jdk_unsupported = fromString("jdk.unsupported");
 
         // attribute names
         Annotation = fromString("Annotation");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -176,7 +176,7 @@ public final class PKIXCertPathValidator extends CertPathValidatorSpi {
         List<PKIXCertPathChecker> certPathCheckers = new ArrayList<>();
         // add standard checkers that we will be using
         certPathCheckers.add(untrustedChecker);
-        certPathCheckers.add(new AlgorithmChecker(anchor, params.timestamp(),
+        certPathCheckers.add(new AlgorithmChecker(anchor, null, params.date(),
                 params.variant()));
         certPathCheckers.add(new KeyChecker(certPathLen,
                                             params.targetCertConstraints()));

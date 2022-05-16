@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -168,7 +168,7 @@ public final class Checks {
      * Returns true if the given string is a legal Java identifier,
      * otherwise false.
      */
-    public static boolean isJavaIdentifier(String str) {
+    private static boolean isJavaIdentifier(String str) {
         if (str.isEmpty() || RESERVED.contains(str))
             return false;
 

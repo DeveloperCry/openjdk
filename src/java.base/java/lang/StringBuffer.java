@@ -784,7 +784,7 @@ import jdk.internal.vm.annotation.IntrinsicCandidate;
         // ignore shared field
     }
 
-    synchronized void getBytes(byte[] dst, int dstBegin, byte coder) {
+    synchronized void getBytes(byte dst[], int dstBegin, byte coder) {
         super.getBytes(dst, dstBegin, coder);
     }
 }

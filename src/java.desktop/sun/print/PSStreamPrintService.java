@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -320,7 +320,8 @@ public class PSStreamPrintService extends StreamPrintService
             MediaSize mediaSize = (MediaSize)attributes.get(MediaSize.class);
             if (mediaSize == null) {
                 Media media = (Media)attributes.get(Media.class);
-                if (media instanceof MediaSizeName msn) {
+                if (media != null && media instanceof MediaSizeName) {
+                    MediaSizeName msn = (MediaSizeName)media;
                     mediaSize = MediaSize.getMediaSizeForName(msn);
                 }
             }

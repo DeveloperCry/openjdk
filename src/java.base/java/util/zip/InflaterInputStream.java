@@ -29,7 +29,6 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.EOFException;
-import java.util.Objects;
 
 /**
  * This class implements a stream filter for uncompressing data in the
@@ -143,9 +142,9 @@ public class InflaterInputStream extends FilterInputStream {
         ensureOpen();
         if (b == null) {
             throw new NullPointerException();
-        }
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) {
+        } else if (off < 0 || len < 0 || len > b.length - off) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
             return 0;
         }
         try {

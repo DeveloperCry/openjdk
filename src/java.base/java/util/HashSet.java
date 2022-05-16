@@ -335,7 +335,7 @@ public class HashSet<E>
                      .checkArray(s, Map.Entry[].class, HashMap.tableSizeFor(capacity));
 
         // Create backing HashMap
-        map = (this instanceof LinkedHashSet ?
+        map = (((HashSet<?>)this) instanceof LinkedHashSet ?
                new LinkedHashMap<>(capacity, loadFactor) :
                new HashMap<>(capacity, loadFactor));
 

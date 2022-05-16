@@ -83,7 +83,7 @@ public class EventDirectoryStream extends AbstractEventStream {
 
     @Override
     public void close() {
-        closeParser();
+        setClosed(true);
         dispatcher().runCloseActions();
         repositoryFiles.close();
         if (currentParser != null) {
@@ -149,7 +149,7 @@ public class EventDirectoryStream extends AbstractEventStream {
         currentChunkStartNanos = repositoryFiles.getTimestamp(path);
         try (RecordingInput input = new RecordingInput(path.toFile(), fileAccess)) {
             input.setStreamed();
-            currentParser = new ChunkParser(input, disp.parserConfiguration, parserState);
+            currentParser = new ChunkParser(input, disp.parserConfiguration);
             long segmentStart = currentParser.getStartNanos() + currentParser.getChunkDuration();
             long filterStart = validStartTime ? disp.startNanos : segmentStart;
             long filterEnd = disp.endTime != null ? disp.endNanos : Long.MAX_VALUE;

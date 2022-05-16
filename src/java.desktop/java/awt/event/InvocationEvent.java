@@ -116,7 +116,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
      * @see #isDispatched
      * @since 1.7
      */
-    private volatile boolean dispatched;
+    private volatile boolean dispatched = false;
 
     /**
      * Set to true if dispatch() catches Throwable and stores it in the

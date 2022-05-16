@@ -91,11 +91,16 @@ public final class RSAPrivateCrtKeyImpl
             RSAKeyFactory.checkKeyAlgo(key, type.keyAlgo);
             // check all CRT-specific components are available, if any one
             // missing, return a non-CRT key instead
-            if (checkComponents(key)) {
-                return key;
-            } else {
+            if ((key.getPublicExponent().signum() == 0) ||
+                (key.getPrimeExponentP().signum() == 0) ||
+                (key.getPrimeExponentQ().signum() == 0) ||
+                (key.getPrimeP().signum() == 0) ||
+                (key.getPrimeQ().signum() == 0) ||
+                (key.getCrtCoefficient().signum() == 0)) {
                 return new RSAPrivateKeyImpl(key.type, key.keyParams,
                     key.getModulus(), key.getPrivateExponent());
+            } else {
+                return key;
             }
         case "PKCS#1":
             try {
@@ -117,18 +122,6 @@ public final class RSAPrivateCrtKeyImpl
             throw new InvalidKeyException("Unsupported RSA Private(Crt)Key "
                     + "format: " + format);
         }
-    }
-
-    /**
-     * Validate if all CRT-specific components are available.
-     */
-    static boolean checkComponents(RSAPrivateCrtKey key) {
-        return !((key.getPublicExponent().signum() == 0) ||
-            (key.getPrimeExponentP().signum() == 0) ||
-            (key.getPrimeExponentQ().signum() == 0) ||
-            (key.getPrimeP().signum() == 0) ||
-            (key.getPrimeQ().signum() == 0) ||
-            (key.getCrtCoefficient().signum() == 0));
     }
 
     /**

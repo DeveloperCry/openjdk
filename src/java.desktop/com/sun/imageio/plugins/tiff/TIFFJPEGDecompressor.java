@@ -139,7 +139,7 @@ public class TIFFJPEGDecompressor extends TIFFDecompressor {
         JPEGReader.read(0, JPEGParam);
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     protected void finalize() throws Throwable {
         super.finalize();
         JPEGReader.dispose();

@@ -111,7 +111,7 @@ public final class SequentialScheduler {
      * later time, and maybe in different thread. This type exists for
      * readability purposes at use-sites only.
      */
-    public abstract static class DeferredCompleter {
+    public static abstract class DeferredCompleter {
 
         /** Extensible from this (outer) class ONLY. */
         private DeferredCompleter() { }
@@ -140,7 +140,7 @@ public final class SequentialScheduler {
      * A simple and self-contained task that completes once its {@code run}
      * method returns.
      */
-    public abstract static class CompleteRestartableTask
+    public static abstract class CompleteRestartableTask
         implements RestartableTask
     {
         @Override

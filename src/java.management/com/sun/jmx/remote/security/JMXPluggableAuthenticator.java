@@ -44,6 +44,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 import com.sun.jmx.remote.util.ClassLogger;
+import com.sun.jmx.remote.util.EnvHelp;
 
 /**
  * <p>This class represents a
@@ -227,7 +228,9 @@ public final class JMXPluggableAuthenticator implements JMXAuthenticator {
             se = (SecurityException) exception;
         } else {
             msg = "Authentication failed! " + exception.getMessage();
-            se = new SecurityException(msg, exception);
+            final SecurityException e = new SecurityException(msg);
+            EnvHelp.initCause(e, exception);
+            se = e;
         }
         logException(method, msg, se);
         throw se;

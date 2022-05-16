@@ -22,10 +22,8 @@
  */
 package com.sun.org.apache.xml.internal.security.transforms.implementations;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
-import com.sun.org.apache.xml.internal.security.parser.XMLParserException;
 import com.sun.org.apache.xml.internal.security.signature.NodeFilter;
 import com.sun.org.apache.xml.internal.security.signature.XMLSignatureInput;
 import com.sun.org.apache.xml.internal.security.transforms.TransformSpi;
@@ -73,11 +71,7 @@ public class TransformEnvelopedSignature extends TransformSpi {
 
         Node signatureElement = searchSignatureElement(transformElement);
         input.setExcludeNode(signatureElement);
-        try {
-            input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
-        } catch (XMLParserException | IOException ex) {
-            throw new TransformationException(ex);
-        }
+        input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
         return input;
     }
 

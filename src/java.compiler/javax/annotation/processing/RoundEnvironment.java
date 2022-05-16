@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,7 +25,8 @@
 
 package javax.annotation.processing;
 
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import java.util.LinkedHashSet;
 import java.util.Collections;
 import java.util.Set;
@@ -57,15 +58,8 @@ public interface RoundEnvironment {
     boolean errorRaised();
 
     /**
-     * Returns the {@linkplain Processor root elements} for annotation
-     * processing {@linkplain Filer generated} by the prior round.
-     *
-     * @apiNote
-     * Root elements correspond to the top-level declarations in
-     * compilation units (JLS section {@jls 7.3}). Root elements are
-     * most commonly {@linkplain TypeElement types}, but can also be
-     * {@linkplain PackageElement packages} or {@linkplain
-     * ModuleElement modules}.
+     * Returns the {@linkplain Processor root elements} for annotation processing generated
+     * by the prior round.
      *
      * @return the root elements for annotation processing generated
      * by the prior round, or an empty set if there were none

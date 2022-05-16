@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -49,7 +49,8 @@ abstract class MirrorImpl extends Object implements Mirror {
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof Mirror other) {
+        if ((obj != null) && (obj instanceof Mirror)) {
+            Mirror other = (Mirror)obj;
             return vm.equals(other.virtualMachine());
         } else {
             return false;

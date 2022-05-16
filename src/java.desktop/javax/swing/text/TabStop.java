@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -181,7 +181,7 @@ public class TabStop implements Serializable {
             buf = "bar ";
             break;
         }
-        buf = buf + "tab @" + position;
+        buf = buf + "tab @" + String.valueOf(position);
         if (leader != LEAD_NONE)
             buf = buf + " (w/leaders)";
         return buf;

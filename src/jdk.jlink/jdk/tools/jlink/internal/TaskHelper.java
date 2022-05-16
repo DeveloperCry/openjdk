@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -81,7 +81,6 @@ public final class TaskHelper {
             return this;
         }
         public final String key;
-        @SuppressWarnings("serial") // Array component type is not Serializable
         public final Object[] args;
         public boolean showUsage;
     }

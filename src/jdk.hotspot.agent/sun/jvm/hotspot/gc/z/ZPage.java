@@ -51,7 +51,7 @@ public class ZPage extends VMObject implements LiveRegionsProvider {
         VM.registerVMInitializedObserver((o, d) -> initialize(VM.getVM().getTypeDataBase()));
     }
 
-    private static synchronized void initialize(TypeDataBase db) {
+    static private synchronized void initialize(TypeDataBase db) {
         Type type = db.lookupType("ZPage");
 
         typeField = type.getCIntegerField("_type");

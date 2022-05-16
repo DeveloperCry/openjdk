@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -254,7 +254,7 @@ public abstract class StringConcat {
     /**
      * Base class for indified concatenation bytecode flavors.
      */
-    private abstract static class Indy extends StringConcat {
+    private static abstract class Indy extends StringConcat {
         public Indy(Context context) {
             super(context);
         }
@@ -371,7 +371,7 @@ public abstract class StringConcat {
                         syms.stringType,
                         syms.methodTypeType);
 
-                MethodSymbol bsm = rs.resolveInternalMethod(pos,
+                Symbol bsm = rs.resolveInternalMethod(pos,
                         gen.getAttrEnv(),
                         syms.stringConcatFactory,
                         names.makeConcat,
@@ -380,7 +380,7 @@ public abstract class StringConcat {
 
                 Symbol.DynamicMethodSymbol dynSym = new Symbol.DynamicMethodSymbol(names.makeConcat,
                         syms.noSymbol,
-                        bsm.asHandle(),
+                        ((MethodSymbol)bsm).asHandle(),
                         indyType,
                         List.nil().toArray(new LoadableConstant[0]));
 
@@ -487,7 +487,7 @@ public abstract class StringConcat {
                         .append(syms.stringType)
                         .appendList(constTypes);
 
-                MethodSymbol bsm = rs.resolveInternalMethod(pos,
+                Symbol bsm = rs.resolveInternalMethod(pos,
                         gen.getAttrEnv(),
                         syms.stringConcatFactory,
                         names.makeConcatWithConstants,
@@ -496,7 +496,7 @@ public abstract class StringConcat {
 
                 Symbol.DynamicMethodSymbol dynSym = new Symbol.DynamicMethodSymbol(names.makeConcatWithConstants,
                         syms.noSymbol,
-                        bsm.asHandle(),
+                        ((MethodSymbol)bsm).asHandle(),
                         indyType,
                         List.of(LoadableConstant.String(recipe))
                                 .appendList(constants).toArray(new LoadableConstant[constants.size()]));

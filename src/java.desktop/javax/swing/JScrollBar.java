@@ -83,8 +83,7 @@ import javax.swing.plaf.ScrollBarUI;
  */
 @JavaBean(defaultProperty = "UI", description = "A component that helps determine the visible content range of an area.")
 @SwingContainer(false)
-@SuppressWarnings({"serial",  // Same-version serialization only
-                   "doclint:missing"})
+@SuppressWarnings("serial") // Same-version serialization only
 public class JScrollBar extends JComponent implements Adjustable, Accessible
 {
     /**

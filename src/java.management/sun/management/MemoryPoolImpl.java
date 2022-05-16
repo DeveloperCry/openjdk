@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,6 +30,7 @@ import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryUsage;
 import java.lang.management.MemoryType;
 import java.lang.management.MemoryManagerMXBean;
+import javax.management.openmbean.CompositeData;
 import javax.management.ObjectName;
 
 import static java.lang.management.MemoryNotificationInfo.*;
@@ -286,7 +287,7 @@ class MemoryPoolImpl implements MemoryPoolMXBean {
      * The VM will not trigger this sensor in subsequent crossing
      * unless the memory usage has returned below the threshold.
      */
-    static class PoolSensor extends Sensor {
+    class PoolSensor extends Sensor {
         final MemoryPoolImpl pool;
 
         PoolSensor(MemoryPoolImpl pool, String name) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -83,7 +83,7 @@ public final class LocaleMatcher {
             for (LanguageRange lr : priorityList) {
                 String range = lr.getRange();
                 if (range.startsWith("*-")
-                    || range.contains("-*")) { // Extended range
+                    || range.indexOf("-*") != -1) { // Extended range
                     if (mode == AUTOSELECT_FILTERING) {
                         return filterExtended(priorityList, tags);
                     } else if (mode == MAP_EXTENDED_RANGES) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -27,8 +27,7 @@ package sun.management.counter.perf;
 
 import sun.management.counter.*;
 import java.nio.*;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.io.UnsupportedEncodingException;
 
 class PerfDataEntry {
     private class EntryFieldOffset {
@@ -128,7 +127,14 @@ class PerfDataEntry {
         }
 
         // convert name into a String
-        name = new String(symbolBytes, UTF_8);
+        try {
+            name = new String(symbolBytes, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            // should not reach here
+            // "UTF-8" is always a known encoding
+            throw new InternalError(e.getMessage(), e);
+        }
 
         if (variability == Variability.INVALID) {
             throw new InstrumentationException("Invalid variability attribute:" +

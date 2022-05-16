@@ -259,7 +259,7 @@ public class AnnotationProxyMaker {
         private void typeMismatch(Method method, final Attribute attr) {
             class AnnotationTypeMismatchExceptionProxy extends ExceptionProxy {
                 static final long serialVersionUID = 269;
-                final transient Method method;
+                transient final Method method;
                 AnnotationTypeMismatchExceptionProxy(Method method) {
                     this.method = method;
                 }

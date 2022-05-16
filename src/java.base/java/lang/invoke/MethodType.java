@@ -792,7 +792,7 @@ class MethodType
      * @return the parameter types (as an immutable list)
      */
     public List<Class<?>> parameterList() {
-        return List.of(ptypes);
+        return Collections.unmodifiableList(Arrays.asList(ptypes.clone()));
     }
 
     /**

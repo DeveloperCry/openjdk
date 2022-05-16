@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -25,6 +25,7 @@
 
 package sun.security.rsa;
 
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.*;
 import sun.security.util.ObjectIdentifier;
@@ -60,9 +61,9 @@ public class RSAUtil {
 
             // match loosely in order to work with 3rd party providers which
             // may not follow the standard names
-            if (name.contains("PSS")) {
+            if (name.indexOf("PSS") != -1) {
                 return PSS;
-            } else if (name.contains("RSA")) {
+            } else if (name.indexOf("RSA") != -1) {
                 return RSA;
             } else { // no match
                 throw new ProviderException("Unsupported algorithm " + name);
@@ -150,7 +151,7 @@ public class RSAUtil {
         } catch (ProviderException pe) {
             // accommodate RSA keys encoded with various RSA signature oids
             // for backward compatibility
-            if (algName.contains("RSA")) {
+            if (algName.indexOf("RSA") != -1) {
                 result[0] = KeyType.RSA;
             } else {
                 // pass it up

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2004, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -26,6 +26,8 @@
 package sun.jvmstat.perfdata.monitor.protocol.local;
 
 import java.util.*;
+import java.lang.reflect.*;
+import java.io.*;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.*;
@@ -150,7 +152,8 @@ public class LocalMonitoredVm extends AbstractMonitoredVm {
             registered = (ArrayList)listeners.clone();
         }
 
-        for (VmListener l : registered) {
+        for (Iterator<VmListener> i = registered.iterator(); i.hasNext(); /* empty */) {
+            VmListener l = i.next();
             // lazily create the event object;
             if (ev == null) {
                 ev = new MonitorStatusChangeEvent(this, inserted, removed);

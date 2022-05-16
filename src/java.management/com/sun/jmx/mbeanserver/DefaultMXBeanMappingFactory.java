@@ -120,7 +120,7 @@ import sun.reflect.misc.ReflectUtil;
  *  @since 1.6
  */
 public class DefaultMXBeanMappingFactory extends MXBeanMappingFactory {
-    abstract static class NonNullMXBeanMapping extends MXBeanMapping {
+    static abstract class NonNullMXBeanMapping extends MXBeanMapping {
         NonNullMXBeanMapping(Type javaType, OpenType<?> openType) {
             super(javaType, openType);
         }
@@ -806,7 +806,7 @@ public class DefaultMXBeanMappingFactory extends MXBeanMappingFactory {
         private final MXBeanMapping valueMapping;
     }
 
-    private static final class CompositeMapping extends NonNullMXBeanMapping {
+    private final class CompositeMapping extends NonNullMXBeanMapping {
         CompositeMapping(Class<?> targetClass,
                          CompositeType compositeType,
                          String[] itemNames,
@@ -936,7 +936,7 @@ public class DefaultMXBeanMappingFactory extends MXBeanMappingFactory {
     }
 
     /** Converts from a CompositeData to an instance of the targetClass.  */
-    private abstract static class CompositeBuilder {
+    private static abstract class CompositeBuilder {
         CompositeBuilder(Class<?> targetClass, String[] itemNames) {
             this.targetClass = targetClass;
             this.itemNames = itemNames;

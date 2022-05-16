@@ -29,7 +29,6 @@ import java.util.*;
 import java.nio.charset.Charset;
 import jdk.internal.access.JavaIOAccess;
 import jdk.internal.access.SharedSecrets;
-import jdk.internal.util.StaticProperty;
 import sun.nio.cs.StreamDecoder;
 import sun.nio.cs.StreamEncoder;
 import sun.security.action.GetPropertyAction;
@@ -476,7 +475,7 @@ public final class Console implements Flushable
             return in.ready();
         }
 
-        public int read(char[] cbuf, int offset, int length)
+        public int read(char cbuf[], int offset, int length)
             throws IOException
         {
             int off = offset;
@@ -573,29 +572,22 @@ public final class Console implements Flushable
 
     private static final Charset CHARSET;
     static {
+        String csname = encoding();
         Charset cs = null;
-        boolean istty = istty();
-
-        if (istty) {
-            String csname = encoding();
-            if (csname == null) {
-                csname = GetPropertyAction.privilegedGetProperty("sun.stdout.encoding");
-            }
-            if (csname != null) {
-                cs = Charset.forName(csname, null);
-            }
+        if (csname == null) {
+            csname = GetPropertyAction.privilegedGetProperty("sun.stdout.encoding");
         }
-        if (cs == null) {
-            cs = Charset.forName(StaticProperty.nativeEncoding(),
-                    Charset.defaultCharset());
+        if (csname != null) {
+            try {
+                cs = Charset.forName(csname);
+            } catch (Exception ignored) { }
         }
-
-        CHARSET = cs;
+        CHARSET = cs == null ? Charset.defaultCharset() : cs;
 
         // Set up JavaIOAccess in SharedSecrets
         SharedSecrets.setJavaIOAccess(new JavaIOAccess() {
             public Console console() {
-                if (istty) {
+                if (istty()) {
                     if (cons == null)
                         cons = new Console();
                     return cons;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -30,8 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * Resource Interchange File Format (RIFF) stream encoder.
@@ -210,11 +208,11 @@ public final class RIFFWriter extends OutputStream {
             raf.write(0);
 
         if (chunktype == 0)
-            raf.write("RIFF".getBytes(US_ASCII));
+            raf.write("RIFF".getBytes("ascii"));
         else if (chunktype == 1)
-            raf.write("LIST".getBytes(US_ASCII));
+            raf.write("LIST".getBytes("ascii"));
         else
-            raf.write((format + "    ").substring(0, 4).getBytes(US_ASCII));
+            raf.write((format + "    ").substring(0, 4).getBytes("ascii"));
 
         chunksizepointer = raf.getPointer();
         this.chunktype = 2;
@@ -222,7 +220,8 @@ public final class RIFFWriter extends OutputStream {
         this.chunktype = chunktype;
         startpointer = raf.getPointer();
         if (chunktype != 2)
-            raf.write((format + "    ").substring(0, 4).getBytes(US_ASCII));
+            raf.write((format + "    ").substring(0, 4).getBytes("ascii"));
+
     }
 
     public void seek(long pos) throws IOException {

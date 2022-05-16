@@ -72,6 +72,7 @@ import jdk.internal.icu.text.UCharacterIterator;
  * @since 1.6
  *
  */
+@SuppressWarnings("removal")
 public final class IDN {
     /**
      * Flag to allow processing of unassigned code points
@@ -223,15 +224,19 @@ public final class IDN {
     private static StringPrep namePrep = null;
 
     static {
+        InputStream stream = null;
+
         try {
             final String IDN_PROFILE = "/sun/net/idn/uidna.spp";
-            @SuppressWarnings("removal")
-            InputStream stream = System.getSecurityManager() != null
-                    ? AccessController.doPrivileged(new PrivilegedAction<>() {
-                            public InputStream run() {
-                                return StringPrep.class.getResourceAsStream(IDN_PROFILE);
-                            }})
-                    : StringPrep.class.getResourceAsStream(IDN_PROFILE);
+            if (System.getSecurityManager() != null) {
+                stream = AccessController.doPrivileged(new PrivilegedAction<>() {
+                    public InputStream run() {
+                        return StringPrep.class.getResourceAsStream(IDN_PROFILE);
+                    }
+                });
+            } else {
+                stream = StringPrep.class.getResourceAsStream(IDN_PROFILE);
+            }
 
             namePrep = new StringPrep(stream);
             stream.close();

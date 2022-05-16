@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -178,9 +178,9 @@ public class ChoiceFormat extends NumberFormat {
      *            is {@code null}
      */
     public void applyPattern(String newPattern) {
-        StringBuilder[] segments = new StringBuilder[2];
+        StringBuffer[] segments = new StringBuffer[2];
         for (int i = 0; i < segments.length; ++i) {
-            segments[i] = new StringBuilder();
+            segments[i] = new StringBuffer();
         }
         double[] newChoiceLimits = new double[30];
         String[] newChoiceFormats = new String[30];
@@ -350,7 +350,7 @@ public class ChoiceFormat extends NumberFormat {
      * @throws    NullPointerException if {@code limits} or
      *            {@code formats} is {@code null}
      */
-    public void setChoices(double[] limits, String[] formats) {
+    public void setChoices(double[] limits, String formats[]) {
         if (limits.length != formats.length) {
             throw new IllegalArgumentException(
                 "Array and limit arrays must be of the same length.");

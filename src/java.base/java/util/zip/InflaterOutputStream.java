@@ -28,7 +28,6 @@ package java.util.zip;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Objects;
 
 /**
  * Implements an output stream filter for uncompressing data stored in the
@@ -224,9 +223,9 @@ public class InflaterOutputStream extends FilterOutputStream {
         ensureOpen();
         if (b == null) {
             throw new NullPointerException("Null buffer for read");
-        }
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) {
+        } else if (off < 0 || len < 0 || len > b.length - off) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
             return;
         }
 

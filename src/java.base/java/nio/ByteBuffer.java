@@ -55,12 +55,12 @@ import jdk.internal.util.ArraysSupport;
  *
  *   <li><p> Absolute and relative {@link #get(byte[]) <i>bulk get</i>}
  *   methods that transfer contiguous sequences of bytes from this buffer
- *   into an array;</p></li>
+ *   into an array; </p></li>
  *
  *   <li><p> Absolute and relative {@link #put(byte[]) <i>bulk put</i>}
  *   methods that transfer contiguous sequences of bytes from a
- *   byte array or some other byte
- *   buffer into this buffer;</p></li>
+ *   byte array{#if[char]?,&#32;a&#32;string,} or some other byte
+ *   buffer into this buffer;{#if[!byte]?&#32;and} </p></li>
  *
 
  *
@@ -86,7 +86,7 @@ import jdk.internal.util.ArraysSupport;
 
  *
  * content, or by {@link #wrap(byte[]) <i>wrapping</i>} an
- * existing byte array into a buffer.
+ * existing byte array {#if[char]?or&#32;string} into a buffer.
  *
 
 

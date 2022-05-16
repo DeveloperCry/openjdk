@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,6 +38,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import javax.accessibility.*;
 
 import sun.awt.shell.ShellFolder;
@@ -956,7 +958,7 @@ public class MetalFileChooserUI extends BasicFileChooserUI {
     }
 
     static final int space = 10;
-    static class IndentIcon implements Icon {
+    class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -1048,9 +1050,9 @@ public class MetalFileChooserUI extends BasicFileChooserUI {
                 File sf = useShellFolder ? ShellFolder.getShellFolder(canonical)
                                          : canonical;
                 File f = sf;
-                ArrayList<File> path = new ArrayList<File>(10);
+                Vector<File> path = new Vector<File>(10);
                 do {
-                    path.add(f);
+                    path.addElement(f);
                 } while ((f = f.getParentFile()) != null);
 
                 int pathCount = path.size();
@@ -1142,8 +1144,8 @@ public class MetalFileChooserUI extends BasicFileChooserUI {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            if (value instanceof FileFilter fileFilter) {
-                setText(fileFilter.getDescription());
+            if (value != null && value instanceof FileFilter) {
+                setText(((FileFilter)value).getDescription());
             }
 
             return this;
@@ -1359,7 +1361,7 @@ public class MetalFileChooserUI extends BasicFileChooserUI {
     }
 
     @SuppressWarnings("serial") // Superclass is not serializable across versions
-    private static class AlignedLabel extends JLabel {
+    private class AlignedLabel extends JLabel {
         private AlignedLabel[] group;
         private int maxWidth = 0;
 

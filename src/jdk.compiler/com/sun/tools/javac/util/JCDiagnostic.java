@@ -479,7 +479,7 @@ public class JCDiagnostic implements Diagnostic<JavaFileObject> {
      * created programmatically (by using the supplied factory method) or obtained through build-time
      * generated factory methods.
      */
-    public abstract static class DiagnosticInfo {
+    public static abstract class DiagnosticInfo {
 
         /** The diagnostic kind (i.e. error). */
         DiagnosticType type;

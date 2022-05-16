@@ -49,7 +49,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -273,7 +272,7 @@ import static javax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP
  *     JOptionPane pane = new JOptionPane(<i>arguments</i>);
  *     pane.set<i>.Xxxx(...); // Configure</i>
  *     JDialog dialog = pane.createDialog(<i>parentComponent, title</i>);
- *     dialog.setVisible(true);
+ *     dialog.show();
  *     Object selectedValue = pane.getValue();
  *     if(selectedValue == null)
  *       return CLOSED_OPTION;
@@ -2330,41 +2329,44 @@ public class JOptionPane extends JComponent implements Accessible
         Vector<Object> values = new Vector<Object>();
 
         s.defaultWriteObject();
-        // Save the icon, if it's Serializable.
-        if (icon instanceof Serializable) {
+        // Save the icon, if its Serializable.
+        if(icon != null && icon instanceof Serializable) {
             values.addElement("icon");
             values.addElement(icon);
         }
-        // Save the message, if it's Serializable.
-        if (message instanceof Serializable) {
+        // Save the message, if its Serializable.
+        if(message != null && message instanceof Serializable) {
             values.addElement("message");
             values.addElement(message);
         }
-        // Save the treeModel, if it's Serializable.
+        // Save the treeModel, if its Serializable.
         if(options != null) {
-            ArrayList<Object> serOptions = new ArrayList<Object>();
+            Vector<Object> serOptions = new Vector<Object>();
 
             for(int counter = 0, maxCounter = options.length;
                 counter < maxCounter; counter++)
                 if(options[counter] instanceof Serializable)
-                    serOptions.add(options[counter]);
+                    serOptions.addElement(options[counter]);
             if(serOptions.size() > 0) {
-                Object[] arrayOptions = serOptions.toArray(new Object[0]);
+                int             optionCount = serOptions.size();
+                Object[]        arrayOptions = new Object[optionCount];
+
+                serOptions.copyInto(arrayOptions);
                 values.addElement("options");
                 values.addElement(arrayOptions);
             }
         }
-        // Save the initialValue, if it's Serializable.
-        if (initialValue instanceof Serializable) {
+        // Save the initialValue, if its Serializable.
+        if(initialValue != null && initialValue instanceof Serializable) {
             values.addElement("initialValue");
             values.addElement(initialValue);
         }
-        // Save the value, if it's Serializable.
-        if (value instanceof Serializable) {
+        // Save the value, if its Serializable.
+        if(value != null && value instanceof Serializable) {
             values.addElement("value");
             values.addElement(value);
         }
-        // Save the selectionValues, if it's Serializable.
+        // Save the selectionValues, if its Serializable.
         if(selectionValues != null) {
             boolean            serialize = true;
 
@@ -2381,13 +2383,14 @@ public class JOptionPane extends JComponent implements Accessible
                 values.addElement(selectionValues);
             }
         }
-        // Save the inputValue, if it's Serializable.
-        if (inputValue instanceof Serializable) {
+        // Save the inputValue, if its Serializable.
+        if(inputValue != null && inputValue instanceof Serializable) {
             values.addElement("inputValue");
             values.addElement(inputValue);
         }
-        // Save the initialSelectionValue, if it's Serializable.
-        if (initialSelectionValue instanceof Serializable) {
+        // Save the initialSelectionValue, if its Serializable.
+        if(initialSelectionValue != null &&
+           initialSelectionValue instanceof Serializable) {
             values.addElement("initialSelectionValue");
             values.addElement(initialSelectionValue);
         }

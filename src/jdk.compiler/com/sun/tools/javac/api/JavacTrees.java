@@ -75,7 +75,6 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Scope.NamedImportScope;
 import com.sun.tools.javac.code.Scope.StarImportScope;
 import com.sun.tools.javac.code.Scope.WriteableScope;
-import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.ModuleSymbol;
@@ -86,8 +85,10 @@ import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
 import com.sun.tools.javac.code.Type.ClassType;
+import com.sun.tools.javac.code.Type.ErrorType;
 import com.sun.tools.javac.code.Type.UnionClassType;
 import com.sun.tools.javac.code.Types;
+import com.sun.tools.javac.code.Types.TypeRelation;
 import com.sun.tools.javac.comp.Attr;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Check;
@@ -96,6 +97,7 @@ import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.comp.MemberEnter;
 import com.sun.tools.javac.comp.Modules;
 import com.sun.tools.javac.comp.Resolve;
+import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.file.BaseFileManager;
 import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.parser.DocCommentParser;
@@ -149,6 +151,7 @@ import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
 
 import static com.sun.tools.javac.code.Kinds.Kind.*;
+import static com.sun.tools.javac.code.TypeTag.*;
 
 /**
  * Provides an implementation of Trees.
@@ -256,16 +259,79 @@ public class JavacTrees extends DocTrees {
 
                 @Override @DefinedBy(Api.COMPILER_TREE)
                 public long getStartPosition(CompilationUnitTree file, DocCommentTree comment, DocTree tree) {
-                    DCDocComment dcComment = (DCDocComment) comment;
-                    DCTree dcTree = (DCTree) tree;
-                    return dcComment.getSourcePosition(dcTree.getStartPosition());
+                    return ((DCTree) tree).getSourcePosition((DCDocComment) comment);
                 }
-
-                @Override  @DefinedBy(Api.COMPILER_TREE)
+                @Override  @DefinedBy(Api.COMPILER_TREE) @SuppressWarnings("fallthrough")
                 public long getEndPosition(CompilationUnitTree file, DocCommentTree comment, DocTree tree) {
                     DCDocComment dcComment = (DCDocComment) comment;
-                    DCTree dcTree = (DCTree) tree;
-                    return dcComment.getSourcePosition(dcTree.getEndPosition());
+                    if (tree instanceof DCEndPosTree<?> dcEndPosTree) {
+                        int endPos = dcEndPosTree.getEndPos(dcComment);
+
+                        if (endPos != Position.NOPOS) {
+                            return endPos;
+                        }
+                    }
+                    int correction = 0;
+                    switch (tree.getKind()) {
+                        case TEXT:
+                            DCText text = (DCText) tree;
+
+                            return dcComment.comment.getSourcePos(text.pos + text.text.length());
+                        case ERRONEOUS:
+                            DCErroneous err = (DCErroneous) tree;
+
+                            return dcComment.comment.getSourcePos(err.pos + err.body.length());
+                        case IDENTIFIER:
+                            DCIdentifier ident = (DCIdentifier) tree;
+
+                            return dcComment.comment.getSourcePos(ident.pos + (ident.name != names.error ? ident.name.length() : 0));
+                        case PARAM:
+                            DCParam param = (DCParam) tree;
+
+                            if (param.isTypeParameter && param.getDescription().isEmpty()) {
+                                correction = 1;
+                            }
+                        case AUTHOR: case DEPRECATED: case RETURN: case SEE:
+                        case SERIAL: case SERIAL_DATA: case SERIAL_FIELD: case SINCE:
+                        case THROWS: case UNKNOWN_BLOCK_TAG: case VERSION: {
+                            DocTree last = getLastChild(tree);
+
+                            if (last != null) {
+                                return getEndPosition(file, comment, last) + correction;
+                            }
+
+                            int pos;
+                            String name;
+                            if (tree.getKind() == DocTree.Kind.RETURN) {
+                                DCTree.DCReturn dcReturn = (DCTree.DCReturn) tree;
+                                pos = dcReturn.pos;
+                                name = dcReturn.getTagName();
+                            } else {
+                                DCBlockTag block = (DCBlockTag) tree;
+                                pos = block.pos;
+                                name = block.getTagName();
+                            }
+
+                            return dcComment.comment.getSourcePos(pos + name.length() + 1);
+                        }
+                        case ENTITY: {
+                            DCEntity endEl = (DCEntity) tree;
+                            return dcComment.comment.getSourcePos(endEl.pos + (endEl.name != names.error ? endEl.name.length() : 0) + 2);
+                        }
+                        case COMMENT: {
+                            DCComment endEl = (DCComment) tree;
+                            return dcComment.comment.getSourcePos(endEl.pos + endEl.body.length());
+                        }
+                        default:
+                            DocTree last = getLastChild(tree);
+
+                            if (last != null) {
+                                return getEndPosition(file, comment, last);
+                            }
+                            break;
+                    }
+
+                    return Position.NOPOS;
                 }
             };
     }
@@ -507,16 +573,10 @@ public class JavacTrees extends DocTrees {
             }
 
             ClassSymbol sym = (ClassSymbol) types.skipTypeVars(tsym.type, false).tsym;
+
             Symbol msym = (memberName == sym.name)
-                    ? findConstructor(sym, paramTypes, true)
-                    : findMethod(sym, memberName, paramTypes, true);
-
-            if (msym == null) {
-                msym = (memberName == sym.name)
-                        ? findConstructor(sym, paramTypes, false)
-                        : findMethod(sym, memberName, paramTypes, false);
-            }
-
+                    ? findConstructor(sym, paramTypes)
+                    : findMethod(sym, memberName, paramTypes);
             if (paramTypes != null) {
                 // explicit (possibly empty) arg list given, so cannot be a field
                 return msym;
@@ -614,10 +674,10 @@ public class JavacTrees extends DocTrees {
         return null;
     }
 
-    MethodSymbol findConstructor(ClassSymbol tsym, List<Type> paramTypes, boolean strict) {
+    MethodSymbol findConstructor(ClassSymbol tsym, List<Type> paramTypes) {
         for (Symbol sym : tsym.members().getSymbolsByName(names.init)) {
             if (sym.kind == MTH) {
-                if (hasParameterTypes((MethodSymbol) sym, paramTypes, strict)) {
+                if (hasParameterTypes((MethodSymbol) sym, paramTypes)) {
                     return (MethodSymbol) sym;
                 }
             }
@@ -625,13 +685,12 @@ public class JavacTrees extends DocTrees {
         return null;
     }
 
-    private MethodSymbol findMethod(ClassSymbol tsym, Name methodName, List<Type> paramTypes, boolean strict) {
-        return searchMethod(tsym, methodName, paramTypes, strict, new HashSet<>());
+    private MethodSymbol findMethod(ClassSymbol tsym, Name methodName, List<Type> paramTypes) {
+        return searchMethod(tsym, methodName, paramTypes, new HashSet<>());
     }
 
     private MethodSymbol searchMethod(ClassSymbol tsym, Name methodName,
-                                       List<Type> paramTypes, boolean strict,
-                                       Set<ClassSymbol> searched) {
+                                       List<Type> paramTypes, Set<ClassSymbol> searched) {
         //### Note that this search is not necessarily what the compiler would do!
 
         // do not match constructors
@@ -669,7 +728,7 @@ public class JavacTrees extends DocTrees {
             for (Symbol sym : tsym.members().getSymbolsByName(methodName)) {
                 if (sym != null &&
                     sym.kind == MTH) {
-                    if (hasParameterTypes((MethodSymbol) sym, paramTypes, strict)) {
+                    if (hasParameterTypes((MethodSymbol) sym, paramTypes)) {
                         return (MethodSymbol) sym;
                     }
                 }
@@ -682,7 +741,7 @@ public class JavacTrees extends DocTrees {
         // search superclass
         Type superclass = tsym.getSuperclass();
         if (superclass.tsym != null) {
-            MethodSymbol msym = searchMethod((ClassSymbol) superclass.tsym, methodName, paramTypes, strict, searched);
+            MethodSymbol msym = searchMethod((ClassSymbol) superclass.tsym, methodName, paramTypes, searched);
             if (msym != null) {
                 return msym;
             }
@@ -693,7 +752,7 @@ public class JavacTrees extends DocTrees {
         for (List<Type> l = intfs; l.nonEmpty(); l = l.tail) {
             Type intf = l.head;
             if (intf.isErroneous()) continue;
-            MethodSymbol msym = searchMethod((ClassSymbol) intf.tsym, methodName, paramTypes, strict, searched);
+            MethodSymbol msym = searchMethod((ClassSymbol) intf.tsym, methodName, paramTypes, searched);
             if (msym != null) {
                 return msym;
             }
@@ -702,7 +761,7 @@ public class JavacTrees extends DocTrees {
         // search enclosing class
         ClassSymbol encl = tsym.owner.enclClass();
         if (encl != null) {
-            MethodSymbol msym = searchMethod(encl, methodName, paramTypes, strict, searched);
+            MethodSymbol msym = searchMethod(encl, methodName, paramTypes, searched);
             if (msym != null) {
                 return msym;
             }
@@ -711,7 +770,7 @@ public class JavacTrees extends DocTrees {
         return null;
     }
 
-    private boolean hasParameterTypes(MethodSymbol method, List<Type> paramTypes, boolean strict) {
+    private boolean hasParameterTypes(MethodSymbol method, List<Type> paramTypes) {
         if (paramTypes == null)
             return true;
 
@@ -719,7 +778,7 @@ public class JavacTrees extends DocTrees {
             return false;
 
         List<Type> methodParamTypes = method.asType().getParameterTypes();
-        if (!strict && !Type.isErroneous(paramTypes) && types.isSubtypes(paramTypes, methodParamTypes)) {
+        if (!Type.isErroneous(paramTypes) && types.isSubtypes(paramTypes, methodParamTypes)) {
             return true;
         }
 

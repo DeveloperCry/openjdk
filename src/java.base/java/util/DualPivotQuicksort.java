@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -3997,7 +3997,6 @@ final class DualPivotQuicksort {
      */
     private static final class Sorter extends CountedCompleter<Void> {
         private static final long serialVersionUID = 20180818L;
-        @SuppressWarnings("serial")
         private final Object a, b;
         private final int low, size, offset, depth;
 
@@ -4067,7 +4066,6 @@ final class DualPivotQuicksort {
      */
     private static final class Merger extends CountedCompleter<Void> {
         private static final long serialVersionUID = 20180818L;
-        @SuppressWarnings("serial")
         private final Object dst, a1, a2;
         private final int k, lo1, hi1, lo2, hi2;
 
@@ -4117,7 +4115,6 @@ final class DualPivotQuicksort {
      */
     private static final class RunMerger extends RecursiveTask<Object> {
         private static final long serialVersionUID = 20180818L;
-        @SuppressWarnings("serial")
         private final Object a, b;
         private final int[] run;
         private final int offset, aim, lo, hi;

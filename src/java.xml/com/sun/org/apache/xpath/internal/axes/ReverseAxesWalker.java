@@ -244,6 +244,5 @@ public class ReverseAxesWalker extends AxesWalker
   }
 
   /** The DTM inner traversal class, that corresponds to the super axis. */
-  @SuppressWarnings("serial") // Type of field is not Serializable
   protected DTMAxisIterator m_iterator;
 }

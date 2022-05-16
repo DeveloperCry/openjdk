@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1996, 2022, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -34,10 +34,7 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.US_ASCII;
-import static java.nio.charset.StandardCharsets.UTF_16BE;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Represents a single DER-encoded value.  DER encoding rules are a subset
@@ -290,7 +287,7 @@ public class DerValue {
     }
 
     /**
-     * Wraps a DerOutputStream. All bytes currently written
+     * Wraps an DerOutputStream. All bytes currently written
      * into the stream will become the content of the newly
      * created DerValue.
      *
@@ -1257,7 +1254,7 @@ public class DerValue {
      * @param startLen estimated number of sub-values
      * @return the sub-values in an array
      */
-    public DerValue[] subs(byte expectedTag, int startLen) throws IOException {
+    DerValue[] subs(byte expectedTag, int startLen) throws IOException {
         if (expectedTag != 0 && expectedTag != tag) {
             throw new IOException("Not the correct tag");
         }

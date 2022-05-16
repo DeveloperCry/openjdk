@@ -85,7 +85,7 @@ final class MemoryAccessVarHandleIntHelper extends MemoryAccessVarHandleBase {
     static long offset(boolean skipAlignmentMaskCheck, MemorySegmentProxy bb, long offset, long alignmentMask) {
         long address = offsetNoVMAlignCheck(skipAlignmentMaskCheck, bb, offset, alignmentMask);
         if ((address & VM_ALIGN) != 0) {
-            throw MemoryAccessVarHandleBase.newIllegalArgumentExceptionForMisalignedAccess(address);
+            throw MemoryAccessVarHandleBase.newIllegalStateExceptionForMisalignedAccess(address);
         }
         return address;
     }
@@ -94,15 +94,14 @@ final class MemoryAccessVarHandleIntHelper extends MemoryAccessVarHandleBase {
     static long offsetNoVMAlignCheck(boolean skipAlignmentMaskCheck, MemorySegmentProxy bb, long offset, long alignmentMask) {
         long base = bb.unsafeGetOffset();
         long address = base + offset;
-        long maxAlignMask = bb.maxAlignMask();
         if (skipAlignmentMaskCheck) {
             //note: the offset portion has already been aligned-checked, by construction
-            if (((base | maxAlignMask) & alignmentMask) != 0) {
-                throw MemoryAccessVarHandleBase.newIllegalArgumentExceptionForMisalignedAccess(address);
+            if ((base & alignmentMask) != 0) {
+                throw MemoryAccessVarHandleBase.newIllegalStateExceptionForMisalignedAccess(address);
             }
         } else {
-            if (((address | maxAlignMask) & alignmentMask) != 0) {
-                throw MemoryAccessVarHandleBase.newIllegalArgumentExceptionForMisalignedAccess(address);
+            if ((address & alignmentMask) != 0) {
+                throw MemoryAccessVarHandleBase.newIllegalStateExceptionForMisalignedAccess(address);
             }
         }
         return address;

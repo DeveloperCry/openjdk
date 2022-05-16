@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -38,8 +38,6 @@ import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 public enum HtmlAttr {
     ALT,
     ARIA_CONTROLS("aria-controls"),
-    ARIA_EXPANDED("aria-expanded"),
-    ARIA_LABEL("aria-label"),
     ARIA_LABELLEDBY("aria-labelledby"),
     ARIA_ORIENTATION("aria-orientation"),
     ARIA_SELECTED("aria-selected"),
@@ -47,7 +45,6 @@ public enum HtmlAttr {
     CLEAR,
     COLS,
     CONTENT,
-    DATA_COPIED("data-copied"), // custom HTML5 data attribute
     DISABLED,
     FOR,
     HREF,
@@ -58,7 +55,6 @@ public enum HtmlAttr {
     ONCLICK,
     ONKEYDOWN,
     ONLOAD,
-    PLACEHOLDER,
     REL,
     ROLE,
     ROWS,

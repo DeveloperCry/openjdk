@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2020, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -103,9 +103,8 @@ public class VisibleMemberTable {
         FIELDS,
         CONSTRUCTORS,
         METHODS,
-        ANNOTATION_TYPE_MEMBER,
-        ANNOTATION_TYPE_MEMBER_REQUIRED,
         ANNOTATION_TYPE_MEMBER_OPTIONAL,
+        ANNOTATION_TYPE_MEMBER_REQUIRED,
         PROPERTIES;
 
         private static final EnumSet<Kind> defaultSummarySet = EnumSet.of(
@@ -113,13 +112,11 @@ public class VisibleMemberTable {
         private static final EnumSet<Kind> enumSummarySet = EnumSet.of(
                 NESTED_CLASSES, ENUM_CONSTANTS, FIELDS, METHODS);
         private static final EnumSet<Kind> annotationSummarySet = EnumSet.of(
-                FIELDS, ANNOTATION_TYPE_MEMBER_REQUIRED, ANNOTATION_TYPE_MEMBER_OPTIONAL);
+                FIELDS, ANNOTATION_TYPE_MEMBER_OPTIONAL, ANNOTATION_TYPE_MEMBER_REQUIRED);
         private static final EnumSet<Kind> defaultDetailSet = EnumSet.of(
                 FIELDS, CONSTRUCTORS, METHODS);
         private static final EnumSet<Kind> enumDetailSet = EnumSet.of(
                 ENUM_CONSTANTS, FIELDS, METHODS);
-        private static final EnumSet<Kind> annotationDetailSet = EnumSet.of(
-                FIELDS, ANNOTATION_TYPE_MEMBER);
 
         /**
          * {@return the set of possible member kinds for the summaries section of a type element}
@@ -138,11 +135,9 @@ public class VisibleMemberTable {
          * @param kind the kind of type element being documented
          */
         public static Set<Kind> forDetailsOf(ElementKind kind) {
-            return switch (kind) {
-                case ANNOTATION_TYPE -> annotationDetailSet;
-                case ENUM -> enumDetailSet;
-                default -> defaultDetailSet;
-            };
+            return kind == ElementKind.ENUM
+                    ? enumDetailSet
+                    : defaultDetailSet;
         }
     }
 
@@ -218,7 +213,7 @@ public class VisibleMemberTable {
      * @param kind the member kind
      * @return a list of all visible members
      */
-    public List<Element> getAllVisibleMembers(Kind kind) {
+    public List<? extends Element> getAllVisibleMembers(Kind kind) {
         ensureInitialized();
         return visibleMembers.getOrDefault(kind, Collections.emptyList());
     }
@@ -230,7 +225,7 @@ public class VisibleMemberTable {
      * @param p the predicate used to filter the output
      * @return a list of visible enclosed members
      */
-    public List<Element> getVisibleMembers(Kind kind, Predicate<Element> p) {
+    public List<? extends Element> getVisibleMembers(Kind kind, Predicate<Element> p) {
         ensureInitialized();
 
         return visibleMembers.getOrDefault(kind, Collections.emptyList()).stream()
@@ -245,7 +240,7 @@ public class VisibleMemberTable {
      * @param kind the member kind
      * @return a list of visible enclosed members
      */
-    public List<Element> getVisibleMembers(Kind kind) {
+    public List<? extends Element> getVisibleMembers(Kind kind) {
         Predicate<Element> declaredAndLeafMembers = e -> {
             TypeElement encl = utils.getEnclosingTypeElement(e);
             return encl == te || utils.isUndocumentedEnclosure(encl);
@@ -260,7 +255,7 @@ public class VisibleMemberTable {
      *
      * @return a list of visible enclosed members in this type
      */
-    public List<Element> getMembers(Kind kind) {
+    public List<? extends Element> getMembers(Kind kind) {
         Predicate<Element> onlyLocallyDeclaredMembers = e -> utils.getEnclosingTypeElement(e) == te;
         return getVisibleMembers(kind, onlyLocallyDeclaredMembers);
     }
@@ -356,55 +351,36 @@ public class VisibleMemberTable {
     }
 
     /**
-     * Returns the field for a property identified by any of the methods
-     * for that property.
-     *
-     * @param ee the method
+     * Returns the property field associated with the property method.
+     * @param propertyMethod the identifying property method
      * @return the field or null if absent
      */
-    public VariableElement getPropertyField(ExecutableElement ee) {
+    public VariableElement getPropertyField(ExecutableElement propertyMethod) {
         ensureInitialized();
-        PropertyMembers pm =  propertyMap.get(ee);
+        PropertyMembers pm =  propertyMap.get(propertyMethod);
         return pm == null ? null : pm.field;
     }
 
     /**
-     * Returns the getter method for a property identified by any of the methods
-     * for that property.
-     *
-     * @param ee the method
+     * Returns the getter method associated with the property method.
+     * @param propertyMethod the identifying property method
      * @return the getter or null if absent
      */
-    public ExecutableElement getPropertyGetter(ExecutableElement ee) {
+    public ExecutableElement getPropertyGetter(ExecutableElement propertyMethod) {
         ensureInitialized();
-        PropertyMembers pm =  propertyMap.get(ee);
+        PropertyMembers pm =  propertyMap.get(propertyMethod);
         return pm == null ? null : pm.getter;
     }
 
     /**
-     * Returns the setter method for a property identified by any of the methods
-     * for that property.
-     *
-     * @param ee the method
+     * Returns the setter method associated with the property method.
+     * @param propertyMethod the identifying property method
      * @return the setter or null if absent
      */
-    public ExecutableElement getPropertySetter(ExecutableElement ee) {
+    public ExecutableElement getPropertySetter(ExecutableElement propertyMethod) {
         ensureInitialized();
-        PropertyMembers pm =  propertyMap.get(ee);
+        PropertyMembers pm =  propertyMap.get(propertyMethod);
         return pm == null ? null : pm.setter;
-    }
-
-    /**
-     * Returns the property method for a property identified by any of the methods
-     * for that property.
-     *
-     * @param ee the method
-     * @return the property method or null if absent
-     */
-    public ExecutableElement getPropertyMethod(ExecutableElement ee) {
-        ensureInitialized();
-        PropertyMembers pm =  propertyMap.get(ee);
-        return pm == null ? null : pm.propertyMethod;
     }
 
     private void computeParents() {
@@ -782,7 +758,6 @@ public class VisibleMemberTable {
                     case METHOD:
                         if (utils.isAnnotationType(te)) {
                             ExecutableElement ee = (ExecutableElement) e;
-                            addMember(e, Kind.ANNOTATION_TYPE_MEMBER);
                             addMember(e, ee.getDefaultValue() == null
                                     ? Kind.ANNOTATION_TYPE_MEMBER_REQUIRED
                                     : Kind.ANNOTATION_TYPE_MEMBER_OPTIONAL);
@@ -842,28 +817,35 @@ public class VisibleMemberTable {
         }
 
         List<Element> getMembers(String key, Kind kind) {
-            Map<String, List<Element>> map = memberMap.get(kind);
+            Map <String, List<Element>> map = memberMap.get(kind);
             return map.getOrDefault(key, Collections.emptyList());
         }
 
-        <T extends Element> List<T> getMembers(String key, Kind kind, Class<T> clazz) {
-            Map<String, List<Element>> map = memberMap.get(kind);
-            return map.getOrDefault(key, Collections.emptyList())
-                    .stream()
-                    .map(e -> clazz.cast(e))
-                    .toList();
-        }
-
-        List<ExecutableElement> getPropertyMethods(String methodName, int argcount) {
+        List<Element> getPropertyMethods(String methodName, int argcount) {
             return getMembers(methodName + ":" + argcount, Kind.METHODS).stream()
                     .filter(m -> (utils.isPublic(m) || utils.isProtected(m)))
-                    .map(m -> (ExecutableElement) m)
                     .toList();
         }
     }
 
-    record PropertyMembers(ExecutableElement propertyMethod, VariableElement field,
-                           ExecutableElement getter, ExecutableElement setter) { }
+    /**
+     * The properties triad for a property method.
+     */
+    static class PropertyMembers {
+        final VariableElement field;
+        final ExecutableElement getter;
+        final ExecutableElement setter;
+
+        PropertyMembers(VariableElement field, ExecutableElement getter, ExecutableElement setter) {
+            this.field = field;
+            this.getter = getter;
+            this.setter = setter;
+        }
+
+        public String toString() {
+            return ("field: " + field + ", getter: " + getter + ", setter: " + setter);
+        }
+    }
 
     /*
      * JavaFX convention notes.
@@ -919,11 +901,11 @@ public class VisibleMemberTable {
         // Compute additional properties related sundries.
         for (ExecutableElement propertyMethod : propertyMethods) {
             String baseName = pUtils.getBaseName(propertyMethod);
-            List<VariableElement> flist = lmt.getMembers(baseName, Kind.FIELDS, VariableElement.class);
-            VariableElement field = flist.isEmpty() ? null : flist.get(0);
+            List<Element> flist = lmt.getMembers(baseName, Kind.FIELDS);
+            Element field = flist.isEmpty() ? null : flist.get(0);
 
-            ExecutableElement getter = null, setter = null;
-            List<ExecutableElement> found = lmt.getPropertyMethods(pUtils.getGetName(propertyMethod), 0);
+            Element getter = null, setter = null;
+            List<Element> found = lmt.getPropertyMethods(pUtils.getGetName(propertyMethod), 0);
             if (!found.isEmpty()) {
                 // Getters have zero params, no overloads! pick the first.
                 getter = found.get(0);
@@ -932,6 +914,7 @@ public class VisibleMemberTable {
                 // Check if isProperty methods are present ?
                 found = lmt.getPropertyMethods(pUtils.getIsName(propertyMethod), 0);
                 if (!found.isEmpty()) {
+                    String propertyTypeName = propertyMethod.getReturnType().toString();
                     // Check if the return type of property method matches an isProperty method.
                     if (pUtils.hasIsMethod(propertyMethod)) {
                         // Getters have zero params, no overloads!, pick the first.
@@ -941,22 +924,16 @@ public class VisibleMemberTable {
             }
             found = lmt.getPropertyMethods(pUtils.getSetName(propertyMethod), 1);
             if (found != null) {
-                for (ExecutableElement e : found) {
-                    if (pUtils.isValidSetterMethod(e)) {
+                for (Element e : found) {
+                    if (pUtils.isValidSetterMethod((ExecutableElement)e)) {
                         setter = e;
                         break;
                     }
                 }
             }
 
-            PropertyMembers pm = new PropertyMembers(propertyMethod, field, getter, setter);
-            propertyMap.put(propertyMethod, pm);
-            if (getter != null) {
-                propertyMap.put(getter, pm);
-            }
-            if (setter != null) {
-                propertyMap.put(setter, pm);
-            }
+            propertyMap.put(propertyMethod, new PropertyMembers((VariableElement)field,
+                    (ExecutableElement)getter, (ExecutableElement)setter));
 
             // Debugging purposes
             // System.out.println("te: " + te + ": " + utils.getEnclosingTypeElement(propertyMethod) +
@@ -970,14 +947,13 @@ public class VisibleMemberTable {
     Map<ExecutableElement, SoftReference<ImplementedMethods>> implementMethodsFinders = new HashMap<>();
 
     private ImplementedMethods getImplementedMethodsFinder(ExecutableElement method) {
-        SoftReference<ImplementedMethods> ref = implementMethodsFinders.get(method);
-        ImplementedMethods imf = ref == null ? null : ref.get();
-        // imf does not exist or was gc'ed away?
-        if (imf == null) {
-            imf = new ImplementedMethods(method);
-            implementMethodsFinders.put(method, new SoftReference<>(imf));
+        SoftReference<ImplementedMethods> imf = implementMethodsFinders.get(method);
+        // IMF does not exist or referent was gc'ed away ?
+        if (imf == null || imf.get() == null) {
+            imf = new SoftReference<>(new ImplementedMethods(method));
+            implementMethodsFinders.put(method, imf);
         }
-        return imf;
+        return imf.get();
     }
 
     public List<ExecutableElement> getImplementedMethods(ExecutableElement method) {

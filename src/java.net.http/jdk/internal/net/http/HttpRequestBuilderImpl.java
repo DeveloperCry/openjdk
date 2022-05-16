@@ -183,11 +183,6 @@ public class HttpRequestBuilderImpl implements HttpRequest.Builder {
     }
 
     @Override
-    public HttpRequest.Builder HEAD() {
-        return method0("HEAD", null);
-    }
-
-    @Override
     public HttpRequest.Builder PUT(BodyPublisher body) {
         return method0("PUT", requireNonNull(body));
     }

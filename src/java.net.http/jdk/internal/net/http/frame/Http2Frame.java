@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2018, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -101,7 +101,7 @@ public abstract class Http2Frame {
         StringBuilder sb = new StringBuilder();
         sb.append(typeAsString())
                 .append(": length=")
-                .append(length())
+                .append(Integer.toString(length()))
                 .append(", streamid=")
                 .append(streamid)
                 .append(", flags=");

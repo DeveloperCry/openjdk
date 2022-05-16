@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -22,46 +22,19 @@
  */
 package jdk.vm.ci.hotspot;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Formatter;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
-import jdk.vm.ci.common.JVMCIError;
+import java.util.Objects;
 
 /**
  * Support for translating exceptions between different runtime heaps.
  */
 @SuppressWarnings("serial")
 final class TranslatedException extends Exception {
-
-    /**
-     * The value returned by {@link #encodeThrowable(Throwable)} when encoding fails due to an
-     * {@link OutOfMemoryError}.
-     */
-    private static final byte[] FALLBACK_ENCODED_OUTOFMEMORYERROR_BYTES;
-
-    /**
-     * The value returned by {@link #encodeThrowable(Throwable)} when encoding fails for any reason
-     * other than {@link OutOfMemoryError}.
-     */
-    private static final byte[] FALLBACK_ENCODED_THROWABLE_BYTES;
-    static {
-        try {
-            FALLBACK_ENCODED_THROWABLE_BYTES = encodeThrowable(new TranslatedException("error during encoding", "<unknown>"), false);
-            FALLBACK_ENCODED_OUTOFMEMORYERROR_BYTES = encodeThrowable(new OutOfMemoryError(), false);
-        } catch (IOException e) {
-            throw new JVMCIError(e);
-        }
-    }
 
     /**
      * Class name of exception that could not be instantiated.
@@ -137,74 +110,83 @@ final class TranslatedException extends Exception {
         }
     }
 
-    private static String emptyIfNull(String value) {
-        return value == null ? "" : value;
+    /**
+     * Encodes an exception message to distinguish a null message from an empty message.
+     *
+     * @return {@code value} with a space prepended iff {@code value != null}
+     */
+    private static String encodeMessage(String value) {
+        return value != null ? ' ' + value : value;
     }
 
-    private static String emptyAsNull(String value) {
-        return value.isEmpty() ? null : value;
+    private static String decodeMessage(String value) {
+        if (value.length() == 0) {
+            return null;
+        }
+        return value.substring(1);
+    }
+
+    private static String encodedString(String value) {
+        return Objects.toString(value, "").replace('|', '_');
     }
 
     /**
-     * Encodes {@code throwable} including its stack and causes as a {@linkplain GZIPOutputStream
-     * compressed} byte array that can be decoded by {@link #decodeThrowable}.
+     * Encodes {@code throwable} including its stack and causes as a string. The encoding format of
+     * a single exception is:
+     *
+     * <pre>
+     * <exception class name> '|' <exception message> '|' <stack size> '|' [ <classLoader> '|' <module> '|' <moduleVersion> '|' <class> '|' <method> '|' <file> '|' <line> '|' ]*
+     * </pre>
+     *
+     * Each exception is encoded before the exception it causes.
      */
     @VMEntryPoint
-    static byte[] encodeThrowable(Throwable throwable) throws Throwable {
+    static String encodeThrowable(Throwable throwable) throws Throwable {
         try {
-            return encodeThrowable(throwable, true);
-        } catch (OutOfMemoryError e) {
-            return FALLBACK_ENCODED_OUTOFMEMORYERROR_BYTES;
-        } catch (Throwable e) {
-            return FALLBACK_ENCODED_THROWABLE_BYTES;
-        }
-    }
-
-    private static byte[] encodeThrowable(Throwable throwable, boolean withCauseAndStack) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (DataOutputStream dos = new DataOutputStream(new GZIPOutputStream(baos))) {
+            Formatter enc = new Formatter();
             List<Throwable> throwables = new ArrayList<>();
             for (Throwable current = throwable; current != null; current = current.getCause()) {
                 throwables.add(current);
-                if (!withCauseAndStack) {
-                    break;
-                }
             }
 
             // Encode from inner most cause outwards
             Collections.reverse(throwables);
 
             for (Throwable current : throwables) {
-                dos.writeUTF(current.getClass().getName());
-                dos.writeUTF(emptyIfNull(current.getMessage()));
-                StackTraceElement[] stackTrace = withCauseAndStack ? current.getStackTrace() : null;
+                enc.format("%s|%s|", current.getClass().getName(), encodedString(encodeMessage(current.getMessage())));
+                StackTraceElement[] stackTrace = current.getStackTrace();
                 if (stackTrace == null) {
                     stackTrace = new StackTraceElement[0];
                 }
-                dos.writeInt(stackTrace.length);
+                enc.format("%d|", stackTrace.length);
                 for (int i = 0; i < stackTrace.length; i++) {
                     StackTraceElement frame = stackTrace[i];
                     if (frame != null) {
-                        dos.writeUTF(emptyIfNull(frame.getClassLoaderName()));
-                        dos.writeUTF(emptyIfNull(frame.getModuleName()));
-                        dos.writeUTF(emptyIfNull(frame.getModuleVersion()));
-                        dos.writeUTF(emptyIfNull(frame.getClassName()));
-                        dos.writeUTF(emptyIfNull(frame.getMethodName()));
-                        dos.writeUTF(emptyIfNull(frame.getFileName()));
-                        dos.writeInt(frame.getLineNumber());
+                        enc.format("%s|%s|%s|%s|%s|%s|%d|", encodedString(frame.getClassLoaderName()),
+                                encodedString(frame.getModuleName()), encodedString(frame.getModuleVersion()),
+                                frame.getClassName(), frame.getMethodName(),
+                                encodedString(frame.getFileName()), frame.getLineNumber());
                     }
                 }
             }
+            return enc.toString();
+        } catch (Throwable e) {
+            assert printStackTrace(e);
+            try {
+                return e.getClass().getName() + "|" + encodedString(e.getMessage()) + "|0|";
+            } catch (Throwable e2) {
+                assert printStackTrace(e2);
+                return "java.lang.Throwable|too many errors during encoding|0|";
+            }
         }
-        return baos.toByteArray();
     }
 
     /**
      * Gets the stack of the current thread without the frames between this call and the one just
-     * below the frame of the first method in {@link CompilerToVM}. The chopped frames are for the
-     * VM call to {@link HotSpotJVMCIRuntime#decodeAndThrowThrowable}.
+     * below the frame of the first method in {@link CompilerToVM}. The chopped frames are specific
+     * to the implementation of {@link HotSpotJVMCIRuntime#decodeThrowable(String)}.
      */
-    private static StackTraceElement[] getMyStackTrace() {
+    private static StackTraceElement[] getStackTraceSuffix() {
         StackTraceElement[] stack = new Exception().getStackTrace();
         for (int i = 0; i < stack.length; i++) {
             StackTraceElement e = stack[i];
@@ -224,47 +206,43 @@ final class TranslatedException extends Exception {
      *            {@link #encodeThrowable}
      */
     @VMEntryPoint
-    static Throwable decodeThrowable(byte[] encodedThrowable) {
-        try (DataInputStream dis = new DataInputStream(new GZIPInputStream(new ByteArrayInputStream(encodedThrowable)))) {
+    static Throwable decodeThrowable(String encodedThrowable) {
+        try {
+            int i = 0;
+            String[] parts = encodedThrowable.split("\\|");
             Throwable cause = null;
             Throwable throwable = null;
-            StackTraceElement[] myStack = getMyStackTrace();
-            while (dis.available() != 0) {
-                String exceptionClassName = dis.readUTF();
-                String exceptionMessage = emptyAsNull(dis.readUTF());
+            while (i != parts.length) {
+                String exceptionClassName = parts[i++];
+                String exceptionMessage = decodeMessage(parts[i++]);
                 throwable = create(exceptionClassName, exceptionMessage, cause);
-                int stackTraceDepth = dis.readInt();
-                StackTraceElement[] stackTrace = new StackTraceElement[stackTraceDepth + myStack.length];
-                int stackTraceIndex = 0;
-                int myStackIndex = 0;
-                for (int j = 0; j < stackTraceDepth; j++) {
-                    String classLoaderName = emptyAsNull(dis.readUTF());
-                    String moduleName = emptyAsNull(dis.readUTF());
-                    String moduleVersion = emptyAsNull(dis.readUTF());
-                    String className = emptyAsNull(dis.readUTF());
-                    String methodName = emptyAsNull(dis.readUTF());
-                    String fileName = emptyAsNull(dis.readUTF());
-                    int lineNumber = dis.readInt();
-                    StackTraceElement ste = new StackTraceElement(classLoaderName, moduleName, moduleVersion, className, methodName, fileName, lineNumber);
+                int stackTraceDepth = Integer.parseInt(parts[i++]);
 
-                    if (ste.isNativeMethod()) {
-                        // Best effort attempt to weave stack traces from two heaps into
-                        // a single stack trace using native method frames as stitching points.
-                        // This is not 100% reliable as there's no guarantee that native method
-                        // frames only exist for calls between HotSpot and libjvmci.
-                        while (myStackIndex < myStack.length) {
-                            StackTraceElement suffixSTE = myStack[myStackIndex++];
-                            if (suffixSTE.isNativeMethod()) {
-                                break;
-                            }
-                            stackTrace[stackTraceIndex++] = suffixSTE;
-                        }
+                StackTraceElement[] suffix = getStackTraceSuffix();
+                StackTraceElement[] stackTrace = new StackTraceElement[stackTraceDepth + suffix.length];
+                for (int j = 0; j < stackTraceDepth; j++) {
+                    String classLoaderName = parts[i++];
+                    String moduleName = parts[i++];
+                    String moduleVersion = parts[i++];
+                    String className = parts[i++];
+                    String methodName = parts[i++];
+                    String fileName = parts[i++];
+                    int lineNumber = Integer.parseInt(parts[i++]);
+                    if (classLoaderName.isEmpty()) {
+                        classLoaderName = null;
                     }
-                    stackTrace[stackTraceIndex++] = ste;
+                    if (moduleName.isEmpty()) {
+                        moduleName = null;
+                    }
+                    if (moduleVersion.isEmpty()) {
+                        moduleVersion = null;
+                    }
+                    if (fileName.isEmpty()) {
+                        fileName = null;
+                    }
+                    stackTrace[j] = new StackTraceElement(classLoaderName, moduleName, moduleVersion, className, methodName, fileName, lineNumber);
                 }
-                while (myStackIndex < myStack.length) {
-                    stackTrace[stackTraceIndex++] = myStack[myStackIndex++];
-                }
+                System.arraycopy(suffix, 0, stackTrace, stackTraceDepth, suffix.length);
                 throwable.setStackTrace(stackTrace);
                 cause = throwable;
             }

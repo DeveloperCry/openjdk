@@ -1336,7 +1336,7 @@ public class PeekGraphics extends Graphics2D
     /**
      * Empty finalizer as no clean up needed here.
      */
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     public void finalize() {
     }
 

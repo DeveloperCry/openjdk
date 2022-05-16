@@ -407,7 +407,10 @@ public abstract class IIOMetadata {
             Method meth = cls.getMethod("getInstance");
             return (IIOMetadataFormat) meth.invoke(null);
         } catch (Exception e) {
-            throw new IllegalStateException("Can't obtain format", e);
+            RuntimeException ex =
+                new IllegalStateException ("Can't obtain format");
+            ex.initCause(e);
+            throw ex;
         }
     }
 

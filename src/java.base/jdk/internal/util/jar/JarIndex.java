@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2019, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
@@ -52,13 +52,13 @@ public class JarIndex {
      * The hash map that maintains mappings from
      * package/classe/resource to jar file list(s)
      */
-    private final HashMap<String, List<String>> indexMap;
+    private HashMap<String,LinkedList<String>> indexMap;
 
     /**
      * The hash map that maintains mappings from
      * jar file to package/class/resource lists
      */
-    private final HashMap<String, List<String>> jarMap;
+    private HashMap<String,LinkedList<String>> jarMap;
 
     /*
      * An ordered list of jar file names.
@@ -132,13 +132,13 @@ public class JarIndex {
 
     /*
      * Add the key, value pair to the hashmap, the value will
-     * be put in a list which is created if necessary.
+     * be put in a linked list which is created if necessary.
      */
     private void addToList(String key, String value,
-                           HashMap<String, List<String>> t) {
-        List<String> list = t.get(key);
+                           HashMap<String,LinkedList<String>> t) {
+        LinkedList<String> list = t.get(key);
         if (list == null) {
-            list = new ArrayList<>(1);
+            list = new LinkedList<>();
             list.add(value);
             t.put(key, list);
         } else if (!list.contains(value)) {
@@ -151,8 +151,8 @@ public class JarIndex {
      *
      * @param fileName the key of the mapping
      */
-    public List<String> get(String fileName) {
-        List<String> jarFiles;
+    public LinkedList<String> get(String fileName) {
+        LinkedList<String> jarFiles = null;
         if ((jarFiles = indexMap.get(fileName)) == null) {
             /* try the package name again */
             int pos;
@@ -166,7 +166,7 @@ public class JarIndex {
     /**
      * Add the mapping from the specified file to the specified
      * jar file. If there were no mapping for the package of the
-     * specified file before, a new list will be created,
+     * specified file before, a new linked list will be created,
      * the jar file is added to the list and a new mapping from
      * the package to the jar file list is added to the hashmap.
      * Otherwise, the jar file will be added to the end of the
@@ -261,10 +261,11 @@ public class JarIndex {
                 /* print out the jar file name */
                 String jar = jarFiles[i];
                 bw.write(jar + "\n");
-                List<String> jarlist = jarMap.get(jar);
+                LinkedList<String> jarlist = jarMap.get(jar);
                 if (jarlist != null) {
-                    for (String s : jarlist) {
-                        bw.write(s + "\n");
+                    Iterator<String> listitr = jarlist.iterator();
+                    while(listitr.hasNext()) {
+                        bw.write(listitr.next() + "\n");
                     }
                 }
                 bw.write("\n");
@@ -283,11 +284,11 @@ public class JarIndex {
     public void read(InputStream is) throws IOException {
         BufferedReader br = new BufferedReader
             (new InputStreamReader(is, UTF_8.INSTANCE));
-        String line;
+        String line = null;
         String currentJar = null;
 
         /* an ordered list of jar file names */
-        ArrayList<String> jars = new ArrayList<>();
+        Vector<String> jars = new Vector<>();
 
         /* read until we see a .jar line */
         while((line = br.readLine()) != null && !line.endsWith(".jar"));
@@ -319,10 +320,14 @@ public class JarIndex {
      *
      */
     public void merge(JarIndex toIndex, String path) {
-        for (Map.Entry<String, List<String>> e : indexMap.entrySet()) {
+        Iterator<Map.Entry<String,LinkedList<String>>> itr = indexMap.entrySet().iterator();
+        while(itr.hasNext()) {
+            Map.Entry<String,LinkedList<String>> e = itr.next();
             String packageName = e.getKey();
-            List<String> from_list = e.getValue();
-            for (String jarName : from_list) {
+            LinkedList<String> from_list = e.getValue();
+            Iterator<String> listItr = from_list.iterator();
+            while(listItr.hasNext()) {
+                String jarName = listItr.next();
                 if (path != null) {
                     jarName = path.concat(jarName);
                 }
