@@ -87,12 +87,12 @@ public class LinkedList<E>
     transient int size = 0;
 
     /**
-     * Pointer to first node.
+     * 指向头的指针
      */
     transient Node<E> first;
 
     /**
-     * Pointer to last node.
+     * 指向尾部的指针
      */
     transient Node<E> last;
 
@@ -130,6 +130,7 @@ public class LinkedList<E>
         final Node<E> f = first;
         final Node<E> newNode = new Node<>(null, e, f);
         first = newNode;
+        //如果是第一次添加元素，那么f肯定为空，这个时候，指向first和last都应该指向相同的节点上面
         if (f == null)
             last = newNode;
         else
@@ -154,7 +155,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Inserts element e before non-null Node succ.
+     * 这个用于在指定的节点插入数据
      */
     void linkBefore(E e, Node<E> succ) {
         // assert succ != null;
@@ -170,7 +171,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Unlinks non-null first node f.
+     * 这个用户删除第一个节点
      */
     private E unlinkFirst(Node<E> f) {
         // assert f == first && f != null;
@@ -189,7 +190,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Unlinks non-null last node l.
+     * 用于删除最后一个节点
      */
     private E unlinkLast(Node<E> l) {
         // assert l == last && l != null;
@@ -358,6 +359,7 @@ public class LinkedList<E>
      */
     public boolean remove(Object o) {
         if (o == null) {
+            //从第一个节点开始查找，知道找到符合条件的为止，而且只删除第一个符合条件的节点
             for (Node<E> x = first; x != null; x = x.next) {
                 if (x.item == null) {
                     unlink(x);
@@ -415,14 +417,16 @@ public class LinkedList<E>
             return false;
 
         Node<E> pred, succ;
+        //先判断是不是在最后，是的话就在最后插入
         if (index == size) {
             succ = null;
             pred = last;
-        } else {
-            succ = node(index);
+        } else {//如果不是，则需要找到位置，再插入
+            succ = node(index);//这里用了一个二分法的第一步，与size的一半进行比较
             pred = succ.prev;
         }
 
+        //这里的算法很简单，就是在指定的位置将需要插入的集合重新link一次，向后link
         for (Object o : a) {
             @SuppressWarnings("unchecked") E e = (E) o;
             Node<E> newNode = new Node<>(pred, e, null);
@@ -449,7 +453,7 @@ public class LinkedList<E>
      * Removes all of the elements from this list.
      * The list will be empty after this call returns.
      */
-    public void clear() {
+    public void clear() {//为了GC回收，需要将link拆解
         // Clearing all of the links between nodes is "unnecessary", but:
         // - helps a generational GC if the discarded nodes inhabit
         //   more than one generation

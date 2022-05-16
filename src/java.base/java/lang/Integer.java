@@ -1615,6 +1615,13 @@ public final class Integer extends Number
      * one-bits in its two's complement binary representation, that is, if it
      * is equal to zero.
      *
+     * 该方法的作用是返回无符号整型i的最高非零位前面的0的个数，包括符号位在内；
+     * 如果i为负数，这个方法将会返回0，符号位为1.
+     * 比如说，10的二进制表示为 0000 0000 0000 0000 0000 0000 0000 1010
+     * java的整型长度为32位。那么这个方法返回的就是28
+     *
+     * 返回值:在指定的整数值的二进制补码表示中，在最高位(“最左位”)前的零位数，如果该值等于零，则为32。
+     *
      * @param i the value whose lowest one bit is to be computed
      * @return an {@code int} value with a single one-bit, in the position
      *     of the lowest-order one-bit in the specified value, or zero if
